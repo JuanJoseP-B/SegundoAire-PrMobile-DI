@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SegundoAire</string>
+    <string name="onboarding_title">Recupera tu tiempo</string>
+    <string name="onboarding_subtitle">Respira antes de deslizar. Un segundo de aire basta para elegir lo que de verdad importa.</string>
+    <string name="onboarding_continue">Continuar</string>
+    <string name="banner_title">Protección en pausa</string>
+    <string name="banner_accessibility_disabled">El servicio de accesibilidad está desactivado, así que SegundoAire no puede detectar cuándo abres una app vigilada. Vuelve a activarlo.</string>
+    <string name="banner_overlay_disabled">El permiso para mostrarse sobre otras apps está desactivado, así que no se puede mostrar la pausa. Vuelve a activarlo.</string>
+    <string name="banner_action">Arreglar en Ajustes</string>
+    <string name="dashboard_focused_today">Enfocado hoy</string>
+    <string name="dashboard_watched_apps">Apps vigiladas</string>
+    <string name="dashboard_minutes_format">%1$d min</string>
+    <string name="dashboard_apps_title">Tus apps</string>
+    <string name="dashboard_empty">Aún no hay apps para mostrar.</string>
+    <string name="accessibility_service_description">Detecta qué aplicación se está abriendo para darte un momento de calma. Todo permanece en tu dispositivo.</string>
+    <string name="permission_title">Un pequeño paso para cuidar tu tiempo</string>
+    <string name="permission_subtitle">Para mostrarte una pausa amable antes de abrir apps que te distraen, SegundoAire necesita permiso para mostrarse sobre otras apps. Solo aparece cuando abres una app que tú elegiste y nada sale de tu dispositivo.</string>
+    <string name="permission_grant">Permitir en Ajustes</string>
+    <string name="permission_skip">Ahora no</string>
+    <string name="overlay_title">Toma un segundo aire</string>
+    <string name="overlay_subtitle">¿Realmente quieres entrar aquí ahora?</string>
+    <string name="overlay_exit">Volver / Salir</string>
+    <string name="overlay_continue">Continuar</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SegundoAire</string>
+    <string name="onboarding_title">Reclaim your time</string>
+    <string name="onboarding_subtitle">Take a breath before you scroll. A second of air is enough to choose what really matters.</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="banner_title">Protection paused</string>
+    <string name="banner_accessibility_disabled">The accessibility service is off, so SegundoAire can\'t detect when you open a watched app. Turn it back on.</string>
+    <string name="banner_overlay_disabled">The permission to display over other apps is off, so the pause can\'t be shown. Turn it back on.</string>
+    <string name="banner_action">Fix in Settings</string>
+    <string name="dashboard_focused_today">Focused today</string>
+    <string name="dashboard_watched_apps">Watched apps</string>
+    <string name="dashboard_minutes_format">%1$d min</string>
+    <string name="dashboard_apps_title">Your apps</string>
+    <string name="dashboard_empty">No apps to show yet.</string>
+    <string name="accessibility_service_description">Detects which app is opening so SegundoAire can give you a moment to breathe. Everything stays on your device.</string>
+    <string name="permission_title">One small step to protect your time</string>
+    <string name="permission_subtitle">To show a gentle pause before distracting apps open, SegundoAire needs permission to display over other apps. It only appears when you open an app you chose, and nothing leaves your device.</string>
+    <string name="permission_grant">Allow in Settings</string>
+    <string name="permission_skip">Not now</string>
+    <string name="overlay_title">Take a second to breathe</string>
+    <string name="overlay_subtitle">Do you really want to go in here right now?</string>
+    <string name="overlay_exit">Go back / Exit</string>
+    <string name="overlay_continue">Continue</string>
+</resources>
