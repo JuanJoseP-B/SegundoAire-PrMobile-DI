@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -107,6 +108,9 @@ class SegundoAireMotion(val reduced: Boolean = false) {
 /** `true` si la escala de animaciones del sistema es 0. Se actualiza si el ajuste cambia. */
 @Composable
 fun rememberReducedMotion(): Boolean {
+    // Las previews no tienen ajustes del sistema que leer
+    if (LocalInspectionMode.current) return false
+
     val resolver = LocalContext.current.contentResolver
     fun read() = Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
 
