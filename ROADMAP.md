@@ -30,7 +30,7 @@ Objetivo: dejar el repositorio listo para Gitflow y con documentación alineada 
 - [x] **F8-T1** Crear `develop` desde `main`; PR de `feature/fase-7-temporizador` → `develop`; tag `v0.1.0` sobre `main` tras el merge de la línea base. *(acción manual o guiada; sin commits nuevos)* (tag v0.1.0 = fases 1-6; la Fase 7 sale en la primera release)
 - [x] **F8-T2** `docs: reemplazar CLAUDE.md con reglas de Gitflow y design system`
 - [x] **F8-T3** `docs: reescribir SEGUNDOAIRE_SPEC.md como especificación de producto v2`
-- [ ] **F8-T4** `docs: agregar DESIGN_SYSTEM.md con tokens traducidos a Compose`
+- [x] **F8-T4** `docs: agregar DESIGN_SYSTEM.md con tokens traducidos a Compose`
 - [x] **F8-T5** `docs: agregar ROADMAP.md`
 - [x] **F8-T6** `chore(github): agregar plantilla de PR y de issue`
 - [x] **F8-T7** `chore: actualizar .gitignore`
