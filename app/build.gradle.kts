@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.haze)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
