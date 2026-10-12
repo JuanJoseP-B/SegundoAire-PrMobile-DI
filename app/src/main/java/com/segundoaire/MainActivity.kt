@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.segundoaire.presentation.navigation.AppNavHost
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

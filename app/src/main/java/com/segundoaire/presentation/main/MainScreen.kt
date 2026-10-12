@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.timer.TimerScreen
 
 private enum class MainTab(val labelRes: Int) {
@@ -40,7 +40,7 @@ fun MainScreen() {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            NavigationBar(containerColor = SegundoAireTheme.glass.surface) {
+            NavigationBar(containerColor = SegundoAireTheme.glass.level3.fill) {
                 MainTab.entries.forEach { tab ->
                     NavigationBarItem(
                         selected = selectedTab == tab,

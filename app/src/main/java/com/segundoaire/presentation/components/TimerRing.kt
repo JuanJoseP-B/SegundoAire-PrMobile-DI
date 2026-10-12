@@ -1,10 +1,7 @@
 package com.segundoaire.presentation.components
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -16,15 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
-private val FocusGreenLight = Color(0xFF2E9E6B)
-private val FocusGreenDark = Color(0xFF5ED6A0)
+private const val ProgressStepMillis = 900
 
 /**
  * Anillo circular de progreso del bloque de enfoque.
@@ -42,10 +38,10 @@ fun TimerRing(
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = progress.coerceIn(0f, 1f),
-        animationSpec = tween(durationMillis = 900, easing = LinearEasing),
+        animationSpec = SegundoAireTheme.motion.timer(ProgressStepMillis),
         label = "timerRingProgress"
     )
-    val activeColor = if (isSystemInDarkTheme()) FocusGreenDark else FocusGreenLight
+    val activeColor = SegundoAireTheme.colors.primary
     val trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.10f)
     val arcColor = if (isActive) activeColor else MaterialTheme.colorScheme.primary
 
