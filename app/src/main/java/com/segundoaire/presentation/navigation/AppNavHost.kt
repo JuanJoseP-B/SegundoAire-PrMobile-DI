@@ -25,7 +25,7 @@ import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailab
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
-import com.segundoaire.presentation.main.MainScreen
+import com.segundoaire.presentation.main.MainShell
 import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
 import com.segundoaire.presentation.onboarding.onboardingGraph
 import com.segundoaire.presentation.setup.SetupGraphRoute
@@ -110,7 +110,7 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             }
         )
         composable(Routes.HOME) {
-            MainScreen(
+            MainShell(
                 // Solo en debug: pulsación larga en el título del Panel
                 onOpenComponentCatalog = if (ComponentCatalogAvailable) {
                     { navController.navigate(ComponentCatalogRoute) }
