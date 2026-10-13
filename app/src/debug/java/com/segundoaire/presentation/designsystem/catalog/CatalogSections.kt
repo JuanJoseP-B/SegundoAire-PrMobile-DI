@@ -19,8 +19,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import com.segundoaire.R
+import com.segundoaire.presentation.designsystem.components.AuthProvider
 import com.segundoaire.presentation.designsystem.components.BlockButton
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
+import com.segundoaire.presentation.designsystem.components.ProviderButton
 import com.segundoaire.presentation.designsystem.components.SecondaryButton
 import com.segundoaire.presentation.designsystem.components.TextButton
 import com.segundoaire.presentation.designsystem.components.pressScale
@@ -33,6 +35,7 @@ fun CatalogSections() {
     PrimaryButtonSection()
     SecondaryButtonSection()
     TextButtonSection()
+    ProviderButtonSection()
 }
 
 @Composable
@@ -114,6 +117,21 @@ private fun TextButtonSection() {
                 interactionSource = interactionSource
             )
         }
+    }
+}
+
+@Composable
+private fun ProviderButtonSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_provider_button)) {
+        AuthProvider.entries.forEach { provider ->
+            ProviderButton(provider = provider, onClick = {}, modifier = Modifier.fillMaxWidth())
+        }
+        ProviderButton(
+            provider = AuthProvider.Email,
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false
+        )
     }
 }
 

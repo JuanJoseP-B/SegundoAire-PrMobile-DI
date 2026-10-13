@@ -59,7 +59,7 @@ Objetivo: biblioteca de componentes en `presentation/designsystem/components`, c
 
 - [x] **F10-T1** `Modifier.pressScale()` (token `press`, con `interactionSource`).
 - [x] **F10-T2** `PrimaryButton` con morph de estado (Iniciar ↔ Terminar) y `SecondaryButton` / `TextButton`.
-- [ ] **F10-T3** `ProviderButton` (Google / Apple / correo) con íconos genéricos.
+- [x] **F10-T3** `ProviderButton` (Google / Apple / correo) con íconos genéricos.
 - [ ] **F10-T4** `GlassCard` v2 en 3 niveles, presionable.
 - [ ] **F10-T5** `AppToggleRow` con toggle animado (`toggle`).
 - [ ] **F10-T6** `SegmentedSelector` con indicador deslizante.

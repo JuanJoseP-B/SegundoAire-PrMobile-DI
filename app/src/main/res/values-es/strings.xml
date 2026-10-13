@@ -37,4 +37,7 @@
     <string name="overlay_subtitle">¿Realmente quieres entrar aquí ahora?</string>
     <string name="overlay_exit">Volver / Salir</string>
     <string name="overlay_continue">Continuar</string>
+    <string name="provider_continue_google">Continuar con Google</string>
+    <string name="provider_continue_apple">Continuar con Apple</string>
+    <string name="provider_continue_email">Continuar con correo</string>
 </resources>
