@@ -14,6 +14,8 @@
     <string name="dashboard_empty">No apps to show yet.</string>
     <string name="nav_panel">Dashboard</string>
     <string name="nav_blocks">Blocks</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_profile">Profile</string>
     <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
