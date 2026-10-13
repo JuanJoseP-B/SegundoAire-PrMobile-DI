@@ -2,10 +2,12 @@ package com.segundoaire.di
 
 import com.segundoaire.data.permission.AccessibilityStatusRepositoryImpl
 import com.segundoaire.data.permission.OverlayPermissionRepositoryImpl
+import com.segundoaire.data.preferences.BlockRepositoryImpl
 import com.segundoaire.data.preferences.UserPreferencesRepositoryImpl
 import com.segundoaire.data.preferences.UserProfileRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
+import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
 import com.segundoaire.domain.repository.OverlayPermissionRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
@@ -49,4 +51,10 @@ abstract class RepositoryModule {
     abstract fun bindBlockedAppRepository(
         impl: BlockedAppRepositoryImpl
     ): BlockedAppRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBlockRepository(
+        impl: BlockRepositoryImpl
+    ): BlockRepository
 }
