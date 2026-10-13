@@ -2,6 +2,7 @@ package com.segundoaire.presentation.overlay
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
-import com.segundoaire.presentation.components.GlassCard
+import com.segundoaire.presentation.designsystem.components.GlassCard
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 /** Contenido del "Muro de Cristal". Sin lógica: solo emite eventos hacia arriba. */
 @Composable
@@ -37,7 +39,11 @@ fun GlassWall(
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
-        GlassCard {
+        GlassCard(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(SegundoAireTheme.spacing.space6),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = stringResource(R.string.overlay_title),
                 style = MaterialTheme.typography.headlineLarge,

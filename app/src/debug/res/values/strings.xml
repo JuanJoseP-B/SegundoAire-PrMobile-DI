@@ -9,6 +9,9 @@
     <string name="catalog_section_secondary_button" translatable="false">SecondaryButton</string>
     <string name="catalog_section_text_button" translatable="false">TextButton</string>
     <string name="catalog_section_provider_button" translatable="false">ProviderButton</string>
+    <string name="catalog_section_glass_card" translatable="false">GlassCard</string>
+    <string name="catalog_glass_level">Level %1$d</string>
+    <string name="catalog_glass_pressable">Pressable card</string>
     <string name="catalog_state_default">Default</string>
     <string name="catalog_state_pressed">Pressed</string>
     <string name="catalog_state_focused">Focused</string>

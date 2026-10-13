@@ -21,11 +21,13 @@ import androidx.compose.ui.semantics.Role
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.AuthProvider
 import com.segundoaire.presentation.designsystem.components.BlockButton
+import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
 import com.segundoaire.presentation.designsystem.components.ProviderButton
 import com.segundoaire.presentation.designsystem.components.SecondaryButton
 import com.segundoaire.presentation.designsystem.components.TextButton
 import com.segundoaire.presentation.designsystem.components.pressScale
+import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 /** Una sección por componente, en el orden de la Fase 10 del ROADMAP. */
@@ -36,6 +38,7 @@ fun CatalogSections() {
     SecondaryButtonSection()
     TextButtonSection()
     ProviderButtonSection()
+    GlassCardSection()
 }
 
 @Composable
@@ -133,6 +136,39 @@ private fun ProviderButtonSection() {
             enabled = false
         )
     }
+}
+
+@Composable
+private fun GlassCardSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_glass_card)) {
+        GlassLevel.entries.forEach { level ->
+            GlassCard(modifier = Modifier.fillMaxWidth(), level = level) {
+                CardLabel(stringResource(R.string.catalog_glass_level, level.ordinal + 1))
+            }
+        }
+        GlassCard(modifier = Modifier.fillMaxWidth(), onClick = {}) {
+            CardLabel(stringResource(R.string.catalog_glass_pressable))
+        }
+        GlassCard(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {},
+            interactionSource = rememberFocusedInteractionSource()
+        ) {
+            CardLabel(stringResource(R.string.catalog_state_focused))
+        }
+        GlassCard(modifier = Modifier.fillMaxWidth(), onClick = {}, enabled = false) {
+            CardLabel(stringResource(R.string.catalog_state_disabled))
+        }
+    }
+}
+
+@Composable
+private fun CardLabel(text: String) {
+    Text(
+        text = text,
+        style = SegundoAireTheme.typography.titleMd,
+        color = SegundoAireTheme.colors.onBackground
+    )
 }
 
 /** Los cuatro estados de un botón; pressed y foco quedan fijos para poder compararlos. */
