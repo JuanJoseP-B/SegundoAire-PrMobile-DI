@@ -11,4 +11,7 @@ interface UserProfileRepository {
 
     /** Guarda solo la cuenta, sin tocar el resto del perfil. */
     suspend fun saveAccount(authMode: AuthMode, email: String)
+
+    /** Marca el setup como completo. [saveProfile] no lo toca, así que repetir el onboarding no lo reinicia. */
+    suspend fun completeSetup()
 }

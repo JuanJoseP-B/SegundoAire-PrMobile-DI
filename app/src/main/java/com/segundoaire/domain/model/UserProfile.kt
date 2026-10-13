@@ -30,6 +30,9 @@ enum class AuthMode { GOOGLE, APPLE, EMAIL, GUEST }
  *
  * [authMode] es `null` hasta que el usuario pasa por la pantalla de cuenta y
  * [email] solo tiene valor con [AuthMode.EMAIL]. La contraseña nunca se guarda.
+ *
+ * [setupCompleted] pasa a `true` al confirmar las apps del setup; no lo escribe
+ * [com.segundoaire.domain.repository.UserProfileRepository.saveProfile].
  */
 data class UserProfile(
     val name: String = "",
@@ -38,7 +41,8 @@ data class UserProfile(
     val riskMoments: Set<RiskMoment> = emptySet(),
     val suggestedRigor: RigorLevel = RigorLevel.MINDFUL,
     val authMode: AuthMode? = null,
-    val email: String = ""
+    val email: String = "",
+    val setupCompleted: Boolean = false
 ) {
     val mainGoal: Goal? get() = goals.firstOrNull()
 
