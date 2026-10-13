@@ -27,7 +27,7 @@ import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.timer.TimerScreen
 
-private enum class MainTab(val labelRes: Int) {
+private enum class LegacyTab(val labelRes: Int) {
     PANEL(R.string.nav_panel),
     BLOCKS(R.string.nav_blocks)
 }
@@ -35,13 +35,13 @@ private enum class MainTab(val labelRes: Int) {
 /** Contenedor principal: barra de navegación inferior que alterna Panel y Bloques. */
 @Composable
 fun MainScreen(onOpenComponentCatalog: (() -> Unit)? = null) {
-    var selectedTab by rememberSaveable { mutableStateOf(MainTab.PANEL) }
+    var selectedTab by rememberSaveable { mutableStateOf(LegacyTab.PANEL) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             NavigationBar(containerColor = SegundoAireTheme.glass.level3.fill) {
-                MainTab.entries.forEach { tab ->
+                LegacyTab.entries.forEach { tab ->
                     NavigationBarItem(
                         selected = selectedTab == tab,
                         onClick = { selectedTab = tab },
@@ -61,23 +61,23 @@ fun MainScreen(onOpenComponentCatalog: (() -> Unit)? = null) {
     ) { innerPadding ->
         val contentModifier = Modifier.padding(innerPadding)
         when (selectedTab) {
-            MainTab.PANEL -> DashboardScreen(
+            LegacyTab.PANEL -> DashboardScreen(
                 modifier = contentModifier,
                 onTitleLongClick = onOpenComponentCatalog
             )
-            MainTab.BLOCKS -> TimerScreen(modifier = contentModifier)
+            LegacyTab.BLOCKS -> TimerScreen(modifier = contentModifier)
         }
     }
 }
 
 /** Iconos dibujados a mano para no depender de material-icons-extended. */
 @Composable
-private fun TabIcon(tab: MainTab) {
+private fun TabIcon(tab: LegacyTab) {
     val color = LocalContentColor.current
     Canvas(Modifier.size(24.dp)) {
         val stroke = Stroke(width = 2.dp.toPx())
         when (tab) {
-            MainTab.PANEL -> {
+            LegacyTab.PANEL -> {
                 val cell = Size(size.width * 0.38f, size.height * 0.38f)
                 val radius = CornerRadius(3.dp.toPx())
                 listOf(
@@ -87,7 +87,7 @@ private fun TabIcon(tab: MainTab) {
                     Offset(size.width - cell.width - 2.dp.toPx(), size.height - cell.height - 2.dp.toPx())
                 ).forEach { drawRoundRect(color, it, cell, radius, stroke) }
             }
-            MainTab.BLOCKS -> {
+            LegacyTab.BLOCKS -> {
                 drawCircle(color, radius = size.minDimension / 2 - 2.dp.toPx(), style = stroke)
                 drawLine(color, center, Offset(center.x, 6.dp.toPx()), strokeWidth = 2.dp.toPx())
                 drawLine(
