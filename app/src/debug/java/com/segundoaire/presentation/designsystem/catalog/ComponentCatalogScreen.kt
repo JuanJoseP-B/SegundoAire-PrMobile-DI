@@ -114,7 +114,8 @@ private fun CatalogContent(
     }
 }
 
-// Manchas de color detrás del contenido: sin ellas el blur del vidrio no se aprecia.
+// Manchas detrás del contenido: sin ellas el blur del vidrio no se aprecia. Van en
+// surfaceGlass para que el texto en onBackground siga cumpliendo contraste encima.
 @Composable
 private fun CatalogBackground() {
     val colors = SegundoAireTheme.colors
@@ -125,12 +126,12 @@ private fun CatalogBackground() {
             .background(colors.background)
             .drawBehind {
                 drawCircle(
-                    color = colors.primaryAlt,
+                    color = colors.surfaceGlass,
                     radius = size.width * 0.45f,
                     center = Offset(size.width * 0.9f, size.height * 0.3f)
                 )
                 drawCircle(
-                    color = colors.glow,
+                    color = colors.surfaceGlass,
                     radius = size.width * 0.3f,
                     center = Offset(size.width * 0.1f, size.height * 0.7f)
                 )
@@ -177,7 +178,7 @@ fun CatalogSection(
         Text(
             text = title.uppercase(),
             style = SegundoAireTheme.typography.labelSmCaps,
-            color = SegundoAireTheme.colors.onBackgroundMuted,
+            color = SegundoAireTheme.colors.onBackground,
             modifier = Modifier.semantics { heading() }
         )
         content()
