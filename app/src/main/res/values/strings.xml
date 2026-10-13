@@ -176,4 +176,46 @@
     <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
     <string name="setup_apps_no_results_title">No matches</string>
     <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
+    <string-array name="motivation_focus">
+        <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
+        <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>
+        <item>A short focus block counts. Start with one and notice how it feels.</item>
+        <item>You don\'t have to be perfect. Coming back to your task is already progress.</item>
+        <item>Your mind works better with space. Give it five minutes without a screen.</item>
+    </string-array>
+    <string-array name="motivation_sleep">
+        <item>Resting is moving forward too. Tonight, put your phone down a little earlier.</item>
+        <item>One second of air before bed changes how you wake up.</item>
+        <item>Your body is grateful for dark screens. Try ten minutes less today.</item>
+        <item>You don\'t have to solve everything before sleep. Tomorrow will bring more light.</item>
+        <item>Every night counts. Today, one small step toward rest is enough.</item>
+    </string-array>
+    <string-array name="motivation_presence">
+        <item>There\'s something in front of you worth looking at. Lift your eyes for a moment.</item>
+        <item>Being here is a choice too. Breathe and stay a little longer.</item>
+        <item>The best conversations happen with no screens in between.</item>
+        <item>One present moment is worth a hundred scrolls. Pick one today.</item>
+        <item>Look around and notice three things. That\'s the air you were looking for.</item>
+    </string-array>
+    <string-array name="motivation_mental_health">
+        <item>Taking care of yourself includes taking breaks. This is one.</item>
+        <item>It\'s okay to go slowly. Breathe and ask what you need right now.</item>
+        <item>You don\'t have to keep up with everything. Your calm matters too.</item>
+        <item>A short break from screens can ease more than it seems.</item>
+        <item>Today isn\'t about performing, it\'s about feeling well. One breath at a time.</item>
+    </string-array>
+    <string-array name="motivation_free_time">
+        <item>Your free time is yours. What would you like to do with these minutes?</item>
+        <item>Every minute you get back is a door to something you enjoy.</item>
+        <item>That hobby you put on hold is waiting. Give it ten minutes today.</item>
+        <item>Time comes back minute by minute, not all at once. You\'re doing well.</item>
+        <item>Pick something you love and give it to yourself. The rest can wait.</item>
+    </string-array>
+    <string-array name="motivation_general">
+        <item>One second of air is enough to choose what you want to do next.</item>
+        <item>Breathe. You decide where your attention goes today.</item>
+        <item>You don\'t need to do it perfectly. Every pause adds up.</item>
+        <item>Your day is yours. Start with the next minute.</item>
+        <item>Noticing is the first step. You\'re already doing it.</item>
+    </string-array>
 </resources>
