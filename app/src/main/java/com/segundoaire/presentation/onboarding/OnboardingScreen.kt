@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
-import com.segundoaire.presentation.components.GlassCard
+import com.segundoaire.presentation.designsystem.components.GlassCard
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 @Composable
 fun OnboardingScreen(
@@ -63,7 +65,11 @@ fun OnboardingScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GlassCard {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(SegundoAireTheme.spacing.space6),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 when (state.step) {
                     OnboardingStep.WELCOME -> WelcomeStep(onContinue = viewModel::onWelcomeContinue)
                     OnboardingStep.PERMISSION -> PermissionStep(

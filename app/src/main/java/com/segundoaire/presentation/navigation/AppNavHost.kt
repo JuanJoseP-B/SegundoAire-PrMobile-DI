@@ -12,6 +12,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailable
+import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
+import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.main.MainScreen
 import com.segundoaire.presentation.onboarding.OnboardingScreen
 
@@ -44,7 +47,15 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             )
         }
         composable(Routes.HOME) {
-            MainScreen()
+            MainScreen(
+                // Solo en debug: pulsación larga en el título del Panel
+                onOpenComponentCatalog = if (ComponentCatalogAvailable) {
+                    { navController.navigate(ComponentCatalogRoute) }
+                } else {
+                    null
+                }
+            )
         }
+        componentCatalog()
     }
 }

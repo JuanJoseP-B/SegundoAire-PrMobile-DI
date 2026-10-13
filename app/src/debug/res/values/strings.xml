@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_title">Component catalog</string>
+    <string name="catalog_dark_theme">Dark theme</string>
+    <string name="catalog_reduce_motion">Reduce motion</string>
+    <string name="catalog_section_press_scale" translatable="false">Modifier.pressScale()</string>
+    <string name="catalog_press_and_hold">Press and hold</string>
+    <string name="catalog_section_primary_button" translatable="false">PrimaryButton</string>
+    <string name="catalog_section_secondary_button" translatable="false">SecondaryButton</string>
+    <string name="catalog_section_text_button" translatable="false">TextButton</string>
+    <string name="catalog_section_provider_button" translatable="false">ProviderButton</string>
+    <string name="catalog_section_glass_card" translatable="false">GlassCard</string>
+    <string name="catalog_glass_level">Level %1$d</string>
+    <string name="catalog_glass_pressable">Pressable card</string>
+    <string name="catalog_state_default">Default</string>
+    <string name="catalog_state_pressed">Pressed</string>
+    <string name="catalog_state_focused">Focused</string>
+    <string name="catalog_state_disabled">Disabled</string>
+</resources>

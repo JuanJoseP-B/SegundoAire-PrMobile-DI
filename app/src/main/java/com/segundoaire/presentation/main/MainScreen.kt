@@ -34,7 +34,7 @@ private enum class MainTab(val labelRes: Int) {
 
 /** Contenedor principal: barra de navegación inferior que alterna Panel y Bloques. */
 @Composable
-fun MainScreen() {
+fun MainScreen(onOpenComponentCatalog: (() -> Unit)? = null) {
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.PANEL) }
 
     Scaffold(
@@ -61,7 +61,10 @@ fun MainScreen() {
     ) { innerPadding ->
         val contentModifier = Modifier.padding(innerPadding)
         when (selectedTab) {
-            MainTab.PANEL -> DashboardScreen(modifier = contentModifier)
+            MainTab.PANEL -> DashboardScreen(
+                modifier = contentModifier,
+                onTitleLongClick = onOpenComponentCatalog
+            )
             MainTab.BLOCKS -> TimerScreen(modifier = contentModifier)
         }
     }
