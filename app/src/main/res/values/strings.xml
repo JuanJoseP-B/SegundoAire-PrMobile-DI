@@ -49,4 +49,6 @@
     <string name="auth_email_placeholder" translatable="false">name@example.com</string>
     <string name="auth_email_error">Check your email address</string>
     <string name="auth_password_label">Password</string>
+    <string name="breath_inhale">Breathe in</string>
+    <string name="breath_exhale">Breathe out</string>
 </resources>

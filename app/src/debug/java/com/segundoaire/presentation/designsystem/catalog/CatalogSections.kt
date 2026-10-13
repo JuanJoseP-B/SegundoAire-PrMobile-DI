@@ -47,6 +47,7 @@ fun CatalogSections() {
     ChoiceChipSection()
     RangeSelectorSection()
     AnimatedCounterSection()
+    BreathingCircleSection()
 }
 
 @Composable

@@ -45,4 +45,6 @@
     <string name="auth_email_label">Correo</string>
     <string name="auth_email_error">Revisa tu correo</string>
     <string name="auth_password_label">Contraseña</string>
+    <string name="breath_inhale">Inhala</string>
+    <string name="breath_exhale">Exhala</string>
 </resources>
