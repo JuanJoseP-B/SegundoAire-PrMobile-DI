@@ -41,6 +41,7 @@ fun CatalogSections() {
     GlassCardSection()
     AppToggleRowSection()
     SegmentedSelectorSection()
+    RigorSelectorSection()
 }
 
 @Composable

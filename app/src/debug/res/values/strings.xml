@@ -20,4 +20,5 @@
     <string name="catalog_sample_app">Sample app %1$d</string>
     <string name="catalog_sample_supporting">23 min today</string>
     <string name="catalog_section_segmented_selector" translatable="false">SegmentedSelector</string>
+    <string name="catalog_section_rigor_selector" translatable="false">RigorSelector</string>
 </resources>

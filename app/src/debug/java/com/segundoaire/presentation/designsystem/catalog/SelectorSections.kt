@@ -4,11 +4,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.segundoaire.R
+import com.segundoaire.presentation.designsystem.components.Rigor
+import com.segundoaire.presentation.designsystem.components.RigorSelector
 import com.segundoaire.presentation.designsystem.components.SegmentedSelector
 
 @Composable
@@ -29,5 +32,13 @@ internal fun SegmentedSelectorSection() {
             modifier = Modifier.fillMaxWidth(),
             enabled = false
         )
+    }
+}
+
+@Composable
+internal fun RigorSelectorSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_rigor_selector)) {
+        var rigor by rememberSaveable { mutableStateOf(Rigor.Mindful) }
+        RigorSelector(selected = rigor, onSelected = { rigor = it }, modifier = Modifier.fillMaxWidth())
     }
 }

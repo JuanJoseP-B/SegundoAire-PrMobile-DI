@@ -40,4 +40,6 @@
     <string name="provider_continue_google">Continue with Google</string>
     <string name="provider_continue_apple">Continue with Apple</string>
     <string name="provider_continue_email">Continue with email</string>
+    <string name="rigor_mindful" translatable="false">Mindful</string>
+    <string name="rigor_strict" translatable="false">Strict</string>
 </resources>
