@@ -52,6 +52,7 @@ fun CatalogSections() {
     RevealTextSection()
     PermissionBannerSection()
     EmptyStateSection()
+    SkeletonSection()
 }
 
 @Composable

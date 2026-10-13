@@ -58,4 +58,5 @@
     <string name="catalog_empty_title">No apps yet</string>
     <string name="catalog_empty_message">Choose the apps you want a pause before.</string>
     <string name="catalog_empty_action">Choose apps</string>
+    <string name="catalog_section_skeleton" translatable="false">Skeleton</string>
 </resources>
