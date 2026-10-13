@@ -104,8 +104,8 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 ## Fase 13 · Shell y Panel
 
-- [ ] **F13-T1** Barra inferior glass de 4 tabs (Panel/Bloques/Progreso/Perfil), íconos Rounded importados
-- [ ] **F13-T2** Transición entre tabs con AnimatedContent y Motion.nav
+- [x] **F13-T1** Barra inferior glass de 4 tabs (Panel/Bloques/Progreso/Perfil), íconos Rounded importados
+- [x] **F13-T2** Transición entre tabs con AnimatedContent y Motion.nav
 - [ ] **F13-T3** Panel: saludo con nombre y objetivo + dato de impacto del día
 - [ ] **F13-T4** Lista de apps vigiladas con stagger solo en la primera carga + animateItem
 - [ ] **F13-T5** Tarjeta de mensaje IA simulada (RevealText, banco local según objetivo, interfaz MotivationalMessageProvider)
