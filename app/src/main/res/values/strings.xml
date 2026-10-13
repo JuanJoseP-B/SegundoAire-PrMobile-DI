@@ -16,6 +16,8 @@
     <string name="nav_blocks">Blocks</string>
     <string name="nav_progress">Progress</string>
     <string name="nav_profile">Profile</string>
+    <string name="coming_soon_title">Coming soon</string>
+    <string name="coming_soon_message">We\'re getting this section ready. Check back soon.</string>
     <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
