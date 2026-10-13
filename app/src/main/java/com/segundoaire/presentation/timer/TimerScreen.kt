@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
-import com.segundoaire.presentation.components.TimerRing
+import com.segundoaire.presentation.designsystem.components.TimerRing
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import java.util.Locale
 
@@ -74,10 +74,11 @@ private fun TimerContent(
             TimerRing(
                 progress = state.progress,
                 timeText = formatTime(state.remainingSeconds),
-                stateLabel = stringResource(
+                label = stringResource(
                     if (state.isRunning) R.string.timer_state_focused else R.string.timer_state_ready
                 ),
-                isActive = state.isRunning
+                running = state.isRunning,
+                remainingMillis = state.remainingSeconds * 1000
             )
 
             Text(

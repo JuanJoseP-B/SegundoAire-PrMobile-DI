@@ -39,6 +39,20 @@ fun CatalogSections() {
     TextButtonSection()
     ProviderButtonSection()
     GlassCardSection()
+    AppToggleRowSection()
+    SegmentedSelectorSection()
+    RigorSelectorSection()
+    TimerRingSection()
+    GlassTextFieldSection()
+    ChoiceChipSection()
+    RangeSelectorSection()
+    AnimatedCounterSection()
+    BreathingCircleSection()
+    HoldToCommitButtonSection()
+    RevealTextSection()
+    PermissionBannerSection()
+    EmptyStateSection()
+    SkeletonSection()
 }
 
 @Composable

@@ -40,4 +40,15 @@
     <string name="provider_continue_google">Continue with Google</string>
     <string name="provider_continue_apple">Continue with Apple</string>
     <string name="provider_continue_email">Continue with email</string>
+    <string name="rigor_mindful" translatable="false">Mindful</string>
+    <string name="rigor_strict" translatable="false">Strict</string>
+    <string name="timer_ring_preview_time" translatable="false">25:00</string>
+    <string name="text_field_show_password">Show password</string>
+    <string name="text_field_hide_password">Hide password</string>
+    <string name="auth_email_label">Email</string>
+    <string name="auth_email_placeholder" translatable="false">name@example.com</string>
+    <string name="auth_email_error">Check your email address</string>
+    <string name="auth_password_label">Password</string>
+    <string name="breath_inhale">Breathe in</string>
+    <string name="breath_exhale">Breathe out</string>
 </resources>

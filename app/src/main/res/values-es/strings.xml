@@ -40,4 +40,11 @@
     <string name="provider_continue_google">Continuar con Google</string>
     <string name="provider_continue_apple">Continuar con Apple</string>
     <string name="provider_continue_email">Continuar con correo</string>
+    <string name="text_field_show_password">Mostrar contraseña</string>
+    <string name="text_field_hide_password">Ocultar contraseña</string>
+    <string name="auth_email_label">Correo</string>
+    <string name="auth_email_error">Revisa tu correo</string>
+    <string name="auth_password_label">Contraseña</string>
+    <string name="breath_inhale">Inhala</string>
+    <string name="breath_exhale">Exhala</string>
 </resources>
