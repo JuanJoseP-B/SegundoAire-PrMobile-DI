@@ -84,7 +84,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F11-T5** Pantalla de bienvenida (3 tarjetas).
 - [x] **F11-T6** Pantalla de nombre.
 - [x] **F11-T7** Pantalla de objetivos (máximo 2).
-- [ ] **F11-T8** Pantallas de uso diario y momento de mayor uso.
+- [x] **F11-T8** Pantallas de uso diario y momento de mayor uso.
 - [ ] **F11-T9** Revelación: cálculo honesto con fórmula visible + `AnimatedCounter` + tests del cálculo.
 - [ ] **F11-T10** Demo de respiración.
 - [ ] **F11-T11** Plan personalizado.
