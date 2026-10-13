@@ -154,4 +154,22 @@
     <string name="setup_permission_granted">Allowed</string>
     <string name="setup_permissions_continue">Continue</string>
     <string name="setup_permissions_later">Do it later</string>
+    <string name="setup_apps_title">Choose the apps to watch</string>
+    <string name="setup_apps_subtitle">You\'ll get a pause before these open. You can change them whenever you like.</string>
+    <string name="setup_apps_search_label">Search apps</string>
+    <string name="setup_apps_search_placeholder">App name</string>
+    <string name="setup_apps_suggested">Suggested</string>
+    <string name="setup_apps_all">All apps</string>
+    <string name="setup_apps_results">Results</string>
+    <plurals name="setup_apps_selected_count">
+        <item quantity="one">%d app chosen</item>
+        <item quantity="other">%d apps chosen</item>
+    </plurals>
+    <string name="setup_apps_confirm">Continue</string>
+    <string name="setup_apps_saving">Saving…</string>
+    <string name="setup_apps_save_error">We couldn\'t save your choice. Try again.</string>
+    <string name="setup_apps_empty_title">No apps to show</string>
+    <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
+    <string name="setup_apps_no_results_title">No matches</string>
+    <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
 </resources>
