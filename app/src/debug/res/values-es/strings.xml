@@ -33,4 +33,6 @@
     <string name="catalog_counter_reset">Reiniciar</string>
     <string name="catalog_hold_label">Mantén para comprometerte</string>
     <string name="catalog_hold_count">Compromisos: %1$d</string>
+    <string name="catalog_reveal_sample">Ana, ¿esto te acerca a dormir mejor? Toma un segundo aire antes de decidir.</string>
+    <string name="catalog_reveal_replay">Repetir</string>
 </resources>

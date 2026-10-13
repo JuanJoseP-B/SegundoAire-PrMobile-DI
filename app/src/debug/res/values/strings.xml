@@ -50,4 +50,7 @@
     <string name="catalog_section_hold_to_commit" translatable="false">HoldToCommitButton</string>
     <string name="catalog_hold_label">Hold to commit</string>
     <string name="catalog_hold_count">Commits: %1$d</string>
+    <string name="catalog_section_reveal_text" translatable="false">RevealText</string>
+    <string name="catalog_reveal_sample">Ana, does this bring you closer to sleeping better? Take a second breath before you decide.</string>
+    <string name="catalog_reveal_replay">Play again</string>
 </resources>
