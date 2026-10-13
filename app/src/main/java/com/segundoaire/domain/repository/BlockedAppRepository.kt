@@ -9,4 +9,10 @@ interface BlockedAppRepository {
     suspend fun upsert(app: BlockedApp)
     suspend fun setBlocked(packageName: String, isBlocked: Boolean)
     suspend fun delete(packageName: String)
+
+    /**
+     * Deja exactamente [apps] en la lista: guarda las nuevas o cambiadas y borra
+     * el resto, todo en una transacción para no dejar una selección a medias.
+     */
+    suspend fun replaceAll(apps: List<BlockedApp>)
 }
