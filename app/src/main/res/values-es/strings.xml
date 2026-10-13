@@ -141,4 +141,14 @@
     <string name="onboarding_commitment_goals_eyebrow">Para qué</string>
     <string name="onboarding_commitment_hold">Mantén para comprometerte</string>
     <string name="onboarding_commitment_hint">Mantenlo presionado un momento.</string>
+    <string name="setup_permissions_title">Dos permisos para proteger tu tiempo</string>
+    <string name="setup_permissions_subtitle">SegundoAire necesita ambos para pausar una app antes de que se abra. Nada sale de tu dispositivo.</string>
+    <string name="setup_permission_accessibility_title">Accesibilidad</string>
+    <string name="setup_permission_accessibility_benefit">Detecta cuándo abres una app que elegiste.</string>
+    <string name="setup_permission_overlay_title">Mostrar sobre otras apps</string>
+    <string name="setup_permission_overlay_benefit">Muestra la pausa antes de que la app se abra.</string>
+    <string name="setup_permission_open_settings">Abrir ajustes</string>
+    <string name="setup_permission_granted">Permitido</string>
+    <string name="setup_permissions_continue">Continuar</string>
+    <string name="setup_permissions_later">Hacerlo después</string>
 </resources>

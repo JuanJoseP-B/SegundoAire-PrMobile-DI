@@ -144,4 +144,14 @@
     <string name="onboarding_commitment_goals_eyebrow">What for</string>
     <string name="onboarding_commitment_hold">Hold to commit</string>
     <string name="onboarding_commitment_hint">Keep it pressed for a moment.</string>
+    <string name="setup_permissions_title">Two permissions to protect your time</string>
+    <string name="setup_permissions_subtitle">SegundoAire needs both to pause an app before it opens. Nothing leaves your device.</string>
+    <string name="setup_permission_accessibility_title">Accessibility</string>
+    <string name="setup_permission_accessibility_benefit">Notices when you open an app you chose.</string>
+    <string name="setup_permission_overlay_title">Display over other apps</string>
+    <string name="setup_permission_overlay_benefit">Shows the pause before the app opens.</string>
+    <string name="setup_permission_open_settings">Open settings</string>
+    <string name="setup_permission_granted">Allowed</string>
+    <string name="setup_permissions_continue">Continue</string>
+    <string name="setup_permissions_later">Do it later</string>
 </resources>
