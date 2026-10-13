@@ -97,7 +97,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F12-T1** Pantalla de cuenta: proveedores + "continuar sin cuenta" (simulado, guarda `authMode`).
 - [x] **F12-T2** Login y registro con correo (validación de formulario real, sin backend).
 - [x] **F12-T3** Recuperar contraseña (simulado, con estado de éxito).
-- [ ] **F12-T4** Permisos guiados con checklist y refresco al volver de Ajustes.
+- [x] **F12-T4** Permisos guiados con checklist y refresco al volver de Ajustes.
 - [ ] **F12-T5** Repositorio de apps instaladas (`PackageManager`, filtrado de apps de sistema).
 - [ ] **F12-T6** Pantalla de selección de apps con búsqueda y sugeridas.
 - [ ] **F12-T7** Guardar selección en Room y marcar el setup como completo.
