@@ -11,15 +11,12 @@ Plan de trabajo por fases y tareas. Cada fase es una rama `feature/fase-N-slug` 
 | 10 · Componentes base | `feature/fase-10-componentes` | 12 |
 | 11 · Onboarding personalizado | `feature/fase-11-onboarding` | 14 |
 | 12 · Cuenta simulada, permisos y apps | `feature/fase-12-setup` | 10 |
-| 13 · Shell principal y Panel | `feature/fase-13-panel` | 8 |
-| 14 · Bloques (timer v2) | `feature/fase-14-bloques` | 8 |
-| 15 · GlassWall v2 y rigor | `feature/fase-15-glasswall` | 10 |
-| 16 · Sesiones y Progreso | `feature/fase-16-progreso` | 10 |
-| 17 · Perfil, ajustes e IA simulada | `feature/fase-17-perfil` | 8 |
-| 18 · Trabajo en segundo plano | `feature/fase-18-background` | 5 |
-| 19 · Calidad: tests, accesibilidad y rendimiento | `feature/fase-19-calidad` | 8 |
-| 20 · Release 1.0 | `release/v1.0.0` | 4 |
-| **Total** | | **~112** (+12 existentes) |
+| 13 · Shell y Panel | `feature/fase-13-panel` | 8 |
+| 14 · Bloques y GlassWall | `feature/fase-14-bloques-glasswall` | 10 |
+| 15 · Progreso | `feature/fase-15-progreso` | 6 |
+| 16 · Perfil y Ajustes | `feature/fase-16-perfil` | 7 |
+| 17 · Pulido y release | `release/v1.0.0` | 5 |
+| **Total** | | **~87** (+12 existentes) |
 
 ---
 
@@ -105,75 +102,51 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F12-T9** Cadenas EN/ES.
 - [x] **F12-T10** Tests de validación de formularios y del ViewModel de setup.
 
-## Fase 13 · Shell principal y Panel
+## Fase 13 · Shell y Panel
 
-- [ ] **F13-T1** Barra inferior glass de 4 tabs (Panel / Bloques / Progreso / Perfil) con íconos Rounded (vectores importados).
-- [ ] **F13-T2** Transición entre tabs con `AnimatedContent` y token `nav`.
-- [ ] **F13-T3** Panel: saludo con nombre y objetivo, y dato de impacto del día.
-- [ ] **F13-T4** Panel: lista de apps vigiladas con aparición escalonada (solo la primera vez) y `animateItem`.
-- [ ] **F13-T5** Banners de permisos y estado vacío.
-- [ ] **F13-T6** Migrar `MainViewModel` al estado nuevo + tests.
-- [ ] **F13-T7** Eliminar `DashboardScreen` y la navegación legado.
-- [ ] **F13-T8** Cadenas EN/ES.
+- [ ] **F13-T1** Barra inferior glass de 4 tabs (Panel/Bloques/Progreso/Perfil), íconos Rounded importados
+- [ ] **F13-T2** Transición entre tabs con AnimatedContent y Motion.nav
+- [ ] **F13-T3** Panel: saludo con nombre y objetivo + dato de impacto del día
+- [ ] **F13-T4** Lista de apps vigiladas con stagger solo en la primera carga + animateItem
+- [ ] **F13-T5** Tarjeta de mensaje IA simulada (RevealText, banco local según objetivo, interfaz MotivationalMessageProvider)
+- [ ] **F13-T6** Banners de permisos y estado vacío
+- [ ] **F13-T7** Migrar MainViewModel + tests; eliminar DashboardScreen y la navegación legado
+- [ ] **F13-T8** Cadenas EN/ES
 
-## Fase 14 · Bloques (timer v2)
+## Fase 14 · Bloques y GlassWall
 
-- [ ] **F14-T1** Rediseñar `TimerScreen` con los componentes nuevos.
-- [ ] **F14-T2** Timer basado en reloj de pared (sobrevive a la rotación y al fondo), no en ticks acumulados.
-- [ ] **F14-T3** Conectar el bloque activo al `InterceptorEngine` (las apps se interceptan durante el bloque).
-- [ ] **F14-T4** Notificación persistente del bloque activo (servicio en primer plano).
-- [ ] **F14-T5** Estado de bloque completado con celebración sobria.
-- [ ] **F14-T6** Tests del `TimerViewModel` y del motor.
-- [ ] **F14-T7** Cadenas EN/ES.
+- [ ] **F14-T1** TimerScreen rediseñado con los componentes nuevos
+- [ ] **F14-T2** Timer basado en reloj de pared (sobrevive a la rotación y al fondo)
+- [ ] **F14-T3** Bloque activo conectado al InterceptorEngine
+- [ ] **F14-T4** Entrada calm del GlassWall: FLAG_BLUR_BEHIND en Android 12+, scrim en 10-11, luego el contenido
+- [ ] **F14-T5** BreathingCircle y mensaje personalizado con nombre y objetivo
+- [ ] **F14-T6** Rigor: Mindful habilita "Continuar" tras 10 s visibles; Strict sin "Continuar" durante el bloque
+- [ ] **F14-T7** Estado de bloque completado
+- [ ] **F14-T8** Tests del timer y del motor de rigor + cadenas EN/ES
 
-## Fase 15 · GlassWall v2 y rigor
+## Fase 15 · Progreso
 
-- [ ] **F15-T1** Entrada `calm` del overlay: blur detrás (`FLAG_BLUR_BEHIND`, Android 12+) o scrim (10–11), luego el contenido.
-- [ ] **F15-T2** `BreathingCircle` en el overlay.
-- [ ] **F15-T3** Mensaje personalizado ("Ana, ¿esto te acerca a dormir mejor?").
-- [ ] **F15-T4** Variante Mindful: "Continuar" se habilita tras 10 s, con la cuenta visible.
-- [ ] **F15-T5** Variante Strict: sin "Continuar" durante un bloque activo.
-- [ ] **F15-T6** Registrar cada intercepción (abierta o evitada) para Progreso.
-- [ ] **F15-T7** Medir que el camino crítico se mantiene por debajo de 50 ms (log en debug).
-- [ ] **F15-T8** Cadenas EN/ES y tests del motor de rigor.
+- [ ] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
+- [ ] **F15-T2** Registrar cada intercepción desde el overlay
+- [ ] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
+- [ ] **F15-T4** Pantalla Progreso: dato de impacto con AnimatedCounter, gráfico semanal en Canvas, racha
+- [ ] **F15-T5** Modo demo: generador de 7 días de datos de ejemplo (activable desde Ajustes)
+- [ ] **F15-T6** Tests de los cálculos + cadenas EN/ES
 
-## Fase 16 · Sesiones y Progreso
+## Fase 16 · Perfil y Ajustes
 
-- [ ] **F16-T1** Room v2: entidades `BlockSession` e `InterceptionEvent` + migración 1→2 + test de migración.
-- [ ] **F16-T2** DAOs y repositorios.
-- [ ] **F16-T3** Use cases de estadísticas (minutos recuperados, aperturas evitadas, racha).
-- [ ] **F16-T4** Pantalla Progreso: dato de impacto, gráfico semanal (Canvas) y racha.
-- [ ] **F16-T5** Detalle por app.
-- [ ] **F16-T6** Tests de los cálculos de estadísticas.
-- [ ] **F16-T7** Cadenas EN/ES.
+- [ ] **F16-T1** Perfil: nombre, objetivo, modo de cuenta (simulado), editar nombre y objetivos
+- [ ] **F16-T2** Idioma ES/EN dentro de la app con AppCompatDelegate.setApplicationLocales + locales_config.xml (también aparece en los ajustes de idioma por app de Android 13+)
+- [ ] **F16-T3** Tema: sistema / claro / oscuro, guardado en DataStore
+- [ ] **F16-T4** Tutorial: carrusel de 5 tarjetas (qué hace la app, el GlassWall, Mindful vs Strict, bloques, progreso), reutilizando componentes
+- [ ] **F16-T5** Reiniciar app: diálogo de confirmación, borra DataStore y Room, y navega a la bienvenida limpiando el back stack. Los permisos del sistema se conservan.
+- [ ] **F16-T6** Interruptor de modo demo
+- [ ] **F16-T7** Tests (reinicio y preferencias) + cadenas EN/ES
 
-## Fase 17 · Perfil, ajustes e IA simulada
+## Fase 17 · Pulido y release
 
-- [ ] **F17-T1** Perfil: nombre, objetivo y cuentas conectadas (simulado).
-- [ ] **F17-T2** Ajustes: tema (sistema/claro/oscuro), idioma, rigor por defecto, reducir movimiento.
-- [ ] **F17-T3** Editar apps vigiladas y objetivos.
-- [ ] **F17-T4** Tarjeta de mensaje IA con `RevealText`, alimentada por un banco local de mensajes según el objetivo.
-- [ ] **F17-T5** Interfaz `MotivationalMessageProvider` (implementación local; lista para cambiar por IA real).
-- [ ] **F17-T6** Cadenas EN/ES y tests.
-
-## Fase 18 · Trabajo en segundo plano
-
-- [ ] **F18-T1** `WorkManager`: resumen diario y limpieza de eventos antiguos.
-- [ ] **F18-T2** `AlarmManager` exacto para el fin de bloque en Doze.
-- [ ] **F18-T3** Recuperación del estado tras reinicio del dispositivo (`BOOT_COMPLETED`).
-- [ ] **F18-T4** Tests con `WorkManagerTestInitHelper`.
-
-## Fase 19 · Calidad
-
-- [ ] **F19-T1** Tests de UI de Compose para el onboarding y Bloques.
-- [ ] **F19-T2** Auditoría de accesibilidad (TalkBack, tamaño de fuente 200 %, contraste).
-- [ ] **F19-T3** Profiling del servicio de accesibilidad (asignaciones en el camino crítico).
-- [ ] **F19-T4** Baseline Profile para el arranque.
-- [ ] **F19-T5** Corrección de hallazgos (commits `fix:` según aparezcan).
-
-## Fase 20 · Release 1.0
-
-- [ ] **F20-T1** Ícono adaptativo y splash con la marca.
-- [ ] **F20-T2** Reglas de R8/ProGuard y build de release firmado.
-- [ ] **F20-T3** `versionName 1.0.0`, CHANGELOG y README con capturas.
-- [ ] **F20-T4** Merge `release/v1.0.0` → `main` y → `develop`; tag `v1.0.0`.
+- [ ] **F17-T1** Ícono adaptativo y splash (SplashScreen API)
+- [ ] **F17-T2** Revisión visual completa en claro y oscuro: espaciados, contraste, textos cortados
+- [ ] **F17-T3** R8 y build de release
+- [ ] **F17-T4** README con capturas y versionName 1.0.0
+- [ ] **F17-T5** Merge a main y develop, tag v1.0.0
