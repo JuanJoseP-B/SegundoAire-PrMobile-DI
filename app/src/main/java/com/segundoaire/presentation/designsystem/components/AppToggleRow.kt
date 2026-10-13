@@ -212,7 +212,7 @@ private fun AppToggleRowSample() {
             checked = true,
             onCheckedChange = {},
             modifier = Modifier.fillMaxWidth(),
-            supportingText = stringResource(R.string.dashboard_minutes_format, 23)
+            supportingText = stringResource(R.string.timer_duration_option, 23)
         ) { AppIconPlaceholder(index = 0) }
         AppToggleRow(
             name = stringResource(R.string.app_name),

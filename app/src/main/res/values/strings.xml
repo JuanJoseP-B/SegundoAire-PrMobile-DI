@@ -7,11 +7,6 @@
     <string name="banner_accessibility_disabled">The accessibility service is off, so SegundoAire can\'t detect when you open a watched app. Turn it back on.</string>
     <string name="banner_overlay_disabled">The permission to display over other apps is off, so the pause can\'t be shown. Turn it back on.</string>
     <string name="banner_action">Fix in Settings</string>
-    <string name="dashboard_focused_today">Focused today</string>
-    <string name="dashboard_watched_apps">Watched apps</string>
-    <string name="dashboard_minutes_format">%1$d min</string>
-    <string name="dashboard_apps_title">Your apps</string>
-    <string name="dashboard_empty">No apps to show yet.</string>
     <string name="nav_panel">Dashboard</string>
     <string name="nav_blocks">Blocks</string>
     <string name="nav_progress">Progress</string>

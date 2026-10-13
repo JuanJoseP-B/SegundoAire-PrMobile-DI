@@ -87,11 +87,11 @@ fun EmptyState(
 private fun EmptyStateSample() {
     Box(Modifier.background(SegundoAireTheme.colors.background)) {
         EmptyState(
-            title = stringResource(R.string.dashboard_apps_title),
-            message = stringResource(R.string.dashboard_empty),
+            title = stringResource(R.string.panel_empty_title),
+            message = stringResource(R.string.panel_empty_message),
             modifier = Modifier.fillMaxWidth(),
             icon = SegundoAireIcons.Device,
-            actionLabel = stringResource(R.string.onboarding_continue),
+            actionLabel = stringResource(R.string.panel_empty_action),
             onAction = {}
         )
     }

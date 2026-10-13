@@ -7,11 +7,6 @@
     <string name="banner_accessibility_disabled">El servicio de accesibilidad está desactivado, así que SegundoAire no puede detectar cuándo abres una app vigilada. Vuelve a activarlo.</string>
     <string name="banner_overlay_disabled">El permiso para mostrarse sobre otras apps está desactivado, así que no se puede mostrar la pausa. Vuelve a activarlo.</string>
     <string name="banner_action">Arreglar en Ajustes</string>
-    <string name="dashboard_focused_today">Enfocado hoy</string>
-    <string name="dashboard_watched_apps">Apps vigiladas</string>
-    <string name="dashboard_minutes_format">%1$d min</string>
-    <string name="dashboard_apps_title">Tus apps</string>
-    <string name="dashboard_empty">Aún no hay apps para mostrar.</string>
     <string name="nav_panel">Panel</string>
     <string name="nav_blocks">Bloques</string>
     <string name="nav_progress">Progreso</string>

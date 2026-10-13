@@ -61,7 +61,7 @@ private fun AnimatedCounterSample() {
             .background(SegundoAireTheme.colors.background)
             .padding(SegundoAireTheme.spacing.space6)
     ) {
-        AnimatedCounter(value = 47) { stringResource(R.string.dashboard_minutes_format, it) }
+        AnimatedCounter(value = 47) { stringResource(R.string.timer_duration_option, it) }
     }
 }
 
