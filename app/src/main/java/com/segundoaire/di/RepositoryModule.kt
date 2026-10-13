@@ -3,11 +3,13 @@ package com.segundoaire.di
 import com.segundoaire.data.permission.AccessibilityStatusRepositoryImpl
 import com.segundoaire.data.permission.OverlayPermissionRepositoryImpl
 import com.segundoaire.data.preferences.UserPreferencesRepositoryImpl
+import com.segundoaire.data.preferences.UserProfileRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
 import com.segundoaire.domain.repository.OverlayPermissionRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
+import com.segundoaire.domain.repository.UserProfileRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,6 +25,12 @@ abstract class RepositoryModule {
     abstract fun bindUserPreferencesRepository(
         impl: UserPreferencesRepositoryImpl
     ): UserPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserProfileRepository(
+        impl: UserProfileRepositoryImpl
+    ): UserProfileRepository
 
     @Binds
     @Singleton
