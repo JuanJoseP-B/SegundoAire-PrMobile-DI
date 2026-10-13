@@ -8,13 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import com.segundoaire.R
+import com.segundoaire.presentation.designsystem.components.BlockButton
+import com.segundoaire.presentation.designsystem.components.PrimaryButton
 import com.segundoaire.presentation.designsystem.components.pressScale
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
@@ -22,6 +28,7 @@ import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 @Composable
 fun CatalogSections() {
     PressScaleSection()
+    PrimaryButtonSection()
 }
 
 @Composable
@@ -51,5 +58,41 @@ private fun PressScaleSection() {
                 color = colors.onPrimary
             )
         }
+    }
+}
+
+@Composable
+private fun PrimaryButtonSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_primary_button)) {
+        // Morph Iniciar ↔ Terminar: se alterna al tocarlo
+        var blockActive by rememberSaveable { mutableStateOf(false) }
+        BlockButton(
+            active = blockActive,
+            onClick = { blockActive = !blockActive },
+            modifier = Modifier.fillMaxWidth()
+        )
+        PrimaryButton(
+            text = stringResource(R.string.catalog_state_default),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+        PrimaryButton(
+            text = stringResource(R.string.catalog_state_pressed),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+            interactionSource = rememberPressedInteractionSource()
+        )
+        PrimaryButton(
+            text = stringResource(R.string.catalog_state_focused),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+            interactionSource = rememberFocusedInteractionSource()
+        )
+        PrimaryButton(
+            text = stringResource(R.string.catalog_state_disabled),
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false
+        )
     }
 }

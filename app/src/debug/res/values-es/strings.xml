@@ -4,4 +4,8 @@
     <string name="catalog_dark_theme">Tema oscuro</string>
     <string name="catalog_reduce_motion">Reducir movimiento</string>
     <string name="catalog_press_and_hold">Mantén presionado</string>
+    <string name="catalog_state_default">Normal</string>
+    <string name="catalog_state_pressed">Presionado</string>
+    <string name="catalog_state_focused">Con foco</string>
+    <string name="catalog_state_disabled">Deshabilitado</string>
 </resources>
