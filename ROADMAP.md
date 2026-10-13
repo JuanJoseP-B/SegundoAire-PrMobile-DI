@@ -57,7 +57,7 @@ Aceptación: la app compila y se ve con la paleta nueva; cero hex fuera de `Colo
 
 Objetivo: biblioteca de componentes en `presentation/designsystem/components`, cada uno con previews en claro y oscuro.
 
-- [ ] **F10-T1** `Modifier.pressScale()` (token `press`, con `interactionSource`).
+- [x] **F10-T1** `Modifier.pressScale()` (token `press`, con `interactionSource`).
 - [ ] **F10-T2** `PrimaryButton` con morph de estado (Iniciar ↔ Terminar) y `SecondaryButton` / `TextButton`.
 - [ ] **F10-T3** `ProviderButton` (Google / Apple / correo) con íconos genéricos.
 - [ ] **F10-T4** `GlassCard` v2 en 3 niveles, presionable.

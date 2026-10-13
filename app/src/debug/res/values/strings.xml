@@ -3,4 +3,6 @@
     <string name="catalog_title">Component catalog</string>
     <string name="catalog_dark_theme">Dark theme</string>
     <string name="catalog_reduce_motion">Reduce motion</string>
+    <string name="catalog_section_press_scale" translatable="false">Modifier.pressScale()</string>
+    <string name="catalog_press_and_hold">Press and hold</string>
 </resources>
