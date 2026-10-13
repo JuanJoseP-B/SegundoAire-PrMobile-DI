@@ -10,7 +10,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.segundoaire.presentation.overlay.GlassWall
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 /**
  * Aloja el "Muro de Cristal" en una ventana TYPE_APPLICATION_OVERLAY.

@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 /** Superficie translúcida base del lenguaje visual Glassmorphism. */
 @Composable
@@ -22,8 +22,8 @@ fun GlassCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        color = SegundoAireTheme.glass.surface,
-        border = BorderStroke(1.dp, SegundoAireTheme.glass.border)
+        color = SegundoAireTheme.glass.level2.fill,
+        border = BorderStroke(SegundoAireTheme.glass.edgeWidth, SegundoAireTheme.glass.edgeHi)
     ) {
         Column(
             modifier = Modifier.padding(28.dp),

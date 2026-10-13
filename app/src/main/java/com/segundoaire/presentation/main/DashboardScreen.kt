@@ -38,7 +38,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
 import com.segundoaire.domain.model.BlockedApp
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 @Composable
 fun DashboardScreen(
@@ -169,8 +169,8 @@ private fun MetricCard(label: String, value: String, modifier: Modifier = Modifi
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
-        color = SegundoAireTheme.glass.surface,
-        border = BorderStroke(1.dp, SegundoAireTheme.glass.border)
+        color = SegundoAireTheme.glass.level2.fill,
+        border = BorderStroke(SegundoAireTheme.glass.edgeWidth, SegundoAireTheme.glass.edgeHi)
     ) {
         Column(Modifier.padding(20.dp)) {
             Text(
@@ -194,8 +194,8 @@ private fun AppRow(app: BlockedApp, onToggle: (Boolean) -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        color = SegundoAireTheme.glass.surface,
-        border = BorderStroke(1.dp, SegundoAireTheme.glass.border)
+        color = SegundoAireTheme.glass.level1.fill,
+        border = BorderStroke(SegundoAireTheme.glass.edgeWidth, SegundoAireTheme.glass.edgeHi)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),

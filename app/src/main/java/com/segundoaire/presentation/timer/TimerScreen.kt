@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
 import com.segundoaire.presentation.components.TimerRing
-import com.segundoaire.presentation.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import java.util.Locale
 
 @Composable
@@ -169,10 +169,10 @@ private fun OptionCard(
         modifier = modifier
             .selectable(selected = selected, enabled = enabled, role = Role.RadioButton, onClick = onClick),
         shape = RoundedCornerShape(18.dp),
-        color = if (selected) accent.copy(alpha = 0.18f) else SegundoAireTheme.glass.surface,
+        color = if (selected) accent.copy(alpha = 0.18f) else SegundoAireTheme.glass.level1.fill,
         border = BorderStroke(
             width = if (selected) 2.dp else 1.dp,
-            color = if (selected) accent else SegundoAireTheme.glass.border
+            color = if (selected) accent else SegundoAireTheme.glass.edgeHi
         )
     ) {
         Column(
