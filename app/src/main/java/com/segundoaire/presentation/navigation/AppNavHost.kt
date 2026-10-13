@@ -25,14 +25,16 @@ import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailab
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
-import com.segundoaire.presentation.main.MainScreen
+import com.segundoaire.presentation.main.MainShell
 import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
 import com.segundoaire.presentation.onboarding.onboardingGraph
+import com.segundoaire.presentation.setup.AppSelectionRoute
 import com.segundoaire.presentation.setup.SetupGraphRoute
 import com.segundoaire.presentation.setup.setupGraph
 
 object Routes {
     const val HOME = "home"
+    const val EDIT_APPS = "home/edit-apps"
 }
 
 private fun StartDestination.route(): String = when (this) {
@@ -110,13 +112,22 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             }
         )
         composable(Routes.HOME) {
-            MainScreen(
+            MainShell(
+                onEditApps = { navController.navigate(Routes.EDIT_APPS) },
                 // Solo en debug: pulsación larga en el título del Panel
                 onOpenComponentCatalog = if (ComponentCatalogAvailable) {
                     { navController.navigate(ComponentCatalogRoute) }
                 } else {
                     null
                 }
+            )
+        }
+        composable(Routes.EDIT_APPS) {
+            // Edita la selección con las apps vigiladas marcadas; guardar o volver regresa al Panel
+            AppSelectionRoute(
+                onCompleted = { navController.popBackStack() },
+                editing = true,
+                onBack = { navController.popBackStack() }
             )
         }
         componentCatalog()

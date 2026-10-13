@@ -20,7 +20,7 @@ private const val CounterStep = 23
 internal fun AnimatedCounterSection() {
     CatalogSection(title = stringResource(R.string.catalog_section_animated_counter)) {
         var minutes by rememberSaveable { mutableIntStateOf(47) }
-        AnimatedCounter(value = minutes) { stringResource(R.string.dashboard_minutes_format, it) }
+        AnimatedCounter(value = minutes) { stringResource(R.string.timer_duration_option, it) }
         Row(horizontalArrangement = Arrangement.spacedBy(SegundoAireTheme.spacing.space2)) {
             SecondaryButton(
                 text = stringResource(R.string.catalog_counter_add),

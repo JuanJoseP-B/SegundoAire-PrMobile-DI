@@ -7,13 +7,12 @@
     <string name="banner_accessibility_disabled">The accessibility service is off, so SegundoAire can\'t detect when you open a watched app. Turn it back on.</string>
     <string name="banner_overlay_disabled">The permission to display over other apps is off, so the pause can\'t be shown. Turn it back on.</string>
     <string name="banner_action">Fix in Settings</string>
-    <string name="dashboard_focused_today">Focused today</string>
-    <string name="dashboard_watched_apps">Watched apps</string>
-    <string name="dashboard_minutes_format">%1$d min</string>
-    <string name="dashboard_apps_title">Your apps</string>
-    <string name="dashboard_empty">No apps to show yet.</string>
     <string name="nav_panel">Dashboard</string>
     <string name="nav_blocks">Blocks</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_profile">Profile</string>
+    <string name="coming_soon_title">Coming soon</string>
+    <string name="coming_soon_message">We\'re getting this section ready. Check back soon.</string>
     <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
@@ -172,4 +171,68 @@
     <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
     <string name="setup_apps_no_results_title">No matches</string>
     <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
+    <string name="panel_greeting_morning">Good morning, %1$s</string>
+    <string name="panel_greeting_afternoon">Good afternoon, %1$s</string>
+    <string name="panel_greeting_evening">Good evening, %1$s</string>
+    <string name="panel_greeting_morning_anonymous">Good morning</string>
+    <string name="panel_greeting_afternoon_anonymous">Good afternoon</string>
+    <string name="panel_greeting_evening_anonymous">Good evening</string>
+    <string name="panel_goal_eyebrow">Your goal</string>
+    <string name="panel_impact_eyebrow">Today</string>
+    <plurals name="panel_impact_watched">
+        <item quantity="one">app watched</item>
+        <item quantity="other">apps watched</item>
+    </plurals>
+    <string name="panel_message_eyebrow">For you</string>
+    <string name="panel_message_thinking">Thinking…</string>
+    <string name="panel_message_another">Another message</string>
+    <string name="panel_apps_title">Your apps</string>
+    <string name="panel_apps_edit">Edit apps</string>
+    <string name="panel_app_watching">Watching</string>
+    <string name="panel_app_off">Off</string>
+    <string name="panel_empty_title">No watched apps yet</string>
+    <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
+    <string name="panel_empty_action">Choose apps</string>
+    <string-array name="motivation_focus">
+        <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
+        <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>
+        <item>A short focus block counts. Start with one and notice how it feels.</item>
+        <item>You don\'t have to be perfect. Coming back to your task is already progress.</item>
+        <item>Your mind works better with space. Give it five minutes without a screen.</item>
+    </string-array>
+    <string-array name="motivation_sleep">
+        <item>Resting is moving forward too. Tonight, put your phone down a little earlier.</item>
+        <item>One second of air before bed changes how you wake up.</item>
+        <item>Your body is grateful for dark screens. Try ten minutes less today.</item>
+        <item>You don\'t have to solve everything before sleep. Tomorrow will bring more light.</item>
+        <item>Every night counts. Today, one small step toward rest is enough.</item>
+    </string-array>
+    <string-array name="motivation_presence">
+        <item>There\'s something in front of you worth looking at. Lift your eyes for a moment.</item>
+        <item>Being here is a choice too. Breathe and stay a little longer.</item>
+        <item>The best conversations happen with no screens in between.</item>
+        <item>One present moment is worth a hundred scrolls. Pick one today.</item>
+        <item>Look around and notice three things. That\'s the air you were looking for.</item>
+    </string-array>
+    <string-array name="motivation_mental_health">
+        <item>Taking care of yourself includes taking breaks. This is one.</item>
+        <item>It\'s okay to go slowly. Breathe and ask what you need right now.</item>
+        <item>You don\'t have to keep up with everything. Your calm matters too.</item>
+        <item>A short break from screens can ease more than it seems.</item>
+        <item>Today isn\'t about performing, it\'s about feeling well. One breath at a time.</item>
+    </string-array>
+    <string-array name="motivation_free_time">
+        <item>Your free time is yours. What would you like to do with these minutes?</item>
+        <item>Every minute you get back is a door to something you enjoy.</item>
+        <item>That hobby you put on hold is waiting. Give it ten minutes today.</item>
+        <item>Time comes back minute by minute, not all at once. You\'re doing well.</item>
+        <item>Pick something you love and give it to yourself. The rest can wait.</item>
+    </string-array>
+    <string-array name="motivation_general">
+        <item>One second of air is enough to choose what you want to do next.</item>
+        <item>Breathe. You decide where your attention goes today.</item>
+        <item>You don\'t need to do it perfectly. Every pause adds up.</item>
+        <item>Your day is yours. Start with the next minute.</item>
+        <item>Noticing is the first step. You\'re already doing it.</item>
+    </string-array>
 </resources>

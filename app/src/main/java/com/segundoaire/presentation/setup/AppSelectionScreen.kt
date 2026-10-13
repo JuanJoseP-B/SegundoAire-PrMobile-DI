@@ -1,7 +1,5 @@
 package com.segundoaire.presentation.setup
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,14 +17,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.pluralStringResource
@@ -40,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
 import com.segundoaire.domain.model.InstalledApp
-import com.segundoaire.presentation.designsystem.components.AppIconPlaceholder
+import com.segundoaire.presentation.designsystem.components.AppIcon
 import com.segundoaire.presentation.designsystem.components.AppToggleRow
 import com.segundoaire.presentation.designsystem.components.EmptyState
 import com.segundoaire.presentation.designsystem.components.GlassTextField
@@ -49,7 +41,6 @@ import com.segundoaire.presentation.designsystem.components.Skeleton
 import com.segundoaire.presentation.designsystem.icons.SegundoAireIcons
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
-private val AppIconSize = 48.dp
 private val ErrorIconSize = 20.dp
 private val SkeletonRowHeight = 72.dp
 private const val SkeletonRows = 5
@@ -68,7 +59,8 @@ fun AppSelectionScreen(
     onToggle: (packageName: String, selected: Boolean) -> Unit,
     onConfirm: () -> Unit,
     loadIcon: suspend (packageName: String) -> ImageBitmap?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null
 ) {
     val spacing = SegundoAireTheme.spacing
     val focusManager = LocalFocusManager.current
@@ -82,6 +74,7 @@ fun AppSelectionScreen(
         primaryEnabled = state.canConfirm,
         title = stringResource(R.string.setup_apps_title),
         subtitle = stringResource(R.string.setup_apps_subtitle),
+        onBack = onBack,
         scrollContent = false
     ) {
         GlassTextField(
@@ -184,39 +177,6 @@ private fun AppRow(
         enabled = enabled
     ) {
         AppIcon(packageName = app.packageName, loadIcon = loadIcon)
-    }
-}
-
-/**
- * Muestra el marcador geométrico de inmediato y, cuando el ícono real llega
- * (fuera del hilo principal), lo funde encima. Si no hay ícono, queda el marcador.
- */
-@Composable
-private fun AppIcon(
-    packageName: String,
-    loadIcon: suspend (String) -> ImageBitmap?
-) {
-    val motion = SegundoAireTheme.motion
-    var icon by remember(packageName) { mutableStateOf<ImageBitmap?>(null) }
-    LaunchedEffect(packageName) {
-        icon = loadIcon(packageName)
-    }
-    Crossfade(
-        targetState = icon,
-        animationSpec = motion.calm(),
-        label = "appIcon"
-    ) { loaded ->
-        if (loaded != null) {
-            Image(
-                bitmap = loaded,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(AppIconSize)
-                    .clip(SegundoAireTheme.shapes.radiusSm)
-            )
-        } else {
-            AppIconPlaceholder(index = packageName.hashCode())
-        }
     }
 }
 

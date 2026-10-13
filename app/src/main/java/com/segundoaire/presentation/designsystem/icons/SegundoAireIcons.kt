@@ -148,6 +148,55 @@ object SegundoAireIcons {
             stroked { dot(x = 12f, y = 16.25f) }
         }
     }
+
+    // Pestañas de la barra inferior
+    val Panel: ImageVector by lazy {
+        icon("Panel") {
+            stroked { roundRect(left = 4f, top = 4f, right = 10f, bottom = 10f, radius = 2f) }
+            stroked { roundRect(left = 14f, top = 4f, right = 20f, bottom = 10f, radius = 2f) }
+            stroked { roundRect(left = 4f, top = 14f, right = 10f, bottom = 20f, radius = 2f) }
+            stroked { roundRect(left = 14f, top = 14f, right = 20f, bottom = 20f, radius = 2f) }
+        }
+    }
+
+    val Blocks: ImageVector by lazy {
+        icon("Blocks") {
+            stroked { circle(centerX = 12f, centerY = 12f, radius = 9f) }
+            stroked {
+                moveTo(12f, 7f)
+                lineTo(12f, 12f)
+                lineTo(15.5f, 14f)
+            }
+        }
+    }
+
+    val Progress: ImageVector by lazy {
+        icon("Progress") {
+            stroked {
+                moveTo(6f, 19f)
+                lineTo(6f, 13f)
+            }
+            stroked {
+                moveTo(12f, 19f)
+                lineTo(12f, 6f)
+            }
+            stroked {
+                moveTo(18f, 19f)
+                lineTo(18f, 10f)
+            }
+        }
+    }
+
+    val Profile: ImageVector by lazy {
+        icon("Profile") {
+            stroked { circle(centerX = 12f, centerY = 8f, radius = 3.5f) }
+            stroked {
+                moveTo(5f, 20f)
+                curveTo(5f, 16.5f, 8f, 14.5f, 12f, 14.5f)
+                curveTo(16f, 14.5f, 19f, 16.5f, 19f, 20f)
+            }
+        }
+    }
 }
 
 private const val Grid = 24f

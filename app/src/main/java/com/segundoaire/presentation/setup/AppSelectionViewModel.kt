@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.segundoaire.domain.model.InstalledApp
 import com.segundoaire.domain.model.SuggestedApps
 import com.segundoaire.domain.usecase.CompleteSetupUseCase
+import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import com.segundoaire.domain.usecase.GetInstalledAppsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,30 +22,55 @@ import javax.inject.Inject
 /**
  * Selección de las apps a vigilar: carga las instaladas, ofrece primero las
  * sugeridas y, al confirmar, las guarda y marca el setup como completo.
+ *
+ * Desde el Panel se reutiliza para editar: [onEditStarted] marca de entrada las
+ * apps que ya se vigilan, y confirmar reemplaza la lista igual que en el setup.
  */
 @HiltViewModel
 class AppSelectionViewModel @Inject constructor(
     private val getInstalledApps: GetInstalledAppsUseCase,
     private val completeSetup: CompleteSetupUseCase,
+    private val getBlockedApps: GetBlockedAppsUseCase,
     private val iconLoader: AppIconLoader
 ) : ViewModel() {
 
     private var installed: List<InstalledApp> = emptyList()
+    private var editStarted = false
 
     private val _uiState = MutableStateFlow(AppSelectionUiState())
     val uiState: StateFlow<AppSelectionUiState> = _uiState.asStateFlow()
 
-    init {
+    private val loadJob: Job = viewModelScope.launch {
+        installed = try {
+            getInstalledApps()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            // Sin lista no hay qué elegir: la pantalla muestra el estado vacío
+            emptyList()
+        }
+        _uiState.update { it.copy(isLoading = false, hasInstalledApps = installed.isNotEmpty()).withLists() }
+    }
+
+    /**
+     * Marca las apps que hoy se vigilan. Solo una vez, aunque la pantalla se
+     * recomponga, para no deshacer lo que el usuario ya cambió. Una app
+     * desinstalada no se marca: confirmar solo guarda las que existen.
+     */
+    fun onEditStarted() {
+        if (editStarted) return
+        editStarted = true
         viewModelScope.launch {
-            installed = try {
-                getInstalledApps()
+            val watched = try {
+                getBlockedApps().first().filter { it.isBlocked }.map { it.packageName }
             } catch (e: CancellationException) {
                 throw e
             } catch (_: Exception) {
-                // Sin lista no hay qué elegir: la pantalla muestra el estado vacío
                 emptyList()
             }
-            _uiState.update { it.copy(isLoading = false, hasInstalledApps = installed.isNotEmpty()).withLists() }
+            loadJob.join()
+            val present = installed.mapTo(HashSet()) { it.packageName }
+            _uiState.update { it.copy(selectedPackages = it.selectedPackages + watched.filter { pkg -> pkg in present }) }
         }
     }
 

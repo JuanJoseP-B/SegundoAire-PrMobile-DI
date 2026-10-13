@@ -3,6 +3,7 @@ package com.segundoaire.presentation.setup
 import com.segundoaire.domain.model.BlockedApp
 import com.segundoaire.domain.model.InstalledApp
 import com.segundoaire.domain.usecase.CompleteSetupUseCase
+import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import com.segundoaire.domain.usecase.GetInstalledAppsUseCase
 import com.segundoaire.testing.FakeBlockedAppRepository
 import com.segundoaire.testing.FakeInstalledAppsRepository
@@ -33,7 +34,14 @@ class AppSelectionViewModelTest {
             InstalledApp("com.roblox.client", "Roblox")
         )
     )
-    private val blockedApps = FakeBlockedAppRepository()
+    private val blockedApps = FakeBlockedAppRepository(
+        listOf(
+            BlockedApp("com.example.maps", "Mapas"),
+            BlockedApp("com.roblox.client", "Roblox", isBlocked = false),
+            // Ya no está instalada: no puede quedar marcada
+            BlockedApp("com.example.removed", "Vieja")
+        )
+    )
     private val profile = FakeUserProfileRepository()
 
     @Before
@@ -45,6 +53,7 @@ class AppSelectionViewModelTest {
     private fun viewModel() = AppSelectionViewModel(
         GetInstalledAppsUseCase(installedApps),
         CompleteSetupUseCase(blockedApps, profile),
+        GetBlockedAppsUseCase(blockedApps),
         AppIconLoader { null }
     )
 
@@ -239,5 +248,50 @@ class AppSelectionViewModelTest {
         viewModel.onToggle("com.example.calc", true)
 
         assertEquals(setOf("com.example.maps"), viewModel.uiState.value.selectedPackages)
+    }
+
+    @Test
+    fun `al editar marca las apps vigiladas e instaladas`() = runTest(dispatcher) {
+        val viewModel = viewModel()
+
+        viewModel.onEditStarted()
+        advanceUntilIdle()
+
+        // Roblox está apagada y "Vieja" no está instalada: ninguna queda marcada
+        assertEquals(setOf("com.example.maps"), viewModel.uiState.value.selectedPackages)
+        assertTrue(viewModel.uiState.value.canConfirm)
+    }
+
+    @Test
+    fun `el modo edicion solo marca una vez`() = runTest(dispatcher) {
+        val viewModel = viewModel()
+        viewModel.onEditStarted()
+        advanceUntilIdle()
+        viewModel.onToggle("com.example.maps", false)
+
+        viewModel.onEditStarted()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.selectedPackages.isEmpty())
+    }
+
+    @Test
+    fun `al confirmar una edicion reemplaza la lista y conserva el cooldown`() = runTest(dispatcher) {
+        blockedApps.upsert(BlockedApp("com.example.maps", "Mapas", cooldownMinutes = 15))
+        val viewModel = viewModel()
+        viewModel.onEditStarted()
+        advanceUntilIdle()
+        viewModel.onToggle("com.example.calc", true)
+
+        viewModel.onConfirm()
+        advanceUntilIdle()
+
+        assertEquals(
+            setOf(
+                BlockedApp("com.example.maps", "Mapas", cooldownMinutes = 15),
+                BlockedApp("com.example.calc", "Calculadora")
+            ),
+            blockedApps.current.toSet()
+        )
     }
 }
