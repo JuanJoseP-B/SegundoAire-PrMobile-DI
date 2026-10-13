@@ -22,6 +22,7 @@ import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.BlockButton
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
 import com.segundoaire.presentation.designsystem.components.SecondaryButton
+import com.segundoaire.presentation.designsystem.components.TextButton
 import com.segundoaire.presentation.designsystem.components.pressScale
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
@@ -31,6 +32,7 @@ fun CatalogSections() {
     PressScaleSection()
     PrimaryButtonSection()
     SecondaryButtonSection()
+    TextButtonSection()
 }
 
 @Composable
@@ -90,6 +92,21 @@ private fun SecondaryButtonSection() {
     CatalogSection(title = stringResource(R.string.catalog_section_secondary_button)) {
         ButtonStates { text, enabled, interactionSource ->
             SecondaryButton(
+                text = text,
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                interactionSource = interactionSource
+            )
+        }
+    }
+}
+
+@Composable
+private fun TextButtonSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_text_button)) {
+        ButtonStates { text, enabled, interactionSource ->
+            TextButton(
                 text = text,
                 onClick = {},
                 modifier = Modifier.fillMaxWidth(),
