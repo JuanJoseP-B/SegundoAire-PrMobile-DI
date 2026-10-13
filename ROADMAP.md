@@ -101,9 +101,9 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F12-T5** Repositorio de apps instaladas (`PackageManager`, filtrado de apps de sistema).
 - [x] **F12-T6** Pantalla de selección de apps con búsqueda y sugeridas.
 - [x] **F12-T7** Guardar selección en Room y marcar el setup como completo.
-- [ ] **F12-T8** Navegación raíz: onboarding → cuenta → permisos → apps → principal.
-- [ ] **F12-T9** Cadenas EN/ES.
-- [ ] **F12-T10** Tests de validación de formularios y del ViewModel de setup.
+- [x] **F12-T8** Navegación raíz: onboarding → cuenta → permisos → apps → principal.
+- [x] **F12-T9** Cadenas EN/ES.
+- [x] **F12-T10** Tests de validación de formularios y del ViewModel de setup.
 
 ## Fase 13 · Shell principal y Panel
 
