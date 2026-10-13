@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.Role
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.BlockButton
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
+import com.segundoaire.presentation.designsystem.components.SecondaryButton
 import com.segundoaire.presentation.designsystem.components.pressScale
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
@@ -29,6 +30,7 @@ import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 fun CatalogSections() {
     PressScaleSection()
     PrimaryButtonSection()
+    SecondaryButtonSection()
 }
 
 @Composable
@@ -71,28 +73,40 @@ private fun PrimaryButtonSection() {
             onClick = { blockActive = !blockActive },
             modifier = Modifier.fillMaxWidth()
         )
-        PrimaryButton(
-            text = stringResource(R.string.catalog_state_default),
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
-        )
-        PrimaryButton(
-            text = stringResource(R.string.catalog_state_pressed),
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            interactionSource = rememberPressedInteractionSource()
-        )
-        PrimaryButton(
-            text = stringResource(R.string.catalog_state_focused),
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            interactionSource = rememberFocusedInteractionSource()
-        )
-        PrimaryButton(
-            text = stringResource(R.string.catalog_state_disabled),
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            enabled = false
-        )
+        ButtonStates { text, enabled, interactionSource ->
+            PrimaryButton(
+                text = text,
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                interactionSource = interactionSource
+            )
+        }
     }
+}
+
+@Composable
+private fun SecondaryButtonSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_secondary_button)) {
+        ButtonStates { text, enabled, interactionSource ->
+            SecondaryButton(
+                text = text,
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                interactionSource = interactionSource
+            )
+        }
+    }
+}
+
+/** Los cuatro estados de un botón; pressed y foco quedan fijos para poder compararlos. */
+@Composable
+private fun ButtonStates(
+    button: @Composable (text: String, enabled: Boolean, interactionSource: MutableInteractionSource?) -> Unit
+) {
+    button(stringResource(R.string.catalog_state_default), true, null)
+    button(stringResource(R.string.catalog_state_pressed), true, rememberPressedInteractionSource())
+    button(stringResource(R.string.catalog_state_focused), true, rememberFocusedInteractionSource())
+    button(stringResource(R.string.catalog_state_disabled), false, null)
 }
