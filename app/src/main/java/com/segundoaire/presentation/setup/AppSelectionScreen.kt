@@ -59,7 +59,8 @@ fun AppSelectionScreen(
     onToggle: (packageName: String, selected: Boolean) -> Unit,
     onConfirm: () -> Unit,
     loadIcon: suspend (packageName: String) -> ImageBitmap?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null
 ) {
     val spacing = SegundoAireTheme.spacing
     val focusManager = LocalFocusManager.current
@@ -73,6 +74,7 @@ fun AppSelectionScreen(
         primaryEnabled = state.canConfirm,
         title = stringResource(R.string.setup_apps_title),
         subtitle = stringResource(R.string.setup_apps_subtitle),
+        onBack = onBack,
         scrollContent = false
     ) {
         GlassTextField(
