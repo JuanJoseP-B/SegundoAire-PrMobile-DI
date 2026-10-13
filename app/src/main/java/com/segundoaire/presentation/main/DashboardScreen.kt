@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,6 +45,7 @@ import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
+    onTitleLongClick: (() -> Unit)? = null,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,16 +58,19 @@ fun DashboardScreen(
         state = state,
         modifier = modifier,
         onFixPermissions = { openPermissionSettings(context, state) },
-        onToggleApp = viewModel::onToggleApp
+        onToggleApp = viewModel::onToggleApp,
+        onTitleLongClick = onTitleLongClick
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DashboardContent(
     state: MainUiState,
     onFixPermissions: () -> Unit,
     onToggleApp: (String, Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTitleLongClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -79,7 +85,17 @@ private fun DashboardContent(
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = if (onTitleLongClick != null) {
+                        Modifier.combinedClickable(
+                            interactionSource = null,
+                            indication = null,
+                            onLongClick = onTitleLongClick,
+                            onClick = {}
+                        )
+                    } else {
+                        Modifier
+                    }
                 )
             }
             if (state.needsPermissions) {

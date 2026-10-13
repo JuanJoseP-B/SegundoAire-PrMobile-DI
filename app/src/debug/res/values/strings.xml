@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_title">Component catalog</string>
+    <string name="catalog_dark_theme">Dark theme</string>
+    <string name="catalog_reduce_motion">Reduce motion</string>
+</resources>
