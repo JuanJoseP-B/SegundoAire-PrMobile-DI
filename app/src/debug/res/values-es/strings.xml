@@ -35,4 +35,7 @@
     <string name="catalog_hold_count">Compromisos: %1$d</string>
     <string name="catalog_reveal_sample">Ana, ¿esto te acerca a dormir mejor? Toma un segundo aire antes de decidir.</string>
     <string name="catalog_reveal_replay">Repetir</string>
+    <string name="catalog_empty_title">Aún no hay apps</string>
+    <string name="catalog_empty_message">Elige las apps ante las que quieres una pausa.</string>
+    <string name="catalog_empty_action">Elegir apps</string>
 </resources>

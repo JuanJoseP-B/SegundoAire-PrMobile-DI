@@ -51,6 +51,7 @@ fun CatalogSections() {
     HoldToCommitButtonSection()
     RevealTextSection()
     PermissionBannerSection()
+    EmptyStateSection()
 }
 
 @Composable
