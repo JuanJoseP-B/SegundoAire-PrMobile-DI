@@ -22,4 +22,11 @@
     </string-array>
     <string name="catalog_choice_single">Elección única</string>
     <string name="catalog_choice_limited">Hasta %1$d</string>
+    <string-array name="catalog_sample_usage">
+        <item>Menos de 2 h</item>
+        <item>2–4 h</item>
+        <item>4–6 h</item>
+        <item>6–8 h</item>
+        <item>Más de 8 h</item>
+    </string-array>
 </resources>

@@ -2,14 +2,19 @@ package com.segundoaire.presentation.designsystem.catalog
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.ChoiceChipGroup
+import com.segundoaire.presentation.designsystem.components.RangeSelector
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 private const val SampleGoalLimit = 2
@@ -29,6 +34,20 @@ internal fun ChoiceChipSection() {
             selected = multiple,
             onSelectionChange = { multiple = it },
             maxSelected = SampleGoalLimit
+        )
+    }
+}
+
+@Composable
+internal fun RangeSelectorSection() {
+    CatalogSection(title = stringResource(R.string.catalog_section_range_selector)) {
+        val options = stringArrayResource(R.array.catalog_sample_usage).toList()
+        var selected by rememberSaveable { mutableIntStateOf(1) }
+        RangeSelector(
+            options = options,
+            selectedIndex = selected,
+            onSelected = { selected = it },
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

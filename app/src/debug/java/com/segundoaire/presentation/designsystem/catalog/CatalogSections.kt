@@ -45,6 +45,7 @@ fun CatalogSections() {
     TimerRingSection()
     GlassTextFieldSection()
     ChoiceChipSection()
+    RangeSelectorSection()
 }
 
 @Composable
