@@ -13,4 +13,13 @@
     <string name="catalog_sample_app">App de ejemplo %1$d</string>
     <string name="catalog_sample_supporting">23 min hoy</string>
     <string name="catalog_password_hint">Al menos 8 caracteres</string>
+    <string-array name="catalog_sample_goals">
+        <item>Concentrarme</item>
+        <item>Dormir mejor</item>
+        <item>Estar presente</item>
+        <item>Salud mental</item>
+        <item>Más tiempo libre</item>
+    </string-array>
+    <string name="catalog_choice_single">Elección única</string>
+    <string name="catalog_choice_limited">Hasta %1$d</string>
 </resources>

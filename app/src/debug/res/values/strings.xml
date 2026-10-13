@@ -25,4 +25,14 @@
     <string name="catalog_timer_format" translatable="false">%1$02d:%2$02d</string>
     <string name="catalog_section_glass_text_field" translatable="false">GlassTextField</string>
     <string name="catalog_password_hint">At least 8 characters</string>
+    <string-array name="catalog_sample_goals">
+        <item>Focus</item>
+        <item>Sleep better</item>
+        <item>Be present</item>
+        <item>Mental health</item>
+        <item>More free time</item>
+    </string-array>
+    <string name="catalog_section_choice_chip" translatable="false">ChoiceChip</string>
+    <string name="catalog_choice_single">Single choice</string>
+    <string name="catalog_choice_limited">Up to %1$d</string>
 </resources>
