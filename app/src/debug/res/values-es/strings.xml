@@ -10,4 +10,6 @@
     <string name="catalog_state_pressed">Presionado</string>
     <string name="catalog_state_focused">Con foco</string>
     <string name="catalog_state_disabled">Deshabilitado</string>
+    <string name="catalog_sample_app">App de ejemplo %1$d</string>
+    <string name="catalog_sample_supporting">23 min hoy</string>
 </resources>

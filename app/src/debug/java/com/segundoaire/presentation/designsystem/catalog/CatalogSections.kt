@@ -39,6 +39,7 @@ fun CatalogSections() {
     TextButtonSection()
     ProviderButtonSection()
     GlassCardSection()
+    AppToggleRowSection()
 }
 
 @Composable

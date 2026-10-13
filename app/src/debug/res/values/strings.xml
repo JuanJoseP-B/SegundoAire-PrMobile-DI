@@ -16,4 +16,7 @@
     <string name="catalog_state_pressed">Pressed</string>
     <string name="catalog_state_focused">Focused</string>
     <string name="catalog_state_disabled">Disabled</string>
+    <string name="catalog_section_app_toggle_row" translatable="false">AppToggleRow</string>
+    <string name="catalog_sample_app">Sample app %1$d</string>
+    <string name="catalog_sample_supporting">23 min today</string>
 </resources>

@@ -61,7 +61,7 @@ Objetivo: biblioteca de componentes en `presentation/designsystem/components`, c
 - [x] **F10-T2** `PrimaryButton` con morph de estado (Iniciar ↔ Terminar) y `SecondaryButton` / `TextButton`.
 - [x] **F10-T3** `ProviderButton` (Google / Apple / correo) con íconos genéricos.
 - [x] **F10-T4** `GlassCard` v2 en 3 niveles, presionable.
-- [ ] **F10-T5** `AppToggleRow` con toggle animado (`toggle`).
+- [x] **F10-T5** `AppToggleRow` con toggle animado (`toggle`).
 - [ ] **F10-T6** `SegmentedSelector` con indicador deslizante.
 - [ ] **F10-T7** `RigorSelector` (Mindful/Strict) con descripción animada.
 - [ ] **F10-T8** `TimerRing` v2: progreso lineal continuo, glow en la punta y `displayTimer`.
