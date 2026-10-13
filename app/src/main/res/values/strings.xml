@@ -176,6 +176,28 @@
     <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
     <string name="setup_apps_no_results_title">No matches</string>
     <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
+    <string name="panel_greeting_morning">Good morning, %1$s</string>
+    <string name="panel_greeting_afternoon">Good afternoon, %1$s</string>
+    <string name="panel_greeting_evening">Good evening, %1$s</string>
+    <string name="panel_greeting_morning_anonymous">Good morning</string>
+    <string name="panel_greeting_afternoon_anonymous">Good afternoon</string>
+    <string name="panel_greeting_evening_anonymous">Good evening</string>
+    <string name="panel_goal_eyebrow">Your goal</string>
+    <string name="panel_impact_eyebrow">Today</string>
+    <plurals name="panel_impact_watched">
+        <item quantity="one">app watched</item>
+        <item quantity="other">apps watched</item>
+    </plurals>
+    <string name="panel_message_eyebrow">For you</string>
+    <string name="panel_message_thinking">Thinking…</string>
+    <string name="panel_message_another">Another message</string>
+    <string name="panel_apps_title">Your apps</string>
+    <string name="panel_apps_edit">Edit apps</string>
+    <string name="panel_app_watching">Watching</string>
+    <string name="panel_app_off">Off</string>
+    <string name="panel_empty_title">No watched apps yet</string>
+    <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
+    <string name="panel_empty_action">Choose apps</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>
