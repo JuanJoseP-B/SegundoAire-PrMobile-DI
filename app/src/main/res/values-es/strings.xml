@@ -160,6 +160,7 @@
     <string name="setup_apps_results">Resultados</string>
     <plurals name="setup_apps_selected_count">
         <item quantity="one">%d app elegida</item>
+        <item quantity="many">%d apps elegidas</item>
         <item quantity="other">%d apps elegidas</item>
     </plurals>
     <string name="setup_apps_confirm">Continuar</string>
