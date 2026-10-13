@@ -77,20 +77,20 @@ Aceptación: cada componente con previews y respetando reducir movimiento.
 
 Objetivo: el flujo previo al login completo y navegable; los datos se guardan en DataStore.
 
-- [ ] **F11-T1** Dominio: modelo `UserProfile` (nombre, objetivos, rango de uso, momentos, rigor sugerido) y use cases.
-- [ ] **F11-T2** Datos: `UserProfileRepository` sobre DataStore + tests.
-- [ ] **F11-T3** `OnboardingViewModel` con estado por paso y validaciones + tests.
-- [ ] **F11-T4** `QuestionScaffold` (progreso segmentado, volver, botón fijo) y transición `step`.
-- [ ] **F11-T5** Pantalla de bienvenida (3 tarjetas).
-- [ ] **F11-T6** Pantalla de nombre.
-- [ ] **F11-T7** Pantalla de objetivos (máximo 2).
-- [ ] **F11-T8** Pantallas de uso diario y momento de mayor uso.
-- [ ] **F11-T9** Revelación: cálculo honesto con fórmula visible + `AnimatedCounter` + tests del cálculo.
-- [ ] **F11-T10** Demo de respiración.
-- [ ] **F11-T11** Plan personalizado.
-- [ ] **F11-T12** Compromiso con `HoldToCommitButton` (y vibración háptica).
-- [ ] **F11-T13** Cadenas EN/ES del flujo completo.
-- [ ] **F11-T14** Grafo de navegación anidado del onboarding; reemplaza el onboarding legado.
+- [x] **F11-T1** Dominio: modelo `UserProfile` (nombre, objetivos, rango de uso, momentos, rigor sugerido) y use cases.
+- [x] **F11-T2** Datos: `UserProfileRepository` sobre DataStore + tests.
+- [x] **F11-T3** `OnboardingViewModel` con estado por paso y validaciones + tests.
+- [x] **F11-T4** `QuestionScaffold` (progreso segmentado, volver, botón fijo) y transición `step`.
+- [x] **F11-T5** Pantalla de bienvenida (3 tarjetas).
+- [x] **F11-T6** Pantalla de nombre.
+- [x] **F11-T7** Pantalla de objetivos (máximo 2).
+- [x] **F11-T8** Pantallas de uso diario y momento de mayor uso.
+- [x] **F11-T9** Revelación: cálculo honesto con fórmula visible + `AnimatedCounter` + tests del cálculo.
+- [x] **F11-T10** Demo de respiración.
+- [x] **F11-T11** Plan personalizado.
+- [x] **F11-T12** Compromiso con `HoldToCommitButton` (y vibración háptica).
+- [x] **F11-T13** Cadenas EN/ES del flujo completo.
+- [x] **F11-T14** Grafo de navegación anidado del onboarding; reemplaza el onboarding legado.
 
 ## Fase 12 · Cuenta simulada, permisos y apps
 

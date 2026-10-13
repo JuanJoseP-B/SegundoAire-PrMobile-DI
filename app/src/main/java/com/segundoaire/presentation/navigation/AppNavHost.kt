@@ -6,8 +6,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,11 +19,12 @@ import androidx.navigation.compose.rememberNavController
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailable
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.main.MainScreen
-import com.segundoaire.presentation.onboarding.OnboardingScreen
+import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
+import com.segundoaire.presentation.onboarding.onboardingGraph
 
 object Routes {
-    const val ONBOARDING = "onboarding"
     const val HOME = "home"
 }
 
@@ -33,19 +38,29 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
     }
 
     val navController = rememberNavController()
+    // Se fija al primer valor leído: al completarse el onboarding navega el propio
+    // flujo, y cambiar el destino inicial en ese momento reconstruiría el grafo
+    val startDestination = remember { if (onboardingDone) Routes.HOME else OnboardingGraphRoute }
+
+    val motion = SegundoAireTheme.motion
+    val stepOffsetPx = with(LocalDensity.current) { motion.stepOffset.roundToPx() }
+    val forward = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1 else 1
+
     NavHost(
         navController = navController,
-        startDestination = if (onboardingDone) Routes.HOME else Routes.ONBOARDING
+        startDestination = startDestination
     ) {
-        composable(Routes.ONBOARDING) {
-            OnboardingScreen(
-                onCompleted = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.ONBOARDING) { inclusive = true }
-                    }
+        onboardingGraph(
+            navController = navController,
+            motion = motion,
+            stepOffsetPx = stepOffsetPx,
+            forward = forward,
+            onCompleted = {
+                navController.navigate(Routes.HOME) {
+                    popUpTo(OnboardingGraphRoute) { inclusive = true }
                 }
-            )
-        }
+            }
+        )
         composable(Routes.HOME) {
             MainScreen(
                 // Solo en debug: pulsación larga en el título del Panel
