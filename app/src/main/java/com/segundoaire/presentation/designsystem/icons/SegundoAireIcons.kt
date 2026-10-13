@@ -41,12 +41,7 @@ object SegundoAireIcons {
 
     val Globe: ImageVector by lazy {
         icon("Globe") {
-            stroked {
-                moveTo(21f, 12f)
-                arcToRelative(9f, 9f, 0f, true, true, -18f, 0f)
-                arcToRelative(9f, 9f, 0f, true, true, 18f, 0f)
-                close()
-            }
+            stroked { circle(centerX = 12f, centerY = 12f, radius = 9f) }
             // Ecuador y meridiano
             stroked {
                 moveTo(3f, 12f)
@@ -81,6 +76,35 @@ object SegundoAireIcons {
                 lineTo(12f, 13f)
                 lineTo(20f, 7.5f)
             }
+        }
+    }
+
+    val Eye: ImageVector by lazy {
+        icon("Eye") {
+            stroked { eyeOutline() }
+            stroked { circle(centerX = 12f, centerY = 12f, radius = 3f) }
+        }
+    }
+
+    val EyeOff: ImageVector by lazy {
+        icon("EyeOff") {
+            stroked { eyeOutline() }
+            stroked { circle(centerX = 12f, centerY = 12f, radius = 3f) }
+            stroked {
+                moveTo(4.5f, 4.5f)
+                lineTo(19.5f, 19.5f)
+            }
+        }
+    }
+
+    val Error: ImageVector by lazy {
+        icon("Error") {
+            stroked { circle(centerX = 12f, centerY = 12f, radius = 9f) }
+            stroked {
+                moveTo(12f, 7.5f)
+                lineTo(12f, 12.5f)
+            }
+            stroked { dot(x = 12f, y = 16f) }
         }
     }
 }
@@ -120,6 +144,28 @@ private fun PathBuilder.roundRect(left: Float, top: Float, right: Float, bottom:
     arcTo(radius, radius, 0f, false, true, left, bottom - radius)
     lineTo(left, top + radius)
     arcTo(radius, radius, 0f, false, true, left + radius, top)
+    close()
+}
+
+private fun PathBuilder.circle(centerX: Float, centerY: Float, radius: Float) {
+    moveTo(centerX + radius, centerY)
+    arcToRelative(radius, radius, 0f, true, true, -radius * 2, 0f)
+    arcToRelative(radius, radius, 0f, true, true, radius * 2, 0f)
+    close()
+}
+
+// Un trazo de longitud casi nula con extremos redondeados se dibuja como un punto
+private fun PathBuilder.dot(x: Float, y: Float) {
+    moveTo(x, y)
+    lineTo(x, y + 0.01f)
+}
+
+private fun PathBuilder.eyeOutline() {
+    moveTo(2.5f, 12f)
+    curveTo(5f, 7.5f, 8.5f, 5.5f, 12f, 5.5f)
+    curveTo(15.5f, 5.5f, 19f, 7.5f, 21.5f, 12f)
+    curveTo(19f, 16.5f, 15.5f, 18.5f, 12f, 18.5f)
+    curveTo(8.5f, 18.5f, 5f, 16.5f, 2.5f, 12f)
     close()
 }
 

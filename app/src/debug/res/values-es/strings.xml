@@ -12,4 +12,5 @@
     <string name="catalog_state_disabled">Deshabilitado</string>
     <string name="catalog_sample_app">App de ejemplo %1$d</string>
     <string name="catalog_sample_supporting">23 min hoy</string>
+    <string name="catalog_password_hint">Al menos 8 caracteres</string>
 </resources>

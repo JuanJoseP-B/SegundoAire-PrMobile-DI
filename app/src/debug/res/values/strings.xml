@@ -23,4 +23,6 @@
     <string name="catalog_section_rigor_selector" translatable="false">RigorSelector</string>
     <string name="catalog_section_timer_ring" translatable="false">TimerRing</string>
     <string name="catalog_timer_format" translatable="false">%1$02d:%2$02d</string>
+    <string name="catalog_section_glass_text_field" translatable="false">GlassTextField</string>
+    <string name="catalog_password_hint">At least 8 characters</string>
 </resources>
