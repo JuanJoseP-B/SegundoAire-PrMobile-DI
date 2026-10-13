@@ -21,4 +21,6 @@
     <string name="catalog_sample_supporting">23 min today</string>
     <string name="catalog_section_segmented_selector" translatable="false">SegmentedSelector</string>
     <string name="catalog_section_rigor_selector" translatable="false">RigorSelector</string>
+    <string name="catalog_section_timer_ring" translatable="false">TimerRing</string>
+    <string name="catalog_timer_format" translatable="false">%1$02d:%2$02d</string>
 </resources>

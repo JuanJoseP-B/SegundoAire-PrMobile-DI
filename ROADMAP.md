@@ -64,7 +64,7 @@ Objetivo: biblioteca de componentes en `presentation/designsystem/components`, c
 - [x] **F10-T5** `AppToggleRow` con toggle animado (`toggle`).
 - [x] **F10-T6** `SegmentedSelector` con indicador deslizante.
 - [x] **F10-T7** `RigorSelector` (Mindful/Strict) con descripción animada.
-- [ ] **F10-T8** `TimerRing` v2: progreso lineal continuo, glow en la punta y `displayTimer`.
+- [x] **F10-T8** `TimerRing` v2: progreso lineal continuo, glow en la punta y `displayTimer`.
 - [ ] **F10-T9** `GlassTextField` (foco, error, mostrar/ocultar contraseña).
 - [ ] **F10-T10** `ChoiceChip` (única/múltiple, con límite), `RangeSelector` y `AnimatedCounter`.
 - [ ] **F10-T11** `BreathingCircle` y `HoldToCommitButton`.

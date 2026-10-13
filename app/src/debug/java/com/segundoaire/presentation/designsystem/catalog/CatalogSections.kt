@@ -42,6 +42,7 @@ fun CatalogSections() {
     AppToggleRowSection()
     SegmentedSelectorSection()
     RigorSelectorSection()
+    TimerRingSection()
 }
 
 @Composable
