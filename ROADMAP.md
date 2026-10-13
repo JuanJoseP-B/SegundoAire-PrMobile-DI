@@ -77,7 +77,7 @@ Aceptación: cada componente con previews y respetando reducir movimiento.
 
 Objetivo: el flujo previo al login completo y navegable; los datos se guardan en DataStore.
 
-- [ ] **F11-T1** Dominio: modelo `UserProfile` (nombre, objetivos, rango de uso, momentos, rigor sugerido) y use cases.
+- [x] **F11-T1** Dominio: modelo `UserProfile` (nombre, objetivos, rango de uso, momentos, rigor sugerido) y use cases.
 - [ ] **F11-T2** Datos: `UserProfileRepository` sobre DataStore + tests.
 - [ ] **F11-T3** `OnboardingViewModel` con estado por paso y validaciones + tests.
 - [ ] **F11-T4** `QuestionScaffold` (progreso segmentado, volver, botón fijo) y transición `step`.
