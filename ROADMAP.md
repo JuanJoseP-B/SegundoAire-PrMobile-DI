@@ -88,7 +88,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F11-T9** Revelación: cálculo honesto con fórmula visible + `AnimatedCounter` + tests del cálculo.
 - [x] **F11-T10** Demo de respiración.
 - [x] **F11-T11** Plan personalizado.
-- [ ] **F11-T12** Compromiso con `HoldToCommitButton` (y vibración háptica).
+- [x] **F11-T12** Compromiso con `HoldToCommitButton` (y vibración háptica).
 - [x] **F11-T13** Cadenas EN/ES del flujo completo.
 - [ ] **F11-T14** Grafo de navegación anidado del onboarding; reemplaza el onboarding legado.
 
