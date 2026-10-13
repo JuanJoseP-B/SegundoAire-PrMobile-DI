@@ -47,4 +47,7 @@
     <string name="catalog_counter_add">Add 23 min</string>
     <string name="catalog_counter_reset">Reset</string>
     <string name="catalog_section_breathing_circle" translatable="false">BreathingCircle</string>
+    <string name="catalog_section_hold_to_commit" translatable="false">HoldToCommitButton</string>
+    <string name="catalog_hold_label">Hold to commit</string>
+    <string name="catalog_hold_count">Commits: %1$d</string>
 </resources>

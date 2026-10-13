@@ -31,4 +31,6 @@
     </string-array>
     <string name="catalog_counter_add">Sumar 23 min</string>
     <string name="catalog_counter_reset">Reiniciar</string>
+    <string name="catalog_hold_label">Mantén para comprometerte</string>
+    <string name="catalog_hold_count">Compromisos: %1$d</string>
 </resources>

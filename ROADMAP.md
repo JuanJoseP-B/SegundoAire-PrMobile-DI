@@ -67,7 +67,7 @@ Objetivo: biblioteca de componentes en `presentation/designsystem/components`, c
 - [x] **F10-T8** `TimerRing` v2: progreso lineal continuo, glow en la punta y `displayTimer`.
 - [x] **F10-T9** `GlassTextField` (foco, error, mostrar/ocultar contraseña).
 - [x] **F10-T10** `ChoiceChip` (única/múltiple, con límite), `RangeSelector` y `AnimatedCounter`.
-- [ ] **F10-T11** `BreathingCircle` y `HoldToCommitButton`.
+- [x] **F10-T11** `BreathingCircle` y `HoldToCommitButton`.
 - [ ] **F10-T12** `RevealText`, `PermissionBanner`, `EmptyState` y `Skeleton`.
 - [x] **F10-T13** Catálogo de componentes (solo debug): `ComponentCatalogScreen` con switch claro/oscuro, switch de reducir movimiento y una sección por componente.
 

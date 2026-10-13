@@ -48,6 +48,7 @@ fun CatalogSections() {
     RangeSelectorSection()
     AnimatedCounterSection()
     BreathingCircleSection()
+    HoldToCommitButtonSection()
 }
 
 @Composable
