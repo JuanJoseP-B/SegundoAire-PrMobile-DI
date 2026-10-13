@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SegundoAire</string>
-    <string name="onboarding_title">Recupera tu tiempo</string>
     <string name="onboarding_subtitle">Respira antes de deslizar. Un segundo de aire basta para elegir lo que de verdad importa.</string>
     <string name="onboarding_continue">Continuar</string>
     <string name="banner_title">Protección en pausa</string>

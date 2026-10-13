@@ -90,7 +90,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F11-T11** Plan personalizado.
 - [x] **F11-T12** Compromiso con `HoldToCommitButton` (y vibración háptica).
 - [x] **F11-T13** Cadenas EN/ES del flujo completo.
-- [ ] **F11-T14** Grafo de navegación anidado del onboarding; reemplaza el onboarding legado.
+- [x] **F11-T14** Grafo de navegación anidado del onboarding; reemplaza el onboarding legado.
 
 ## Fase 12 · Cuenta simulada, permisos y apps
 
