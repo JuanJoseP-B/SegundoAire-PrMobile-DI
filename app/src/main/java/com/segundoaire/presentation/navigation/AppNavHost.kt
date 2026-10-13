@@ -16,6 +16,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.segundoaire.presentation.auth.AuthGraphRoute
+import com.segundoaire.presentation.auth.authGraph
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailable
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
@@ -56,8 +58,19 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             stepOffsetPx = stepOffsetPx,
             forward = forward,
             onCompleted = {
-                navController.navigate(Routes.HOME) {
+                navController.navigate(AuthGraphRoute) {
                     popUpTo(OnboardingGraphRoute) { inclusive = true }
+                }
+            }
+        )
+        authGraph(
+            navController = navController,
+            motion = motion,
+            stepOffsetPx = stepOffsetPx,
+            forward = forward,
+            onCompleted = {
+                navController.navigate(Routes.HOME) {
+                    popUpTo(AuthGraphRoute) { inclusive = true }
                 }
             }
         )
