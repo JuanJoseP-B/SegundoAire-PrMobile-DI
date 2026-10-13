@@ -106,12 +106,12 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 - [x] **F13-T1** Barra inferior glass de 4 tabs (Panel/Bloques/Progreso/Perfil), íconos Rounded importados
 - [x] **F13-T2** Transición entre tabs con AnimatedContent y Motion.nav
-- [ ] **F13-T3** Panel: saludo con nombre y objetivo + dato de impacto del día
-- [ ] **F13-T4** Lista de apps vigiladas con stagger solo en la primera carga + animateItem
-- [ ] **F13-T5** Tarjeta de mensaje IA simulada (RevealText, banco local según objetivo, interfaz MotivationalMessageProvider)
-- [ ] **F13-T6** Banners de permisos y estado vacío
-- [ ] **F13-T7** Migrar MainViewModel + tests; eliminar DashboardScreen y la navegación legado
-- [ ] **F13-T8** Cadenas EN/ES
+- [x] **F13-T3** Panel: saludo con nombre y objetivo + dato de impacto del día
+- [x] **F13-T4** Lista de apps vigiladas con stagger solo en la primera carga + animateItem
+- [x] **F13-T5** Tarjeta de mensaje IA simulada (RevealText, banco local según objetivo, interfaz MotivationalMessageProvider)
+- [x] **F13-T6** Banners de permisos y estado vacío
+- [x] **F13-T7** Migrar MainViewModel + tests; eliminar DashboardScreen y la navegación legado
+- [x] **F13-T8** Cadenas EN/ES
 
 ## Fase 14 · Bloques y GlassWall
 
