@@ -26,6 +26,12 @@
     <string name="timer_watched_apps">%1$d apps being watched</string>
     <string name="timer_start">Start block</string>
     <string name="timer_stop">End block</string>
+    <string name="timer_hold_to_end">Hold to end block</string>
+    <plurals name="timer_watched">
+        <item quantity="one">%d app being watched</item>
+        <item quantity="other">%d apps being watched</item>
+    </plurals>
+    <string name="timer_no_watched_apps">Pick apps in the Dashboard so your block can watch them.</string>
     <string name="accessibility_service_description">Detects which app is opening so SegundoAire can give you a moment to breathe. Everything stays on your device.</string>
     <string name="permission_title">One small step to protect your time</string>
     <string name="permission_subtitle">To show a gentle pause before distracting apps open, SegundoAire needs permission to display over other apps. It only appears when you open an app you chose, and nothing leaves your device.</string>

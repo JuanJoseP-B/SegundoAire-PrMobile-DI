@@ -26,6 +26,13 @@
     <string name="timer_watched_apps">%1$d apps vigiladas</string>
     <string name="timer_start">Iniciar bloque</string>
     <string name="timer_stop">Terminar bloque</string>
+    <string name="timer_hold_to_end">Mantén para terminar</string>
+    <plurals name="timer_watched">
+        <item quantity="one">%d app vigilada</item>
+        <item quantity="many">%d apps vigiladas</item>
+        <item quantity="other">%d apps vigiladas</item>
+    </plurals>
+    <string name="timer_no_watched_apps">Elige apps en el Panel para que tu bloque las vigile.</string>
     <string name="accessibility_service_description">Detecta qué aplicación se está abriendo para darte un momento de calma. Todo permanece en tu dispositivo.</string>
     <string name="permission_title">Un pequeño paso para cuidar tu tiempo</string>
     <string name="permission_subtitle">Para mostrarte una pausa amable antes de abrir apps que te distraen, SegundoAire necesita permiso para mostrarse sobre otras apps. Solo aparece cuando abres una app que tú elegiste y nada sale de tu dispositivo.</string>
