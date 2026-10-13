@@ -53,4 +53,5 @@
     <string name="catalog_section_reveal_text" translatable="false">RevealText</string>
     <string name="catalog_reveal_sample">Ana, does this bring you closer to sleeping better? Take a second breath before you decide.</string>
     <string name="catalog_reveal_replay">Play again</string>
+    <string name="catalog_section_permission_banner" translatable="false">PermissionBanner</string>
 </resources>

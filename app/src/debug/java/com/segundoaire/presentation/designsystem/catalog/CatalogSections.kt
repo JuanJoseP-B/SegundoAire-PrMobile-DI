@@ -50,6 +50,7 @@ fun CatalogSections() {
     BreathingCircleSection()
     HoldToCommitButtonSection()
     RevealTextSection()
+    PermissionBannerSection()
 }
 
 @Composable

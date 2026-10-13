@@ -107,6 +107,22 @@ object SegundoAireIcons {
             stroked { dot(x = 12f, y = 16f) }
         }
     }
+
+    val Warning: ImageVector by lazy {
+        icon("Warning") {
+            stroked {
+                moveTo(12f, 4.5f)
+                lineTo(20.5f, 19f)
+                lineTo(3.5f, 19f)
+                close()
+            }
+            stroked {
+                moveTo(12f, 10f)
+                lineTo(12f, 13.5f)
+            }
+            stroked { dot(x = 12f, y = 16.25f) }
+        }
+    }
 }
 
 private const val Grid = 24f
