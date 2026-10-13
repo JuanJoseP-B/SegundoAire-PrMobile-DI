@@ -69,6 +69,7 @@ Objetivo: biblioteca de componentes en `presentation/designsystem/components`, c
 - [ ] **F10-T10** `ChoiceChip` (única/múltiple, con límite), `RangeSelector` y `AnimatedCounter`.
 - [ ] **F10-T11** `BreathingCircle` y `HoldToCommitButton`.
 - [ ] **F10-T12** `RevealText`, `PermissionBanner`, `EmptyState` y `Skeleton`.
+- [ ] **F10-T13** Catálogo de componentes (solo debug): `ComponentCatalogScreen` con switch claro/oscuro, switch de reducir movimiento y una sección por componente.
 
 Aceptación: cada componente con previews y respetando reducir movimiento.
 
