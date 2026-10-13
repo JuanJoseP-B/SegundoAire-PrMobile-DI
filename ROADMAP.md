@@ -99,8 +99,8 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F12-T3** Recuperar contraseña (simulado, con estado de éxito).
 - [x] **F12-T4** Permisos guiados con checklist y refresco al volver de Ajustes.
 - [x] **F12-T5** Repositorio de apps instaladas (`PackageManager`, filtrado de apps de sistema).
-- [ ] **F12-T6** Pantalla de selección de apps con búsqueda y sugeridas.
-- [ ] **F12-T7** Guardar selección en Room y marcar el setup como completo.
+- [x] **F12-T6** Pantalla de selección de apps con búsqueda y sugeridas.
+- [x] **F12-T7** Guardar selección en Room y marcar el setup como completo.
 - [ ] **F12-T8** Navegación raíz: onboarding → cuenta → permisos → apps → principal.
 - [ ] **F12-T9** Cadenas EN/ES.
 - [ ] **F12-T10** Tests de validación de formularios y del ViewModel de setup.
