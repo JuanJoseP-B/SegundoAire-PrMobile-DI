@@ -43,4 +43,7 @@
         <item>Over 8 h</item>
     </string-array>
     <string name="catalog_section_range_selector" translatable="false">RangeSelector</string>
+    <string name="catalog_section_animated_counter" translatable="false">AnimatedCounter</string>
+    <string name="catalog_counter_add">Add 23 min</string>
+    <string name="catalog_counter_reset">Reset</string>
 </resources>

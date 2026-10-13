@@ -46,6 +46,7 @@ fun CatalogSections() {
     GlassTextFieldSection()
     ChoiceChipSection()
     RangeSelectorSection()
+    AnimatedCounterSection()
 }
 
 @Composable

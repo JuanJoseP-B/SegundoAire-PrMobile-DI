@@ -29,4 +29,6 @@
         <item>6–8 h</item>
         <item>Más de 8 h</item>
     </string-array>
+    <string name="catalog_counter_add">Sumar 23 min</string>
+    <string name="catalog_counter_reset">Reiniciar</string>
 </resources>
