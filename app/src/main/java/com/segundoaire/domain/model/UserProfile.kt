@@ -21,16 +21,24 @@ enum class RiskMoment { WAKING_UP, BEFORE_SLEEP, STUDY_OR_WORK, BORED }
 /** Rigor del GlassWall durante un bloque. */
 enum class RigorLevel { MINDFUL, STRICT }
 
+/** Cómo entró el usuario a la cuenta simulada. [GUEST] es "continuar sin cuenta". */
+enum class AuthMode { GOOGLE, APPLE, EMAIL, GUEST }
+
 /**
  * Perfil que arma el onboarding. [goals] conserva el orden en que se eligieron:
  * el primero es el objetivo principal que reaparece en el Panel y el GlassWall.
+ *
+ * [authMode] es `null` hasta que el usuario pasa por la pantalla de cuenta y
+ * [email] solo tiene valor con [AuthMode.EMAIL]. La contraseña nunca se guarda.
  */
 data class UserProfile(
     val name: String = "",
     val goals: List<Goal> = emptyList(),
     val usageRange: UsageRange? = null,
     val riskMoments: Set<RiskMoment> = emptySet(),
-    val suggestedRigor: RigorLevel = RigorLevel.MINDFUL
+    val suggestedRigor: RigorLevel = RigorLevel.MINDFUL,
+    val authMode: AuthMode? = null,
+    val email: String = ""
 ) {
     val mainGoal: Goal? get() = goals.firstOrNull()
 
