@@ -16,7 +16,7 @@ import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailab
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.main.MainScreen
-import com.segundoaire.presentation.onboarding.OnboardingScreen
+import com.segundoaire.presentation.onboarding.legacy.LegacyOnboardingScreen
 
 object Routes {
     const val ONBOARDING = "onboarding"
@@ -38,7 +38,7 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
         startDestination = if (onboardingDone) Routes.HOME else Routes.ONBOARDING
     ) {
         composable(Routes.ONBOARDING) {
-            OnboardingScreen(
+            LegacyOnboardingScreen(
                 onCompleted = {
                     navController.navigate(Routes.HOME) {
                         popUpTo(Routes.ONBOARDING) { inclusive = true }

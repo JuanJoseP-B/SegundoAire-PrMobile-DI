@@ -1,4 +1,4 @@
-package com.segundoaire.presentation.onboarding
+package com.segundoaire.presentation.onboarding.legacy
 
 import android.content.Intent
 import android.net.Uri
@@ -36,9 +36,9 @@ import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
 @Composable
-fun OnboardingScreen(
+fun LegacyOnboardingScreen(
     onCompleted: () -> Unit,
-    viewModel: OnboardingViewModel = hiltViewModel()
+    viewModel: LegacyOnboardingViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -48,7 +48,7 @@ fun OnboardingScreen(
 
     // Permiso concedido en el paso de permiso: el onboarding termina solo.
     LaunchedEffect(state.step, state.isOverlayPermissionGranted) {
-        if (state.step == OnboardingStep.PERMISSION && state.isOverlayPermissionGranted) {
+        if (state.step == LegacyOnboardingStep.PERMISSION && state.isOverlayPermissionGranted) {
             viewModel.completeOnboarding(onCompleted)
         }
     }
@@ -71,8 +71,8 @@ fun OnboardingScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 when (state.step) {
-                    OnboardingStep.WELCOME -> WelcomeStep(onContinue = viewModel::onWelcomeContinue)
-                    OnboardingStep.PERMISSION -> PermissionStep(
+                    LegacyOnboardingStep.WELCOME -> WelcomeStep(onContinue = viewModel::onWelcomeContinue)
+                    LegacyOnboardingStep.PERMISSION -> PermissionStep(
                         onGrant = {
                             context.startActivity(
                                 Intent(

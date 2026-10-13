@@ -1,4 +1,4 @@
-package com.segundoaire.presentation.onboarding
+package com.segundoaire.presentation.onboarding.legacy
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,26 +12,26 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-enum class OnboardingStep { WELCOME, PERMISSION }
+enum class LegacyOnboardingStep { WELCOME, PERMISSION }
 
-data class OnboardingUiState(
-    val step: OnboardingStep = OnboardingStep.WELCOME,
+data class LegacyOnboardingUiState(
+    val step: LegacyOnboardingStep = LegacyOnboardingStep.WELCOME,
     val isOverlayPermissionGranted: Boolean = false
 )
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(
+class LegacyOnboardingViewModel @Inject constructor(
     private val completeOnboardingUseCase: CompleteOnboardingUseCase,
     private val checkOverlayPermission: CheckOverlayPermissionUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        OnboardingUiState(isOverlayPermissionGranted = checkOverlayPermission())
+        LegacyOnboardingUiState(isOverlayPermissionGranted = checkOverlayPermission())
     )
-    val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<LegacyOnboardingUiState> = _uiState.asStateFlow()
 
     fun onWelcomeContinue() {
-        _uiState.update { it.copy(step = OnboardingStep.PERMISSION) }
+        _uiState.update { it.copy(step = LegacyOnboardingStep.PERMISSION) }
     }
 
     /** Se llama al volver de Ajustes (ON_RESUME) para releer el permiso. */
