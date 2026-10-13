@@ -40,7 +40,7 @@ Personas de 16 a 35 años que sienten que el celular les quita tiempo de estudio
 - **Panel:** saludo, dato del día, apps vigiladas con su toggle y avisos de permisos.
 - **Bloques:** duración (5/10/15/30 min), rigor (Mindful/Strict), TimerRing e iniciar/terminar.
 - **Progreso:** minutos recuperados, aperturas evitadas, racha y gráfico semanal.
-- **Perfil:** datos del usuario, cuentas conectadas y ajustes.
+- **Perfil:** nombre, objetivo, modo de cuenta; idioma (ES/EN dentro de la app); tema (sistema/claro/oscuro); tutorial de 5 tarjetas; reiniciar app (borra datos locales); modo demo.
 
 ### 4.3 Intercepción (GlassWall)
 - Entrada calmada (desenfoque o scrim y luego el contenido), círculo de respiración y mensaje personalizado.
@@ -58,7 +58,8 @@ Personas de 16 a 35 años que sienten que el celular les quita tiempo de estudio
 | Login, registro, recuperar contraseña, proveedores | Simulado: UI y validación completas, sin backend |
 | Cuentas conectadas | Simulado |
 | Mensajes de IA | Simulado: banco local de mensajes detrás de una interfaz reemplazable |
-| Sincronización en la nube, notificaciones push | Fuera de alcance |
+| Modo demo | Funcional (datos de ejemplo locales) |
+| Sincronización en la nube, notificaciones push, WorkManager, AlarmManager | Fuera de alcance |
 
 ## 6. Requisitos no funcionales
 
@@ -77,7 +78,7 @@ Clean Architecture + MVVM + UDF.
 - **Dominio:** casos de uso en Kotlin puro e interfaces de repositorio.
 - **Datos:** Room (SSOT, con esquema exportado y migraciones) y DataStore Preferences.
 - **DI:** Dagger Hilt.
-- **Motor de fondo:** `AccessibilityService`, `InterceptorEngine`, `OverlayWindowManager`, `WorkManager` y `AlarmManager`.
+- **Motor de fondo:** `AccessibilityService`, `InterceptorEngine`, `OverlayWindowManager`.
 
 ## 8. Modelo de datos (resumen)
 
