@@ -7,11 +7,11 @@ import com.segundoaire.domain.model.RiskMoment
 import com.segundoaire.domain.model.UsageRange
 import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.repository.UserPreferencesRepository
-import com.segundoaire.domain.repository.UserProfileRepository
 import com.segundoaire.domain.usecase.CalculateScreenTimeProjectionUseCase
 import com.segundoaire.domain.usecase.CompleteOnboardingUseCase
 import com.segundoaire.domain.usecase.SaveUserProfileUseCase
 import com.segundoaire.domain.usecase.SuggestRigorUseCase
+import com.segundoaire.testing.FakeUserProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class OnboardingViewModelTest {
@@ -295,23 +294,6 @@ class OnboardingViewModelTest {
         assertEquals(RigorLevel.STRICT, restored.suggestedRigor)
         assertEquals(8, restored.projection.hoursPerDay)
         assertTrue(restored.isProfileValid)
-    }
-}
-
-private class FakeUserProfileRepository : UserProfileRepository {
-    var saved: UserProfile? = null
-    var saveCount = 0
-    var failNextSave = false
-
-    override val profile: Flow<UserProfile> = MutableStateFlow(UserProfile())
-
-    override suspend fun saveProfile(profile: UserProfile) {
-        if (failNextSave) {
-            failNextSave = false
-            throw IOException("disco lleno")
-        }
-        saved = profile
-        saveCount++
     }
 }
 

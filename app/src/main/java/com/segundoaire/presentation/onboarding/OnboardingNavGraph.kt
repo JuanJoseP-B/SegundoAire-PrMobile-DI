@@ -10,17 +10,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
-import com.segundoaire.presentation.designsystem.components.stepEnterTransition
-import com.segundoaire.presentation.designsystem.components.stepExitTransition
 import com.segundoaire.presentation.designsystem.theme.SegundoAireMotion
+import com.segundoaire.presentation.navigation.flowGraph
 
 const val OnboardingGraphRoute = "onboarding"
 
 /**
  * Grafo anidado del onboarding: un destino por paso, todos con el mismo
  * [OnboardingViewModel] (vive mientras el grafo esté en la pila) y la transición
- * `Motion.step` entre ellos. El botón de volver del sistema regresa un paso.
+ * `Motion.step` entre ellos (y fundido `Motion.nav` al salir del grafo). El botón
+ * de volver del sistema regresa un paso.
  *
  * [stepOffsetPx] es el desplazamiento del token ya en píxeles y [forward] vale 1,
  * o -1 en idiomas de derecha a izquierda. [onCompleted] se llama una vez que el
@@ -33,13 +32,12 @@ fun NavGraphBuilder.onboardingGraph(
     forward: Int,
     onCompleted: () -> Unit
 ) {
-    navigation(
+    flowGraph(
         route = OnboardingGraphRoute,
         startDestination = OnboardingStep.WELCOME.route,
-        enterTransition = { stepEnterTransition(motion, stepOffsetPx, forward) },
-        exitTransition = { stepExitTransition(motion, stepOffsetPx, forward) },
-        popEnterTransition = { stepEnterTransition(motion, stepOffsetPx, -forward) },
-        popExitTransition = { stepExitTransition(motion, stepOffsetPx, -forward) }
+        motion = motion,
+        stepOffsetPx = stepOffsetPx,
+        forward = forward
     ) {
         step(OnboardingStep.WELCOME, navController) { viewModel, state, goNext, _ ->
             WelcomeScreen(

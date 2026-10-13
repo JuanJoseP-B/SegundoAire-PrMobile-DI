@@ -2,9 +2,11 @@ package com.segundoaire.data.preferences
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.RiskMoment
@@ -30,7 +32,10 @@ class UserProfileRepositoryImpl @Inject constructor(
             usageRange = enumOrNull<UsageRange>(prefs[USAGE_RANGE]),
             riskMoments = prefs[RISK_MOMENTS].orEmpty()
                 .mapNotNullTo(mutableSetOf()) { enumOrNull<RiskMoment>(it) },
-            suggestedRigor = enumOrNull<RigorLevel>(prefs[SUGGESTED_RIGOR]) ?: RigorLevel.MINDFUL
+            suggestedRigor = enumOrNull<RigorLevel>(prefs[SUGGESTED_RIGOR]) ?: RigorLevel.MINDFUL,
+            authMode = enumOrNull<AuthMode>(prefs[AUTH_MODE]),
+            email = prefs[EMAIL].orEmpty(),
+            setupCompleted = prefs[SETUP_COMPLETED] ?: false
         )
     }
 
@@ -46,7 +51,24 @@ class UserProfileRepositoryImpl @Inject constructor(
             }
             prefs[RISK_MOMENTS] = profile.riskMoments.mapTo(mutableSetOf()) { it.name }
             prefs[SUGGESTED_RIGOR] = profile.suggestedRigor.name
+            if (profile.authMode != null) {
+                prefs[AUTH_MODE] = profile.authMode.name
+            } else {
+                prefs.remove(AUTH_MODE)
+            }
+            prefs[EMAIL] = profile.email
         }
+    }
+
+    override suspend fun saveAccount(authMode: AuthMode, email: String) {
+        dataStore.edit { prefs ->
+            prefs[AUTH_MODE] = authMode.name
+            prefs[EMAIL] = email
+        }
+    }
+
+    override suspend fun completeSetup() {
+        dataStore.edit { prefs -> prefs[SETUP_COMPLETED] = true }
     }
 
     private companion object {
@@ -56,6 +78,9 @@ class UserProfileRepositoryImpl @Inject constructor(
         val USAGE_RANGE = stringPreferencesKey("profile_usage_range")
         val RISK_MOMENTS = stringSetPreferencesKey("profile_risk_moments")
         val SUGGESTED_RIGOR = stringPreferencesKey("profile_suggested_rigor")
+        val AUTH_MODE = stringPreferencesKey("profile_auth_mode")
+        val EMAIL = stringPreferencesKey("profile_email")
+        val SETUP_COMPLETED = booleanPreferencesKey("profile_setup_completed")
 
         // Un valor guardado por una versión futura o corrupto se ignora en vez de fallar
         inline fun <reified T : Enum<T>> enumOrNull(name: String?): T? =

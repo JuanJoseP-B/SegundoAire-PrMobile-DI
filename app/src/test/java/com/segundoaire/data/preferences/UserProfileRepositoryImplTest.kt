@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.RiskMoment
@@ -16,6 +17,8 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,8 +87,71 @@ class UserProfileRepositoryImplTest {
     }
 
     @Test
+    fun `guarda y lee la cuenta junto al perfil`() = scope.runTest {
+        val profile = UserProfile(name = "Ana", authMode = AuthMode.EMAIL, email = "ana@correo.com")
+
+        repository.saveProfile(profile)
+
+        assertEquals(profile, repository.profile.first())
+    }
+
+    @Test
+    fun `guardar la cuenta no toca el resto del perfil`() = scope.runTest {
+        val profile = UserProfile(
+            name = "Ana",
+            goals = listOf(Goal.SLEEP),
+            usageRange = UsageRange.FROM_2_TO_4,
+            riskMoments = setOf(RiskMoment.BORED),
+            suggestedRigor = RigorLevel.STRICT
+        )
+        repository.saveProfile(profile)
+
+        repository.saveAccount(AuthMode.GOOGLE, email = "")
+
+        assertEquals(profile.copy(authMode = AuthMode.GOOGLE), repository.profile.first())
+    }
+
+    @Test
+    fun `cambiar de cuenta reemplaza la anterior`() = scope.runTest {
+        repository.saveAccount(AuthMode.EMAIL, email = "ana@correo.com")
+
+        repository.saveAccount(AuthMode.GUEST, email = "")
+
+        assertEquals(UserProfile(authMode = AuthMode.GUEST), repository.profile.first())
+    }
+
+    @Test
+    fun `el setup empieza incompleto y se marca al completarlo`() = scope.runTest {
+        assertFalse(repository.profile.first().setupCompleted)
+
+        repository.completeSetup()
+
+        assertTrue(repository.profile.first().setupCompleted)
+    }
+
+    @Test
+    fun `guardar el perfil no reinicia el setup completado`() = scope.runTest {
+        repository.completeSetup()
+
+        repository.saveProfile(UserProfile(name = "Ana"))
+
+        assertEquals(UserProfile(name = "Ana", setupCompleted = true), repository.profile.first())
+    }
+
+    @Test
+    fun `completar el setup no toca el resto del perfil`() = scope.runTest {
+        val profile = UserProfile(name = "Ana", goals = listOf(Goal.FOCUS), authMode = AuthMode.GUEST)
+        repository.saveProfile(profile)
+
+        repository.completeSetup()
+
+        assertEquals(profile.copy(setupCompleted = true), repository.profile.first())
+    }
+
+    @Test
     fun `ignora valores que no reconoce`() = scope.runTest {
         dataStore.edit { prefs ->
+            prefs[stringPreferencesKey("profile_auth_mode")] = "FACEBOOK"
             prefs[stringPreferencesKey("profile_goals")] = "SLEEP,VOLAR"
             prefs[stringPreferencesKey("profile_usage_range")] = "OTRO"
             prefs[stringSetPreferencesKey("profile_risk_moments")] = setOf("BORED", "NUNCA")

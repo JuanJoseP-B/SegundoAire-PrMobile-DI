@@ -74,6 +74,10 @@ private const val BackdropTintAlpha = 0.35f
  * Con [totalSteps] en 0 no se muestra el progreso y sin [onBack] no hay botón
  * de volver, pero la cabecera conserva su alto para que el título no salte de
  * un paso a otro.
+ *
+ * Con [scrollContent] en `false` el área central no se desplaza y [content]
+ * recibe el alto restante (`Modifier.weight(1f)`): para pantallas con su propia
+ * lista perezosa, que no puede vivir dentro de un `verticalScroll`.
  */
 @Composable
 fun QuestionScaffold(
@@ -84,6 +88,7 @@ fun QuestionScaffold(
     step: Int = 0,
     totalSteps: Int = 0,
     onBack: (() -> Unit)? = null,
+    scrollContent: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = SegundoAireTheme.colors
@@ -126,7 +131,7 @@ fun QuestionScaffold(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                        .then(if (scrollContent) Modifier.verticalScroll(rememberScrollState()) else Modifier)
                         .padding(horizontal = spacing.space4)
                         .padding(top = spacing.space6, bottom = spacing.space6)
                 ) {
@@ -174,6 +179,7 @@ fun QuestionScaffold(
     step: Int = 0,
     totalSteps: Int = 0,
     onBack: (() -> Unit)? = null,
+    scrollContent: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     QuestionScaffold(
@@ -191,6 +197,7 @@ fun QuestionScaffold(
         step = step,
         totalSteps = totalSteps,
         onBack = onBack,
+        scrollContent = scrollContent,
         content = content
     )
 }

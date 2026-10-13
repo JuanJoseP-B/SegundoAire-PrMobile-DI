@@ -21,6 +21,12 @@ interface BlockedAppDao {
     @Query("UPDATE blocked_apps SET is_blocked = :isBlocked WHERE package_name = :packageName")
     suspend fun setBlocked(packageName: String, isBlocked: Boolean)
 
+    @Upsert
+    suspend fun upsertAll(entities: List<BlockedAppEntity>)
+
+    @Query("DELETE FROM blocked_apps WHERE package_name NOT IN (:keep)")
+    suspend fun deleteNotIn(keep: List<String>)
+
     @Query("DELETE FROM blocked_apps WHERE package_name = :packageName")
     suspend fun delete(packageName: String)
 }
