@@ -9,11 +9,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import com.segundoaire.domain.model.AuthMode
-import com.segundoaire.presentation.designsystem.components.stepEnterTransition
-import com.segundoaire.presentation.designsystem.components.stepExitTransition
 import com.segundoaire.presentation.designsystem.theme.SegundoAireMotion
+import com.segundoaire.presentation.navigation.flowGraph
+import com.segundoaire.presentation.navigation.navigateFrom
+import com.segundoaire.presentation.navigation.popFrom
 
 const val AuthGraphRoute = "auth"
 
@@ -23,7 +23,8 @@ private const val ForgotPasswordRoute = "auth/forgot-password"
 
 /**
  * Grafo anidado de la cuenta simulada: cuenta → correo → recuperar contraseña,
- * con la transición `Motion.step` del onboarding. Cada destino tiene su propio
+ * con `Motion.step` entre ellos y fundido (`Motion.nav`) al entrar o salir.
+ * Cada destino tiene su propio
  * ViewModel. [onCompleted] se llama una vez que el modo de acceso quedó guardado.
  */
 fun NavGraphBuilder.authGraph(
@@ -33,13 +34,12 @@ fun NavGraphBuilder.authGraph(
     forward: Int,
     onCompleted: () -> Unit
 ) {
-    navigation(
+    flowGraph(
         route = AuthGraphRoute,
         startDestination = AccountRoute,
-        enterTransition = { stepEnterTransition(motion, stepOffsetPx, forward) },
-        exitTransition = { stepExitTransition(motion, stepOffsetPx, forward) },
-        popEnterTransition = { stepEnterTransition(motion, stepOffsetPx, -forward) },
-        popExitTransition = { stepExitTransition(motion, stepOffsetPx, -forward) }
+        motion = motion,
+        stepOffsetPx = stepOffsetPx,
+        forward = forward
     ) {
         composable(AccountRoute) {
             val viewModel: AccountViewModel = hiltViewModel()
@@ -92,13 +92,4 @@ private fun CompletionEffect(isCompleted: Boolean, onCompleted: () -> Unit) {
     LaunchedEffect(isCompleted) {
         if (isCompleted) currentOnCompleted()
     }
-}
-
-// Solo navega el destino que está al frente: un doble toque no apila la pantalla dos veces
-private fun NavHostController.navigateFrom(current: String, target: String) {
-    if (currentDestination?.route == current) navigate(target)
-}
-
-private fun NavHostController.popFrom(current: String) {
-    if (currentDestination?.route == current) popBackStack()
 }
