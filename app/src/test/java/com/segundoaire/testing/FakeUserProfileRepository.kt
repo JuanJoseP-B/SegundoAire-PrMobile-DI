@@ -16,10 +16,14 @@ class FakeUserProfileRepository : UserProfileRepository {
     private val current = MutableStateFlow(UserProfile())
     override val profile: Flow<UserProfile> = current
 
-    override suspend fun saveProfile(profile: UserProfile) = save(profile)
+    // Como el repositorio real, saveProfile no escribe setupCompleted
+    override suspend fun saveProfile(profile: UserProfile) =
+        save(profile.copy(setupCompleted = current.value.setupCompleted))
 
     override suspend fun saveAccount(authMode: AuthMode, email: String) =
         save(current.value.copy(authMode = authMode, email = email))
+
+    override suspend fun completeSetup() = save(current.value.copy(setupCompleted = true))
 
     private fun save(profile: UserProfile) {
         if (failNextSave) {
