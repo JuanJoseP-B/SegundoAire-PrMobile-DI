@@ -81,7 +81,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F11-T2** Datos: `UserProfileRepository` sobre DataStore + tests.
 - [x] **F11-T3** `OnboardingViewModel` con estado por paso y validaciones + tests.
 - [x] **F11-T4** `QuestionScaffold` (progreso segmentado, volver, botón fijo) y transición `step`.
-- [ ] **F11-T5** Pantalla de bienvenida (3 tarjetas).
+- [x] **F11-T5** Pantalla de bienvenida (3 tarjetas).
 - [ ] **F11-T6** Pantalla de nombre.
 - [ ] **F11-T7** Pantalla de objetivos (máximo 2).
 - [ ] **F11-T8** Pantallas de uso diario y momento de mayor uso.
