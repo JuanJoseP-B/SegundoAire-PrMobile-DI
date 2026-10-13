@@ -39,6 +39,21 @@ object SegundoAireIcons {
         }
     }
 
+    // Se refleja en idiomas de derecha a izquierda
+    val ArrowBack: ImageVector by lazy {
+        icon("ArrowBack", autoMirror = true) {
+            stroked {
+                moveTo(19f, 12f)
+                lineTo(5f, 12f)
+            }
+            stroked {
+                moveTo(11f, 6f)
+                lineTo(5f, 12f)
+                lineTo(11f, 18f)
+            }
+        }
+    }
+
     val Globe: ImageVector by lazy {
         icon("Globe") {
             stroked { circle(centerX = 12f, centerY = 12f, radius = 9f) }
@@ -131,13 +146,18 @@ private const val StrokeWidth = 1.75f
 // El tint de Icon reemplaza este color; solo hace falta que sea opaco
 private val Ink = SolidColor(Color.Black)
 
-private fun icon(name: String, paths: ImageVector.Builder.() -> Unit): ImageVector =
+private fun icon(
+    name: String,
+    autoMirror: Boolean = false,
+    paths: ImageVector.Builder.() -> Unit
+): ImageVector =
     ImageVector.Builder(
         name = name,
         defaultWidth = Grid.dp,
         defaultHeight = Grid.dp,
         viewportWidth = Grid,
-        viewportHeight = Grid
+        viewportHeight = Grid,
+        autoMirror = autoMirror
     ).apply(paths).build()
 
 private fun ImageVector.Builder.stroked(pathBuilder: PathBuilder.() -> Unit) {
