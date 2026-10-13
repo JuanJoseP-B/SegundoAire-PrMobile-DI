@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,14 +34,17 @@ import androidx.compose.ui.unit.LayoutDirection
 import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glassBackdrop
+import com.segundoaire.presentation.panel.PanelRoute
 import com.segundoaire.presentation.timer.TimerScreen
 
 /**
  * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
- * [onOpenComponentCatalog] solo se pasa en debug (pulsación larga en el título del Panel).
+ * [onEditApps] abre la selección de apps desde el Panel. [onOpenComponentCatalog]
+ * solo se pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
 fun MainShell(
+    onEditApps: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenComponentCatalog: (() -> Unit)? = null
 ) {
@@ -50,11 +54,17 @@ fun MainShell(
         selectedTab = selectedTab,
         onTabSelected = { selectedTab = it },
         modifier = modifier
-    ) { tab ->
+    ) { tab, contentPadding ->
         when (tab) {
-            MainTab.PANEL -> DashboardScreen(onTitleLongClick = onOpenComponentCatalog)
-            MainTab.BLOCKS -> TimerScreen()
-            MainTab.PROGRESS, MainTab.PROFILE -> ComingSoonTab(tab)
+            MainTab.PANEL -> PanelRoute(
+                onEditApps = onEditApps,
+                contentPadding = contentPadding,
+                onTitleLongClick = onOpenComponentCatalog
+            )
+            // Bloques y las pestañas vacías aún no scrollean bajo la barra: se apartan de ella
+            MainTab.BLOCKS -> TimerScreen(modifier = Modifier.padding(contentPadding))
+            MainTab.PROGRESS, MainTab.PROFILE ->
+                ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
         }
     }
 }
@@ -62,14 +72,15 @@ fun MainShell(
 /**
  * Estructura del shell sin dependencias de datos: [content] pinta la pestaña.
  * El contenido es la fuente del desenfoque (`hazeSource`) de la barra, que va
- * encima; deja libre abajo el alto de la barra para que nada quede tapado.
+ * encima y por eso pasa por detrás de ella. [content] recibe como padding el
+ * alto de la barra para que su último elemento pueda quedar libre.
  */
 @Composable
 internal fun MainShellContent(
     selectedTab: MainTab,
     onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable (MainTab) -> Unit
+    content: @Composable (MainTab, PaddingValues) -> Unit
 ) {
     val colors = SegundoAireTheme.colors
     val motion = SegundoAireTheme.motion
@@ -77,6 +88,7 @@ internal fun MainShellContent(
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val slideOffsetPx = with(density) { motion.stepOffset.roundToPx() }
     var barHeightPx by remember { mutableIntStateOf(0) }
+    val barPadding = PaddingValues(bottom = with(density) { barHeightPx.toDp() })
 
     GlassBackdrop {
         Box(modifier.fillMaxSize()) {
@@ -94,8 +106,7 @@ internal fun MainShellContent(
                             WindowInsets.safeDrawing.only(
                                 WindowInsetsSides.Top + WindowInsetsSides.Horizontal
                             )
-                        )
-                        .padding(bottom = with(density) { barHeightPx.toDp() }),
+                        ),
                     transitionSpec = {
                         // El tab de índice mayor entra por la derecha; en RTL, por la izquierda
                         val toward = if ((targetState.ordinal > initialState.ordinal) != rtl) 1 else -1
@@ -111,7 +122,7 @@ internal fun MainShellContent(
                     },
                     label = "mainTabs"
                 ) { tab ->
-                    content(tab)
+                    content(tab, barPadding)
                 }
             }
             BottomNavBar(
@@ -129,8 +140,8 @@ internal fun MainShellContent(
 
 @Composable
 private fun MainShellSample() {
-    MainShellContent(selectedTab = MainTab.PROGRESS, onTabSelected = {}) { tab ->
-        ComingSoonTab(tab)
+    MainShellContent(selectedTab = MainTab.PROGRESS, onTabSelected = {}) { tab, contentPadding ->
+        ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
     }
 }
 
