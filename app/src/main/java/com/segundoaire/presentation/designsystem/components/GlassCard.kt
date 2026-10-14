@@ -87,7 +87,7 @@ private fun GlassCardSample() {
                     color = colors.onBackground
                 )
                 Text(
-                    text = stringResource(R.string.overlay_subtitle),
+                    text = stringResource(R.string.overlay_message_generic_anon),
                     style = SegundoAireTheme.typography.bodyMd,
                     color = colors.onBackground
                 )

@@ -47,7 +47,6 @@
     <string name="overlay_message_mental_health_anon">Does this bring you closer to looking after your mental health?</string>
     <string name="overlay_message_free_time_anon">Does this bring you closer to getting time back for what you enjoy?</string>
     <string name="overlay_message_generic_anon">Is this what you wanted to do right now?</string>
-    <string name="overlay_subtitle">Do you really want to go in here right now?</string>
     <string name="overlay_exit">Go back</string>
     <string name="overlay_continue">Continue</string>
     <string name="provider_continue_google">Continue with Google</string>

@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.segundoaire.domain.model.Goal
 import com.segundoaire.presentation.designsystem.theme.GlassBlurIntense
 import com.segundoaire.presentation.designsystem.theme.LocalWindowBlurBehind
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
@@ -61,11 +62,14 @@ class OverlayWindowManager(
     // Estado de Compose: el vidrio de la hoja cambia de relleno según haya blur o no
     private var blurEnabled by mutableStateOf(false)
     private var phase by mutableStateOf(GlassWallPhase.Waiting)
+    private var content by mutableStateOf(Content())
     private var backdropProgress = 0f
 
     val isShowing: Boolean get() = composeView != null
 
-    fun show() {
+    /** [name] y [goal] personalizan el mensaje; llegan ya leídos de memoria. */
+    fun show(name: String, goal: Goal?) {
+        content = Content(name, goal)
         if (composeView != null) {
             // Otra intercepción mientras salía: vuelve a entrar desde donde iba
             if (phase == GlassWallPhase.Leaving) {
@@ -88,8 +92,11 @@ class OverlayWindowManager(
             setContent {
                 SegundoAireTheme {
                     CompositionLocalProvider(LocalWindowBlurBehind provides blurEnabled) {
+                        val current = content
                         GlassWall(
                             phase = phase,
+                            name = current.name,
+                            goal = current.goal,
                             onExit = actions::onExit,
                             onContinue = actions::onContinue,
                             modifier = Modifier.fillMaxSize(),
@@ -204,6 +211,11 @@ class OverlayWindowManager(
         val step = (progress.coerceIn(0f, 1f) * BLUR_STEPS).roundToInt()
         return blurRadiusPx * step / BLUR_STEPS
     }
+
+    private data class Content(
+        val name: String = "",
+        val goal: Goal? = null
+    )
 
     private companion object {
         const val TAG = "OverlayWindowManager"

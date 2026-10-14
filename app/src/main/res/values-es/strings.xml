@@ -48,7 +48,6 @@
     <string name="overlay_message_mental_health_anon">¿Esto te acerca a cuidar tu salud mental?</string>
     <string name="overlay_message_free_time_anon">¿Esto te acerca a recuperar tiempo para lo que te gusta?</string>
     <string name="overlay_message_generic_anon">¿Es lo que querías hacer ahora?</string>
-    <string name="overlay_subtitle">¿Realmente quieres entrar aquí ahora?</string>
     <string name="overlay_exit">Volver</string>
     <string name="overlay_continue">Continuar</string>
     <string name="provider_continue_google">Continuar con Google</string>

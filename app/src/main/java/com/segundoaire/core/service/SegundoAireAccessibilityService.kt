@@ -6,6 +6,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.segundoaire.core.engine.InterceptorEngine
+import com.segundoaire.core.profile.UserProfileCache
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -13,6 +14,9 @@ import javax.inject.Inject
 class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowManager.Actions {
 
     @Inject lateinit var engine: InterceptorEngine
+
+    // Se inyecta al crear el servicio: para la primera intercepción el perfil ya está en memoria
+    @Inject lateinit var profileCache: UserProfileCache
 
     private var overlay: OverlayWindowManager? = null
     private var lastPackage: String? = null
@@ -46,7 +50,8 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
 
         if (intercept) {
             interceptedPackage = pkg
-            overlay?.show()
+            val profile = profileCache.profile.value
+            overlay?.show(profile.name, profile.mainGoal)
         } else {
             interceptedPackage = null
             overlay?.hide()
