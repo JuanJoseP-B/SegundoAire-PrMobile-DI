@@ -34,6 +34,12 @@ import dev.chrisbanes.haze.hazeSource
 /** Fondo que desenfocan los vidrios; `null` si la pantalla no declaró uno. */
 val LocalGlassBackdrop = staticCompositionLocalOf<HazeState?> { null }
 
+/**
+ * `true` si la ventana ya desenfoca lo que tiene detrás: el GlassWall con
+ * `FLAG_BLUR_BEHIND`, donde Haze no aplica porque el fondo es otra app.
+ */
+val LocalWindowBlurBehind = staticCompositionLocalOf { false }
+
 /** Abre un fondo de vidrio para [content]: lo marca [glassBackdrop] y lo desenfoca [glass]. */
 @Composable
 fun GlassBackdrop(content: @Composable () -> Unit) {
@@ -50,8 +56,9 @@ fun Modifier.glassBackdrop(): Modifier {
 
 /**
  * Superficie de vidrio de DESIGN_SYSTEM.md §5: sombra, relleno, blur y borde de luz.
- * Desenfoca solo en Android 12+ y dentro de un [GlassBackdrop]; en otro caso usa
- * el relleno con más opacidad. El contraste del texto nunca depende del blur.
+ * Desenfoca solo en Android 12+ y dentro de un [GlassBackdrop]. Si el blur lo pone
+ * la ventana ([LocalWindowBlurBehind]) basta el relleno; en otro caso usa el relleno
+ * con más opacidad. El contraste del texto nunca depende del blur.
  */
 @Composable
 fun Modifier.glass(
@@ -64,16 +71,17 @@ fun Modifier.glass(
     val backdrop = LocalGlassBackdrop.current
     val edge = remember(glass) { Brush.linearGradient(listOf(glass.edgeHi, glass.edgeLo)) }
 
-    val surface = if (backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        Modifier.hazeEffect(backdrop) {
-            blurEnabled = true
-            blurRadius = style.blur
-            backgroundColor = background
-            tints = listOf(HazeTint(style.fill))
-            noiseFactor = 0f
-        }
-    } else {
-        Modifier.background(style.fillNoBlur)
+    val surface = when {
+        backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            Modifier.hazeEffect(backdrop) {
+                blurEnabled = true
+                blurRadius = style.blur
+                backgroundColor = background
+                tints = listOf(HazeTint(style.fill))
+                noiseFactor = 0f
+            }
+        LocalWindowBlurBehind.current -> Modifier.background(style.fill)
+        else -> Modifier.background(style.fillNoBlur)
     }
 
     return this

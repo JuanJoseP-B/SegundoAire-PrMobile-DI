@@ -41,7 +41,11 @@ object Motion {
     const val HoldMillis = 1500
     const val ReducedFadeMillis = 150
 
+    // La hoja del GlassWall entra creciendo desde esta escala
+    const val CalmEnterScale = 0.92f
+
     private const val CalmMillis = 500
+    private const val CalmExitMillis = 250
     private val CalmEasing = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
 
     fun <T> press(): FiniteAnimationSpec<T> = spring(dampingRatio = 0.6f, stiffness = 400f)
@@ -51,6 +55,9 @@ object Motion {
     fun <T> nav(): FiniteAnimationSpec<T> = spring(dampingRatio = 1f, stiffness = 1500f)
 
     fun <T> calm(): FiniteAnimationSpec<T> = tween(durationMillis = CalmMillis, easing = CalmEasing)
+
+    /** La salida de `calm`: la misma curva en la mitad del tiempo. */
+    fun <T> calmExit(): FiniteAnimationSpec<T> = tween(durationMillis = CalmExitMillis, easing = CalmEasing)
 
     fun <T> timer(totalMillis: Int): FiniteAnimationSpec<T> =
         tween(durationMillis = totalMillis, easing = LinearEasing)
@@ -80,6 +87,7 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     val revealCharDelayMillis: Int get() = if (reduced) 0 else Motion.RevealCharDelayMillis
     val revealRise: Dp get() = if (reduced) 0.dp else Motion.RevealRise
     val stepOffset: Dp get() = if (reduced) 0.dp else Motion.StepOffset
+    val calmEnterScale: Float get() = if (reduced) 1f else Motion.CalmEnterScale
 
     fun <T> press(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.press()
 
@@ -88,6 +96,8 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     fun <T> nav(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.nav()
 
     fun <T> calm(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.calm()
+
+    fun <T> calmExit(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.calmExit()
 
     fun <T> timer(totalMillis: Int): FiniteAnimationSpec<T> = Motion.timer(totalMillis)
 

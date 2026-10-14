@@ -172,7 +172,7 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 | `Motion.press` | spring | `dampingRatio = 0.6f, stiffness = 400f`; escala presionado 0.95 | Botones, tarjetas, chips |
 | `Motion.toggle` | spring | `dampingRatio = 0.5f, stiffness = 400f` | Toggle, selección, indicador del segmentado |
 | `Motion.nav` | spring | `dampingRatio = 1f, stiffness = 1500f` | Cambio de tab, entradas de pantalla |
-| `Motion.calm` | tween | `durationMillis = 500`, `easing = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)` * | Entrada del GlassWall |
+| `Motion.calm` | tween | `durationMillis = 500`, `easing = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)` *; salida `Motion.calmExit`: misma curva, 250 ms; la hoja entra con escala de 0.92 a 1 | Entrada y salida del GlassWall |
 | `Motion.timer` | lineal | `tween(durationMillis = totalMs, easing = LinearEasing)` | Progreso del TimerRing (tiempo real) |
 | `Motion.reveal` | por carácter | 18 ms entre caracteres; cada uno con fundido + subida de 4 dp | Texto de la IA |
 | `Motion.step` | spring + desplazamiento | desplazamiento 24 dp + fundido; `dampingRatio = 1f, stiffness = 400f` * | Cambio entre preguntas del onboarding |
