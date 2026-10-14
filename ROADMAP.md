@@ -126,9 +126,9 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 ## Fase 15 · Progreso
 
-- [ ] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
-- [ ] **F15-T2** Registrar cada intercepción desde el overlay
-- [ ] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
+- [x] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
+- [x] **F15-T2** Registrar cada intercepción desde el overlay
+- [x] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
 - [ ] **F15-T4** Pantalla Progreso: dato de impacto con AnimatedCounter, gráfico semanal en Canvas, racha
 - [ ] **F15-T5** Modo demo: generador de 7 días de datos de ejemplo (activable desde Ajustes)
 - [ ] **F15-T6** Tests de los cálculos + cadenas EN/ES
