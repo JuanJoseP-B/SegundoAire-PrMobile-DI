@@ -38,6 +38,11 @@ android {
     }
 }
 
+ksp {
+    // Esquemas de Room versionados en git: base de las migraciones y de sus tests
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)

@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.segundoaire.data.local.AppDatabase
+import com.segundoaire.data.local.MIGRATION_1_2
 import com.segundoaire.data.local.dao.BlockedAppDao
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,7 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
+            .addMigrations(MIGRATION_1_2)
             .addCallback(SeedCallback)
             .build()
 
