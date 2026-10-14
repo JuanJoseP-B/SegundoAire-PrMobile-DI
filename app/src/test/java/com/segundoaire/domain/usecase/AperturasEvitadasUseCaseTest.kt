@@ -59,6 +59,22 @@ class AperturasEvitadasUseCaseTest {
     }
 
     @Test
+    fun `al empezar otra semana lo del primer dia sale de la ventana`() = runTest {
+        val repository = FakeInterceptionEventRepository(
+            listOf(
+                event(1, "2026-10-07T10:00:00Z", InterceptionResult.VOLVIO),
+                event(2, "2026-10-13T08:00:00Z", InterceptionResult.VOLVIO)
+            )
+        )
+        val useCase = AperturasEvitadasUseCase(repository, clock)
+        assertEquals(2, useCase().first())
+
+        clock.instant = Instant.parse("2026-10-14T09:00:00Z")
+
+        assertEquals(1, useCase().first())
+    }
+
+    @Test
     fun `una intercepcion que se resuelve como volvio pasa a contar`() = runTest {
         val repository = FakeInterceptionEventRepository()
         val avoided = AperturasEvitadasUseCase(repository, clock)()

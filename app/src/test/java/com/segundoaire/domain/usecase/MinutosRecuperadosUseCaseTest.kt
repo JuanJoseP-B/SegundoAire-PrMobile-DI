@@ -70,6 +70,19 @@ class MinutosRecuperadosUseCaseTest {
     }
 
     @Test
+    fun `al empezar otra semana lo del primer dia sale de la ventana`() = runTest {
+        val useCase = useCase(
+            session("2026-10-07T10:00:00Z", 30),
+            session("2026-10-13T08:00:00Z", 15)
+        )
+        assertEquals(45, useCase().first())
+
+        clock.instant = Instant.parse("2026-10-14T09:00:00Z")
+
+        assertEquals(15, useCase().first())
+    }
+
+    @Test
     fun `se actualiza al completar otro bloque`() = runTest {
         val repository = FakeBlockSessionRepository(listOf(session("2026-10-12T10:00:00Z", 10)))
         val minutes = MinutosRecuperadosUseCase(repository, clock)()

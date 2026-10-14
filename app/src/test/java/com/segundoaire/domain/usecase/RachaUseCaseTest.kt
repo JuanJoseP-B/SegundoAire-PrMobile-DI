@@ -95,6 +95,40 @@ class RachaUseCaseTest {
     }
 
     @Test
+    fun `la racha sigue al cruzar de una semana a otra`() = runTest {
+        // Del sábado 3 al martes 13: once días seguidos, pasando por dos lunes
+        val days = (3..13).map { session("2026-10-%02dT08:00:00Z".format(it)) }
+
+        assertEquals(11, streak(*days.toTypedArray()))
+    }
+
+    @Test
+    fun `el lunes sin bloque todavia mantiene la racha del domingo`() = runTest {
+        val repository = FakeBlockSessionRepository(
+            listOf(
+                session("2026-10-16T20:00:00Z"),
+                session("2026-10-17T20:00:00Z"),
+                session("2026-10-18T20:00:00Z")
+            )
+        )
+        val streak = RachaUseCase(repository, clock)()
+        clock.instant = Instant.parse("2026-10-18T23:00:00Z")
+        assertEquals(3, streak.first())
+
+        // Pasa la medianoche del domingo al lunes y aún no hay bloque
+        clock.instant = Instant.parse("2026-10-19T08:00:00Z")
+        assertEquals(3, streak.first())
+
+        repository.record(session("2026-10-19T09:00:00Z"))
+        clock.instant = Instant.parse("2026-10-19T10:00:00Z")
+        assertEquals(4, streak.first())
+
+        // Un lunes entero sin bloque la habría roto
+        clock.instant = Instant.parse("2026-10-21T10:00:00Z")
+        assertEquals(0, streak.first())
+    }
+
+    @Test
     fun `el dia de cada bloque se toma en la zona del reloj`() = runTest {
         // 18:00 UTC del 13 son las 12:00 del 13 en Ciudad de México; 03:00 UTC del 13, las 21:00 del 12
         val mexico = Clock.fixed(Instant.parse("2026-10-13T18:00:00Z"), ZoneId.of("America/Mexico_City"))
