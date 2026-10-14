@@ -1,6 +1,8 @@
 package com.segundoaire.presentation.designsystem.components
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,11 +38,17 @@ private val TimerRingStroke = 10.dp
 // El halo de la punta mide tres veces el grosor del anillo
 private const val GlowHaloScale = 3f
 
+// Con el bloque completado el halo rodea todo el anillo y late entre este alfa y 1
+private const val CompletedGlowMinAlpha = 0.35f
+
 /**
  * Anillo del bloque de enfoque. [progress] va de 0f a 1f. Mientras [running],
  * el anillo avanza de forma continua y lineal hasta completarse en
  * [remainingMillis] (`Motion.timer`), y cada cambio de [progress] lo vuelve a
  * sincronizar con el reloj real. Reducir movimiento no lo detiene: es tiempo real.
+ *
+ * Con [completed] el anillo entero se rodea de un halo `glow` que late al ritmo de
+ * `Motion.breath`; con reducir movimiento el halo se queda fijo.
  */
 @Composable
 fun TimerRing(
@@ -50,6 +58,7 @@ fun TimerRing(
     label: String? = null,
     running: Boolean = false,
     remainingMillis: Int = 0,
+    completed: Boolean = false,
     size: Dp = TimerRingSize,
     strokeWidth: Dp = TimerRingStroke
 ) {
@@ -57,6 +66,16 @@ fun TimerRing(
     val motion = SegundoAireTheme.motion
     val target = progress.coerceIn(0f, 1f)
     val animated = remember { Animatable(target) }
+    val glowPulse = if (completed && !motion.reduced) {
+        rememberInfiniteTransition(label = "timerGlow").animateFloat(
+            initialValue = CompletedGlowMinAlpha,
+            targetValue = 1f,
+            animationSpec = motion.breath(),
+            label = "timerGlowAlpha"
+        )
+    } else {
+        null
+    }
 
     LaunchedEffect(target, running, remainingMillis) {
         animated.snapTo(target)
@@ -78,6 +97,22 @@ fun TimerRing(
                 val arcSize = Size(diameter, diameter)
                 val sweep = 360f * animated.value
 
+                if (completed) {
+                    // El halo ocupa el mismo margen que el de la punta, a cada lado del trazo
+                    val ringRadius = diameter / 2
+                    val outerRadius = ringRadius + inset
+                    drawCircle(
+                        brush = Brush.radialGradient(
+                            (ringRadius - inset) / outerRadius to colors.glow.copy(alpha = 0f),
+                            ringRadius / outerRadius to colors.glow,
+                            1f to colors.glow.copy(alpha = 0f),
+                            center = center,
+                            radius = outerRadius
+                        ),
+                        radius = outerRadius,
+                        alpha = glowPulse?.value ?: 1f
+                    )
+                }
                 drawArc(
                     color = colors.outlineVariant,
                     startAngle = 0f,
@@ -153,6 +188,12 @@ private fun TimerRingSample() {
             progress = 0f,
             timeText = stringResource(R.string.timer_ring_preview_time),
             label = stringResource(R.string.timer_state_ready)
+        )
+        TimerRing(
+            progress = 1f,
+            timeText = stringResource(R.string.timer_ring_preview_time),
+            label = stringResource(R.string.timer_state_completed),
+            completed = true
         )
     }
 }
