@@ -19,11 +19,8 @@
     <string name="timer_duration_title">Duración</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Nivel de rigor</string>
-    <string name="timer_rigor_mindful">Consciente</string>
     <string name="timer_rigor_mindful_desc">10 s de fricción antes de continuar</string>
-    <string name="timer_rigor_strict">Estricto</string>
     <string name="timer_rigor_strict_desc">Inquebrantable hasta que termine el bloque</string>
-    <string name="timer_watched_apps">%1$d apps vigiladas</string>
     <string name="timer_start">Iniciar bloque</string>
     <string name="timer_stop">Terminar bloque</string>
     <string name="timer_hold_to_end">Mantén para terminar</string>
