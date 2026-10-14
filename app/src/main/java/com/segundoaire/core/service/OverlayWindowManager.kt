@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.segundoaire.domain.model.GlassWallState
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.presentation.designsystem.theme.GlassBlurIntense
 import com.segundoaire.presentation.designsystem.theme.LocalWindowBlurBehind
@@ -67,9 +68,12 @@ class OverlayWindowManager(
 
     val isShowing: Boolean get() = composeView != null
 
-    /** [name] y [goal] personalizan el mensaje; llegan ya leídos de memoria. */
-    fun show(name: String, goal: Goal?) {
-        content = Content(name, goal)
+    /**
+     * [state] decide los botones; [name] y [goal] personalizan el mensaje. Todo llega
+     * ya leído de memoria.
+     */
+    fun show(state: GlassWallState, name: String, goal: Goal?) {
+        content = Content(state, name, goal)
         if (composeView != null) {
             // Otra intercepción mientras salía: vuelve a entrar desde donde iba
             if (phase == GlassWallPhase.Leaving) {
@@ -95,6 +99,7 @@ class OverlayWindowManager(
                         val current = content
                         GlassWall(
                             phase = phase,
+                            state = current.state,
                             name = current.name,
                             goal = current.goal,
                             onExit = actions::onExit,
@@ -213,6 +218,7 @@ class OverlayWindowManager(
     }
 
     private data class Content(
+        val state: GlassWallState = GlassWallState.NoBlock,
         val name: String = "",
         val goal: Goal? = null
     )

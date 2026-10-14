@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.segundoaire.core.engine.InterceptorEngine
 import com.segundoaire.core.profile.UserProfileCache
+import com.segundoaire.domain.model.GlassWallState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -51,7 +52,7 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
         if (intercept) {
             interceptedPackage = pkg
             val profile = profileCache.profile.value
-            overlay?.show(profile.name, profile.mainGoal)
+            overlay?.show(engine.glassWallState(), profile.name, profile.mainGoal)
         } else {
             interceptedPackage = null
             overlay?.hide()
@@ -66,6 +67,8 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
     }
 
     override fun onContinue() {
+        // Strict no ofrece "Continuar"; el motor tiene la última palabra, no la UI
+        if (engine.glassWallState() is GlassWallState.Strict) return
         interceptedPackage?.let(engine::pause)
         overlay?.hide()
     }
