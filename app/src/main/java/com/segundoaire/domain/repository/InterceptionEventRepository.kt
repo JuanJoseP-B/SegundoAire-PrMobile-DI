@@ -10,6 +10,9 @@ interface InterceptionEventRepository {
 
     suspend fun setResult(id: Long, result: InterceptionResult)
 
-    /** Intercepciones desde [fromMillis] (incluido), de la más antigua a la más reciente. */
+    /**
+     * Intercepciones desde [fromMillis] (incluido), de la más antigua a la más reciente.
+     * Con el modo demo activo son las de ejemplo; guardar sigue yendo al historial real.
+     */
     fun observeSince(fromMillis: Long): Flow<List<InterceptionEvent>>
 }
