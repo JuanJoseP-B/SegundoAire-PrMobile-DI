@@ -61,8 +61,10 @@ fun PrimaryButton(
         targetState = PrimaryButtonState(tone, enabled, pressed, hovered),
         label = "PrimaryButton"
     )
-    // El cambio de tono es el morph; el resto es la respuesta al gesto
-    val colorSpec: Transition.Segment<PrimaryButtonState>.() -> FiniteAnimationSpec<Color> = {
+    // El cambio de tono es el morph; el resto es la respuesta al gesto.
+    // Debe ser @Composable: animateColor es inline y espera ese tipo, sin la
+    // anotación compila pero lanza ClassCastException en runtime.
+    val colorSpec: @Composable Transition.Segment<PrimaryButtonState>.() -> FiniteAnimationSpec<Color> = {
         if (initialState.tone != targetState.tone) motion.toggle() else motion.press()
     }
     val container by transition.animateColor(colorSpec, label = "container") { colors.container(it) }
