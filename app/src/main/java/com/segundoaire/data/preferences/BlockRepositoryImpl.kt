@@ -27,6 +27,9 @@ import javax.inject.Singleton
  * Bloque activo en memoria, respaldado en DataStore. Este repositorio es el único
  * que escribe esas claves, así que DataStore solo se lee una vez, al crearlo, para
  * recuperar un bloque que siguiera en curso cuando la app se cerró.
+ *
+ * Un bloque que llega a su fin deja guardada su duración hasta que el usuario la
+ * ve: así el estado de completado aparece aunque el bloque venza con la app cerrada.
  */
 @Singleton
 class BlockRepositoryImpl @Inject constructor(
@@ -36,12 +39,13 @@ class BlockRepositoryImpl @Inject constructor(
 ) : BlockRepository {
 
     private val activeBlock = MutableStateFlow<ActiveBlock?>(null)
+    private val completedMinutes = MutableStateFlow<Int?>(null)
 
     // Ordena la restauración inicial con start/stop: gane quien gane, memoria y disco coinciden
     private val mutex = Mutex()
 
     init {
-        scope.launch { mutex.withLock { activeBlock.value = restore() } }
+        scope.launch { mutex.withLock { restore() } }
     }
 
     override fun observeActiveBlock(): StateFlow<ActiveBlock?> = activeBlock.asStateFlow()
@@ -53,39 +57,66 @@ class BlockRepositoryImpl @Inject constructor(
             prefs[ENDS_AT] = block.endsAt
             prefs[RIGOR] = block.rigor.name
             prefs[DURATION_MINUTES] = block.durationMinutes
+            // Un bloque nuevo deja atrás el completado que no se llegó a ver
+            prefs.remove(COMPLETED_MINUTES)
         }
         activeBlock.value = block
+        completedMinutes.value = null
     }
 
-    override suspend fun stop() = clear()
-
-    // Hoy termina igual que stop(); la Fase 15 registra aquí la sesión completada
-    override suspend fun complete() = clear()
-
-    private suspend fun clear() = mutex.withLock {
+    override suspend fun stop() = mutex.withLock {
         dataStore.edit { it.removeBlock() }
         activeBlock.value = null
     }
 
-    /** El bloque guardado, o `null` si no hay, está corrupto o venció con la app cerrada. */
-    private suspend fun restore(): ActiveBlock? {
+    // La Fase 15 registra aquí la sesión completada
+    override suspend fun complete() = mutex.withLock {
+        val block = activeBlock.value ?: return@withLock
+        markCompleted(block)
+        activeBlock.value = null
+        completedMinutes.value = block.durationMinutes
+    }
+
+    override fun observeCompletedMinutes(): StateFlow<Int?> = completedMinutes.asStateFlow()
+
+    override suspend fun acknowledgeCompleted() = mutex.withLock {
+        dataStore.edit { it.remove(COMPLETED_MINUTES) }
+        completedMinutes.value = null
+    }
+
+    private suspend fun markCompleted(block: ActiveBlock) {
+        dataStore.edit { prefs ->
+            prefs.removeBlock()
+            prefs[COMPLETED_MINUTES] = block.durationMinutes
+        }
+    }
+
+    /**
+     * Carga lo guardado: el bloque si sigue en curso, o su duración como completado
+     * si venció con la app cerrada. Lo corrupto se descarta.
+     */
+    private suspend fun restore() {
         val prefs = dataStore.data.first()
         val startedAt = prefs[STARTED_AT]
         val endsAt = prefs[ENDS_AT]
         val rigor = RigorLevel.entries.firstOrNull { it.name == prefs[RIGOR] }
         val durationMinutes = prefs[DURATION_MINUTES]
-        if (startedAt == null && endsAt == null) return null
+        completedMinutes.value = prefs[COMPLETED_MINUTES]
+        if (startedAt == null && endsAt == null) return
 
         val block = if (startedAt != null && endsAt != null && rigor != null && durationMinutes != null) {
             ActiveBlock(startedAt, endsAt, rigor, durationMinutes)
         } else {
             null
         }
-        if (block == null || !block.isActiveAt(clock.millis())) {
-            dataStore.edit { it.removeBlock() }
-            return null
+        when {
+            block == null -> dataStore.edit { it.removeBlock() }
+            block.isActiveAt(clock.millis()) -> activeBlock.value = block
+            else -> {
+                markCompleted(block)
+                completedMinutes.value = block.durationMinutes
+            }
         }
-        return block
     }
 
     private fun MutablePreferences.removeBlock() {
@@ -100,5 +131,6 @@ class BlockRepositoryImpl @Inject constructor(
         val ENDS_AT = longPreferencesKey("block_ends_at")
         val RIGOR = stringPreferencesKey("block_rigor")
         val DURATION_MINUTES = intPreferencesKey("block_duration_minutes")
+        val COMPLETED_MINUTES = intPreferencesKey("block_completed_minutes")
     }
 }

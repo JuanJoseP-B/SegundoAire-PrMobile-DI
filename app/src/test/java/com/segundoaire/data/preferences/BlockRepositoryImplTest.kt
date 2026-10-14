@@ -46,6 +46,9 @@ class BlockRepositoryImplTest {
     private suspend fun BlockRepositoryImpl.awaitBlock(): ActiveBlock =
         observeActiveBlock().first { it != null }!!
 
+    private suspend fun BlockRepositoryImpl.awaitCompletedMinutes(): Int =
+        observeCompletedMinutes().first { it != null }!!
+
     private suspend fun awaitNothingStored() {
         dataStore.data.first { prefs -> prefs.asMap().keys.none { it.name.startsWith("block_") } }
     }
@@ -103,25 +106,72 @@ class BlockRepositoryImplTest {
     }
 
     @Test
-    fun `completar el bloque lo deja sin bloque activo`() = scope.runTest {
+    fun `completar el bloque lo deja sin bloque activo y como completado por ver`() = scope.runTest {
         val repository = repository()
         repository.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
 
         repository.complete()
 
         assertNull(repository.observeActiveBlock().value)
-        awaitNothingStored()
+        assertEquals(5, repository.observeCompletedMinutes().value)
     }
 
     @Test
-    fun `un bloque que vencio con la app cerrada no se restaura`() = scope.runTest {
+    fun `terminar antes de tiempo no cuenta como completado`() = scope.runTest {
+        val repository = repository()
+        repository.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+
+        repository.stop()
+
+        assertNull(repository.observeCompletedMinutes().value)
+    }
+
+    @Test
+    fun `el completado por ver sobrevive al cierre de la app`() = scope.runTest {
+        val repository = repository()
+        repository.start(durationMinutes = 30, rigor = RigorLevel.MINDFUL)
+        repository.complete()
+
+        val reopened = repository()
+
+        assertEquals(30, reopened.awaitCompletedMinutes())
+        assertNull(reopened.observeActiveBlock().value)
+    }
+
+    @Test
+    fun `un bloque que vencio con la app cerrada vuelve como completado`() = scope.runTest {
         repository().start(durationMinutes = 5, rigor = RigorLevel.STRICT)
         clock.instant += Duration.ofMinutes(5)
 
         val reopened = repository()
 
-        awaitNothingStored()
+        assertEquals(5, reopened.awaitCompletedMinutes())
         assertNull(reopened.observeActiveBlock().value)
+    }
+
+    @Test
+    fun `al verlo el completado se borra tambien del disco`() = scope.runTest {
+        val repository = repository()
+        repository.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+        repository.complete()
+
+        repository.acknowledgeCompleted()
+
+        assertNull(repository.observeCompletedMinutes().value)
+        awaitNothingStored()
+    }
+
+    @Test
+    fun `iniciar otro bloque descarta el completado que no se vio`() = scope.runTest {
+        val repository = repository()
+        repository.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+        repository.complete()
+
+        repository.start(durationMinutes = 10, rigor = RigorLevel.MINDFUL)
+
+        assertNull(repository.observeCompletedMinutes().value)
+        repository.stop()
+        awaitNothingStored()
     }
 
     @Test

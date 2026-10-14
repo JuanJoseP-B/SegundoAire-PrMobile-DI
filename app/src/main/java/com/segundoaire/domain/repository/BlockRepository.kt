@@ -17,6 +17,16 @@ interface BlockRepository {
     /** El usuario termina el bloque antes de tiempo. */
     suspend fun stop()
 
-    /** El bloque llegó a su fin. */
+    /** El bloque llegó a su fin: deja de estar activo y queda como completado por ver. */
     suspend fun complete()
+
+    /**
+     * Minutos del último bloque que llegó a su fin y el usuario todavía no ha visto,
+     * o `null`. Sobrevive al cierre de la app: un bloque que vence con la app cerrada
+     * aparece aquí al volver a abrirla.
+     */
+    fun observeCompletedMinutes(): StateFlow<Int?>
+
+    /** El usuario ya vio el bloque completado. */
+    suspend fun acknowledgeCompleted()
 }
