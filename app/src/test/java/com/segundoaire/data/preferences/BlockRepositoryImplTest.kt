@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.segundoaire.domain.model.ActiveBlock
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.UserProfile
+import com.segundoaire.testing.FakeBlockSessionRepository
 import com.segundoaire.testing.MutableClock
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
@@ -30,6 +31,7 @@ class BlockRepositoryImplTest {
 
     private val scope = TestScope(UnconfinedTestDispatcher())
     private val clock = MutableClock()
+    private val sessions = FakeBlockSessionRepository()
     private lateinit var dataStore: DataStore<Preferences>
 
     @Before
@@ -41,7 +43,7 @@ class BlockRepositoryImplTest {
     }
 
     // Cada instancia equivale a un arranque de la app sobre los mismos datos
-    private fun repository() = BlockRepositoryImpl(dataStore, clock, scope.backgroundScope)
+    private fun repository() = BlockRepositoryImpl(dataStore, clock, sessions, scope.backgroundScope)
 
     private suspend fun BlockRepositoryImpl.awaitBlock(): ActiveBlock =
         observeActiveBlock().first { it != null }!!
