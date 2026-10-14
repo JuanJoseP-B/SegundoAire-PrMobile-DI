@@ -16,6 +16,10 @@
     <string name="timer_title">Bloques de enfoque</string>
     <string name="timer_state_focused">ENFOCADO</string>
     <string name="timer_state_ready">LISTO</string>
+    <string name="timer_state_completed">COMPLETADO</string>
+    <string name="timer_completed_title">Bloque completado</string>
+    <string name="timer_completed_caption">para ti</string>
+    <string name="timer_completed_done">Listo</string>
     <string name="timer_duration_title">Duración</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Nivel de rigor</string>

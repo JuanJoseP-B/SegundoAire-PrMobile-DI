@@ -16,6 +16,10 @@
     <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
+    <string name="timer_state_completed">COMPLETE</string>
+    <string name="timer_completed_title">Block complete</string>
+    <string name="timer_completed_caption">for you</string>
+    <string name="timer_completed_done">Done</string>
     <string name="timer_duration_title">Duration</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Strictness</string>
