@@ -118,9 +118,9 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F14-T1** TimerScreen rediseñado con los componentes nuevos
 - [x] **F14-T2** Timer basado en reloj de pared (sobrevive a la rotación y al fondo)
 - [x] **F14-T3** Bloque activo conectado al InterceptorEngine
-- [ ] **F14-T4** Entrada calm del GlassWall: FLAG_BLUR_BEHIND en Android 12+, scrim en 10-11, luego el contenido
-- [ ] **F14-T5** BreathingCircle y mensaje personalizado con nombre y objetivo
-- [ ] **F14-T6** Rigor: Mindful habilita "Continuar" tras 10 s visibles; Strict sin "Continuar" durante el bloque
+- [x] **F14-T4** Entrada calm del GlassWall: FLAG_BLUR_BEHIND en Android 12+, scrim en 10-11, luego el contenido
+- [x] **F14-T5** BreathingCircle y mensaje personalizado con nombre y objetivo
+- [x] **F14-T6** Rigor: Mindful habilita "Continuar" tras 10 s visibles; Strict sin "Continuar" durante el bloque
 - [ ] **F14-T7** Estado de bloque completado
 - [ ] **F14-T8** Tests del timer y del motor de rigor + cadenas EN/ES
 
