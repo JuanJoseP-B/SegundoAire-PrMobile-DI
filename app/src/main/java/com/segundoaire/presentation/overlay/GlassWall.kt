@@ -34,7 +34,8 @@ fun GlassWall(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.72f))
+            // Velo bajo el blur de la ventana; en Android 10–11 o sin blur es todo el fondo
+            .background(SegundoAireTheme.colors.scrim)
             .safeDrawingPadding()
             .padding(24.dp),
         contentAlignment = Alignment.Center

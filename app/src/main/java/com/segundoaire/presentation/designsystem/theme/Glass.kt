@@ -42,6 +42,9 @@ data class SegundoAireGlass(
 
 private const val NoBlurOpacityBoost = 0.20f
 
+/** blur-intense: el de `Level3` y el `blurBehindRadius` de la ventana del GlassWall. */
+val GlassBlurIntense: Dp = 32.dp
+
 private fun glassStyle(fill: Color, blur: Dp, vararg shadows: GlassShadow) = GlassStyle(
     fill = fill,
     fillNoBlur = fill.copy(alpha = fill.alpha + NoBlurOpacityBoost),
@@ -70,7 +73,7 @@ val LightSegundoAireGlass = SegundoAireGlass(
     ),
     level3 = glassStyle(
         LightSegundoAireColors.glass3,
-        32.dp,
+        GlassBlurIntense,
         shadow(4, 12, LightShadow, 0.08f),
         shadow(16, 48, LightShadow, 0.14f)
     ),
@@ -92,7 +95,7 @@ val DarkSegundoAireGlass = SegundoAireGlass(
     ),
     level3 = glassStyle(
         DarkSegundoAireColors.glass3,
-        32.dp,
+        GlassBlurIntense,
         shadow(4, 12, DarkShadow, 0.28f),
         shadow(16, 48, DarkShadow, 0.40f)
     ),
