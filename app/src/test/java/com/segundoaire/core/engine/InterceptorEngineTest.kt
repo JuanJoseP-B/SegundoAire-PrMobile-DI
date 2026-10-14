@@ -1,6 +1,7 @@
 package com.segundoaire.core.engine
 
 import com.segundoaire.domain.model.BlockedApp
+import com.segundoaire.domain.model.GlassWallState
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import com.segundoaire.testing.FakeBlockRepository
@@ -9,6 +10,7 @@ import com.segundoaire.testing.MutableClock
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -129,6 +131,66 @@ class InterceptorEngineTest {
         apps.setBlocked(NEWS, isBlocked = true)
 
         assertTrue(engine.shouldIntercept(NEWS))
+    }
+
+    // --- Rigor: la variante que recibe el overlay ---
+
+    @Test
+    fun `sin bloque el overlay recibe la variante sin bloque`() = runTest(dispatcher) {
+        assertEquals(GlassWallState.NoBlock, engine().glassWallState())
+    }
+
+    @Test
+    fun `con un bloque Mindful el overlay recibe Mindful`() = runTest(dispatcher) {
+        val engine = engine()
+
+        blocks.start(durationMinutes = 15, rigor = RigorLevel.MINDFUL)
+
+        assertEquals(GlassWallState.Mindful, engine.glassWallState())
+    }
+
+    @Test
+    fun `con un bloque Strict el overlay recibe Strict y la hora de fin`() = runTest(dispatcher) {
+        val engine = engine()
+        val endsAt = clock.millis() + Duration.ofMinutes(30).toMillis()
+
+        blocks.start(durationMinutes = 30, rigor = RigorLevel.STRICT)
+        clock.instant += Duration.ofMinutes(10)
+
+        assertEquals(GlassWallState.Strict(endsAt), engine.glassWallState())
+    }
+
+    @Test
+    fun `al terminar el bloque antes de tiempo el overlay vuelve a sin bloque`() = runTest(dispatcher) {
+        val engine = engine()
+        blocks.start(durationMinutes = 15, rigor = RigorLevel.STRICT)
+
+        blocks.stop()
+
+        assertEquals(GlassWallState.NoBlock, engine.glassWallState())
+    }
+
+    @Test
+    fun `un bloque Strict vencido que nadie retiro ya no quita Continuar`() = runTest(dispatcher) {
+        val engine = engine()
+        blocks.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+        clock.instant += Duration.ofMinutes(5).minusMillis(1)
+        assertTrue(engine.glassWallState() is GlassWallState.Strict)
+
+        clock.instant += Duration.ofMillis(1)
+
+        assertEquals(GlassWallState.NoBlock, engine.glassWallState())
+    }
+
+    @Test
+    fun `un bloque nuevo cambia la variante sin reiniciar el motor`() = runTest(dispatcher) {
+        val engine = engine()
+        blocks.start(durationMinutes = 5, rigor = RigorLevel.MINDFUL)
+        assertEquals(GlassWallState.Mindful, engine.glassWallState())
+
+        blocks.start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+
+        assertTrue(engine.glassWallState() is GlassWallState.Strict)
     }
 
     private companion object {
