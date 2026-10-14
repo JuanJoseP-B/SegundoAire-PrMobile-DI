@@ -2,6 +2,7 @@ package com.segundoaire.core.engine
 
 import android.os.SystemClock
 import com.segundoaire.domain.model.ActiveBlock
+import com.segundoaire.domain.model.GlassWallState
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -80,6 +81,9 @@ class InterceptorEngine internal constructor(
         pausedUntil.remove(packageName)
         return true
     }
+
+    /** Variante del GlassWall para este instante. Como [shouldIntercept], solo lee memoria. */
+    fun glassWallState(): GlassWallState = GlassWallState.of(activeBlock.value, clock.millis())
 
     /** Cooldown tras pulsar "Continuar": evita el bucle de intercepción durante cooldownMinutes. */
     fun pause(packageName: String) {
