@@ -68,7 +68,8 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
     override fun onInterrupt() = Unit
 
     override fun onUnbind(intent: Intent?): Boolean {
-        overlay?.hide()
+        // El servicio se va: no hay tiempo para la animación de salida
+        overlay?.remove()
         overlay = null
         lastPackage = null
         interceptedPackage = null
