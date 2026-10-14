@@ -215,6 +215,31 @@
     <string name="panel_empty_title">No watched apps yet</string>
     <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
     <string name="panel_empty_action">Choose apps</string>
+    <string name="progress_title">Progress</string>
+    <string name="progress_demo_chip">Sample data</string>
+    <string name="progress_impact_eyebrow">This week</string>
+    <plurals name="progress_impact_minutes">
+        <item quantity="one">minute recovered</item>
+        <item quantity="other">minutes recovered</item>
+    </plurals>
+    <string name="progress_avoided_eyebrow">Openings avoided</string>
+    <plurals name="progress_avoided_label">
+        <item quantity="one">time you went back</item>
+        <item quantity="other">times you went back</item>
+    </plurals>
+    <string name="progress_streak_eyebrow">Streak</string>
+    <plurals name="progress_streak_label">
+        <item quantity="one">day in a row</item>
+        <item quantity="other">days in a row</item>
+    </plurals>
+    <string name="progress_week_title">Your week</string>
+    <string name="progress_week_caption">Minutes recovered each day</string>
+    <plurals name="progress_week_day">
+        <item quantity="one">%1$s: %2$d minute</item>
+        <item quantity="other">%1$s: %2$d minutes</item>
+    </plurals>
+    <string name="progress_empty_title">Your progress starts here</string>
+    <string name="progress_empty_message">Finish a block or go back from the GlassWall, and you\'ll see it here.</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>

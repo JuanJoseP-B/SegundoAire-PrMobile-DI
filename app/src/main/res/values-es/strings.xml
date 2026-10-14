@@ -214,6 +214,35 @@
     <string name="panel_empty_title">Aún no vigilas ninguna app</string>
     <string name="panel_empty_message">Elige las apps ante las que quieres un segundo de aire.</string>
     <string name="panel_empty_action">Elegir apps</string>
+    <string name="progress_title">Progreso</string>
+    <string name="progress_demo_chip">Datos de ejemplo</string>
+    <string name="progress_impact_eyebrow">Esta semana</string>
+    <plurals name="progress_impact_minutes">
+        <item quantity="one">minuto recuperado</item>
+        <item quantity="many">minutos recuperados</item>
+        <item quantity="other">minutos recuperados</item>
+    </plurals>
+    <string name="progress_avoided_eyebrow">Aperturas evitadas</string>
+    <plurals name="progress_avoided_label">
+        <item quantity="one">vez que volviste</item>
+        <item quantity="many">veces que volviste</item>
+        <item quantity="other">veces que volviste</item>
+    </plurals>
+    <string name="progress_streak_eyebrow">Racha</string>
+    <plurals name="progress_streak_label">
+        <item quantity="one">día seguido</item>
+        <item quantity="many">días seguidos</item>
+        <item quantity="other">días seguidos</item>
+    </plurals>
+    <string name="progress_week_title">Tu semana</string>
+    <string name="progress_week_caption">Minutos recuperados por día</string>
+    <plurals name="progress_week_day">
+        <item quantity="one">%1$s: %2$d minuto</item>
+        <item quantity="many">%1$s: %2$d minutos</item>
+        <item quantity="other">%1$s: %2$d minutos</item>
+    </plurals>
+    <string name="progress_empty_title">Tu progreso empieza aquí</string>
+    <string name="progress_empty_message">Completa un bloque o vuelve desde el GlassWall y lo verás aquí.</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>
