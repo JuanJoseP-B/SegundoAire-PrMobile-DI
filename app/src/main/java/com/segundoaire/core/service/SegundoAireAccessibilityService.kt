@@ -2,6 +2,7 @@ package com.segundoaire.core.service
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -22,9 +23,11 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
     private var overlay: OverlayWindowManager? = null
     private var lastPackage: String? = null
     private var interceptedPackage: String? = null
+    private var debuggable = false
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        debuggable = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         overlay = OverlayWindowManager(this, this)
         engine.start()
         Log.d(TAG, "Servicio conectado")
@@ -52,11 +55,20 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
         if (intercept) {
             interceptedPackage = pkg
             val profile = profileCache.profile.value
-            overlay?.show(engine.glassWallState(), profile.name, profile.mainGoal)
+            val added = overlay?.show(engine.glassWallState(), profile.name, profile.mainGoal) == true
+            if (debuggable && added) logCriticalPath(event.eventTime, start)
         } else {
             interceptedPackage = null
             overlay?.hide()
         }
+    }
+
+    // Solo en debug: el presupuesto es de 50 ms entre el evento y la ventana ya agregada.
+    // eventTime usa la base de uptimeMillis, así que incluye lo que tardó en llegar el evento.
+    private fun logCriticalPath(eventTime: Long, callbackStartNanos: Long) {
+        val sinceEventMs = SystemClock.uptimeMillis() - eventTime
+        val inServiceMs = (SystemClock.elapsedRealtimeNanos() - callbackStartNanos) / 1_000_000.0
+        Log.d(TAG, "camino crítico: evento→addView=${sinceEventMs}ms (en el servicio ${inServiceMs}ms)")
     }
 
     override fun onExit() {

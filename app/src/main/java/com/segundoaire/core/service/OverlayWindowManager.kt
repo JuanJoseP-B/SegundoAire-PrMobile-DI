@@ -70,9 +70,9 @@ class OverlayWindowManager(
 
     /**
      * [state] decide los botones; [name] y [goal] personalizan el mensaje. Todo llega
-     * ya leído de memoria.
+     * ya leído de memoria. Devuelve `true` si en esta llamada se agregó la ventana.
      */
-    fun show(state: GlassWallState, name: String, goal: Goal?) {
+    fun show(state: GlassWallState, name: String, goal: Goal?): Boolean {
         content = Content(state, name, goal)
         if (composeView != null) {
             // Otra intercepción mientras salía: vuelve a entrar desde donde iba
@@ -80,7 +80,7 @@ class OverlayWindowManager(
                 handler.removeCallbacks(removeRunnable)
                 phase = GlassWallPhase.Visible
             }
-            return
+            return false
         }
 
         blurEnabled = false
@@ -120,7 +120,7 @@ class OverlayWindowManager(
             // Permiso revocado o ventana rechazada: no debe tumbar el servicio.
             Log.w(TAG, "No se pudo mostrar el overlay", e)
             lifecycleOwner.destroy()
-            return
+            return false
         }
         composeView = view
         owner = lifecycleOwner
@@ -128,6 +128,7 @@ class OverlayWindowManager(
         // La ventana ya está en pantalla: recién ahora se consulta el blur y se anima
         registerBlurListener()
         phase = GlassWallPhase.Visible
+        return true
     }
 
     /** Sale con la animación y quita la ventana al terminar. */
