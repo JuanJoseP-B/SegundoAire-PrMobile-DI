@@ -9,6 +9,7 @@ import android.view.accessibility.AccessibilityEvent
 import com.segundoaire.core.engine.InterceptorEngine
 import com.segundoaire.core.profile.UserProfileCache
 import com.segundoaire.domain.model.GlassWallState
+import com.segundoaire.domain.model.InterceptionResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
 
     // Se inyecta al crear el servicio: para la primera intercepción el perfil ya está en memoria
     @Inject lateinit var profileCache: UserProfileCache
+
+    @Inject lateinit var recorder: InterceptionRecorder
 
     private var overlay: OverlayWindowManager? = null
     private var lastPackage: String? = null
@@ -57,9 +60,13 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
             val profile = profileCache.profile.value
             val added = overlay?.show(engine.glassWallState(), profile.name, profile.mainGoal) == true
             if (debuggable && added) logCriticalPath(event.eventTime, start)
+            // Ya fuera del camino crítico: la ventana está agregada y la escritura va en segundo plano
+            if (overlay?.isShowing == true) recorder.onShown(pkg)
         } else {
             interceptedPackage = null
             overlay?.hide()
+            // Se fue a otra app sin pulsar "Continuar"
+            recorder.onClosed(InterceptionResult.VOLVIO)
         }
     }
 
@@ -72,6 +79,7 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
     }
 
     override fun onExit() {
+        recorder.onClosed(InterceptionResult.VOLVIO)
         overlay?.hide()
         interceptedPackage = null
         lastPackage = null
@@ -81,6 +89,7 @@ class SegundoAireAccessibilityService : AccessibilityService(), OverlayWindowMan
     override fun onContinue() {
         // Strict no ofrece "Continuar"; el motor tiene la última palabra, no la UI
         if (engine.glassWallState() is GlassWallState.Strict) return
+        recorder.onClosed(InterceptionResult.CONTINUO)
         interceptedPackage?.let(engine::pause)
         overlay?.hide()
     }
