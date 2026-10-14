@@ -53,6 +53,7 @@ fun CatalogSections() {
     PermissionBannerSection()
     EmptyStateSection()
     SkeletonSection()
+    GlassWallSection()
 }
 
 @Composable

@@ -38,4 +38,5 @@
     <string name="catalog_empty_title">Aún no hay apps</string>
     <string name="catalog_empty_message">Elige las apps ante las que quieres una pausa.</string>
     <string name="catalog_empty_action">Elegir apps</string>
+    <string name="catalog_glass_wall_no_block">Sin bloque</string>
 </resources>
