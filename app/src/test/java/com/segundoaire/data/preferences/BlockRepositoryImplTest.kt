@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.segundoaire.domain.model.ActiveBlock
+import com.segundoaire.domain.model.BlockSession
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.testing.FakeBlockSessionRepository
@@ -187,6 +188,72 @@ class BlockRepositoryImplTest {
         assertEquals(
             ActiveBlock.starting(clock.millis(), 10, RigorLevel.STRICT),
             repository.observeActiveBlock().value
+        )
+    }
+
+    @Test
+    fun `completar registra el bloque como completado al llegar a su fin`() = scope.runTest {
+        val repository = repository()
+        val started = clock.millis()
+        repository.start(durationMinutes = 15, rigor = RigorLevel.STRICT)
+
+        repository.complete()
+
+        assertEquals(
+            listOf(BlockSession(started, started + 15 * 60_000L, 15, RigorLevel.STRICT, completed = true)),
+            sessions.sessions.value
+        )
+    }
+
+    @Test
+    fun `detener registra el bloque como no completado en ese instante`() = scope.runTest {
+        val repository = repository()
+        val started = clock.millis()
+        repository.start(durationMinutes = 15, rigor = RigorLevel.MINDFUL)
+        clock.instant += Duration.ofMinutes(4)
+
+        repository.stop()
+
+        assertEquals(
+            listOf(BlockSession(started, clock.millis(), 15, RigorLevel.MINDFUL, completed = false)),
+            sessions.sessions.value
+        )
+    }
+
+    @Test
+    fun `detener un bloque que ya vencio lo registra como completado`() = scope.runTest {
+        val repository = repository()
+        val started = clock.millis()
+        repository.start(durationMinutes = 5, rigor = RigorLevel.MINDFUL)
+        clock.instant += Duration.ofMinutes(7)
+
+        repository.stop()
+
+        assertEquals(
+            listOf(BlockSession(started, started + 5 * 60_000L, 5, RigorLevel.MINDFUL, completed = true)),
+            sessions.sessions.value
+        )
+    }
+
+    @Test
+    fun `detener sin bloque activo no registra nada`() = scope.runTest {
+        repository().stop()
+
+        assertEquals(emptyList<BlockSession>(), sessions.sessions.value)
+    }
+
+    @Test
+    fun `un bloque que vencio con la app cerrada queda registrado una sola vez`() = scope.runTest {
+        val started = clock.millis()
+        repository().start(durationMinutes = 5, rigor = RigorLevel.STRICT)
+        clock.instant += Duration.ofMinutes(5)
+
+        repository().awaitCompletedMinutes()
+        repository().awaitCompletedMinutes()
+
+        assertEquals(
+            listOf(BlockSession(started, started + 5 * 60_000L, 5, RigorLevel.STRICT, completed = true)),
+            sessions.sessions.value
         )
     }
 
