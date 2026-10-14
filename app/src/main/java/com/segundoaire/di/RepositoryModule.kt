@@ -5,10 +5,14 @@ import com.segundoaire.data.permission.OverlayPermissionRepositoryImpl
 import com.segundoaire.data.preferences.BlockRepositoryImpl
 import com.segundoaire.data.preferences.UserPreferencesRepositoryImpl
 import com.segundoaire.data.preferences.UserProfileRepositoryImpl
+import com.segundoaire.data.repository.BlockSessionRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
+import com.segundoaire.data.repository.InterceptionEventRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
 import com.segundoaire.domain.repository.BlockRepository
+import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
+import com.segundoaire.domain.repository.InterceptionEventRepository
 import com.segundoaire.domain.repository.OverlayPermissionRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
 import com.segundoaire.domain.repository.UserProfileRepository
@@ -57,4 +61,16 @@ abstract class RepositoryModule {
     abstract fun bindBlockRepository(
         impl: BlockRepositoryImpl
     ): BlockRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInterceptionEventRepository(
+        impl: InterceptionEventRepositoryImpl
+    ): InterceptionEventRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBlockSessionRepository(
+        impl: BlockSessionRepositoryImpl
+    ): BlockSessionRepository
 }

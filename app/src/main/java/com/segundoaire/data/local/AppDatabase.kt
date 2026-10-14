@@ -2,7 +2,9 @@ package com.segundoaire.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.segundoaire.data.local.dao.BlockSessionDao
 import com.segundoaire.data.local.dao.BlockedAppDao
+import com.segundoaire.data.local.dao.InterceptionEventDao
 import com.segundoaire.data.local.entity.BlockSessionEntity
 import com.segundoaire.data.local.entity.BlockedAppEntity
 import com.segundoaire.data.local.entity.InterceptionEventEntity
@@ -18,6 +20,8 @@ import com.segundoaire.data.local.entity.InterceptionEventEntity
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun blockedAppDao(): BlockedAppDao
+    abstract fun interceptionEventDao(): InterceptionEventDao
+    abstract fun blockSessionDao(): BlockSessionDao
 
     companion object {
         const val NAME = "segundoaire.db"
