@@ -305,4 +305,8 @@ private class FakeUserPreferencesRepository : UserPreferencesRepository {
     override suspend fun completeOnboarding() {
         completed.value = true
     }
+
+    override val isDemoMode: Flow<Boolean> = MutableStateFlow(false)
+
+    override suspend fun setDemoMode(enabled: Boolean) = Unit
 }
