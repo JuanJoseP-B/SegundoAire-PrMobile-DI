@@ -46,6 +46,7 @@ class TimerViewModel @Inject constructor(
     private data class Running(val block: ActiveBlock, val remainingMillis: Long)
 
     private val activeBlock = blockRepository.observeActiveBlock()
+    private val completedMinutes = blockRepository.observeCompletedMinutes()
     private val selection = MutableStateFlow(Selection())
 
     private val running: Flow<Running?> = activeBlock.flatMapLatest { block ->
@@ -71,14 +72,22 @@ class TimerViewModel @Inject constructor(
     val uiState: StateFlow<TimerUiState> = combine(
         selection,
         running,
-        getBlockedApps()
-    ) { selection, running, apps ->
+        getBlockedApps(),
+        completedMinutes
+    ) { selection, running, apps, completedMinutes ->
+        // Un bloque en curso manda sobre un completado que quedó sin ver
+        val completed = completedMinutes.takeIf { running == null }
         TimerUiState(
             selectedMinutes = running?.block?.durationMinutes ?: selection.minutes,
             rigor = running?.block?.rigor ?: selection.rigor,
             isRunning = running != null,
-            remainingMillis = running?.remainingMillis ?: (selection.minutes * ActiveBlock.MILLIS_PER_MINUTE),
-            watchedAppsCount = apps.count { it.isBlocked }
+            remainingMillis = when {
+                running != null -> running.remainingMillis
+                completed != null -> 0L
+                else -> selection.minutes * ActiveBlock.MILLIS_PER_MINUTE
+            },
+            watchedAppsCount = apps.count { it.isBlocked },
+            completedMinutes = completed
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialState())
 
@@ -104,17 +113,28 @@ class TimerViewModel @Inject constructor(
         viewModelScope.launch { blockRepository.stop() }
     }
 
+    /** "Listo" en el estado de completado: la pantalla vuelve a ofrecer un bloque nuevo. */
+    fun onCompletedSeen() {
+        if (completedMinutes.value == null) return
+        viewModelScope.launch { blockRepository.acknowledgeCompleted() }
+    }
+
     // Evita un primer cuadro en "listo" cuando ya hay un bloque en curso (rotación, volver al tab)
     private fun initialState(): TimerUiState {
-        val block = activeBlock.value ?: return TimerUiState()
+        val block = activeBlock.value ?: return idleState()
         val remaining = block.remainingMillis(clock.millis())
-        if (remaining <= 0L) return TimerUiState()
+        if (remaining <= 0L) return idleState()
         return TimerUiState(
             selectedMinutes = block.durationMinutes,
             rigor = block.rigor,
             isRunning = true,
             remainingMillis = remaining
         )
+    }
+
+    private fun idleState(): TimerUiState {
+        val completed = completedMinutes.value ?: return TimerUiState()
+        return TimerUiState(remainingMillis = 0L, completedMinutes = completed)
     }
 
     private companion object {

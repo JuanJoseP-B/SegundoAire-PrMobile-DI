@@ -25,6 +25,7 @@ fun TimerRoute(
         onRigorSelected = viewModel::onRigorSelected,
         onStart = viewModel::onStart,
         onEnd = viewModel::onEnd,
+        onCompletedSeen = viewModel::onCompletedSeen,
         modifier = modifier,
         contentPadding = contentPadding
     )

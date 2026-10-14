@@ -215,8 +215,53 @@ class TimerViewModelTest {
         assertNull(blocks.observeActiveBlock().value)
         val state = viewModel.uiState.value
         assertFalse(state.isRunning)
+        assertEquals(5, state.completedMinutes)
+        // El anillo se queda lleno y en cero mientras se muestra el completado
+        assertEquals(0, state.remainingSeconds)
+        assertEquals(1f, state.progress)
+    }
+
+    @Test
+    fun `Listo cierra el completado y vuelve a ofrecer la misma seleccion`() = runTest(dispatcher) {
+        val viewModel = observed(viewModel())
+        viewModel.onDurationSelected(5)
+        viewModel.onRigorSelected(RigorLevel.STRICT)
+        viewModel.onStart()
+        elapse(300_000)
+
+        viewModel.onCompletedSeen()
+
+        val state = viewModel.uiState.value
+        assertNull(state.completedMinutes)
+        assertNull(blocks.observeCompletedMinutes().value)
+        assertFalse(state.isRunning)
+        assertEquals(5, state.selectedMinutes)
+        assertEquals(RigorLevel.STRICT, state.rigor)
         assertEquals(5 * 60, state.remainingSeconds)
         assertEquals(0f, state.progress)
+    }
+
+    @Test
+    fun `un bloque completado con la app cerrada aparece desde el primer estado`() = runTest(dispatcher) {
+        blocks = FakeBlockRepository(clock, initialCompletedMinutes = 30)
+
+        val viewModel = viewModel()
+
+        val initial = viewModel.uiState.value
+        assertEquals(30, initial.completedMinutes)
+        assertEquals(1f, initial.progress)
+        assertEquals(30, observed(viewModel).uiState.value.completedMinutes)
+    }
+
+    @Test
+    fun `terminar antes de tiempo no muestra el completado`() = runTest(dispatcher) {
+        val viewModel = observed(viewModel())
+        viewModel.onStart()
+        elapse(30_000)
+
+        viewModel.onEnd()
+
+        assertNull(viewModel.uiState.value.completedMinutes)
     }
 
     @Test
@@ -234,6 +279,7 @@ class TimerViewModelTest {
 
         assertEquals(1, blocks.completeCount)
         assertFalse(viewModel.uiState.value.isRunning)
+        assertEquals(5, viewModel.uiState.value.completedMinutes)
     }
 
     @Test
