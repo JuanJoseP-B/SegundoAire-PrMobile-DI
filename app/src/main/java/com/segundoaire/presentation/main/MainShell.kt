@@ -36,6 +36,7 @@ import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glassBackdrop
 import com.segundoaire.presentation.panel.PanelRoute
+import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
  * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
@@ -62,9 +63,9 @@ fun MainShell(
                 onTitleLongClick = onOpenComponentCatalog
             )
             MainTab.BLOCKS -> TimerRoute(contentPadding = contentPadding)
-            // Las pestañas vacías aún no scrollean bajo la barra: se apartan de ella
-            MainTab.PROGRESS, MainTab.PROFILE ->
-                ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
+            MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
+            // La pestaña vacía aún no scrollea bajo la barra: se aparta de ella
+            MainTab.PROFILE -> ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
         }
     }
 }
