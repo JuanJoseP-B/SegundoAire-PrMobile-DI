@@ -262,6 +262,16 @@
     <string name="settings_theme_system">Sistema</string>
     <string name="settings_theme_light">Claro</string>
     <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_tutorial_title">Tutorial</string>
+    <string name="settings_tutorial_message">Repasa cómo funciona SegundoAire en cinco tarjetas.</string>
+    <string name="tutorial_card_what">SegundoAire se interpone un instante cuando abres una app que elegiste, para que decidas con calma.</string>
+    <string name="tutorial_card_glasswall">El GlassWall es un vidrio sobre la app. Respiras con él y luego eliges volver o continuar.</string>
+    <string name="tutorial_card_rigor">Mindful te deja continuar tras 10 segundos. Strict no te deja hasta que termine el bloque.</string>
+    <string name="tutorial_card_blocks">Un bloque es un rato de enfoque, de 5 a 30 minutos. Mientras dura, manda el rigor que elegiste.</string>
+    <string name="tutorial_card_progress">En Progreso ves los minutos que recuperas, las aperturas que evitas y tu racha.</string>
+    <string name="tutorial_next">Siguiente</string>
+    <string name="tutorial_done">Listo</string>
+    <string name="tutorial_page_description">Tarjeta %1$d de %2$d</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>

@@ -261,6 +261,16 @@
     <string name="settings_theme_system">System</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
+    <string name="settings_tutorial_title">Tutorial</string>
+    <string name="settings_tutorial_message">Go over how SegundoAire works in five cards.</string>
+    <string name="tutorial_card_what">SegundoAire steps in for a moment when you open an app you chose, so you can decide calmly.</string>
+    <string name="tutorial_card_glasswall">The GlassWall is a pane of glass over the app. You breathe with it, then choose to go back or continue.</string>
+    <string name="tutorial_card_rigor">Mindful lets you continue after 10 seconds. Strict keeps you out until the block ends.</string>
+    <string name="tutorial_card_blocks">A block is a stretch of focus, from 5 to 30 minutes. While it lasts, the strictness you picked rules.</string>
+    <string name="tutorial_card_progress">In Progress you see the minutes you recover, the openings you avoid and your streak.</string>
+    <string name="tutorial_next">Next</string>
+    <string name="tutorial_done">Done</string>
+    <string name="tutorial_page_description">Card %1$d of %2$d</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>
