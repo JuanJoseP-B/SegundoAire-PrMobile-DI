@@ -240,6 +240,18 @@
     </plurals>
     <string name="progress_empty_title">Your progress starts here</string>
     <string name="progress_empty_message">Finish a block or go back from the GlassWall, and you\'ll see it here.</string>
+    <string name="profile_title">Profile</string>
+    <string name="profile_goals_title">Your goals</string>
+    <string name="profile_goals_subtitle">Pick up to %1$d. The first one you pick is your main goal.</string>
+    <string name="profile_account_title">Your account</string>
+    <string name="profile_account_google">Google</string>
+    <string name="profile_account_apple">Apple</string>
+    <string name="profile_account_email">Email</string>
+    <string name="profile_account_guest">No account</string>
+    <string name="profile_account_simulated">This account is simulated: it doesn\'t connect to any server.</string>
+    <string name="profile_save">Save changes</string>
+    <string name="profile_saved">Changes saved</string>
+    <string name="profile_save_failed">We couldn\'t save. Try again.</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>

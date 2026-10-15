@@ -243,6 +243,18 @@
     </plurals>
     <string name="progress_empty_title">Tu progreso empieza aquí</string>
     <string name="progress_empty_message">Completa un bloque o vuelve desde el GlassWall y lo verás aquí.</string>
+    <string name="profile_title">Perfil</string>
+    <string name="profile_goals_title">Tus objetivos</string>
+    <string name="profile_goals_subtitle">Elige hasta %1$d. El primero que marques es tu objetivo principal.</string>
+    <string name="profile_account_title">Tu cuenta</string>
+    <string name="profile_account_google">Google</string>
+    <string name="profile_account_apple">Apple</string>
+    <string name="profile_account_email">Correo</string>
+    <string name="profile_account_guest">Sin cuenta</string>
+    <string name="profile_account_simulated">Esta cuenta es simulada: no se conecta a ningún servidor.</string>
+    <string name="profile_save">Guardar cambios</string>
+    <string name="profile_saved">Cambios guardados</string>
+    <string name="profile_save_failed">No pudimos guardar. Inténtalo de nuevo.</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>
