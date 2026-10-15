@@ -1,9 +1,37 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+}
+
+// Firma de release: se lee de keystore.properties en la raíz, que no se versiona.
+// El formato está en keystore.properties.example.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) keystorePropertiesFile.inputStream().use { load(it) }
+}
+val keystoreRequiredKeys = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
+
+// null cuando la firma de release está lista; si no, el motivo, que se muestra al compilar release
+val releaseSigningProblem: String? = when {
+    !keystorePropertiesFile.exists() ->
+        "Falta keystore.properties en la raíz del proyecto, así que el build de release no se puede firmar. " +
+            "Copia keystore.properties.example a keystore.properties y completa los datos de tu keystore. " +
+            "El build de release nunca se firma con la clave de debug."
+    else -> {
+        val missing = keystoreRequiredKeys.filter { keystoreProperties.getProperty(it).isNullOrBlank() }
+        if (missing.isNotEmpty()) {
+            "keystore.properties no define: ${missing.joinToString()}."
+        } else if (!rootProject.file(keystoreProperties.getProperty("storeFile")).exists()) {
+            "keystore.properties apunta a un storeFile que no existe: ${keystoreProperties.getProperty("storeFile")}."
+        } else {
+            null
+        }
+    }
 }
 
 android {
@@ -25,9 +53,23 @@ android {
         getByName("androidTest").assets.srcDir("$projectDir/schemas")
     }
 
+    signingConfigs {
+        if (releaseSigningProblem == null) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
+            // Sin firma de release no hay respaldo: signingConfig queda vacío y el build se detiene (abajo)
+            signingConfig = signingConfigs.findByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,6 +84,15 @@ android {
 
     buildFeatures {
         compose = true
+    }
+}
+
+// Falla antes de compilar nada, con un mensaje claro, en lugar de firmar con debug o dejar el APK sin firma
+gradle.taskGraph.whenReady {
+    val releasePackaging = Regex("(assemble|bundle|package|install|validateSigning)Release")
+    val needsSigning = allTasks.any { it.project == project && releasePackaging.matches(it.name) }
+    if (needsSigning && releaseSigningProblem != null) {
+        throw GradleException(releaseSigningProblem)
     }
 }
 
