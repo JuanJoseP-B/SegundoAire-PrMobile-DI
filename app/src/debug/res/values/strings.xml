@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_title">Component catalog</string>
+    <string name="catalog_dark_theme">Dark theme</string>
+    <string name="catalog_reduce_motion">Reduce motion</string>
+    <string name="catalog_section_press_scale" translatable="false">Modifier.pressScale()</string>
+    <string name="catalog_press_and_hold">Press and hold</string>
+    <string name="catalog_section_primary_button" translatable="false">PrimaryButton</string>
+    <string name="catalog_section_secondary_button" translatable="false">SecondaryButton</string>
+    <string name="catalog_section_text_button" translatable="false">TextButton</string>
+    <string name="catalog_section_provider_button" translatable="false">ProviderButton</string>
+    <string name="catalog_section_glass_card" translatable="false">GlassCard</string>
+    <string name="catalog_glass_level">Level %1$d</string>
+    <string name="catalog_glass_pressable">Pressable card</string>
+    <string name="catalog_state_default">Default</string>
+    <string name="catalog_state_pressed">Pressed</string>
+    <string name="catalog_state_focused">Focused</string>
+    <string name="catalog_state_disabled">Disabled</string>
+    <string name="catalog_section_app_toggle_row" translatable="false">AppToggleRow</string>
+    <string name="catalog_sample_app">Sample app %1$d</string>
+    <string name="catalog_sample_supporting">23 min today</string>
+    <string name="catalog_section_segmented_selector" translatable="false">SegmentedSelector</string>
+    <string name="catalog_section_rigor_selector" translatable="false">RigorSelector</string>
+    <string name="catalog_section_timer_ring" translatable="false">TimerRing</string>
+    <string name="catalog_timer_format" translatable="false">%1$02d:%2$02d</string>
+    <string name="catalog_section_glass_text_field" translatable="false">GlassTextField</string>
+    <string name="catalog_password_hint">At least 8 characters</string>
+    <string-array name="catalog_sample_goals">
+        <item>Focus</item>
+        <item>Sleep better</item>
+        <item>Be present</item>
+        <item>Mental health</item>
+        <item>More free time</item>
+    </string-array>
+    <string name="catalog_section_choice_chip" translatable="false">ChoiceChip</string>
+    <string name="catalog_choice_single">Single choice</string>
+    <string name="catalog_choice_limited">Up to %1$d</string>
+    <string-array name="catalog_sample_usage">
+        <item>Under 2 h</item>
+        <item>2–4 h</item>
+        <item>4–6 h</item>
+        <item>6–8 h</item>
+        <item>Over 8 h</item>
+    </string-array>
+    <string name="catalog_section_range_selector" translatable="false">RangeSelector</string>
+    <string name="catalog_section_animated_counter" translatable="false">AnimatedCounter</string>
+    <string name="catalog_counter_add">Add 23 min</string>
+    <string name="catalog_counter_reset">Reset</string>
+    <string name="catalog_section_breathing_circle" translatable="false">BreathingCircle</string>
+    <string name="catalog_section_hold_to_commit" translatable="false">HoldToCommitButton</string>
+    <string name="catalog_hold_label">Hold to commit</string>
+    <string name="catalog_hold_count">Commits: %1$d</string>
+    <string name="catalog_section_reveal_text" translatable="false">RevealText</string>
+    <string name="catalog_reveal_sample">Ana, does this bring you closer to sleeping better? Take a second breath before you decide.</string>
+    <string name="catalog_reveal_replay">Play again</string>
+    <string name="catalog_section_permission_banner" translatable="false">PermissionBanner</string>
+    <string name="catalog_section_empty_state" translatable="false">EmptyState</string>
+    <string name="catalog_empty_title">No apps yet</string>
+    <string name="catalog_empty_message">Choose the apps you want a pause before.</string>
+    <string name="catalog_empty_action">Choose apps</string>
+    <string name="catalog_section_skeleton" translatable="false">Skeleton</string>
+    <string name="catalog_section_glass_wall" translatable="false">GlassWall</string>
+    <string name="catalog_glass_wall_no_block">No block</string>
+    <string name="catalog_sample_name" translatable="false">Ana</string>
+</resources>

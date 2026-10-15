@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_title">Catálogo de componentes</string>
+    <string name="catalog_dark_theme">Tema oscuro</string>
+    <string name="catalog_reduce_motion">Reducir movimiento</string>
+    <string name="catalog_press_and_hold">Mantén presionado</string>
+    <string name="catalog_glass_level">Nivel %1$d</string>
+    <string name="catalog_glass_pressable">Tarjeta presionable</string>
+    <string name="catalog_state_default">Normal</string>
+    <string name="catalog_state_pressed">Presionado</string>
+    <string name="catalog_state_focused">Con foco</string>
+    <string name="catalog_state_disabled">Deshabilitado</string>
+    <string name="catalog_sample_app">App de ejemplo %1$d</string>
+    <string name="catalog_sample_supporting">23 min hoy</string>
+    <string name="catalog_password_hint">Al menos 8 caracteres</string>
+    <string-array name="catalog_sample_goals">
+        <item>Concentrarme</item>
+        <item>Dormir mejor</item>
+        <item>Estar presente</item>
+        <item>Salud mental</item>
+        <item>Más tiempo libre</item>
+    </string-array>
+    <string name="catalog_choice_single">Elección única</string>
+    <string name="catalog_choice_limited">Hasta %1$d</string>
+    <string-array name="catalog_sample_usage">
+        <item>Menos de 2 h</item>
+        <item>2–4 h</item>
+        <item>4–6 h</item>
+        <item>6–8 h</item>
+        <item>Más de 8 h</item>
+    </string-array>
+    <string name="catalog_counter_add">Sumar 23 min</string>
+    <string name="catalog_counter_reset">Reiniciar</string>
+    <string name="catalog_hold_label">Mantén para comprometerte</string>
+    <string name="catalog_hold_count">Compromisos: %1$d</string>
+    <string name="catalog_reveal_sample">Ana, ¿esto te acerca a dormir mejor? Toma un segundo aire antes de decidir.</string>
+    <string name="catalog_reveal_replay">Repetir</string>
+    <string name="catalog_empty_title">Aún no hay apps</string>
+    <string name="catalog_empty_message">Elige las apps ante las que quieres una pausa.</string>
+    <string name="catalog_empty_action">Elegir apps</string>
+    <string name="catalog_glass_wall_no_block">Sin bloque</string>
+</resources>

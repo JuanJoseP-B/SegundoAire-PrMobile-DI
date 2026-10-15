@@ -1,25 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SegundoAire</string>
-    <string name="onboarding_title">Recupera tu tiempo</string>
     <string name="onboarding_subtitle">Respira antes de deslizar. Un segundo de aire basta para elegir lo que de verdad importa.</string>
     <string name="onboarding_continue">Continuar</string>
     <string name="banner_title">Protección en pausa</string>
     <string name="banner_accessibility_disabled">El servicio de accesibilidad está desactivado, así que SegundoAire no puede detectar cuándo abres una app vigilada. Vuelve a activarlo.</string>
     <string name="banner_overlay_disabled">El permiso para mostrarse sobre otras apps está desactivado, así que no se puede mostrar la pausa. Vuelve a activarlo.</string>
     <string name="banner_action">Arreglar en Ajustes</string>
-    <string name="dashboard_focused_today">Enfocado hoy</string>
-    <string name="dashboard_watched_apps">Apps vigiladas</string>
-    <string name="dashboard_minutes_format">%1$d min</string>
-    <string name="dashboard_apps_title">Tus apps</string>
-    <string name="dashboard_empty">Aún no hay apps para mostrar.</string>
+    <string name="nav_panel">Panel</string>
+    <string name="nav_blocks">Bloques</string>
+    <string name="nav_progress">Progreso</string>
+    <string name="nav_profile">Perfil</string>
+    <string name="coming_soon_title">Muy pronto</string>
+    <string name="coming_soon_message">Estamos preparando esta sección. Vuelve pronto.</string>
+    <string name="timer_title">Bloques de enfoque</string>
+    <string name="timer_state_focused">ENFOCADO</string>
+    <string name="timer_state_ready">LISTO</string>
+    <string name="timer_state_completed">COMPLETADO</string>
+    <string name="timer_completed_title">Bloque completado</string>
+    <string name="timer_completed_caption">para ti</string>
+    <string name="timer_completed_done">Listo</string>
+    <string name="timer_duration_title">Duración</string>
+    <string name="timer_duration_option">%1$d min</string>
+    <string name="timer_rigor_title">Nivel de rigor</string>
+    <string name="timer_rigor_mindful_desc">10 s de fricción antes de continuar</string>
+    <string name="timer_rigor_strict_desc">Inquebrantable hasta que termine el bloque</string>
+    <string name="timer_start">Iniciar bloque</string>
+    <string name="timer_stop">Terminar bloque</string>
+    <string name="timer_hold_to_end">Mantén para terminar</string>
+    <plurals name="timer_watched">
+        <item quantity="one">%d app vigilada</item>
+        <item quantity="many">%d apps vigiladas</item>
+        <item quantity="other">%d apps vigiladas</item>
+    </plurals>
+    <string name="timer_no_watched_apps">Elige apps en el Panel para que tu bloque las vigile.</string>
     <string name="accessibility_service_description">Detecta qué aplicación se está abriendo para darte un momento de calma. Todo permanece en tu dispositivo.</string>
     <string name="permission_title">Un pequeño paso para cuidar tu tiempo</string>
     <string name="permission_subtitle">Para mostrarte una pausa amable antes de abrir apps que te distraen, SegundoAire necesita permiso para mostrarse sobre otras apps. Solo aparece cuando abres una app que tú elegiste y nada sale de tu dispositivo.</string>
     <string name="permission_grant">Permitir en Ajustes</string>
     <string name="permission_skip">Ahora no</string>
     <string name="overlay_title">Toma un segundo aire</string>
-    <string name="overlay_subtitle">¿Realmente quieres entrar aquí ahora?</string>
-    <string name="overlay_exit">Volver / Salir</string>
+    <string name="overlay_message_focus">%1$s, ¿esto te acerca a concentrarte?</string>
+    <string name="overlay_message_sleep">%1$s, ¿esto te acerca a dormir mejor?</string>
+    <string name="overlay_message_presence">%1$s, ¿esto te acerca a estar presente con los tuyos?</string>
+    <string name="overlay_message_mental_health">%1$s, ¿esto te acerca a cuidar tu salud mental?</string>
+    <string name="overlay_message_free_time">%1$s, ¿esto te acerca a recuperar tiempo para lo que te gusta?</string>
+    <string name="overlay_message_generic">%1$s, ¿es lo que querías hacer ahora?</string>
+    <string name="overlay_message_focus_anon">¿Esto te acerca a concentrarte?</string>
+    <string name="overlay_message_sleep_anon">¿Esto te acerca a dormir mejor?</string>
+    <string name="overlay_message_presence_anon">¿Esto te acerca a estar presente con los tuyos?</string>
+    <string name="overlay_message_mental_health_anon">¿Esto te acerca a cuidar tu salud mental?</string>
+    <string name="overlay_message_free_time_anon">¿Esto te acerca a recuperar tiempo para lo que te gusta?</string>
+    <string name="overlay_message_generic_anon">¿Es lo que querías hacer ahora?</string>
+    <string name="overlay_exit">Volver</string>
     <string name="overlay_continue">Continuar</string>
+    <string name="overlay_continue_in">Continuar en %1$d</string>
+    <string name="overlay_back_to_block">Volver a mi bloque</string>
+    <string name="overlay_block_remaining">Quedan %1$s de tu bloque</string>
+    <string name="provider_continue_google">Continuar con Google</string>
+    <string name="provider_continue_apple">Continuar con Apple</string>
+    <string name="provider_continue_email">Continuar con correo</string>
+    <string name="text_field_show_password">Mostrar contraseña</string>
+    <string name="text_field_hide_password">Ocultar contraseña</string>
+    <string name="auth_email_label">Correo</string>
+    <string name="auth_email_error">Revisa tu correo</string>
+    <string name="auth_password_label">Contraseña</string>
+    <string name="auth_account_title">Cuida tu plan</string>
+    <string name="auth_account_subtitle">Elige cómo quieres continuar. Puedes cambiarlo después desde tu perfil.</string>
+    <string name="auth_account_guest">Continuar sin cuenta</string>
+    <string name="auth_account_connecting">Conectando…</string>
+    <string name="auth_login_title">Entra con tu correo</string>
+    <string name="auth_login_subtitle">Retoma donde lo dejaste.</string>
+    <string name="auth_login_submit">Entrar</string>
+    <string name="auth_login_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="auth_login_switch">Crear una cuenta</string>
+    <string name="auth_register_title">Crea tu cuenta</string>
+    <string name="auth_register_subtitle">Solo necesitas un correo y una contraseña.</string>
+    <string name="auth_register_submit">Crear cuenta</string>
+    <string name="auth_register_switch">Ya tengo cuenta</string>
+    <string name="auth_password_supporting">%1$d caracteres o más, con una letra y un número.</string>
+    <string name="auth_password_error_short">Usa %1$d caracteres o más</string>
+    <string name="auth_password_error_letter">Agrega al menos una letra</string>
+    <string name="auth_password_error_number">Agrega al menos un número</string>
+    <string name="auth_confirmation_label">Confirma tu contraseña</string>
+    <string name="auth_confirmation_error">Las contraseñas no coinciden</string>
+    <string name="auth_forgot_title">Recupera tu contraseña</string>
+    <string name="auth_forgot_subtitle">Escribe tu correo y te enviamos un enlace para crear una nueva.</string>
+    <string name="auth_forgot_submit">Enviar enlace</string>
+    <string name="auth_forgot_sending">Enviando…</string>
+    <string name="auth_forgot_sent_title">Te enviamos un enlace</string>
+    <string name="auth_forgot_sent_body">Revisa %1$s y sigue el enlace para crear una contraseña nueva.</string>
+    <string name="auth_forgot_sent_action">Volver a entrar</string>
+    <string name="breath_inhale">Inhala</string>
+    <string name="breath_exhale">Exhala</string>
+    <string name="onboarding_back">Volver</string>
+    <string name="onboarding_progress">Paso %1$d de %2$d</string>
+    <string name="onboarding_welcome_start">Empezar</string>
+    <string name="onboarding_welcome_page">Tarjeta %1$d de %2$d</string>
+    <string name="onboarding_welcome_problem_eyebrow">El problema</string>
+    <string name="onboarding_welcome_problem_title">El celular se abre antes de que decidas</string>
+    <string name="onboarding_welcome_problem_body">Lo tomas para una cosa y, sin darte cuenta, se fueron veinte minutos. Le pasa a casi todo el mundo.</string>
+    <string name="onboarding_welcome_pause_eyebrow">La pausa</string>
+    <string name="onboarding_welcome_pause_title">Una pausa antes de abrir la app</string>
+    <string name="onboarding_welcome_pause_body">Cuando abres una app que elegiste vigilar, SegundoAire te da un momento para respirar. Después decides tú: entrar o volver.</string>
+    <string name="onboarding_welcome_promise_eyebrow">La promesa</string>
+    <string name="onboarding_welcome_promise_title">Toma un segundo aire</string>
+    <string name="onboarding_welcome_promise_body">Sin prohibiciones ni culpa. Solo un segundo de conciencia, y todo se queda en tu dispositivo.</string>
+    <string name="onboarding_name_title">¿Cómo te llamas?</string>
+    <string name="onboarding_name_subtitle">Usamos tu nombre para que cada pausa se sienta tuya.</string>
+    <string name="onboarding_name_label">Tu nombre</string>
+    <string name="onboarding_name_placeholder">Ana</string>
+    <string name="onboarding_name_supporting">Se queda en tu dispositivo.</string>
+    <string name="onboarding_name_error">Usa solo letras</string>
+    <string name="onboarding_goals_title">¿Qué quieres lograr?</string>
+    <string name="onboarding_goals_subtitle">Elige hasta %1$d.</string>
+    <string name="onboarding_goal_focus">Concentrarme</string>
+    <string name="onboarding_goal_sleep">Dormir mejor</string>
+    <string name="onboarding_goal_presence">Estar presente con los míos</string>
+    <string name="onboarding_goal_mental_health">Cuidar mi salud mental</string>
+    <string name="onboarding_goal_free_time">Recuperar tiempo para lo que me gusta</string>
+    <string name="onboarding_usage_title">¿Cuánto usas el celular al día?</string>
+    <string name="onboarding_usage_subtitle">Un cálculo aproximado basta.</string>
+    <string name="onboarding_usage_under_2">Menos de 2 h</string>
+    <string name="onboarding_usage_2_to_4">2–4 h</string>
+    <string name="onboarding_usage_4_to_6">4–6 h</string>
+    <string name="onboarding_usage_6_to_8">6–8 h</string>
+    <string name="onboarding_usage_over_8">Más de 8 h</string>
+    <string name="onboarding_moments_title">¿Cuándo lo usas más?</string>
+    <string name="onboarding_moments_subtitle">Elige los que apliquen.</string>
+    <string name="onboarding_moment_waking_up">Al despertar</string>
+    <string name="onboarding_moment_before_sleep">Antes de dormir</string>
+    <string name="onboarding_moment_study_or_work">Estudiando o trabajando</string>
+    <string name="onboarding_moment_bored">Cuando me aburro</string>
+    <string name="onboarding_reveal_title">%1$s, esto es lo que suma tu tiempo</string>
+    <string name="onboarding_reveal_years_value">%1$d,%2$d</string>
+    <string name="onboarding_reveal_years_caption">años frente a la pantalla en los próximos %1$d años</string>
+    <string name="onboarding_reveal_formula_eyebrow">Cómo lo calculamos</string>
+    <string name="onboarding_reveal_formula">%1$d h al día × %2$d años ÷ %3$d h del día = %4$s años</string>
+    <string name="onboarding_reveal_formula_note">Tomamos %1$d h como valor típico del tramo que elegiste.</string>
+    <string name="onboarding_reveal_recoverable_title">Puedes recuperar %1$d días al año</string>
+    <string name="onboarding_reveal_recoverable_formula">Si reduces un %1$d %% de tu uso: %2$d h × %3$d días × %1$d %% ÷ %4$d h = %5$d días completos</string>
+    <string name="onboarding_breathing_title">Prueba la pausa</string>
+    <string name="onboarding_breathing_subtitle">Esto verás antes de abrir una app vigilada. Tres respiraciones lentas.</string>
+    <string name="onboarding_breathing_cycle">Respiración %1$d de %2$d</string>
+    <string name="onboarding_breathing_done">Eso es un segundo aire.</string>
+    <string name="onboarding_breathing_skip">Saltar por ahora</string>
+    <string name="onboarding_plan_title">Tu plan, %1$s</string>
+    <string name="onboarding_plan_subtitle">Puedes cambiarlo cuando quieras.</string>
+    <plurals name="onboarding_plan_goals_eyebrow">
+        <item quantity="one">Tu objetivo</item>
+        <item quantity="many">Tus objetivos</item>
+        <item quantity="other">Tus objetivos</item>
+    </plurals>
+    <string name="onboarding_plan_rigor_eyebrow">Rigor sugerido</string>
+    <string name="onboarding_plan_rigor_mindful_reason">Un buen punto de partida: la decisión siempre es tuya.</string>
+    <string name="onboarding_plan_rigor_strict_reason">Con el uso que nos contaste, un bloque firme te ayuda más.</string>
+    <string name="onboarding_plan_moments_eyebrow">Horarios de riesgo</string>
+    <string name="onboarding_commitment_title">%1$s, hazlo tuyo</string>
+    <string name="onboarding_commitment_subtitle">Un compromiso contigo. Nadie más lo ve.</string>
+    <string name="onboarding_commitment_pledge">Voy a tomar un segundo aire antes de abrir las apps que me atrapan.</string>
+    <string name="onboarding_commitment_goals_eyebrow">Para qué</string>
+    <string name="onboarding_commitment_hold">Mantén para comprometerte</string>
+    <string name="onboarding_commitment_hint">Mantenlo presionado un momento.</string>
+    <string name="setup_permissions_title">Dos permisos para proteger tu tiempo</string>
+    <string name="setup_permissions_subtitle">SegundoAire necesita ambos para pausar una app antes de que se abra. Nada sale de tu dispositivo.</string>
+    <string name="setup_permission_accessibility_title">Accesibilidad</string>
+    <string name="setup_permission_accessibility_benefit">Detecta cuándo abres una app que elegiste.</string>
+    <string name="setup_permission_overlay_title">Mostrar sobre otras apps</string>
+    <string name="setup_permission_overlay_benefit">Muestra la pausa antes de que la app se abra.</string>
+    <string name="setup_permission_open_settings">Abrir ajustes</string>
+    <string name="setup_permission_granted">Permitido</string>
+    <string name="setup_permissions_continue">Continuar</string>
+    <string name="setup_permissions_later">Hacerlo después</string>
+    <string name="setup_apps_title">Elige las apps que quieres vigilar</string>
+    <string name="setup_apps_subtitle">Tendrás una pausa antes de que se abran. Puedes cambiarlas cuando quieras.</string>
+    <string name="setup_apps_search_label">Buscar apps</string>
+    <string name="setup_apps_search_placeholder">Nombre de la app</string>
+    <string name="setup_apps_suggested">Sugeridas</string>
+    <string name="setup_apps_all">Todas las apps</string>
+    <string name="setup_apps_results">Resultados</string>
+    <plurals name="setup_apps_selected_count">
+        <item quantity="one">%d app elegida</item>
+        <item quantity="many">%d apps elegidas</item>
+        <item quantity="other">%d apps elegidas</item>
+    </plurals>
+    <string name="setup_apps_confirm">Continuar</string>
+    <string name="setup_apps_saving">Guardando…</string>
+    <string name="setup_apps_save_error">No pudimos guardar tu elección. Inténtalo de nuevo.</string>
+    <string name="setup_apps_empty_title">No hay apps que mostrar</string>
+    <string name="setup_apps_empty_message">No encontramos apps que puedas abrir desde tu pantalla de inicio.</string>
+    <string name="setup_apps_no_results_title">Sin coincidencias</string>
+    <string name="setup_apps_no_results_message">Ninguna app coincide con \"%1$s\". Prueba con otro nombre.</string>
+    <string name="panel_greeting_morning">Buenos días, %1$s</string>
+    <string name="panel_greeting_afternoon">Buenas tardes, %1$s</string>
+    <string name="panel_greeting_evening">Buenas noches, %1$s</string>
+    <string name="panel_greeting_morning_anonymous">Buenos días</string>
+    <string name="panel_greeting_afternoon_anonymous">Buenas tardes</string>
+    <string name="panel_greeting_evening_anonymous">Buenas noches</string>
+    <string name="panel_goal_eyebrow">Tu objetivo</string>
+    <string name="panel_impact_eyebrow">Hoy</string>
+    <plurals name="panel_impact_watched">
+        <item quantity="one">app vigilada</item>
+        <item quantity="many">apps vigiladas</item>
+        <item quantity="other">apps vigiladas</item>
+    </plurals>
+    <string name="panel_message_eyebrow">Para ti</string>
+    <string name="panel_message_thinking">Pensando…</string>
+    <string name="panel_message_another">Otro mensaje</string>
+    <string name="panel_apps_title">Tus apps</string>
+    <string name="panel_apps_edit">Editar apps</string>
+    <string name="panel_app_watching">Vigilando</string>
+    <string name="panel_app_off">Apagada</string>
+    <string name="panel_empty_title">Aún no vigilas ninguna app</string>
+    <string name="panel_empty_message">Elige las apps ante las que quieres un segundo de aire.</string>
+    <string name="panel_empty_action">Elegir apps</string>
+    <string name="progress_title">Progreso</string>
+    <string name="progress_demo_chip">Datos de ejemplo</string>
+    <string name="progress_impact_eyebrow">Esta semana</string>
+    <plurals name="progress_impact_minutes">
+        <item quantity="one">minuto recuperado</item>
+        <item quantity="many">minutos recuperados</item>
+        <item quantity="other">minutos recuperados</item>
+    </plurals>
+    <string name="progress_avoided_eyebrow">Aperturas evitadas</string>
+    <plurals name="progress_avoided_label">
+        <item quantity="one">vez que volviste</item>
+        <item quantity="many">veces que volviste</item>
+        <item quantity="other">veces que volviste</item>
+    </plurals>
+    <string name="progress_streak_eyebrow">Racha</string>
+    <plurals name="progress_streak_label">
+        <item quantity="one">día seguido</item>
+        <item quantity="many">días seguidos</item>
+        <item quantity="other">días seguidos</item>
+    </plurals>
+    <string name="progress_week_title">Tu semana</string>
+    <string name="progress_week_caption">Minutos recuperados por día</string>
+    <plurals name="progress_week_day">
+        <item quantity="one">%1$s: %2$d minuto</item>
+        <item quantity="many">%1$s: %2$d minutos</item>
+        <item quantity="other">%1$s: %2$d minutos</item>
+    </plurals>
+    <string name="progress_empty_title">Tu progreso empieza aquí</string>
+    <string name="progress_empty_message">Completa un bloque o vuelve desde el GlassWall y lo verás aquí.</string>
+    <string name="profile_title">Perfil</string>
+    <string name="profile_goals_title">Tus objetivos</string>
+    <string name="profile_goals_subtitle">Elige hasta %1$d. El primero que marques es tu objetivo principal.</string>
+    <string name="profile_account_title">Tu cuenta</string>
+    <string name="profile_account_google">Google</string>
+    <string name="profile_account_apple">Apple</string>
+    <string name="profile_account_email">Correo</string>
+    <string name="profile_account_guest">Sin cuenta</string>
+    <string name="profile_account_simulated">Esta cuenta es simulada: no se conecta a ningún servidor.</string>
+    <string name="profile_save">Guardar cambios</string>
+    <string name="profile_saved">Cambios guardados</string>
+    <string name="profile_save_failed">No pudimos guardar. Inténtalo de nuevo.</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_language_title">Idioma</string>
+    <string name="settings_language_system">Sistema</string>
+    <string name="settings_theme_title">Tema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_tutorial_title">Tutorial</string>
+    <string name="settings_tutorial_message">Repasa cómo funciona SegundoAire en cinco tarjetas.</string>
+    <string name="tutorial_card_what">SegundoAire se interpone un instante cuando abres una app que elegiste, para que decidas con calma.</string>
+    <string name="tutorial_card_glasswall">El GlassWall es un vidrio sobre la app. Respiras con él y luego eliges volver o continuar.</string>
+    <string name="tutorial_card_rigor">Mindful te deja continuar tras 10 segundos. Strict no te deja hasta que termine el bloque.</string>
+    <string name="tutorial_card_blocks">Un bloque es un rato de enfoque, de 5 a 30 minutos. Mientras dura, manda el rigor que elegiste.</string>
+    <string name="tutorial_card_progress">En Progreso ves los minutos que recuperas, las aperturas que evitas y tu racha.</string>
+    <string name="tutorial_next">Siguiente</string>
+    <string name="tutorial_done">Listo</string>
+    <string name="tutorial_page_description">Tarjeta %1$d de %2$d</string>
+    <string name="settings_demo_title">Modo demo</string>
+    <string name="settings_demo_message">Progreso muestra datos de ejemplo. Tu historial real no se toca.</string>
+    <string name="settings_reset_title">Reiniciar app</string>
+    <string name="settings_reset_message">Borra tu perfil, tus apps y tu progreso, y empieza de nuevo.</string>
+    <string name="settings_reset_action">Reiniciar app</string>
+    <string name="settings_reset_working">Reiniciando…</string>
+    <string name="settings_reset_failed">No pudimos reiniciar la app. Inténtalo de nuevo.</string>
+    <string name="settings_reset_dialog_title">¿Reiniciar la app?</string>
+    <string name="settings_reset_dialog_message">Esto borra tu perfil, tus apps y tu progreso. Tus permisos del sistema se conservan.</string>
+    <string name="settings_reset_confirm">Reiniciar</string>
+    <string name="settings_reset_cancel">Cancelar</string>
+    <string-array name="motivation_focus">
+        <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
+        <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>
+        <item>Un bloque corto de enfoque cuenta. Empieza con uno y mira cómo se siente.</item>
+        <item>No hace falta ser perfecto. Volver a tu tarea ya es avanzar.</item>
+        <item>Tu mente trabaja mejor con espacio. Dale cinco minutos sin pantalla.</item>
+    </string-array>
+    <string-array name="motivation_sleep">
+        <item>Descansar también es avanzar. Esta noche, deja el celular un poco antes.</item>
+        <item>Un segundo de aire antes de dormir cambia cómo amaneces.</item>
+        <item>Tu cuerpo agradece las pantallas apagadas. Prueba con diez minutos menos hoy.</item>
+        <item>No tienes que resolverlo todo antes de dormir. Mañana habrá más luz.</item>
+        <item>Cada noche cuenta. Hoy basta con un paso pequeño hacia el descanso.</item>
+    </string-array>
+    <string-array name="motivation_presence">
+        <item>Hay algo frente a ti que vale la pena mirar. Levanta la vista un momento.</item>
+        <item>Estar aquí también es una elección. Respira y quédate un poco más.</item>
+        <item>Las mejores conversaciones suceden sin pantallas de por medio.</item>
+        <item>Un momento presente vale más que cien desplazamientos. Hoy, elige uno.</item>
+        <item>Mira alrededor y nota tres cosas. Ese es el aire que buscabas.</item>
+    </string-array>
+    <string-array name="motivation_mental_health">
+        <item>Cuidarte incluye hacer pausas. Esta es una.</item>
+        <item>Está bien ir despacio. Respira y pregúntate qué necesitas ahora.</item>
+        <item>No tienes que estar al día con todo. Tu calma también importa.</item>
+        <item>Un descanso corto de las pantallas puede aliviar más de lo que parece.</item>
+        <item>Hoy no se trata de rendir, sino de estar bien. Un respiro a la vez.</item>
+    </string-array>
+    <string-array name="motivation_free_time">
+        <item>Tu tiempo libre es tuyo. ¿Qué te gustaría hacer con estos minutos?</item>
+        <item>Cada minuto que recuperas es una puerta a algo que disfrutas.</item>
+        <item>Esa afición que dejaste en pausa te espera. Hoy puedes darle diez minutos.</item>
+        <item>El tiempo no se recupera de golpe, sino minuto a minuto. Vas bien.</item>
+        <item>Elige algo que te guste y regálatelo. Lo demás puede esperar.</item>
+    </string-array>
+    <string-array name="motivation_general">
+        <item>Un segundo de aire basta para elegir qué quieres hacer a continuación.</item>
+        <item>Respira. Tú decides en qué pones tu atención hoy.</item>
+        <item>No necesitas hacerlo perfecto. Cada pausa suma.</item>
+        <item>Tu día es tuyo. Empieza por el próximo minuto.</item>
+        <item>Notar es el primer paso. Ya lo estás haciendo.</item>
+    </string-array>
 </resources>

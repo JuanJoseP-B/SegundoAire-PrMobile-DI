@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SegundoAire" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.SegundoAire" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <!--
+        Tema de arranque: ícono de respiración sobre background, sin texto. Sigue
+        al tema del sistema (colores en values-night). MainActivity lo cambia por
+        Theme.SegundoAire al llamar a installSplashScreen().
+    -->
+    <style name="Theme.SegundoAire.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.SegundoAire</item>
+    </style>
 </resources>

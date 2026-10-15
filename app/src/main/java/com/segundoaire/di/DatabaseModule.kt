@@ -5,7 +5,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.segundoaire.data.local.AppDatabase
+import com.segundoaire.data.local.MIGRATION_1_2
+import com.segundoaire.data.local.dao.BlockSessionDao
 import com.segundoaire.data.local.dao.BlockedAppDao
+import com.segundoaire.data.local.dao.InterceptionEventDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,11 +24,18 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
+            .addMigrations(MIGRATION_1_2)
             .addCallback(SeedCallback)
             .build()
 
     @Provides
     fun provideBlockedAppDao(db: AppDatabase): BlockedAppDao = db.blockedAppDao()
+
+    @Provides
+    fun provideInterceptionEventDao(db: AppDatabase): InterceptionEventDao = db.interceptionEventDao()
+
+    @Provides
+    fun provideBlockSessionDao(db: AppDatabase): BlockSessionDao = db.blockSessionDao()
 
     /** Reglas iniciales (las mismas que antes eran una lista estática en el motor). */
     private object SeedCallback : RoomDatabase.Callback() {

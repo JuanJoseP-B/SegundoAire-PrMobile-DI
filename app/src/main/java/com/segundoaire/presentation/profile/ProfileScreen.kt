@@ -1,0 +1,536 @@
+package com.segundoaire.presentation.profile
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.segundoaire.R
+import com.segundoaire.domain.model.AppLanguage
+import com.segundoaire.domain.model.AuthMode
+import com.segundoaire.domain.model.Goal
+import com.segundoaire.domain.model.ThemeMode
+import com.segundoaire.domain.model.UserProfile
+import com.segundoaire.presentation.designsystem.components.AppToggleRow
+import com.segundoaire.presentation.designsystem.components.ChoiceChipGroup
+import com.segundoaire.presentation.designsystem.components.GlassCard
+import com.segundoaire.presentation.designsystem.components.GlassTextField
+import com.segundoaire.presentation.designsystem.components.PrimaryButton
+import com.segundoaire.presentation.designsystem.components.SegmentedSelector
+import com.segundoaire.presentation.designsystem.components.Skeleton
+import com.segundoaire.presentation.designsystem.components.TextButton
+import com.segundoaire.presentation.designsystem.icons.SegundoAireIcons
+import com.segundoaire.presentation.designsystem.theme.GlassLevel
+import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.glass
+import com.segundoaire.presentation.onboarding.NameError
+import com.segundoaire.presentation.onboarding.OnboardingEyebrow
+import com.segundoaire.presentation.onboarding.labelRes
+
+private val SkeletonCardHeight = 128.dp
+
+/** Lo que Ajustes le pide al exterior, agrupado para no alargar la firma de la pantalla. */
+@Immutable
+class SettingsActions(
+    val onLanguageSelected: (AppLanguage) -> Unit = {},
+    val onThemeModeSelected: (ThemeMode) -> Unit = {},
+    val onOpenTutorial: () -> Unit = {},
+    val onDemoModeChange: (Boolean) -> Unit = {},
+    val onResetConfirmed: () -> Unit = {}
+)
+
+/**
+ * Perfil: nombre y objetivos editables, y el modo de cuenta (simulado) en solo
+ * lectura. Un único botón guarda ambos. Debajo, los ajustes de la app, que se
+ * aplican al momento. Sin estado propio: [ProfileRoute] lo conecta.
+ */
+@Composable
+fun ProfileScreen(
+    state: ProfileUiState,
+    settings: SettingsUiState,
+    onNameChange: (String) -> Unit,
+    onGoalsChange: (List<Goal>) -> Unit,
+    onSave: () -> Unit,
+    settingsActions: SettingsActions,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues()
+) {
+    val spacing = SegundoAireTheme.spacing
+    val direction = LocalLayoutDirection.current
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                start = spacing.space5 + contentPadding.calculateStartPadding(direction),
+                top = spacing.space6 + contentPadding.calculateTopPadding(),
+                end = spacing.space5 + contentPadding.calculateEndPadding(direction),
+                bottom = spacing.space6 + contentPadding.calculateBottomPadding()
+            ),
+        verticalArrangement = Arrangement.spacedBy(spacing.space6)
+    ) {
+        Text(
+            text = stringResource(R.string.profile_title),
+            style = SegundoAireTheme.typography.headlineMd,
+            color = SegundoAireTheme.colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        if (state.isLoading) {
+            repeat(3) {
+                Skeleton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(SkeletonCardHeight),
+                    shape = SegundoAireTheme.shapes.radiusLg
+                )
+            }
+        } else {
+            NameCard(state = state, onNameChange = onNameChange)
+            GoalsCard(goals = state.goals, onGoalsChange = onGoalsChange)
+            AccountCard(authMode = state.authMode, email = state.email)
+            SaveSection(state = state, onSave = onSave)
+        }
+        SettingsSection(settings = settings, actions = settingsActions)
+    }
+}
+
+@Composable
+private fun NameCard(
+    state: ProfileUiState,
+    onNameChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val focusManager = LocalFocusManager.current
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        GlassTextField(
+            value = state.name,
+            onValueChange = onNameChange,
+            label = stringResource(R.string.onboarding_name_label),
+            modifier = Modifier.fillMaxWidth(),
+            errorMessage = when (state.nameError) {
+                NameError.INVALID_CHARACTERS -> stringResource(R.string.onboarding_name_error)
+                null -> null
+            },
+            enabled = !state.isSaving,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+        )
+    }
+}
+
+@Composable
+private fun GoalsCard(
+    goals: List<Goal>,
+    onGoalsChange: (List<Goal>) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    val typography = SegundoAireTheme.typography
+    val options = Goal.entries
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.profile_goals_title),
+            style = typography.titleMd,
+            color = colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        Text(
+            text = stringResource(R.string.profile_goals_subtitle, UserProfile.MAX_GOALS),
+            style = typography.bodyMd,
+            color = colors.onBackground,
+            modifier = Modifier.padding(bottom = SegundoAireTheme.spacing.space3)
+        )
+        ChoiceChipGroup(
+            options = options.map { stringResource(it.labelRes) },
+            // El conjunto conserva el orden de elección: el primero es el objetivo principal
+            selected = goals.mapTo(linkedSetOf()) { it.ordinal },
+            onSelectionChange = { selected -> onGoalsChange(selected.map { options[it] }) },
+            modifier = Modifier.fillMaxWidth(),
+            maxSelected = UserProfile.MAX_GOALS
+        )
+    }
+}
+
+@Composable
+private fun AccountCard(authMode: AuthMode?, email: String, modifier: Modifier = Modifier) {
+    val colors = SegundoAireTheme.colors
+    val typography = SegundoAireTheme.typography
+    GlassCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {},
+        level = GlassLevel.Level2
+    ) {
+        OnboardingEyebrow(stringResource(R.string.profile_account_title))
+        Text(
+            text = stringResource((authMode ?: AuthMode.GUEST).accountLabelRes),
+            style = typography.titleMd,
+            color = colors.onBackground,
+            modifier = Modifier.padding(top = SegundoAireTheme.spacing.space2)
+        )
+        if (email.isNotBlank()) {
+            Text(text = email, style = typography.bodyMd, color = colors.onBackground)
+        }
+        Text(
+            text = stringResource(R.string.profile_account_simulated),
+            style = typography.bodyMd,
+            color = colors.onBackground,
+            modifier = Modifier.padding(top = SegundoAireTheme.spacing.space2)
+        )
+    }
+}
+
+@Composable
+private fun SettingsSection(
+    settings: SettingsUiState,
+    actions: SettingsActions,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    val spacing = SegundoAireTheme.spacing
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spacing.space4)
+    ) {
+        Text(
+            text = stringResource(R.string.settings_title),
+            style = SegundoAireTheme.typography.headlineMd,
+            color = colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        LanguageCard(language = settings.language, onLanguageSelected = actions.onLanguageSelected)
+        ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = actions.onThemeModeSelected)
+        TutorialEntryCard(onClick = actions.onOpenTutorial)
+        DemoModeRow(enabled = settings.isDemoMode, onCheckedChange = actions.onDemoModeChange)
+        ResetCard(
+            isResetting = settings.isResetting,
+            resetFailed = settings.resetFailed,
+            onResetConfirmed = actions.onResetConfirmed
+        )
+    }
+}
+
+/** Interruptor del modo demo: Progreso lee datos de ejemplo, sin tocar el historial real. */
+@Composable
+private fun DemoModeRow(
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val spacing = SegundoAireTheme.spacing
+    AppToggleRow(
+        name = stringResource(R.string.settings_demo_title),
+        checked = enabled,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier.fillMaxWidth(),
+        supportingText = stringResource(R.string.settings_demo_message)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(spacing.space12)
+                .glass(GlassLevel.Level1, SegundoAireTheme.shapes.radiusSm),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = SegundoAireIcons.Progress,
+                contentDescription = null,
+                tint = SegundoAireTheme.colors.primary
+            )
+        }
+    }
+}
+
+/** "Reiniciar app": pide confirmación antes de borrar nada. */
+@Composable
+private fun ResetCard(
+    isResetting: Boolean,
+    resetFailed: Boolean,
+    onResetConfirmed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    val typography = SegundoAireTheme.typography
+    val spacing = SegundoAireTheme.spacing
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_reset_title),
+            style = typography.titleMd,
+            color = colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        Text(
+            text = stringResource(R.string.settings_reset_message),
+            style = typography.bodyMd,
+            color = colors.onBackground
+        )
+        if (isResetting) {
+            Text(
+                text = stringResource(R.string.settings_reset_working),
+                style = typography.bodyMd,
+                color = colors.onBackground,
+                modifier = Modifier
+                    .padding(top = spacing.space3)
+                    .semantics { liveRegion = LiveRegionMode.Polite }
+            )
+        } else {
+            if (resetFailed) {
+                Text(
+                    text = stringResource(R.string.settings_reset_failed),
+                    style = typography.bodyMd,
+                    color = colors.error,
+                    modifier = Modifier
+                        .padding(top = spacing.space3)
+                        .semantics { liveRegion = LiveRegionMode.Polite }
+                )
+            }
+            TextButton(
+                text = stringResource(R.string.settings_reset_action),
+                onClick = { showDialog = true },
+                color = colors.error
+            )
+        }
+    }
+
+    if (showDialog) {
+        ResetConfirmDialog(
+            onConfirm = {
+                showDialog = false
+                onResetConfirmed()
+            },
+            onDismiss = { showDialog = false }
+        )
+    }
+}
+
+/** Abre el tutorial: solo se llega a él desde aquí, nunca aparece solo. */
+@Composable
+private fun TutorialEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val colors = SegundoAireTheme.colors
+    GlassCard(
+        modifier = modifier.fillMaxWidth(),
+        level = GlassLevel.Level2,
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(R.string.settings_tutorial_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = colors.onBackground
+        )
+        Text(
+            text = stringResource(R.string.settings_tutorial_message),
+            style = SegundoAireTheme.typography.bodyMd,
+            color = colors.onBackground
+        )
+    }
+}
+
+@Composable
+private fun ThemeCard(
+    themeMode: ThemeMode,
+    onThemeModeSelected: (ThemeMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val options = ThemeMode.entries
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_theme_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = SegundoAireTheme.colors.onBackground,
+            modifier = Modifier
+                .padding(bottom = SegundoAireTheme.spacing.space3)
+                .semantics { heading() }
+        )
+        SegmentedSelector(
+            options = options.map { stringResource(it.labelRes) },
+            selectedIndex = options.indexOf(themeMode),
+            onSelected = { onThemeModeSelected(options[it]) },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun LanguageCard(
+    language: AppLanguage,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val options = AppLanguage.entries
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_language_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = SegundoAireTheme.colors.onBackground,
+            modifier = Modifier
+                .padding(bottom = SegundoAireTheme.spacing.space3)
+                .semantics { heading() }
+        )
+        SegmentedSelector(
+            options = options.map { stringResource(it.labelRes) },
+            selectedIndex = options.indexOf(language),
+            onSelected = { onLanguageSelected(options[it]) },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun SaveSection(
+    state: ProfileUiState,
+    onSave: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(SegundoAireTheme.spacing.space3)
+    ) {
+        PrimaryButton(
+            text = stringResource(R.string.profile_save),
+            onClick = onSave,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = state.canSave
+        )
+        val feedback = when (state.feedback) {
+            SaveFeedback.SAVED -> stringResource(R.string.profile_saved) to colors.onBackground
+            SaveFeedback.FAILED -> stringResource(R.string.profile_save_failed) to colors.error
+            null -> null
+        }
+        if (feedback != null) {
+            Text(
+                text = feedback.first,
+                style = SegundoAireTheme.typography.bodyMd,
+                color = feedback.second,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+            )
+        }
+    }
+}
+
+// El dominio no conoce los recursos: aquí se asocia cada modo de cuenta a su cadena.
+@get:StringRes
+private val AuthMode.accountLabelRes: Int
+    get() = when (this) {
+        AuthMode.GOOGLE -> R.string.profile_account_google
+        AuthMode.APPLE -> R.string.profile_account_apple
+        AuthMode.EMAIL -> R.string.profile_account_email
+        AuthMode.GUEST -> R.string.profile_account_guest
+    }
+
+// Los nombres de idioma van en su propio idioma; "Sistema" sí se traduce.
+@get:StringRes
+private val AppLanguage.labelRes: Int
+    get() = when (this) {
+        AppLanguage.SYSTEM -> R.string.settings_language_system
+        AppLanguage.SPANISH -> R.string.settings_language_spanish
+        AppLanguage.ENGLISH -> R.string.settings_language_english
+    }
+
+@get:StringRes
+private val ThemeMode.labelRes: Int
+    get() = when (this) {
+        ThemeMode.SYSTEM -> R.string.settings_theme_system
+        ThemeMode.LIGHT -> R.string.settings_theme_light
+        ThemeMode.DARK -> R.string.settings_theme_dark
+    }
+
+@Composable
+private fun ProfileScreenSample(
+    state: ProfileUiState,
+    settings: SettingsUiState = SettingsUiState()
+) {
+    ProfileScreen(
+        state = state,
+        settings = settings,
+        onNameChange = {},
+        onGoalsChange = {},
+        onSave = {},
+        settingsActions = SettingsActions(),
+        modifier = Modifier.background(SegundoAireTheme.colors.background)
+    )
+}
+
+@Composable
+private fun previewState(
+    feedback: SaveFeedback? = null,
+    nameError: NameError? = null
+) = ProfileUiState(
+    isLoading = false,
+    name = stringResource(R.string.onboarding_name_placeholder),
+    nameError = nameError,
+    goals = listOf(Goal.SLEEP, Goal.FOCUS),
+    authMode = AuthMode.EMAIL,
+    email = stringResource(R.string.auth_email_placeholder),
+    hasChanges = true,
+    feedback = feedback
+)
+
+@Preview(name = "Perfil · claro", heightDp = 800)
+@Composable
+private fun ProfileScreenLightPreview() {
+    SegundoAireTheme(darkTheme = false) { ProfileScreenSample(previewState(SaveFeedback.SAVED)) }
+}
+
+@Preview(name = "Perfil · oscuro", heightDp = 800)
+@Composable
+private fun ProfileScreenDarkPreview() {
+    SegundoAireTheme(darkTheme = true) {
+        ProfileScreenSample(
+            state = previewState(SaveFeedback.FAILED),
+            settings = SettingsUiState(language = AppLanguage.SPANISH, themeMode = ThemeMode.DARK)
+        )
+    }
+}
+
+@Preview(name = "Perfil con error · claro", heightDp = 800)
+@Composable
+private fun ProfileScreenErrorLightPreview() {
+    SegundoAireTheme(darkTheme = false) {
+        ProfileScreenSample(previewState(nameError = NameError.INVALID_CHARACTERS))
+    }
+}
+
+@Preview(name = "Perfil cargando · oscuro", heightDp = 800)
+@Composable
+private fun ProfileScreenLoadingDarkPreview() {
+    SegundoAireTheme(darkTheme = true) { ProfileScreenSample(ProfileUiState()) }
+}

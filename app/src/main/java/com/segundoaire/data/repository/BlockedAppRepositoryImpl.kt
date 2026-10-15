@@ -1,5 +1,7 @@
 package com.segundoaire.data.repository
 
+import androidx.room.withTransaction
+import com.segundoaire.data.local.AppDatabase
 import com.segundoaire.data.local.dao.BlockedAppDao
 import com.segundoaire.data.local.mapper.BlockedAppMapper
 import com.segundoaire.domain.model.BlockedApp
@@ -12,6 +14,7 @@ import javax.inject.Singleton
 /** Room es la única fuente de verdad (SSOT); no hay caché propia en este nivel. */
 @Singleton
 class BlockedAppRepositoryImpl @Inject constructor(
+    private val database: AppDatabase,
     private val dao: BlockedAppDao
 ) : BlockedAppRepository {
 
@@ -27,4 +30,11 @@ class BlockedAppRepositoryImpl @Inject constructor(
         dao.setBlocked(packageName, isBlocked)
 
     override suspend fun delete(packageName: String) = dao.delete(packageName)
+
+    override suspend fun replaceAll(apps: List<BlockedApp>) {
+        database.withTransaction {
+            dao.deleteNotIn(apps.map { it.packageName })
+            dao.upsertAll(apps.map(BlockedAppMapper::toEntity))
+        }
+    }
 }
