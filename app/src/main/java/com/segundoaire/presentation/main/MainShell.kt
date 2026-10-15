@@ -36,6 +36,7 @@ import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glassBackdrop
 import com.segundoaire.presentation.panel.PanelRoute
+import com.segundoaire.presentation.profile.ProfileRoute
 import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
@@ -64,8 +65,7 @@ fun MainShell(
             )
             MainTab.BLOCKS -> TimerRoute(contentPadding = contentPadding)
             MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
-            // La pestaña vacía aún no scrollea bajo la barra: se aparta de ella
-            MainTab.PROFILE -> ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
+            MainTab.PROFILE -> ProfileRoute(contentPadding = contentPadding)
         }
     }
 }
