@@ -10,14 +10,22 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -36,14 +44,18 @@ import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.model.UserProfile
+import com.segundoaire.presentation.designsystem.components.AppToggleRow
 import com.segundoaire.presentation.designsystem.components.ChoiceChipGroup
 import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.components.GlassTextField
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
 import com.segundoaire.presentation.designsystem.components.SegmentedSelector
 import com.segundoaire.presentation.designsystem.components.Skeleton
+import com.segundoaire.presentation.designsystem.components.TextButton
+import com.segundoaire.presentation.designsystem.icons.SegundoAireIcons
 import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.designsystem.theme.glass
 import com.segundoaire.presentation.onboarding.NameError
 import com.segundoaire.presentation.onboarding.OnboardingEyebrow
 import com.segundoaire.presentation.onboarding.labelRes
@@ -55,7 +67,9 @@ private val SkeletonCardHeight = 128.dp
 class SettingsActions(
     val onLanguageSelected: (AppLanguage) -> Unit = {},
     val onThemeModeSelected: (ThemeMode) -> Unit = {},
-    val onOpenTutorial: () -> Unit = {}
+    val onOpenTutorial: () -> Unit = {},
+    val onDemoModeChange: (Boolean) -> Unit = {},
+    val onResetConfirmed: () -> Unit = {}
 )
 
 /**
@@ -224,6 +238,106 @@ private fun SettingsSection(
         LanguageCard(language = settings.language, onLanguageSelected = actions.onLanguageSelected)
         ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = actions.onThemeModeSelected)
         TutorialEntryCard(onClick = actions.onOpenTutorial)
+        DemoModeRow(enabled = settings.isDemoMode, onCheckedChange = actions.onDemoModeChange)
+        ResetCard(
+            isResetting = settings.isResetting,
+            resetFailed = settings.resetFailed,
+            onResetConfirmed = actions.onResetConfirmed
+        )
+    }
+}
+
+/** Interruptor del modo demo: Progreso lee datos de ejemplo, sin tocar el historial real. */
+@Composable
+private fun DemoModeRow(
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val spacing = SegundoAireTheme.spacing
+    AppToggleRow(
+        name = stringResource(R.string.settings_demo_title),
+        checked = enabled,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier.fillMaxWidth(),
+        supportingText = stringResource(R.string.settings_demo_message)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(spacing.space12)
+                .glass(GlassLevel.Level1, SegundoAireTheme.shapes.radiusSm),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = SegundoAireIcons.Progress,
+                contentDescription = null,
+                tint = SegundoAireTheme.colors.primary
+            )
+        }
+    }
+}
+
+/** "Reiniciar app": pide confirmación antes de borrar nada. */
+@Composable
+private fun ResetCard(
+    isResetting: Boolean,
+    resetFailed: Boolean,
+    onResetConfirmed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    val typography = SegundoAireTheme.typography
+    val spacing = SegundoAireTheme.spacing
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_reset_title),
+            style = typography.titleMd,
+            color = colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        Text(
+            text = stringResource(R.string.settings_reset_message),
+            style = typography.bodyMd,
+            color = colors.onBackground
+        )
+        if (isResetting) {
+            Text(
+                text = stringResource(R.string.settings_reset_working),
+                style = typography.bodyMd,
+                color = colors.onBackground,
+                modifier = Modifier
+                    .padding(top = spacing.space3)
+                    .semantics { liveRegion = LiveRegionMode.Polite }
+            )
+        } else {
+            if (resetFailed) {
+                Text(
+                    text = stringResource(R.string.settings_reset_failed),
+                    style = typography.bodyMd,
+                    color = colors.error,
+                    modifier = Modifier
+                        .padding(top = spacing.space3)
+                        .semantics { liveRegion = LiveRegionMode.Polite }
+                )
+            }
+            TextButton(
+                text = stringResource(R.string.settings_reset_action),
+                onClick = { showDialog = true },
+                color = colors.error
+            )
+        }
+    }
+
+    if (showDialog) {
+        ResetConfirmDialog(
+            onConfirm = {
+                showDialog = false
+                onResetConfirmed()
+            },
+            onDismiss = { showDialog = false }
+        )
     }
 }
 
