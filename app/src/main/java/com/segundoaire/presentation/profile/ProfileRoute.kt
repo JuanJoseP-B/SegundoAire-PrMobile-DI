@@ -3,6 +3,7 @@ package com.segundoaire.presentation.profile
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -25,14 +26,20 @@ fun ProfileRoute(
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { settingsViewModel.onResume() }
 
+    val settingsActions = remember(settingsViewModel) {
+        SettingsActions(
+            onLanguageSelected = settingsViewModel::onLanguageSelected,
+            onThemeModeSelected = settingsViewModel::onThemeModeSelected
+        )
+    }
+
     ProfileScreen(
         state = state,
         settings = settings,
         onNameChange = viewModel::onNameChange,
         onGoalsChange = viewModel::onGoalsChange,
         onSave = viewModel::onSave,
-        onLanguageSelected = settingsViewModel::onLanguageSelected,
-        onThemeModeSelected = settingsViewModel::onThemeModeSelected,
+        settingsActions = settingsActions,
         modifier = modifier,
         contentPadding = contentPadding
     )

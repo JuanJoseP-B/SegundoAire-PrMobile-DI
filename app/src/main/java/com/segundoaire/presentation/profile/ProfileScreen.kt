@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -49,6 +50,13 @@ import com.segundoaire.presentation.onboarding.labelRes
 
 private val SkeletonCardHeight = 128.dp
 
+/** Lo que Ajustes le pide al exterior, agrupado para no alargar la firma de la pantalla. */
+@Immutable
+class SettingsActions(
+    val onLanguageSelected: (AppLanguage) -> Unit = {},
+    val onThemeModeSelected: (ThemeMode) -> Unit = {}
+)
+
 /**
  * Perfil: nombre y objetivos editables, y el modo de cuenta (simulado) en solo
  * lectura. Un único botón guarda ambos. Debajo, los ajustes de la app, que se
@@ -61,8 +69,7 @@ fun ProfileScreen(
     onNameChange: (String) -> Unit,
     onGoalsChange: (List<Goal>) -> Unit,
     onSave: () -> Unit,
-    onLanguageSelected: (AppLanguage) -> Unit,
-    onThemeModeSelected: (ThemeMode) -> Unit,
+    settingsActions: SettingsActions,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
 ) {
@@ -102,11 +109,7 @@ fun ProfileScreen(
             AccountCard(authMode = state.authMode, email = state.email)
             SaveSection(state = state, onSave = onSave)
         }
-        SettingsSection(
-            settings = settings,
-            onLanguageSelected = onLanguageSelected,
-            onThemeModeSelected = onThemeModeSelected
-        )
+        SettingsSection(settings = settings, actions = settingsActions)
     }
 }
 
@@ -202,8 +205,7 @@ private fun AccountCard(authMode: AuthMode?, email: String, modifier: Modifier =
 @Composable
 private fun SettingsSection(
     settings: SettingsUiState,
-    onLanguageSelected: (AppLanguage) -> Unit,
-    onThemeModeSelected: (ThemeMode) -> Unit,
+    actions: SettingsActions,
     modifier: Modifier = Modifier
 ) {
     val colors = SegundoAireTheme.colors
@@ -218,8 +220,8 @@ private fun SettingsSection(
             color = colors.onBackground,
             modifier = Modifier.semantics { heading() }
         )
-        LanguageCard(language = settings.language, onLanguageSelected = onLanguageSelected)
-        ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = onThemeModeSelected)
+        LanguageCard(language = settings.language, onLanguageSelected = actions.onLanguageSelected)
+        ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = actions.onThemeModeSelected)
     }
 }
 
@@ -344,8 +346,7 @@ private fun ProfileScreenSample(
         onNameChange = {},
         onGoalsChange = {},
         onSave = {},
-        onLanguageSelected = {},
-        onThemeModeSelected = {},
+        settingsActions = SettingsActions(),
         modifier = Modifier.background(SegundoAireTheme.colors.background)
     )
 }
