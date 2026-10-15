@@ -100,6 +100,11 @@ class BlockRepositoryImpl @Inject constructor(
         completedMinutes.value = null
     }
 
+    override suspend fun forget() = mutex.withLock {
+        activeBlock.value = null
+        completedMinutes.value = null
+    }
+
     private suspend fun markCompleted(block: ActiveBlock) {
         sessions.record(block.toSession(endedAt = block.endsAt, completed = true))
         dataStore.edit { prefs ->

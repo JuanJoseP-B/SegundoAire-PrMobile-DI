@@ -11,6 +11,7 @@ import com.segundoaire.domain.usecase.SetDemoModeUseCase
 import com.segundoaire.domain.usecase.SetThemeModeUseCase
 import com.segundoaire.testing.FakeAppLanguageRepository
 import com.segundoaire.testing.FakeAppResetRepository
+import com.segundoaire.testing.FakeBlockRepository
 import com.segundoaire.testing.FakeUserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,6 +24,9 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.time.Clock
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
@@ -36,6 +40,7 @@ class SettingsViewModelTest {
     fun tearDown() = Dispatchers.resetMain()
 
     private val appReset = FakeAppResetRepository()
+    private val blocks = FakeBlockRepository(Clock.systemUTC())
 
     private fun viewModel(
         languages: FakeAppLanguageRepository,
@@ -47,7 +52,7 @@ class SettingsViewModelTest {
         SetThemeModeUseCase(prefs),
         ObserveDemoModeUseCase(prefs),
         SetDemoModeUseCase(prefs),
-        ResetAppUseCase(appReset, languages)
+        ResetAppUseCase(appReset, blocks, languages)
     )
 
     @Test
@@ -154,5 +159,102 @@ class SettingsViewModelTest {
 
         assertEquals(ThemeMode.SYSTEM, preferences.themeMode.first())
         assertEquals(ThemeMode.SYSTEM, viewModel.uiState.value.themeMode)
+    }
+
+    @Test
+    fun `el modo demo arranca apagado`() {
+        val viewModel = viewModel(FakeAppLanguageRepository())
+
+        assertFalse(viewModel.uiState.value.isDemoMode)
+    }
+
+    @Test
+    fun `arranca con el modo demo que ya estaba guardado`() {
+        val viewModel = viewModel(FakeAppLanguageRepository(), FakeUserPreferencesRepository(demoMode = true))
+
+        assertTrue(viewModel.uiState.value.isDemoMode)
+    }
+
+    @Test
+    fun `activar el modo demo lo guarda y el interruptor lo refleja`() = runTest {
+        val viewModel = viewModel(FakeAppLanguageRepository())
+
+        viewModel.onDemoModeChange(true)
+
+        assertTrue(preferences.isDemoMode.first())
+        assertTrue(viewModel.uiState.value.isDemoMode)
+    }
+
+    @Test
+    fun `apagar el modo demo vuelve a los datos reales`() = runTest {
+        val viewModel = viewModel(FakeAppLanguageRepository(), FakeUserPreferencesRepository(demoMode = true))
+
+        viewModel.onDemoModeChange(false)
+
+        assertFalse(viewModel.uiState.value.isDemoMode)
+    }
+
+    @Test
+    fun `el modo demo no toca el tema ni el idioma`() = runTest {
+        val languages = FakeAppLanguageRepository(AppLanguage.SPANISH)
+        val viewModel = viewModel(languages)
+        viewModel.onThemeModeSelected(ThemeMode.DARK)
+
+        viewModel.onDemoModeChange(true)
+
+        assertEquals(ThemeMode.DARK, viewModel.uiState.value.themeMode)
+        assertEquals(AppLanguage.SPANISH, viewModel.uiState.value.language)
+    }
+
+    @Test
+    fun `reiniciar borra los datos y avisa para volver a la bienvenida`() = runTest {
+        val viewModel = viewModel(FakeAppLanguageRepository())
+
+        viewModel.onResetConfirmed()
+
+        val state = viewModel.uiState.value
+        assertEquals(1, appReset.clearCount)
+        assertTrue(state.isResetCompleted)
+        assertFalse(state.isResetting)
+        assertFalse(state.resetFailed)
+    }
+
+    @Test
+    fun `reiniciar vuelve al idioma del sistema`() = runTest {
+        val languages = FakeAppLanguageRepository(AppLanguage.ENGLISH)
+        val viewModel = viewModel(languages)
+
+        viewModel.onResetConfirmed()
+
+        assertEquals(AppLanguage.SYSTEM, languages.current())
+    }
+
+    @Test
+    fun `si el reinicio falla no se completa y se puede reintentar`() = runTest {
+        val viewModel = viewModel(FakeAppLanguageRepository())
+        appReset.failNext = true
+
+        viewModel.onResetConfirmed()
+
+        val failed = viewModel.uiState.value
+        assertTrue(failed.resetFailed)
+        assertFalse(failed.isResetCompleted)
+        assertFalse(failed.isResetting)
+
+        viewModel.onResetConfirmed()
+
+        val retried = viewModel.uiState.value
+        assertTrue(retried.isResetCompleted)
+        assertFalse(retried.resetFailed)
+    }
+
+    @Test
+    fun `un reinicio ya completado no se repite`() = runTest {
+        val viewModel = viewModel(FakeAppLanguageRepository())
+        viewModel.onResetConfirmed()
+
+        viewModel.onResetConfirmed()
+
+        assertEquals(1, appReset.clearCount)
     }
 }

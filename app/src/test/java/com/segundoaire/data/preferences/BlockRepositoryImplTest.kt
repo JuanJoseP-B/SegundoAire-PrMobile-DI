@@ -282,4 +282,16 @@ class BlockRepositoryImplTest {
 
         assertEquals(UserProfile(name = "Ana"), profiles.profile.first())
     }
+
+    @Test
+    fun `olvidar el bloque lo quita de memoria sin registrarlo en el historial`() = scope.runTest {
+        val repository = repository()
+        repository.start(durationMinutes = 30, rigor = RigorLevel.STRICT)
+
+        repository.forget()
+
+        assertNull(repository.observeActiveBlock().value)
+        assertNull(repository.observeCompletedMinutes().value)
+        assertEquals(emptyList<Any>(), sessions.sessions.value)
+    }
 }

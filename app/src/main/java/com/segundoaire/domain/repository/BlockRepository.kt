@@ -29,4 +29,10 @@ interface BlockRepository {
 
     /** El usuario ya vio el bloque completado. */
     suspend fun acknowledgeCompleted()
+
+    /**
+     * Olvida en memoria el bloque en curso y el completado por ver, sin registrar nada
+     * en el historial. Solo lo usa el reinicio de la app, que borra lo guardado por su cuenta.
+     */
+    suspend fun forget()
 }

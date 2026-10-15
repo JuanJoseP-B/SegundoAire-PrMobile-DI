@@ -42,4 +42,12 @@ class FakeBlockRepository(
     override suspend fun acknowledgeCompleted() {
         completedMinutes.value = null
     }
+
+    var forgetCount = 0
+
+    override suspend fun forget() {
+        forgetCount++
+        activeBlock.value = null
+        completedMinutes.value = null
+    }
 }
