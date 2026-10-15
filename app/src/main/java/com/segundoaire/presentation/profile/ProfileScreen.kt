@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
+import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.UserProfile
@@ -37,6 +38,7 @@ import com.segundoaire.presentation.designsystem.components.ChoiceChipGroup
 import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.components.GlassTextField
 import com.segundoaire.presentation.designsystem.components.PrimaryButton
+import com.segundoaire.presentation.designsystem.components.SegmentedSelector
 import com.segundoaire.presentation.designsystem.components.Skeleton
 import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
@@ -48,14 +50,17 @@ private val SkeletonCardHeight = 128.dp
 
 /**
  * Perfil: nombre y objetivos editables, y el modo de cuenta (simulado) en solo
- * lectura. Un único botón guarda ambos. Sin estado propio: [ProfileRoute] lo conecta.
+ * lectura. Un único botón guarda ambos. Debajo, los ajustes de la app, que se
+ * aplican al momento. Sin estado propio: [ProfileRoute] lo conecta.
  */
 @Composable
 fun ProfileScreen(
     state: ProfileUiState,
+    settings: SettingsUiState,
     onNameChange: (String) -> Unit,
     onGoalsChange: (List<Goal>) -> Unit,
     onSave: () -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
 ) {
@@ -95,6 +100,7 @@ fun ProfileScreen(
             AccountCard(authMode = state.authMode, email = state.email)
             SaveSection(state = state, onSave = onSave)
         }
+        SettingsSection(settings = settings, onLanguageSelected = onLanguageSelected)
     }
 }
 
@@ -188,6 +194,53 @@ private fun AccountCard(authMode: AuthMode?, email: String, modifier: Modifier =
 }
 
 @Composable
+private fun SettingsSection(
+    settings: SettingsUiState,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = SegundoAireTheme.colors
+    val spacing = SegundoAireTheme.spacing
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spacing.space4)
+    ) {
+        Text(
+            text = stringResource(R.string.settings_title),
+            style = SegundoAireTheme.typography.headlineMd,
+            color = colors.onBackground,
+            modifier = Modifier.semantics { heading() }
+        )
+        LanguageCard(language = settings.language, onLanguageSelected = onLanguageSelected)
+    }
+}
+
+@Composable
+private fun LanguageCard(
+    language: AppLanguage,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val options = AppLanguage.entries
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_language_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = SegundoAireTheme.colors.onBackground,
+            modifier = Modifier
+                .padding(bottom = SegundoAireTheme.spacing.space3)
+                .semantics { heading() }
+        )
+        SegmentedSelector(
+            options = options.map { stringResource(it.labelRes) },
+            selectedIndex = options.indexOf(language),
+            onSelected = { onLanguageSelected(options[it]) },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 private fun SaveSection(
     state: ProfileUiState,
     onSave: () -> Unit,
@@ -230,13 +283,27 @@ private val AuthMode.accountLabelRes: Int
         AuthMode.GUEST -> R.string.profile_account_guest
     }
 
+// Los nombres de idioma van en su propio idioma; "Sistema" sí se traduce.
+@get:StringRes
+private val AppLanguage.labelRes: Int
+    get() = when (this) {
+        AppLanguage.SYSTEM -> R.string.settings_language_system
+        AppLanguage.SPANISH -> R.string.settings_language_spanish
+        AppLanguage.ENGLISH -> R.string.settings_language_english
+    }
+
 @Composable
-private fun ProfileScreenSample(state: ProfileUiState) {
+private fun ProfileScreenSample(
+    state: ProfileUiState,
+    settings: SettingsUiState = SettingsUiState()
+) {
     ProfileScreen(
         state = state,
+        settings = settings,
         onNameChange = {},
         onGoalsChange = {},
         onSave = {},
+        onLanguageSelected = {},
         modifier = Modifier.background(SegundoAireTheme.colors.background)
     )
 }
@@ -265,7 +332,12 @@ private fun ProfileScreenLightPreview() {
 @Preview(name = "Perfil · oscuro", heightDp = 800)
 @Composable
 private fun ProfileScreenDarkPreview() {
-    SegundoAireTheme(darkTheme = true) { ProfileScreenSample(previewState(SaveFeedback.FAILED)) }
+    SegundoAireTheme(darkTheme = true) {
+        ProfileScreenSample(
+            state = previewState(SaveFeedback.FAILED),
+            settings = SettingsUiState(language = AppLanguage.SPANISH)
+        )
+    }
 }
 
 @Preview(name = "Perfil con error · claro", heightDp = 800)

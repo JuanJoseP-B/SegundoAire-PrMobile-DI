@@ -5,22 +5,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-/** Perfil con su ViewModel. */
+/**
+ * Perfil con sus ViewModels. Al volver a la app (`ON_RESUME`) se relee el idioma,
+ * por si se cambió desde los ajustes de idioma por app del sistema.
+ */
 @Composable
 fun ProfileRoute(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val settings by settingsViewModel.uiState.collectAsStateWithLifecycle()
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { settingsViewModel.onResume() }
 
     ProfileScreen(
         state = state,
+        settings = settings,
         onNameChange = viewModel::onNameChange,
         onGoalsChange = viewModel::onGoalsChange,
         onSave = viewModel::onSave,
+        onLanguageSelected = settingsViewModel::onLanguageSelected,
         modifier = modifier,
         contentPadding = contentPadding
     )
