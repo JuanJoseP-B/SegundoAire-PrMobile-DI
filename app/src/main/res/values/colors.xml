@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Espejo en XML de los tokens de DESIGN_SYSTEM.md §3.1 para lo que se pinta
+        fuera de Compose (ícono y splash). Las pantallas no usan estos valores:
+        siguen leyendo SegundoAireTheme.colors.
+
+        El ícono del lanzador es siempre el mismo (paleta clara). El splash sí
+        cambia con el tema del sistema: ver values-night/colors.xml.
+    -->
+
+    <!-- Ícono del lanzador · background / glow / primary (claro) -->
+    <color name="launcher_background">#FFDAF1DE</color>
+    <color name="launcher_glow">#FF2E7D63</color>
+    <color name="launcher_glow_clear">#002E7D63</color>
+    <color name="launcher_core">#FF235347</color>
+</resources>
