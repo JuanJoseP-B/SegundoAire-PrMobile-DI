@@ -14,4 +14,10 @@
     <color name="launcher_glow">#FF2E7D63</color>
     <color name="launcher_glow_clear">#002E7D63</color>
     <color name="launcher_core">#FF235347</color>
+
+    <!-- Splash · background / glow / primary (claro) -->
+    <color name="splash_background">#FFDAF1DE</color>
+    <color name="splash_glow">#FF2E7D63</color>
+    <color name="splash_glow_clear">#002E7D63</color>
+    <color name="splash_core">#FF235347</color>
 </resources>
