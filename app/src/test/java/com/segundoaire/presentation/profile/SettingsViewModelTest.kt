@@ -3,10 +3,14 @@ package com.segundoaire.presentation.profile
 import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.usecase.GetAppLanguageUseCase
+import com.segundoaire.domain.usecase.ObserveDemoModeUseCase
 import com.segundoaire.domain.usecase.ObserveThemeModeUseCase
+import com.segundoaire.domain.usecase.ResetAppUseCase
 import com.segundoaire.domain.usecase.SetAppLanguageUseCase
+import com.segundoaire.domain.usecase.SetDemoModeUseCase
 import com.segundoaire.domain.usecase.SetThemeModeUseCase
 import com.segundoaire.testing.FakeAppLanguageRepository
+import com.segundoaire.testing.FakeAppResetRepository
 import com.segundoaire.testing.FakeUserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,11 +35,19 @@ class SettingsViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
-    private fun viewModel(languages: FakeAppLanguageRepository) = SettingsViewModel(
+    private val appReset = FakeAppResetRepository()
+
+    private fun viewModel(
+        languages: FakeAppLanguageRepository,
+        prefs: FakeUserPreferencesRepository = preferences
+    ) = SettingsViewModel(
         GetAppLanguageUseCase(languages),
         SetAppLanguageUseCase(languages),
-        ObserveThemeModeUseCase(preferences),
-        SetThemeModeUseCase(preferences)
+        ObserveThemeModeUseCase(prefs),
+        SetThemeModeUseCase(prefs),
+        ObserveDemoModeUseCase(prefs),
+        SetDemoModeUseCase(prefs),
+        ResetAppUseCase(appReset, languages)
     )
 
     @Test
@@ -106,12 +118,7 @@ class SettingsViewModelTest {
     @Test
     fun `arranca con el tema que ya estaba guardado`() {
         val saved = FakeUserPreferencesRepository(themeMode = ThemeMode.DARK)
-        val viewModel = SettingsViewModel(
-            GetAppLanguageUseCase(FakeAppLanguageRepository()),
-            SetAppLanguageUseCase(FakeAppLanguageRepository()),
-            ObserveThemeModeUseCase(saved),
-            SetThemeModeUseCase(saved)
-        )
+        val viewModel = viewModel(FakeAppLanguageRepository(), saved)
 
         assertEquals(ThemeMode.DARK, viewModel.uiState.value.themeMode)
     }
