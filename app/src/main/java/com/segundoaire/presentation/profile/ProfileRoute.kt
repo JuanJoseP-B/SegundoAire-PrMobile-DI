@@ -2,6 +2,7 @@ package com.segundoaire.presentation.profile
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -20,6 +21,7 @@ fun ProfileRoute(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     onOpenTutorial: () -> Unit = {},
+    onResetCompleted: () -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -29,11 +31,20 @@ fun ProfileRoute(
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { settingsViewModel.onResume() }
 
     val currentOpenTutorial by rememberUpdatedState(onOpenTutorial)
+    val currentResetCompleted by rememberUpdatedState(onResetCompleted)
+
+    // Con el estado y no con un evento: si el idioma recrea la actividad a mitad del
+    // reinicio, la actividad nueva sigue viendo `isResetCompleted` y navega igual
+    LaunchedEffect(settings.isResetCompleted) {
+        if (settings.isResetCompleted) currentResetCompleted()
+    }
     val settingsActions = remember(settingsViewModel) {
         SettingsActions(
             onLanguageSelected = settingsViewModel::onLanguageSelected,
             onThemeModeSelected = settingsViewModel::onThemeModeSelected,
-            onOpenTutorial = { currentOpenTutorial() }
+            onOpenTutorial = { currentOpenTutorial() },
+            onDemoModeChange = settingsViewModel::onDemoModeChange,
+            onResetConfirmed = settingsViewModel::onResetConfirmed
         )
     }
 

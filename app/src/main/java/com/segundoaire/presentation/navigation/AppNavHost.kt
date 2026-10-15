@@ -117,6 +117,12 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             MainShell(
                 onEditApps = { navController.navigate(Routes.EDIT_APPS) },
                 onOpenTutorial = { navController.navigate(Routes.TUTORIAL) },
+                // La app quedó como recién instalada: bienvenida y nada detrás, ni siquiera el Panel
+                onResetCompleted = {
+                    navController.navigate(OnboardingGraphRoute) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                },
                 // Solo en debug: pulsación larga en el título del Panel
                 onOpenComponentCatalog = if (ComponentCatalogAvailable) {
                     { navController.navigate(ComponentCatalogRoute) }

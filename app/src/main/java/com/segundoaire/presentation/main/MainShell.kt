@@ -42,13 +42,15 @@ import com.segundoaire.presentation.progress.ProgressRoute
 /**
  * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
  * [onEditApps] abre la selección de apps desde el Panel y [onOpenTutorial] el
- * tutorial desde Ajustes. [onOpenComponentCatalog]
+ * tutorial desde Ajustes. [onResetCompleted] vuelve a la bienvenida tras reiniciar
+ * la app. [onOpenComponentCatalog]
  * solo se pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
 fun MainShell(
     onEditApps: () -> Unit,
     onOpenTutorial: () -> Unit,
+    onResetCompleted: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenComponentCatalog: (() -> Unit)? = null
 ) {
@@ -69,7 +71,8 @@ fun MainShell(
             MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
             MainTab.PROFILE -> ProfileRoute(
                 contentPadding = contentPadding,
-                onOpenTutorial = onOpenTutorial
+                onOpenTutorial = onOpenTutorial,
+                onResetCompleted = onResetCompleted
             )
         }
     }
