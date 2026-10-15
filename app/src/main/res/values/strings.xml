@@ -257,6 +257,10 @@
     <string name="settings_language_system">System</string>
     <string name="settings_language_spanish" translatable="false">Español</string>
     <string name="settings_language_english" translatable="false">English</string>
+    <string name="settings_theme_title">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>

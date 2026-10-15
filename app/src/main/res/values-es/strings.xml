@@ -258,6 +258,10 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_language_title">Idioma</string>
     <string name="settings_language_system">Sistema</string>
+    <string name="settings_theme_title">Tema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Oscuro</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>
