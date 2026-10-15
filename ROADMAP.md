@@ -136,7 +136,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 ## Fase 16 · Perfil y Ajustes
 
 - [x] **F16-T1** Perfil: nombre, objetivo, modo de cuenta (simulado), editar nombre y objetivos
-- [ ] **F16-T2** Idioma ES/EN dentro de la app con AppCompatDelegate.setApplicationLocales + locales_config.xml (también aparece en los ajustes de idioma por app de Android 13+)
+- [x] **F16-T2** Idioma ES/EN dentro de la app con AppCompatDelegate.setApplicationLocales + locales_config.xml (también aparece en los ajustes de idioma por app de Android 13+)
 - [ ] **F16-T3** Tema: sistema / claro / oscuro, guardado en DataStore
 - [ ] **F16-T4** Tutorial: carrusel de 5 tarjetas (qué hace la app, el GlassWall, Mindful vs Strict, bloques, progreso), reutilizando componentes
 - [ ] **F16-T5** Reiniciar app: diálogo de confirmación, borra DataStore y Room, y navega a la bienvenida limpiando el back stack. Los permisos del sistema se conservan.
