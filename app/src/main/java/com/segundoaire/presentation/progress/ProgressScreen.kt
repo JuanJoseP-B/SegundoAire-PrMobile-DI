@@ -160,8 +160,7 @@ private fun DemoChip(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.progress_demo_chip),
             style = SegundoAireTheme.typography.labelMd,
-            color = SegundoAireTheme.colors.onBackground,
-            maxLines = 1
+            color = SegundoAireTheme.colors.onBackground
         )
     }
 }
