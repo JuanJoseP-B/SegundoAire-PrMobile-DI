@@ -1,5 +1,6 @@
 package com.segundoaire.di
 
+import com.segundoaire.data.locale.AppLanguageRepositoryImpl
 import com.segundoaire.data.permission.AccessibilityStatusRepositoryImpl
 import com.segundoaire.data.permission.OverlayPermissionRepositoryImpl
 import com.segundoaire.data.preferences.BlockRepositoryImpl
@@ -9,6 +10,7 @@ import com.segundoaire.data.repository.BlockSessionRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
 import com.segundoaire.data.repository.InterceptionEventRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
+import com.segundoaire.domain.repository.AppLanguageRepository
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
@@ -37,6 +39,12 @@ abstract class RepositoryModule {
     abstract fun bindUserProfileRepository(
         impl: UserProfileRepositoryImpl
     ): UserProfileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAppLanguageRepository(
+        impl: AppLanguageRepositoryImpl
+    ): AppLanguageRepository
 
     @Binds
     @Singleton
