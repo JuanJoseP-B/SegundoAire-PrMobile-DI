@@ -33,6 +33,7 @@ import com.segundoaire.R
 import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
+import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.presentation.designsystem.components.ChoiceChipGroup
 import com.segundoaire.presentation.designsystem.components.GlassCard
@@ -61,6 +62,7 @@ fun ProfileScreen(
     onGoalsChange: (List<Goal>) -> Unit,
     onSave: () -> Unit,
     onLanguageSelected: (AppLanguage) -> Unit,
+    onThemeModeSelected: (ThemeMode) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
 ) {
@@ -100,7 +102,11 @@ fun ProfileScreen(
             AccountCard(authMode = state.authMode, email = state.email)
             SaveSection(state = state, onSave = onSave)
         }
-        SettingsSection(settings = settings, onLanguageSelected = onLanguageSelected)
+        SettingsSection(
+            settings = settings,
+            onLanguageSelected = onLanguageSelected,
+            onThemeModeSelected = onThemeModeSelected
+        )
     }
 }
 
@@ -197,6 +203,7 @@ private fun AccountCard(authMode: AuthMode?, email: String, modifier: Modifier =
 private fun SettingsSection(
     settings: SettingsUiState,
     onLanguageSelected: (AppLanguage) -> Unit,
+    onThemeModeSelected: (ThemeMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = SegundoAireTheme.colors
@@ -212,6 +219,32 @@ private fun SettingsSection(
             modifier = Modifier.semantics { heading() }
         )
         LanguageCard(language = settings.language, onLanguageSelected = onLanguageSelected)
+        ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = onThemeModeSelected)
+    }
+}
+
+@Composable
+private fun ThemeCard(
+    themeMode: ThemeMode,
+    onThemeModeSelected: (ThemeMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val options = ThemeMode.entries
+    GlassCard(modifier = modifier.fillMaxWidth(), level = GlassLevel.Level2) {
+        Text(
+            text = stringResource(R.string.settings_theme_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = SegundoAireTheme.colors.onBackground,
+            modifier = Modifier
+                .padding(bottom = SegundoAireTheme.spacing.space3)
+                .semantics { heading() }
+        )
+        SegmentedSelector(
+            options = options.map { stringResource(it.labelRes) },
+            selectedIndex = options.indexOf(themeMode),
+            onSelected = { onThemeModeSelected(options[it]) },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -292,6 +325,14 @@ private val AppLanguage.labelRes: Int
         AppLanguage.ENGLISH -> R.string.settings_language_english
     }
 
+@get:StringRes
+private val ThemeMode.labelRes: Int
+    get() = when (this) {
+        ThemeMode.SYSTEM -> R.string.settings_theme_system
+        ThemeMode.LIGHT -> R.string.settings_theme_light
+        ThemeMode.DARK -> R.string.settings_theme_dark
+    }
+
 @Composable
 private fun ProfileScreenSample(
     state: ProfileUiState,
@@ -304,6 +345,7 @@ private fun ProfileScreenSample(
         onGoalsChange = {},
         onSave = {},
         onLanguageSelected = {},
+        onThemeModeSelected = {},
         modifier = Modifier.background(SegundoAireTheme.colors.background)
     )
 }
@@ -335,7 +377,7 @@ private fun ProfileScreenDarkPreview() {
     SegundoAireTheme(darkTheme = true) {
         ProfileScreenSample(
             state = previewState(SaveFeedback.FAILED),
-            settings = SettingsUiState(language = AppLanguage.SPANISH)
+            settings = SettingsUiState(language = AppLanguage.SPANISH, themeMode = ThemeMode.DARK)
         )
     }
 }

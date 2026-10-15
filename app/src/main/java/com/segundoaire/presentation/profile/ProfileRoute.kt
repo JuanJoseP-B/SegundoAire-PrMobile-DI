@@ -32,6 +32,7 @@ fun ProfileRoute(
         onGoalsChange = viewModel::onGoalsChange,
         onSave = viewModel::onSave,
         onLanguageSelected = settingsViewModel::onLanguageSelected,
+        onThemeModeSelected = settingsViewModel::onThemeModeSelected,
         modifier = modifier,
         contentPadding = contentPadding
     )
