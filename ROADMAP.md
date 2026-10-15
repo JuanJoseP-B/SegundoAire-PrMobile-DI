@@ -145,7 +145,7 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 ## Fase 17 · Pulido y release
 
-- [ ] **F17-T1** Ícono adaptativo y splash (SplashScreen API)
+- [x] **F17-T1** Ícono adaptativo y splash (SplashScreen API)
 - [ ] **F17-T2** Revisión visual completa en claro y oscuro: espaciados, contraste, textos cortados
 - [ ] **F17-T3** R8 y build de release
 - [ ] **F17-T4** README con capturas y versionName 1.0.0
