@@ -16,6 +16,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 
 class UserPreferencesRepositoryImplTest {
 
@@ -74,5 +76,28 @@ class UserPreferencesRepositoryImplTest {
 
         assertEquals(true, repository.isOnboardingCompleted.first())
         assertEquals(true, repository.isDemoMode.first())
+    }
+
+    @Test
+    fun `el modo demo arranca apagado`() = scope.runTest {
+        assertFalse(repository.isDemoMode.first())
+    }
+
+    @Test
+    fun `el modo demo se guarda y se puede apagar`() = scope.runTest {
+        repository.setDemoMode(true)
+        assertTrue(repository.isDemoMode.first())
+
+        repository.setDemoMode(false)
+        assertFalse(repository.isDemoMode.first())
+    }
+
+    @Test
+    fun `el modo demo no toca el tema`() = scope.runTest {
+        repository.setThemeMode(ThemeMode.LIGHT)
+
+        repository.setDemoMode(true)
+
+        assertEquals(ThemeMode.LIGHT, repository.themeMode.first())
     }
 }
