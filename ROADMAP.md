@@ -126,22 +126,22 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 ## Fase 15 · Progreso
 
-- [ ] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
-- [ ] **F15-T2** Registrar cada intercepción desde el overlay
-- [ ] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
+- [x] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
+- [x] **F15-T2** Registrar cada intercepción desde el overlay
+- [x] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
 - [ ] **F15-T4** Pantalla Progreso: dato de impacto con AnimatedCounter, gráfico semanal en Canvas, racha
 - [ ] **F15-T5** Modo demo: generador de 7 días de datos de ejemplo (activable desde Ajustes)
 - [ ] **F15-T6** Tests de los cálculos + cadenas EN/ES
 
 ## Fase 16 · Perfil y Ajustes
 
-- [ ] **F16-T1** Perfil: nombre, objetivo, modo de cuenta (simulado), editar nombre y objetivos
-- [ ] **F16-T2** Idioma ES/EN dentro de la app con AppCompatDelegate.setApplicationLocales + locales_config.xml (también aparece en los ajustes de idioma por app de Android 13+)
-- [ ] **F16-T3** Tema: sistema / claro / oscuro, guardado en DataStore
-- [ ] **F16-T4** Tutorial: carrusel de 5 tarjetas (qué hace la app, el GlassWall, Mindful vs Strict, bloques, progreso), reutilizando componentes
-- [ ] **F16-T5** Reiniciar app: diálogo de confirmación, borra DataStore y Room, y navega a la bienvenida limpiando el back stack. Los permisos del sistema se conservan.
-- [ ] **F16-T6** Interruptor de modo demo
-- [ ] **F16-T7** Tests (reinicio y preferencias) + cadenas EN/ES
+- [x] **F16-T1** Perfil: nombre, objetivo, modo de cuenta (simulado), editar nombre y objetivos
+- [x] **F16-T2** Idioma ES/EN dentro de la app con AppCompatDelegate.setApplicationLocales + locales_config.xml (también aparece en los ajustes de idioma por app de Android 13+)
+- [x] **F16-T3** Tema: sistema / claro / oscuro, guardado en DataStore
+- [x] **F16-T4** Tutorial: carrusel de 5 tarjetas (qué hace la app, el GlassWall, Mindful vs Strict, bloques, progreso), reutilizando componentes
+- [x] **F16-T5** Reiniciar app: diálogo de confirmación, borra DataStore y Room, y navega a la bienvenida limpiando el back stack. Los permisos del sistema se conservan.
+- [x] **F16-T6** Interruptor de modo demo
+- [x] **F16-T7** Tests (reinicio y preferencias) + cadenas EN/ES
 
 ## Fase 17 · Pulido y release
 

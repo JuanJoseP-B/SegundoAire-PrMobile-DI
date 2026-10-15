@@ -9,8 +9,10 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.segundoaire.di.ApplicationScope
 import com.segundoaire.domain.model.ActiveBlock
+import com.segundoaire.domain.model.BlockSession
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.repository.BlockRepository
+import com.segundoaire.domain.repository.BlockSessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,11 +32,16 @@ import javax.inject.Singleton
  *
  * Un bloque que llega a su fin deja guardada su duración hasta que el usuario la
  * ve: así el estado de completado aparece aunque el bloque venza con la app cerrada.
+ *
+ * Cada bloque que termina, completado o detenido, queda en el historial de
+ * [sessions] antes de borrarse de DataStore: si el proceso muere entre ambos pasos,
+ * la restauración lo vuelve a registrar y el historial lo ignora por repetido.
  */
 @Singleton
 class BlockRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
     private val clock: Clock,
+    private val sessions: BlockSessionRepository,
     @ApplicationScope scope: CoroutineScope
 ) : BlockRepository {
 
@@ -65,11 +72,20 @@ class BlockRepositoryImpl @Inject constructor(
     }
 
     override suspend fun stop() = mutex.withLock {
+        activeBlock.value?.let { block ->
+            val now = clock.millis()
+            // Detenerlo cuando ya había vencido no le quita haberse completado
+            val session = if (block.isActiveAt(now)) {
+                block.toSession(endedAt = now, completed = false)
+            } else {
+                block.toSession(endedAt = block.endsAt, completed = true)
+            }
+            sessions.record(session)
+        }
         dataStore.edit { it.removeBlock() }
         activeBlock.value = null
     }
 
-    // La Fase 15 registra aquí la sesión completada
     override suspend fun complete() = mutex.withLock {
         val block = activeBlock.value ?: return@withLock
         markCompleted(block)
@@ -84,7 +100,13 @@ class BlockRepositoryImpl @Inject constructor(
         completedMinutes.value = null
     }
 
+    override suspend fun forget() = mutex.withLock {
+        activeBlock.value = null
+        completedMinutes.value = null
+    }
+
     private suspend fun markCompleted(block: ActiveBlock) {
+        sessions.record(block.toSession(endedAt = block.endsAt, completed = true))
         dataStore.edit { prefs ->
             prefs.removeBlock()
             prefs[COMPLETED_MINUTES] = block.durationMinutes
@@ -118,6 +140,14 @@ class BlockRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    private fun ActiveBlock.toSession(endedAt: Long, completed: Boolean) = BlockSession(
+        startedAt = startedAt,
+        endedAt = endedAt,
+        durationMinutes = durationMinutes,
+        rigor = rigor,
+        completed = completed
+    )
 
     private fun MutablePreferences.removeBlock() {
         remove(STARTED_AT)

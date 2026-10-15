@@ -38,6 +38,11 @@ android {
     }
 }
 
+ksp {
+    // Esquemas de Room versionados en git: base de las migraciones y de sus tests
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -46,6 +51,7 @@ kotlin {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

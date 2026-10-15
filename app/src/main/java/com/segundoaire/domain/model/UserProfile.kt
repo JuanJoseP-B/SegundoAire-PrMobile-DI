@@ -49,5 +49,12 @@ data class UserProfile(
     companion object {
         const val MAX_NAME_LENGTH = 30
         const val MAX_GOALS = 2
+
+        // Nombres compuestos y con apóstrofo: "Ana-María", "O'Connor", "Mª."
+        private const val NAME_PUNCTUATION = "-'’.ªº"
+
+        /** Letras, espacios y la puntuación habitual de los nombres. El vacío es válido: eso lo exige quien lo pide. */
+        fun isValidName(name: String): Boolean =
+            name.all { it.isLetter() || it == ' ' || it in NAME_PUNCTUATION }
     }
 }

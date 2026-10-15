@@ -52,7 +52,7 @@ class OnboardingViewModel @Inject constructor(
         updateAnswers {
             it.copy(
                 name = name,
-                nameError = if (name.all(::isNameCharacter)) null else NameError.INVALID_CHARACTERS
+                nameError = if (UserProfile.isValidName(name)) null else NameError.INVALID_CHARACTERS
             )
         }
     }
@@ -126,7 +126,7 @@ class OnboardingViewModel @Inject constructor(
         return withDerived(
             OnboardingUiState(
                 name = name,
-                nameError = if (name.all(::isNameCharacter)) null else NameError.INVALID_CHARACTERS,
+                nameError = if (UserProfile.isValidName(name)) null else NameError.INVALID_CHARACTERS,
                 goals = savedStateHandle.get<ArrayList<String>>(KEY_GOALS).orEmpty()
                     .mapNotNull { saved -> Goal.entries.firstOrNull { it.name == saved } },
                 usageRange = usageRange,
@@ -137,16 +137,10 @@ class OnboardingViewModel @Inject constructor(
         )
     }
 
-    private fun isNameCharacter(char: Char): Boolean =
-        char.isLetter() || char == ' ' || char in NAME_PUNCTUATION
-
     private companion object {
         const val KEY_NAME = "onboarding_name"
         const val KEY_GOALS = "onboarding_goals"
         const val KEY_USAGE_RANGE = "onboarding_usage_range"
         const val KEY_RISK_MOMENTS = "onboarding_risk_moments"
-
-        // Nombres compuestos y con apóstrofo: "Ana-María", "O'Connor", "Mª."
-        const val NAME_PUNCTUATION = "-'’.ªº"
     }
 }

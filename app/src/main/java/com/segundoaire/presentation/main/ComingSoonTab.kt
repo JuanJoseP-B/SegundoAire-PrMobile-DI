@@ -12,7 +12,7 @@ import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.EmptyState
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
-/** Pestaña que aún no tiene contenido: Progreso y Perfil hasta sus fases. */
+/** Pestaña que aún no tiene contenido; hoy solo la usa la muestra del shell. */
 @Composable
 fun ComingSoonTab(tab: MainTab, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

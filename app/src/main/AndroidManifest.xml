@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -16,8 +17,10 @@
         android:name=".SegundoAireApp"
         android:allowBackup="false"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SegundoAire">
+        android:theme="@style/Theme.SegundoAire"
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,6 +30,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Android 10–12 no guardan el idioma por app: AppCompat lo persiste con este servicio -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <service
             android:name=".core.service.SegundoAireAccessibilityService"

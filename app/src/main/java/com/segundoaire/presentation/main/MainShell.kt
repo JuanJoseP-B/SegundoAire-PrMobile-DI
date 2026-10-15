@@ -36,15 +36,21 @@ import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glassBackdrop
 import com.segundoaire.presentation.panel.PanelRoute
+import com.segundoaire.presentation.profile.ProfileRoute
+import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
  * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
- * [onEditApps] abre la selección de apps desde el Panel. [onOpenComponentCatalog]
+ * [onEditApps] abre la selección de apps desde el Panel y [onOpenTutorial] el
+ * tutorial desde Ajustes. [onResetCompleted] vuelve a la bienvenida tras reiniciar
+ * la app. [onOpenComponentCatalog]
  * solo se pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
 fun MainShell(
     onEditApps: () -> Unit,
+    onOpenTutorial: () -> Unit,
+    onResetCompleted: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenComponentCatalog: (() -> Unit)? = null
 ) {
@@ -62,9 +68,12 @@ fun MainShell(
                 onTitleLongClick = onOpenComponentCatalog
             )
             MainTab.BLOCKS -> TimerRoute(contentPadding = contentPadding)
-            // Las pestañas vacías aún no scrollean bajo la barra: se apartan de ella
-            MainTab.PROGRESS, MainTab.PROFILE ->
-                ComingSoonTab(tab, modifier = Modifier.padding(contentPadding))
+            MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
+            MainTab.PROFILE -> ProfileRoute(
+                contentPadding = contentPadding,
+                onOpenTutorial = onOpenTutorial,
+                onResetCompleted = onResetCompleted
+            )
         }
     }
 }

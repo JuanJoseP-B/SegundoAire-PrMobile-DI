@@ -1,0 +1,112 @@
+package com.segundoaire.presentation.profile
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.segundoaire.domain.model.AppLanguage
+import com.segundoaire.domain.model.ThemeMode
+import com.segundoaire.domain.usecase.GetAppLanguageUseCase
+import com.segundoaire.domain.usecase.ObserveDemoModeUseCase
+import com.segundoaire.domain.usecase.ObserveThemeModeUseCase
+import com.segundoaire.domain.usecase.ResetAppUseCase
+import com.segundoaire.domain.usecase.SetAppLanguageUseCase
+import com.segundoaire.domain.usecase.SetDemoModeUseCase
+import com.segundoaire.domain.usecase.SetThemeModeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.io.IOException
+import javax.inject.Inject
+
+/**
+ * Ajustes de la app. Cada cambio se aplica al momento y no hay botón de guardar.
+ * El idioma lo conserva el sistema; el tema y el modo demo, DataStore, y su
+ * control lo muestra cuando DataStore lo confirma, para no enseñar un valor que
+ * no quedó guardado.
+ */
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val getAppLanguage: GetAppLanguageUseCase,
+    private val setAppLanguage: SetAppLanguageUseCase,
+    observeThemeMode: ObserveThemeModeUseCase,
+    private val setThemeMode: SetThemeModeUseCase,
+    observeDemoMode: ObserveDemoModeUseCase,
+    private val setDemoMode: SetDemoModeUseCase,
+    private val resetApp: ResetAppUseCase
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(SettingsUiState(language = getAppLanguage()))
+    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            observeThemeMode()
+                // Si DataStore falla, el selector queda en Sistema, que es el tema que se aplica
+                .catch { emit(ThemeMode.SYSTEM) }
+                .collect { mode -> _uiState.update { it.copy(themeMode = mode) } }
+        }
+        viewModelScope.launch {
+            observeDemoMode()
+                .catch { emit(false) }
+                .collect { enabled -> _uiState.update { it.copy(isDemoMode = enabled) } }
+        }
+    }
+
+    fun onLanguageSelected(language: AppLanguage) {
+        if (language == _uiState.value.language) return
+        setAppLanguage(language)
+        _uiState.update { it.copy(language = language) }
+    }
+
+    fun onThemeModeSelected(mode: ThemeMode) {
+        if (mode == _uiState.value.themeMode) return
+        viewModelScope.launch {
+            try {
+                setThemeMode(mode)
+            } catch (_: IOException) {
+                // No se pudo guardar: el selector sigue mostrando el tema que de verdad se aplica
+            }
+        }
+    }
+
+    fun onDemoModeChange(enabled: Boolean) {
+        if (enabled == _uiState.value.isDemoMode) return
+        viewModelScope.launch {
+            try {
+                setDemoMode(enabled)
+            } catch (_: IOException) {
+                // No se pudo guardar: el interruptor sigue mostrando lo que de verdad rige
+            }
+        }
+    }
+
+    /**
+     * Borra los datos locales tras la confirmación. Al terminar, [SettingsUiState.isResetCompleted]
+     * pasa a `true` y la pantalla navega a la bienvenida; si falla, no se pierde nada.
+     */
+    fun onResetConfirmed() {
+        val state = _uiState.value
+        if (state.isResetting || state.isResetCompleted) return
+
+        _uiState.update { it.copy(isResetting = true, resetFailed = false) }
+        viewModelScope.launch {
+            val completed = try {
+                resetApp()
+                true
+            } catch (_: IOException) {
+                false
+            }
+            _uiState.update {
+                it.copy(isResetting = false, isResetCompleted = completed, resetFailed = !completed)
+            }
+        }
+    }
+
+    /** Al volver a la pantalla (ON_RESUME): el idioma pudo cambiarse en los ajustes del sistema. */
+    fun onResume() {
+        _uiState.update { it.copy(language = getAppLanguage()) }
+    }
+}
