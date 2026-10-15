@@ -2,16 +2,37 @@ package com.segundoaire.presentation.profile
 
 import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.usecase.GetAppLanguageUseCase
+import com.segundoaire.domain.usecase.ObserveThemeModeUseCase
 import com.segundoaire.domain.usecase.SetAppLanguageUseCase
+import com.segundoaire.domain.usecase.SetThemeModeUseCase
 import com.segundoaire.testing.FakeAppLanguageRepository
+import com.segundoaire.testing.FakeUserPreferencesRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
+
+    private val preferences = FakeUserPreferencesRepository()
+
+    @Before
+    fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
+
+    @After
+    fun tearDown() = Dispatchers.resetMain()
 
     private fun viewModel(languages: FakeAppLanguageRepository) = SettingsViewModel(
         GetAppLanguageUseCase(languages),
-        SetAppLanguageUseCase(languages)
+        SetAppLanguageUseCase(languages),
+        ObserveThemeModeUseCase(preferences),
+        SetThemeModeUseCase(preferences)
     )
 
     @Test
