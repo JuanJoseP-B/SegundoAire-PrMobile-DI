@@ -14,3 +14,6 @@ SEGUNDOAIRE_SPEC.md
 keystore.properties
 *.jks
 *.keystore
+
+# Sesión del compilador de Kotlin
+.kotlin/
