@@ -252,6 +252,11 @@
     <string name="profile_save">Save changes</string>
     <string name="profile_saved">Changes saved</string>
     <string name="profile_save_failed">We couldn\'t save. Try again.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_system">System</string>
+    <string name="settings_language_spanish" translatable="false">Español</string>
+    <string name="settings_language_english" translatable="false">English</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>

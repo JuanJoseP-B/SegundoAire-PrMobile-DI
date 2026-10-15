@@ -255,6 +255,9 @@
     <string name="profile_save">Guardar cambios</string>
     <string name="profile_saved">Cambios guardados</string>
     <string name="profile_save_failed">No pudimos guardar. Inténtalo de nuevo.</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_language_title">Idioma</string>
+    <string name="settings_language_system">Sistema</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>
