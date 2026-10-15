@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.segundoaire.presentation.designsystem.components.focusRing
+import com.segundoaire.presentation.designsystem.components.LimitFontScale
 import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glass
@@ -44,6 +45,7 @@ import com.segundoaire.presentation.designsystem.theme.glass
 private val TabMinHeight = 56.dp
 private val TabIconSize = 24.dp
 private const val IndicatorAlpha = 0.6f
+private const val LabelMaxFontScale = 1.3f
 
 /**
  * Barra inferior flotante de DESIGN_SYSTEM.md §5: vidrio `Level3` con `radiusFull`
@@ -136,15 +138,18 @@ fun BottomNavBar(
                     tint = tint,
                     modifier = Modifier.size(TabIconSize)
                 )
-                Text(
-                    text = label,
-                    style = SegundoAireTheme.typography.labelSm,
-                    color = tint,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    // La pestaña ya se anuncia con su contentDescription
-                    modifier = Modifier.clearAndSetSemantics {}
-                )
+                // La barra tiene ancho fijo por pestaña: más de 1.3× recortaría "Progreso"
+                LimitFontScale(max = LabelMaxFontScale) {
+                    Text(
+                        text = label,
+                        style = SegundoAireTheme.typography.labelSm,
+                        color = tint,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        // La pestaña ya se anuncia con su contentDescription
+                        modifier = Modifier.clearAndSetSemantics {}
+                    )
+                }
             }
         }
     }
