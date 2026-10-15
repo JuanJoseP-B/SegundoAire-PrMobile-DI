@@ -11,6 +11,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.segundoaire.domain.model.ThemeMode
 
 // Claro es el predeterminado: es lo que se ve fuera de SegundoAireTheme.
 val LocalSegundoAireColors = staticCompositionLocalOf { LightSegundoAireColors }
@@ -50,6 +51,15 @@ object SegundoAireTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalSegundoAireMotion.current
+}
+
+/** `true` si con este modo se pinta el tema oscuro; [ThemeMode.SYSTEM] sigue al del dispositivo. */
+@Composable
+@ReadOnlyComposable
+fun ThemeMode.isDark(): Boolean = when (this) {
+    ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    ThemeMode.LIGHT -> false
+    ThemeMode.DARK -> true
 }
 
 @Composable
