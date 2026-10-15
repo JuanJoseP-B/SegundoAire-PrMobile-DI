@@ -1,5 +1,6 @@
 package com.segundoaire.domain.repository
 
+import com.segundoaire.domain.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferencesRepository {
@@ -14,4 +15,9 @@ interface UserPreferencesRepository {
     val isDemoMode: Flow<Boolean>
 
     suspend fun setDemoMode(enabled: Boolean)
+
+    /** Tema de la app. [ThemeMode.SYSTEM] es el predeterminado y sigue al del dispositivo. */
+    val themeMode: Flow<ThemeMode>
+
+    suspend fun setThemeMode(mode: ThemeMode)
 }

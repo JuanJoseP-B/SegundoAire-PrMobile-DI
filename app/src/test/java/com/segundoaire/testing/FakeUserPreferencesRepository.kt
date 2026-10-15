@@ -1,5 +1,6 @@
 package com.segundoaire.testing
 
+import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,7 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 /** Preferencias en memoria; el test marca el onboarding directamente o con [completeOnboarding]. */
 class FakeUserPreferencesRepository(
     onboardingCompleted: Boolean = false,
-    demoMode: Boolean = false
+    demoMode: Boolean = false,
+    themeMode: ThemeMode = ThemeMode.SYSTEM
 ) : UserPreferencesRepository {
     private val completed = MutableStateFlow(onboardingCompleted)
     override val isOnboardingCompleted: Flow<Boolean> = completed
@@ -21,5 +23,12 @@ class FakeUserPreferencesRepository(
 
     override suspend fun setDemoMode(enabled: Boolean) {
         demo.value = enabled
+    }
+
+    private val theme = MutableStateFlow(themeMode)
+    override val themeMode: Flow<ThemeMode> = theme
+
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        theme.value = mode
     }
 }

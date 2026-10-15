@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.RiskMoment
+import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.model.UsageRange
 import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.repository.UserPreferencesRepository
@@ -309,4 +310,8 @@ private class FakeUserPreferencesRepository : UserPreferencesRepository {
     override val isDemoMode: Flow<Boolean> = MutableStateFlow(false)
 
     override suspend fun setDemoMode(enabled: Boolean) = Unit
+
+    override val themeMode: Flow<ThemeMode> = MutableStateFlow(ThemeMode.SYSTEM)
+
+    override suspend fun setThemeMode(mode: ThemeMode) = Unit
 }
