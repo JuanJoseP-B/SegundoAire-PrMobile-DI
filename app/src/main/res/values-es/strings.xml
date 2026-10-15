@@ -272,6 +272,17 @@
     <string name="tutorial_next">Siguiente</string>
     <string name="tutorial_done">Listo</string>
     <string name="tutorial_page_description">Tarjeta %1$d de %2$d</string>
+    <string name="settings_demo_title">Modo demo</string>
+    <string name="settings_demo_message">Progreso muestra datos de ejemplo. Tu historial real no se toca.</string>
+    <string name="settings_reset_title">Reiniciar app</string>
+    <string name="settings_reset_message">Borra tu perfil, tus apps y tu progreso, y empieza de nuevo.</string>
+    <string name="settings_reset_action">Reiniciar app</string>
+    <string name="settings_reset_working">Reiniciando…</string>
+    <string name="settings_reset_failed">No pudimos reiniciar la app. Inténtalo de nuevo.</string>
+    <string name="settings_reset_dialog_title">¿Reiniciar la app?</string>
+    <string name="settings_reset_dialog_message">Esto borra tu perfil, tus apps y tu progreso. Tus permisos del sistema se conservan.</string>
+    <string name="settings_reset_confirm">Reiniciar</string>
+    <string name="settings_reset_cancel">Cancelar</string>
     <string-array name="motivation_focus">
         <item>Tu atención es tuya. Cada pausa le devuelve un poco de espacio a lo que importa.</item>
         <item>Respira antes de abrir esa app. Lo que haces ahora merece un minuto más.</item>

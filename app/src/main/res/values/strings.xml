@@ -271,6 +271,17 @@
     <string name="tutorial_next">Next</string>
     <string name="tutorial_done">Done</string>
     <string name="tutorial_page_description">Card %1$d of %2$d</string>
+    <string name="settings_demo_title">Demo mode</string>
+    <string name="settings_demo_message">Progress shows sample data. Your real history stays untouched.</string>
+    <string name="settings_reset_title">Reset app</string>
+    <string name="settings_reset_message">Delete your profile, your apps and your progress, and start over.</string>
+    <string name="settings_reset_action">Reset app</string>
+    <string name="settings_reset_working">Resetting…</string>
+    <string name="settings_reset_failed">We couldn\'t reset the app. Try again.</string>
+    <string name="settings_reset_dialog_title">Reset the app?</string>
+    <string name="settings_reset_dialog_message">This deletes your profile, your apps and your progress. Your system permissions stay as they are.</string>
+    <string name="settings_reset_confirm">Reset</string>
+    <string name="settings_reset_cancel">Cancel</string>
     <string-array name="motivation_focus">
         <item>Your attention is yours. Every pause gives a little room back to what matters.</item>
         <item>Take a breath before you open that app. What you\'re doing deserves one more minute.</item>
