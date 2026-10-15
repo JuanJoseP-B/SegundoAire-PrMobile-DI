@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -18,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun ProfileRoute(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
+    onOpenTutorial: () -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -26,10 +28,12 @@ fun ProfileRoute(
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { settingsViewModel.onResume() }
 
+    val currentOpenTutorial by rememberUpdatedState(onOpenTutorial)
     val settingsActions = remember(settingsViewModel) {
         SettingsActions(
             onLanguageSelected = settingsViewModel::onLanguageSelected,
-            onThemeModeSelected = settingsViewModel::onThemeModeSelected
+            onThemeModeSelected = settingsViewModel::onThemeModeSelected,
+            onOpenTutorial = { currentOpenTutorial() }
         )
     }
 

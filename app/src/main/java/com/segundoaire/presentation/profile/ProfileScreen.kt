@@ -54,7 +54,8 @@ private val SkeletonCardHeight = 128.dp
 @Immutable
 class SettingsActions(
     val onLanguageSelected: (AppLanguage) -> Unit = {},
-    val onThemeModeSelected: (ThemeMode) -> Unit = {}
+    val onThemeModeSelected: (ThemeMode) -> Unit = {},
+    val onOpenTutorial: () -> Unit = {}
 )
 
 /**
@@ -222,6 +223,29 @@ private fun SettingsSection(
         )
         LanguageCard(language = settings.language, onLanguageSelected = actions.onLanguageSelected)
         ThemeCard(themeMode = settings.themeMode, onThemeModeSelected = actions.onThemeModeSelected)
+        TutorialEntryCard(onClick = actions.onOpenTutorial)
+    }
+}
+
+/** Abre el tutorial: solo se llega a él desde aquí, nunca aparece solo. */
+@Composable
+private fun TutorialEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val colors = SegundoAireTheme.colors
+    GlassCard(
+        modifier = modifier.fillMaxWidth(),
+        level = GlassLevel.Level2,
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(R.string.settings_tutorial_title),
+            style = SegundoAireTheme.typography.titleMd,
+            color = colors.onBackground
+        )
+        Text(
+            text = stringResource(R.string.settings_tutorial_message),
+            style = SegundoAireTheme.typography.bodyMd,
+            color = colors.onBackground
+        )
     }
 }
 

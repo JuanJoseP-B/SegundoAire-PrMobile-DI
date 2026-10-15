@@ -31,10 +31,12 @@ import com.segundoaire.presentation.onboarding.onboardingGraph
 import com.segundoaire.presentation.setup.AppSelectionRoute
 import com.segundoaire.presentation.setup.SetupGraphRoute
 import com.segundoaire.presentation.setup.setupGraph
+import com.segundoaire.presentation.tutorial.TutorialScreen
 
 object Routes {
     const val HOME = "home"
     const val EDIT_APPS = "home/edit-apps"
+    const val TUTORIAL = "home/tutorial"
 }
 
 private fun StartDestination.route(): String = when (this) {
@@ -114,6 +116,7 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
         composable(Routes.HOME) {
             MainShell(
                 onEditApps = { navController.navigate(Routes.EDIT_APPS) },
+                onOpenTutorial = { navController.navigate(Routes.TUTORIAL) },
                 // Solo en debug: pulsación larga en el título del Panel
                 onOpenComponentCatalog = if (ComponentCatalogAvailable) {
                     { navController.navigate(ComponentCatalogRoute) }
@@ -127,6 +130,13 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             AppSelectionRoute(
                 onCompleted = { navController.popBackStack() },
                 editing = true,
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.TUTORIAL) {
+            // Solo se abre desde Ajustes; terminar o volver regresa a ellos
+            TutorialScreen(
+                onDone = { navController.popBackStack() },
                 onBack = { navController.popBackStack() }
             )
         }
