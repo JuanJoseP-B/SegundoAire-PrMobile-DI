@@ -2,6 +2,8 @@
 
 Plan de trabajo por fases y tareas. Cada fase es una rama `feature/fase-N-slug` que sale de `develop` y vuelve por PR. Cada tarea produce uno o más commits lógicos. Marca `[x]` al terminar.
 
+> **Desde la Fase 17 el trabajo es por prompts del Director sobre la rama `feature/diseno`** (ver `CLAUDE.md`). Este documento queda como histórico: ya no se marca por cada cambio.
+
 **Estado inicial (12 oct 2026):** fases 1–7 completas, 12 commits en el historial. Meta: 100 commits o más al llegar a `v1.0.0`.
 
 | Fase | Rama | Commits est. |
