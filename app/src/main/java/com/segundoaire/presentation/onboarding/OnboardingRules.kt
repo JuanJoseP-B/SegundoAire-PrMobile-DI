@@ -57,7 +57,9 @@ internal object OnboardingRules {
             minimumFractionDigits = 0
             maximumFractionDigits = 1
         }.format(hours)
-        val yearHours = NumberFormat.getIntegerInstance(locale).format(HoursPerYear)
+        // 8.760 / 8,760 con el separador del idioma: el prototipo agrupa también las cifras de cuatro dígitos
+        val separator = java.text.DecimalFormatSymbols.getInstance(locale).groupingSeparator
+        val yearHours = "${HoursPerYear / 1000}$separator${(HoursPerYear % 1000).toString().padStart(3, '0')}"
         return "$hoursText h × $DaysPerYear × $ProjectionYears ÷ $yearHours"
     }
 
