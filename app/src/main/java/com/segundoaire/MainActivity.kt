@@ -17,7 +17,7 @@ import com.segundoaire.presentation.designsystem.theme.DarkSegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.LightSegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.isDark
-import com.segundoaire.presentation.navigation.AppNavHost
+import com.segundoaire.presentation.navigation.AppRoot
 import com.segundoaire.presentation.navigation.AppViewModel
 import com.segundoaire.presentation.navigation.ThemeViewModel
 import com.segundoaire.presentation.splash.SplashGate
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private val themeViewModel: ThemeViewModel by viewModels()
 
-    // Misma instancia que usa AppNavHost: la actividad es su dueña
+    // Misma instancia que usa AppRoot: la actividad es su dueña
     private val appViewModel: AppViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 SegundoAireTheme(darkTheme = darkTheme) {
-                    AppNavHost(appViewModel)
+                    AppRoot(appViewModel)
                 }
             }
         }
