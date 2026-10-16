@@ -161,13 +161,13 @@ Aceptación: cero hex fuera de `Color.kt`, todas las pantallas con previews, tes
 
 Objetivo: implementar la pantalla de splash con coreografía de respiración y revelar la marca.
 
-- [ ] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
-- [ ] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
-- [ ] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
-- [ ] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
-- [ ] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
-- [ ] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
-- [ ] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
+- [x] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
+- [x] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
+- [x] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
+- [x] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
+- [x] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
+- [x] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
+- [x] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
 
 Aceptación: splash anima 6 s (o 1.2 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
 
