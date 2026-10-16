@@ -53,8 +53,8 @@ data class SegundoAireColors(
     // Luz del suelo según el momento del día (ya con su opacidad)
     val skyMorning: Color,
     val skyAfternoon: Color,
-    val skyDusk: Color,
-    val skyNight: Color
+    val skyNight: Color,
+    val skyLate: Color
 )
 
 // Claro (predeterminado)
@@ -102,8 +102,8 @@ val LightSegundoAireColors = SegundoAireColors(
     firefly = Color(0xFFE6F5B0),
     skyMorning = Color(0x73FFC496),
     skyAfternoon = Color(0x73FFF6BE),
-    skyDusk = Color(0x73F4A06E),
-    skyNight = Color(0x9E0D1F23)
+    skyNight = Color(0xBF0E1640),
+    skyLate = Color(0x9E0D1F23)
 )
 
 val DarkSegundoAireColors = SegundoAireColors(
@@ -150,6 +150,6 @@ val DarkSegundoAireColors = SegundoAireColors(
     firefly = Color(0xFFE6F5B0),
     skyMorning = Color(0x73FFC496),
     skyAfternoon = Color(0x73FFF6BE),
-    skyDusk = Color(0x73F4A06E),
-    skyNight = Color(0x9E040C0E)
+    skyNight = Color(0xBF050A24),
+    skyLate = Color(0x9E040C0E)
 )

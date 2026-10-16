@@ -66,7 +66,7 @@ private const val FireflyPeriodMillis = 4000
 private const val SkyBleed = 300f
 
 /** Luz del suelo y su desvanecimiento hacia arriba, como fracción del alto. */
-private val SkyFade = floatArrayOf(0.55f, 0.55f, 0.55f, 0.58f)
+private val SkyFade = floatArrayOf(0.55f, 0.55f, 0.7f, 0.58f)
 
 /** Color del cielo según el momento elegido (0–3), o `null` sin elección. */
 @Composable
@@ -75,8 +75,8 @@ internal fun skyColorFor(moment: Int): Color {
     return when (moment) {
         0 -> colors.skyMorning
         1 -> colors.skyAfternoon
-        2 -> colors.skyDusk
-        3 -> colors.skyNight
+        2 -> colors.skyNight
+        3 -> colors.skyLate
         else -> Color.Transparent
     }
 }
