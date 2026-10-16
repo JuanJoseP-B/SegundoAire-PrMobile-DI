@@ -76,6 +76,10 @@ class ThemeViewModelTest {
 
         override suspend fun completeOnboarding() = Unit
 
+        override val plantedAtMillis: Flow<Long?> = flowOf(null)
+
+        override suspend fun markPlanted(atMillis: Long) = Unit
+
         override val isDemoMode: Flow<Boolean> = flowOf(false)
 
         override suspend fun setDemoMode(enabled: Boolean) = Unit

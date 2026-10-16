@@ -12,6 +12,9 @@ import com.segundoaire.data.repository.AppResetRepositoryImpl
 import com.segundoaire.data.repository.BlockSessionRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
 import com.segundoaire.data.repository.InterceptionEventRepositoryImpl
+import com.segundoaire.data.tree.InstallTimeSource
+import com.segundoaire.data.tree.PackageInstallTimeSource
+import com.segundoaire.data.tree.TreeRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
 import com.segundoaire.domain.repository.AppLanguageRepository
 import com.segundoaire.domain.repository.AppResetRepository
@@ -20,6 +23,7 @@ import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import com.segundoaire.domain.repository.OverlayPermissionRepository
+import com.segundoaire.domain.repository.TreeRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
 import com.segundoaire.domain.repository.UserProfileRepository
 import dagger.Binds
@@ -97,4 +101,16 @@ abstract class RepositoryModule {
     abstract fun bindBlockSessionRepository(
         impl: BlockSessionRepositoryImpl
     ): BlockSessionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTreeRepository(
+        impl: TreeRepositoryImpl
+    ): TreeRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInstallTimeSource(
+        impl: PackageInstallTimeSource
+    ): InstallTimeSource
 }

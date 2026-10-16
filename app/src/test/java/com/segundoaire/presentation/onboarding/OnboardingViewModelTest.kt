@@ -11,6 +11,7 @@ import com.segundoaire.domain.usecase.SaveUserProfileUseCase
 import com.segundoaire.domain.usecase.SuggestRigorUseCase
 import com.segundoaire.testing.FakeUserPreferencesRepository
 import com.segundoaire.testing.FakeUserProfileRepository
+import com.segundoaire.testing.MutableClock
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -18,17 +19,19 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.Instant
 
 class OnboardingViewModelTest {
 
     private val profiles = FakeUserProfileRepository()
     private val preferences = FakeUserPreferencesRepository()
+    private val clock = MutableClock(Instant.parse("2026-10-16T10:00:00Z"))
 
     private fun viewModel(savedStateHandle: SavedStateHandle = SavedStateHandle()) = OnboardingViewModel(
         savedStateHandle = savedStateHandle,
         suggestRigor = SuggestRigorUseCase(),
         saveUserProfile = SaveUserProfileUseCase(profiles),
-        completeOnboarding = CompleteOnboardingUseCase(preferences)
+        completeOnboarding = CompleteOnboardingUseCase(preferences, clock)
     )
 
     private fun OnboardingViewModel.answerEverything() {
@@ -201,6 +204,7 @@ class OnboardingViewModelTest {
             profiles.saved
         )
         assertTrue(preferences.isOnboardingCompleted.first())
+        assertEquals(clock.millis(), preferences.planted.value)
         assertFalse(viewModel.uiState.value.isSaving)
     }
 
