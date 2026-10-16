@@ -149,11 +149,11 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 
 Objetivo: validar la nueva paleta en modo claro y asegurar que todos los componentes usan tokens.
 
-- [ ] **F16.5-T1** `Color.kt`: agregar los tokens nuevos (background, onBackgroundMuted, surfaceGlass, glass1–3, mint).
-- [ ] **F16.5-T2** `GlassCard` y componentes glass: corregir rellenos con los nuevos tokens (glass1–3 blanco al 38/58/74 %).
-- [ ] **F16.5-T3** Barrer pantallas: eliminar hex sueltos, usar solo `SegundoAireTheme.colors.*`.
-- [ ] **F16.5-T4** Tests de contraste WCAG AA: pares de color críticos con `colorContrast()` (uso interno, no publicado).
-- [ ] **F16.5-T5** Previews: todas las pantallas en claro y oscuro; verificar legibilidad.
+- [x] **F16.5-T1** `Color.kt`: agregar los tokens nuevos (background, onBackgroundMuted, surfaceGlass, glass1–3, mint).
+- [x] **F16.5-T2** `GlassCard` y componentes glass: corregir rellenos con los nuevos tokens (glass1–3 blanco al 38/58/74 %).
+- [x] **F16.5-T3** Barrer pantallas: eliminar hex sueltos, usar solo `SegundoAireTheme.colors.*`.
+- [x] **F16.5-T4** Tests de contraste WCAG AA: pares de color críticos con `colorContrast()` (uso interno, no publicado).
+- [x] **F16.5-T5** Previews: todas las pantallas en claro y oscuro; verificar legibilidad.
 
 Aceptación: cero hex fuera de `Color.kt`, todas las pantallas con previews, tests de contraste pasan.
 
