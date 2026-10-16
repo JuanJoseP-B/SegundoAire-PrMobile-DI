@@ -66,6 +66,13 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | `warningContainer` | `0xFFF2E2BE` | `0xFF33290F` | Fondo de banners de permisos |
 | `scrim` | `0x52051F20` | `0x99040C0E` | Velo del GlassWall (bajo el blur) |
 | `app1` … `app5` | `0xFFC98B6B` `0xFF6B8FC9` `0xFFB58BC9` `0xFFC9B26B` `0xFF6BC9B5` | `0xFFB07A5F` `0xFF5F7DB0` `0xFF9C7AB0` `0xFFB09B5F` `0xFF5FB09E` | Íconos de app placeholder |
+| `gold` | `0xFFC9B26B` | `0xFFB09B5F` | Onboarding del árbol: follaje marchito, centro de las flores, pétalos |
+| `blossom` | `0xFFDAF1DE` | `0xFFD0E8D6` | Onboarding del árbol: pétalos de las flores, semilla del telón |
+| `firefly` | `0xFFE6F5B0` | `0xFFE6F5B0` | Onboarding del árbol: luciérnagas de la noche y la madrugada |
+| `skyMorning` | `0x73FFC496` | `0x73FFC496` | Luz del suelo al elegir "Mañana" (45 %) |
+| `skyAfternoon` | `0x73FFF6BE` | `0x73FFF6BE` | Luz del suelo al elegir "Tarde" (45 %) |
+| `skyDusk` | `0x73F4A06E` | `0x73F4A06E` | Luz del suelo al elegir "Noche" (45 %) |
+| `skyNight` | `0x9E0D1F23` | `0x9E040C0E` | Luz del suelo al elegir "Madrugada" (62 %) |
 
 ### 3.2 Reglas de uso
 
@@ -120,6 +127,18 @@ Fuente: **Manrope** variable en `res/font/manrope_variable.ttf` (Google Fonts), 
 | `labelSm` | 11 / 16 sp | 500 | 0.06 em (0.08 em en mayúsculas) | Metadatos y eyebrows |
 
 En Compose, `letterSpacing` en em: `(-0.02).em`. Mapear también al `Typography` de M3 (displayLarge = `displayTimer`, displayMedium = `displayImpact`, etc.) para componentes M3.
+
+### 4.1 Serif del onboarding: Fraunces
+
+Los títulos del onboarding "Lo que crece cuando pausas" van en **Fraunces** (Google Fonts, licencia OFL): `res/font/fraunces_variable.ttf` y `fraunces_italic_variable.ttf`, con el eje óptico `opsz` fijo en 96 y `wght` por peso (`FrauncesFontFamily`). El resto de la app sigue en Manrope.
+
+| Estilo | Tamaño / interlineado | Peso | Tracking | Uso |
+|---|---|---|---|---|
+| `serifTitle` | 34 / 40 sp | 500 | -0.015 em | Título de cada paso del onboarding |
+| `serifEmphasis` | (hereda) | 400 cursiva | — | Palabra clave del título, en `primary` (`*palabra*` en las cadenas) |
+| `serif(size, lineHeight, …)` | a medida | 400 o 500 | a medida | Cifras grandes (56 / 60 y 52 / 56), frases en cursiva (22, 26 y 20), wordmark (30), cierre (40 / 46) |
+
+En las cadenas la palabra clave se marca con asteriscos: `Respira *antes* de abrir`. Mindful y Strict no se traducen.
 
 ---
 
@@ -204,6 +223,31 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 
 ---
 
+
+### 8.1 Movimiento del onboarding del árbol
+
+Tokens añadidos para "Lo que crece cuando pausas" (prototipo `docs/design/onboarding-arbol`). Con reducir movimiento todos los finitos pasan a `tween(150)` y los infinitos no se arrancan (el árbol aparece en su etapa, sin balanceo, ondas, luces ni hojas que caen; los contadores muestran el valor final).
+
+| Token | Valores | Uso |
+|---|---|---|
+| `Motion.grow` | `tween(900, CubicBezier(.45, 0, .2, 1))`, retraso por rama; sale en 350 ms; los anillos de la revelación usan 1800 ms | Ramas, raíces, anillos y enredadera que se dibujan |
+| `Motion.bloom` | `tween(d, CubicBezier(.34, 1.56, .64, 1))` con `d` = 760 follaje, 640 hojas, 520 hojas del nombre, 700 flores, 600 semilla, 520 hoja-pulgar y opciones, 420 "pop"; al salir, `ease-in` en 280 / 260 / 220 / 280 ms | Brotar con rebote suave |
+| `Motion.sway` | `tween(7000, ease-in-out)`, ida y vuelta, ±0.8° sobre (195, 515) | Balanceo continuo del árbol |
+| `Motion.drift(d)` | `tween(d, ease-in-out)`, ida y vuelta: 22 s y 28 s luces de fondo, 4 s luciérnagas | Vaivén lento decorativo |
+| `Motion.ripple` | `tween(4000, CubicBezier(.2, .6, .3, 1))`, desfase de 1.3 s entre tres ondas | Ondas del suelo en la semilla |
+| `Motion.gust` | tiempo lineal 0→1 en 2.4–3.2 s; cada tramo usa `CubicBezier(.3, .1, .4, 1)` (`GustEasing`) | Hojas y pétalos que caen en cada cambio de paso |
+| `Motion.curtain` | `tween(900, CubicBezier(.7, 0, .2, 1))` | Telón del login y del cierre |
+| `Motion.settle` | `tween(1000, CubicBezier(.3, 1.06, .5, 1))` | Árbol y colina cambian de lugar por paso |
+| `Motion.layer` / `layerFade` | 620 ms `CubicBezier(.22, 1, .36, 1)` el desplazamiento; 380 ms `ease-out` el fundido (la capa que entra espera 180 ms) | Cambio de paso: texto a media velocidad y contenido a velocidad completa |
+| `Motion.rise` | `tween(d, CubicBezier(.22, 1, .36, 1))`, 520–600 ms | Filas del plan, textos tardíos de la revelación |
+| `Motion.fade(d)` | `tween(d, CubicBezier(.25, .1, .25, 1))` | Opacidad y color (cielo, puntos, saludo, marchitado) |
+| `Motion.count` | `tween(d, CubicBezier(.33, 1, .68, 1))`: contador 1800 ms, "buena noticia" 1200 ms | Contadores de la revelación |
+| `Motion.shake` | lineal 380 ms; `shakeOffset` interpola ±6 / 5 / 3 / 2 dp con `ShakeEasing` | Tercera meta no permitida |
+| `Motion.breathHalf` | `tween(4000, ease-in-out)` por mitad: 3 ciclos de 8 s, escala 0.62 ↔ 1 | Respiración de la copa (`Motion.breath` sigue siendo el bucle de 4 + 4 s) |
+| `Motion.dot` / `spin` | 400 ms `CubicBezier(.34, 1.3, .64, 1)` / 900 ms lineal infinito | Puntos de la bienvenida / semilla del botón ocupado |
+
+---
+
 ## 9. Splash El Respiro
 
 La pantalla de splash presenta una animación de respiración que revela la marca de SegundoAire.
@@ -259,3 +303,46 @@ La oscilación del borde del blob utiliza una **fase lineal interna** como únic
 ## 12. Componentes de referencia
 
 Inventario a implementar en la Fase 10 (detalle visual en el design system): PrimaryButton (morph Iniciar ↔ Terminar), SecondaryButton, TextButton, ProviderButton, GlassCard (3 niveles), AppToggleRow, SegmentedSelector, RigorSelector, TimerRing, GlassTextField, ChoiceChip, RangeSelector, AnimatedCounter, BreathingCircle, HoldToCommitButton, RevealText, PermissionBanner, EmptyState, Skeleton, BottomNavBar (4 tabs), QuestionScaffold, GlassWall (Mindful / Strict).
+
+## 13. Onboarding "Lo que crece cuando pausas"
+
+Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustarlo; sobrante del mismo color de fondo). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso. Referencias: `docs/design/onboarding-arbol/`.
+
+| # | Paso | Árbol / escena |
+|---|---|---|
+| 0–2 | Bienvenida (semilla, brote, copa) | Escala 1.55, opacidad 0.75, suelo en y = 470 |
+| 3 | Nombre | Una hoja por letra |
+| 4 | Objetivo (máx. 2) | Una flor por meta; la tercera sacude la opción |
+| 5 | Uso diario | Selector en rama con hoja-pulgar; marchitado 0 / 2 / 5 / 8 / 12 |
+| 6 | Momento | Luz del suelo; luciérnagas en noche y madrugada |
+| 7 | Revelación | Anillos, contador 1,8 s, fórmula 1,9 s, buena noticia 2,6 s (`h × 365 × 50 ÷ 8.760`) |
+| 8 | Respiración | La copa de 0.62 a 1 en 8 s, tres ciclos; "Saltar" → "Continuar" a los 24 s |
+| 9 | Plan | Vidrio con cuatro filas cada 90 ms |
+| 10 | Compromiso | Mantener 1,5 s; al soltar se vacía en 300 ms; florece todo y avanza a los 1,6 s |
+| 11 | Permisos | Accesibilidad y mostrar sobre otras apps (requeridos) y notificaciones (opcional) |
+| 12 | Login | Telón `secondaryDeep` que baja en 900 ms y se retira a 270 dp; botón → círculo de 52 dp |
+| 13 | Cierre | El telón cubre todo: "Todo listo, {nombre}." |
+
+La barra de progreso es una enredadera que se dibuja de (paso − 2) / 9 en los pasos 3–11.
+
+### Sonido y háptica
+
+`SoundManager` sintetiza los sonidos (`SoundSynth`, sin archivos de audio) y los reproduce como sonificación: respeta el volumen y el modo silencio del teléfono. Interruptor de sonido arriba a la derecha, encendido por defecto. Volumen bajo (`MasterGain`).
+
+| Evento | Sonido | Háptica |
+|---|---|---|
+| Avanzar de paso | Viento (pasa-banda 400 → 900 Hz, 1,2 s) y dos notas (Do5, Sol5) | `ContextClick` |
+| Elegir meta (florece) | Arpegio Mi5, Sol5, Si5 | `Confirm` |
+| Quitar meta, elegir horas, marcas del 33 % y 66 % | **Gota** (620 → 470 Hz en 320 ms y armónico 1240 → 940 Hz) | `TextHandleMove` |
+| Elegir momento, activar permiso | Pop (740 → 1180 Hz, 140 ms) | `ContextClick` / `Confirm` |
+| Completar el compromiso y cerrar el login | Acorde abierto (Sol4, Si4, Re5, Sol5) | `LongPress` y patrón 30 / 40 / 60 ms |
+| Tercera meta no permitida | Tono grave (220 → 180 Hz) | `Reject` |
+| Escribir el nombre | **Sin sonido** | `TextHandleMove` por letra |
+
+El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo reemplaza en todos los lugares.
+
+### Notas de diseño
+
+- Fondo: el prototipo usa `0xFFDAF1DE`; la app usa `background` (`0xFFEAF4EC`), el fondo vigente tras la Fase 16.5.
+- Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
+- Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.
