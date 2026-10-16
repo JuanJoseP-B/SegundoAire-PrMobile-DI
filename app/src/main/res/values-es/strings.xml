@@ -325,4 +325,125 @@
         <item>Tu día es tuyo. Empieza por el próximo minuto.</item>
         <item>Notar es el primer paso. Ya lo estás haciendo.</item>
     </string-array>
+
+    <!-- Onboarding "Lo que crece cuando pausas" -->
+    <string name="onb_step_of">Paso %1$d de %2$d</string>
+    <string name="onb_sound">Sonido</string>
+    <string name="onb_next">Siguiente</string>
+    <string name="onb_start">Empezar</string>
+
+    <string name="onb_welcome_1_eyebrow">01 · Semilla</string>
+    <string name="onb_welcome_1_title">Respira *antes* de abrir</string>
+    <string name="onb_welcome_1_body">Una pausa breve entre tú y las apps que te atrapan.</string>
+    <string name="onb_welcome_2_eyebrow">02 · Brote</string>
+    <string name="onb_welcome_2_title">Una pausa, *no* un castigo</string>
+    <string name="onb_welcome_2_body">Antes de abrir una app que elijas, tendrás un momento para decidir.</string>
+    <string name="onb_welcome_3_eyebrow">03 · Copa</string>
+    <string name="onb_welcome_3_title">Recupera *tu tiempo*</string>
+    <string name="onb_welcome_3_body">Cada pausa que eliges hace crecer algo tuyo.</string>
+
+    <string name="onb_name_title">¿Cómo te *llamamos*?</string>
+    <string name="onb_name_subtitle">Cada letra le da una hoja a tu árbol.</string>
+    <string name="onb_name_label">Tu nombre</string>
+    <string name="onb_name_placeholder">Escribe tu nombre</string>
+    <string name="onb_name_greeting">Encantados, %1$s.</string>
+    <string name="onb_name_fallback">Juan</string>
+
+    <string name="onb_goals_eyebrow">Paso %1$d de %2$d · Elige hasta 2</string>
+    <string name="onb_goals_title">¿Qué quieres *lograr*?</string>
+    <string name="onb_goals_title_named">¿Qué quieres *lograr*, %1$s?</string>
+    <string name="onb_goals_hint">Ya elegiste 2. Quita una para cambiar.</string>
+    <string name="onb_goal_social">Pasar menos tiempo en redes</string>
+    <string name="onb_goal_sleep">Dormir mejor</string>
+    <string name="onb_goal_focus">Concentrarme al estudiar</string>
+    <string name="onb_goal_presence">Estar más presente</string>
+    <string name="onb_goal_anxiety">Bajar la ansiedad</string>
+
+    <string name="onb_usage_title">¿Cuánto tiempo pasas en el *celular*?</string>
+    <string name="onb_usage_subtitle">Un cálculo aproximado basta.</string>
+    <string name="onb_usage_group">Horas al día</string>
+    <string name="onb_usage_per_day">al día</string>
+    <string name="onb_usage_0">menos de 2 h</string>
+    <string name="onb_usage_1">2 – 4 h</string>
+    <string name="onb_usage_2">4 – 6 h</string>
+    <string name="onb_usage_3">6 – 8 h</string>
+    <string name="onb_usage_4">más de 8 h</string>
+    <string name="onb_usage_cap_0">&lt;2</string>
+    <string name="onb_usage_cap_1">2–4</string>
+    <string name="onb_usage_cap_2">4–6</string>
+    <string name="onb_usage_cap_3">6–8</string>
+    <string name="onb_usage_cap_4">8+</string>
+
+    <string name="onb_moment_title">¿Cuándo te *atrapa* más?</string>
+    <string name="onb_moment_subtitle">Ahí pondremos tu primer bloque.</string>
+    <string name="onb_moment_group">Momento del día</string>
+    <string name="onb_moment_morning">Mañana</string>
+    <string name="onb_moment_afternoon">Tarde</string>
+    <string name="onb_moment_evening">Noche</string>
+    <string name="onb_moment_late">Madrugada</string>
+    <string name="onb_moment_morning_hours">6 – 12 h</string>
+    <string name="onb_moment_afternoon_hours">12 – 18 h</string>
+    <string name="onb_moment_evening_hours">18 – 24 h</string>
+    <string name="onb_moment_late_hours">0 – 6 h</string>
+
+    <string name="onb_reveal_title">No es para asustarte. Es para que lo *veas*.</string>
+    <string name="onb_reveal_years">años</string>
+    <string name="onb_reveal_caption">frente a una pantalla en los próximos 50 años, a tu ritmo actual.</string>
+    <string name="onb_reveal_good_eyebrow">La buena noticia</string>
+    <string name="onb_reveal_good">Si recuperas 1 h al día, ganas *%1$s años* para ti.</string>
+    <string name="onb_reveal_description">%1$s años frente a una pantalla en los próximos 50 años</string>
+
+    <string name="onb_breath_title">Respira *con* tu árbol</string>
+    <string name="onb_breath_subtitle">Tres respiraciones. Así se sentirá cada pausa.</string>
+    <string name="onb_breath_in">Inhala</string>
+    <string name="onb_breath_out">Exhala</string>
+    <string name="onb_breath_skip">Saltar</string>
+
+    <string name="onb_plan_title">El plan de *%1$s*</string>
+    <string name="onb_plan_subtitle">Hecho con lo que nos contaste. Lo puedes cambiar cuando quieras.</string>
+    <string name="onb_plan_goals">Tus metas</string>
+    <string name="onb_plan_goals_default">Vivir con más calma</string>
+    <string name="onb_plan_block">Primer bloque de enfoque</string>
+    <string name="onb_plan_block_morning">Mañana · 07:00 – 08:00</string>
+    <string name="onb_plan_block_afternoon">Tarde · 14:00 – 15:00</string>
+    <string name="onb_plan_block_evening">Noche · 21:00 – 22:00</string>
+    <string name="onb_plan_block_late">Madrugada · 00:00 – 01:00</string>
+    <string name="onb_plan_mindful_value">Una pausa de 10 s antes de abrir</string>
+    <string name="onb_plan_strict_value">Sin salida hasta que termine el bloque</string>
+    <string name="onb_plan_daily">Meta diaria</string>
+    <string name="onb_plan_daily_value">Recuperar 1 h al día</string>
+    <string name="onb_plan_accept">Me gusta este plan</string>
+
+    <string name="onb_commit_title">Echa *raíces*</string>
+    <string name="onb_commit_quote">“Yo, %1$s, me comprometo a darme un segundo aire antes de abrir lo que me distrae.”</string>
+    <string name="onb_commit_signature">— %1$s · %2$s</string>
+    <string name="onb_commit_hold">Mantén para comprometerte</string>
+    <string name="onb_commit_done">Comprometido</string>
+    <string name="onb_commit_description">Mantén presionado para comprometerte</string>
+    <string name="onb_commit_action">Comprometerme</string>
+
+    <string name="onb_perms_title">Un último *paso*</string>
+    <string name="onb_perms_subtitle">SegundoAire necesita esto para poder darte la pausa.</string>
+    <string name="onb_perm_accessibility_title">Accesibilidad</string>
+    <string name="onb_perm_accessibility_desc">Para saber qué app se abre. Requerido.</string>
+    <string name="onb_perm_overlay_title">Mostrar sobre otras apps</string>
+    <string name="onb_perm_overlay_desc">Para mostrar la pausa a tiempo. Requerido.</string>
+    <string name="onb_perm_notifications_title">Notificaciones</string>
+    <string name="onb_perm_notifications_desc">Para avisarte del bloque. Opcional.</string>
+    <string name="onb_perm_enable">Activar</string>
+    <string name="onb_perm_granted">Listo</string>
+
+    <string name="onb_login_title">Guarda *tu árbol*</string>
+    <string name="onb_login_subtitle">Crea tu cuenta para no perder tu progreso.</string>
+    <string name="onb_login_email_placeholder" translatable="false">tu@correo.com</string>
+    <string name="onb_login_password_placeholder">Mínimo 8 caracteres</string>
+    <string name="onb_login_create">Crear cuenta</string>
+    <string name="onb_login_connecting">Creando tu cuenta</string>
+    <string name="onb_login_web">Continuar con cuenta web</string>
+    <string name="onb_login_device">Continuar con este dispositivo</string>
+    <string name="onb_login_mail">Continuar con correo</string>
+    <string name="onb_login_guest">Continuar sin cuenta</string>
+    <string name="onb_curtain_tagline">Tu árbol ya echó raíces.</string>
+    <string name="onb_done_title">Todo listo, *%1$s*.</string>
+    <string name="onb_done_body">Tu árbol te espera en el panel principal.\nCrece con cada minuto que recuperas.</string>
 </resources>
