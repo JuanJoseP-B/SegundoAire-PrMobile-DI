@@ -325,4 +325,6 @@
         <item>Tu día es tuyo. Empieza por el próximo minuto.</item>
         <item>Notar es el primer paso. Ya lo estás haciendo.</item>
     </string-array>
+
+    <string name="splash_skip">Omitir intro</string>
 </resources>

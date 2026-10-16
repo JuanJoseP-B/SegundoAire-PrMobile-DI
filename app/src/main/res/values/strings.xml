@@ -324,4 +324,6 @@
         <item>Your day is yours. Start with the next minute.</item>
         <item>Noticing is the first step. You\'re already doing it.</item>
     </string-array>
+
+    <string name="splash_skip">Skip intro</string>
 </resources>
