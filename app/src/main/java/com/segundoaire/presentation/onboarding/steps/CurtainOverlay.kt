@@ -1,7 +1,5 @@
 package com.segundoaire.presentation.onboarding.steps
 
-import android.app.Activity
-import android.content.ContextWrapper
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -17,7 +15,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,7 +29,6 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -40,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
 import com.segundoaire.R
+import com.segundoaire.presentation.designsystem.components.LightStatusBarIcons
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.onboarding.FrameColumn
 import com.segundoaire.presentation.onboarding.LocalFrameColumn
@@ -211,26 +207,6 @@ internal fun CurtainOverlay(
 }
 
 private fun lerp(a: Float, b: Float, t: Float): Float = a + (b - a) * t
-
-/**
- * Mientras el telón oscuro cubre la barra de estado, la hora y la batería pasan a íconos
- * claros; al retirarse (o salir del flujo) vuelven a lo que tenía el tema.
- */
-@Composable
-private fun LightStatusBarIcons(active: Boolean) {
-    val view = LocalView.current
-    if (view.isInEditMode) return
-    DisposableEffect(view, active) {
-        var context = view.context
-        while (context is ContextWrapper && context !is Activity) context = context.baseContext
-        val window = (context as? Activity)?.window
-        if (window == null || !active) return@DisposableEffect onDispose {}
-        val controller = WindowCompat.getInsetsController(window, view)
-        val previous = controller.isAppearanceLightStatusBars
-        controller.isAppearanceLightStatusBars = false
-        onDispose { controller.isAppearanceLightStatusBars = previous }
-    }
-}
 
 /** Silueta del árbol sobre el telón. */
 @Composable
