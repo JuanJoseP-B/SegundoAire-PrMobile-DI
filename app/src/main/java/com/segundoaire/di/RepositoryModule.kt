@@ -1,5 +1,6 @@
 package com.segundoaire.di
 
+import com.segundoaire.data.coach.LocalCoachRepository
 import com.segundoaire.data.local.DatabaseCleaner
 import com.segundoaire.data.local.RoomDatabaseCleaner
 import com.segundoaire.data.locale.AppLanguageRepositoryImpl
@@ -21,6 +22,7 @@ import com.segundoaire.domain.repository.AppResetRepository
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
+import com.segundoaire.domain.repository.CoachRepository
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import com.segundoaire.domain.repository.OverlayPermissionRepository
 import com.segundoaire.domain.repository.TreeRepository
@@ -113,4 +115,10 @@ abstract class RepositoryModule {
     abstract fun bindInstallTimeSource(
         impl: PackageInstallTimeSource
     ): InstallTimeSource
+
+    @Binds
+    @Singleton
+    abstract fun bindCoachRepository(
+        impl: LocalCoachRepository
+    ): CoachRepository
 }
