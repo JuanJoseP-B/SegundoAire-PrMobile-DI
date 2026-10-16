@@ -1,5 +1,7 @@
 package com.segundoaire.presentation.onboarding.steps
 
+import android.app.Activity
+import android.content.ContextWrapper
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -28,6 +31,7 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.onboarding.emphasized
@@ -43,7 +48,7 @@ import com.segundoaire.presentation.onboarding.tree.TreeRules
 /** Dónde está el telón: arriba y recogido, cubriéndolo todo, o retirado a 270 dp con borde curvo. */
 internal enum class CurtainState { Up, Cover, Rest }
 
-private const val CoverHeight = 900f
+private const val CoverHeight = 1000f
 private const val RestHeight = 270f
 private const val Bleed = 300f
 private const val CurveHeight = 80f
@@ -104,6 +109,8 @@ internal fun CurtainOverlay(
         label = "curtainDone"
     )
 
+    LightStatusBarIcons(active = state != CurtainState.Up)
+
     val curveBase = remember { Path() }
     val onVisible by remember { derivedStateOf { state != CurtainState.Up || height.value > 1f } }
     if (!onVisible) return
@@ -119,29 +126,39 @@ internal fun CurtainOverlay(
                 }
             )
     ) {
-        // Telón y borde curvo; se extienden por encima del marco para cubrir la barra de estado
+        // Telón y borde curvo; se extienden más allá del marco por arriba y por los lados para
+        // cubrir la barra de estado y las franjas que deja el ajuste a la pantalla
         Canvas(
             Modifier
-                .offset(y = (-Bleed).dp)
-                .requiredSize(TreeRules.FrameWidth.dp, (CoverHeight + Bleed + CurveHeight).dp)
+                .offset(x = (-Bleed).dp, y = (-Bleed).dp)
+                .requiredSize((TreeRules.FrameWidth + 2 * Bleed).dp, (CoverHeight + Bleed + CurveHeight).dp)
         ) {
             scale(density, Offset.Zero) {
-                translate(top = Bleed) {
+                translate(left = Bleed, top = Bleed) {
                     val h = height.value
-                    drawRect(colors.secondaryDeep, Offset(0f, -Bleed), androidx.compose.ui.geometry.Size(390f, h + Bleed))
+                    drawRect(
+                        colors.secondaryDeep,
+                        Offset(-Bleed, -Bleed),
+                        androidx.compose.ui.geometry.Size(TreeRules.FrameWidth + 2 * Bleed, h + Bleed)
+                    )
                     val alpha = curveAlpha.value
                     if (alpha > 0.001f) {
                         curveBase.rewind()
-                        // De un borde casi plano (V4, C 300 30 140 20 0 30) a uno curvo (V10, C 300 80 140 40 0 64)
+                        // De un borde casi plano (V4, C 300 30 140 20 0 30) a uno curvo (V10, C 300 80 140 40 0 64);
+                        // a los lados del marco el borde sigue plano hasta el final de la pantalla
                         val t = curve.value
-                        curveBase.moveTo(0f, h - 1f)
-                        curveBase.lineTo(390f, h - 1f)
-                        curveBase.lineTo(390f, h - 1f + lerp(4f, 10f, t))
+                        val right = h - 1f + lerp(4f, 10f, t)
+                        val left = h - 1f + lerp(30f, 64f, t)
+                        curveBase.moveTo(-Bleed, h - 1f)
+                        curveBase.lineTo(TreeRules.FrameWidth + Bleed, h - 1f)
+                        curveBase.lineTo(TreeRules.FrameWidth + Bleed, right)
+                        curveBase.lineTo(TreeRules.FrameWidth, right)
                         curveBase.cubicTo(
                             300f, h - 1f + lerp(30f, 80f, t),
                             140f, h - 1f + lerp(20f, 40f, t),
-                            0f, h - 1f + lerp(30f, 64f, t)
+                            0f, left
                         )
+                        curveBase.lineTo(-Bleed, left)
                         curveBase.close()
                         drawPath(curveBase, colors.secondaryDeep.copy(alpha = colors.secondaryDeep.alpha * alpha))
                     }
@@ -195,6 +212,26 @@ internal fun CurtainOverlay(
 }
 
 private fun lerp(a: Float, b: Float, t: Float): Float = a + (b - a) * t
+
+/**
+ * Mientras el telón oscuro cubre la barra de estado, la hora y la batería pasan a íconos
+ * claros; al retirarse (o salir del flujo) vuelven a lo que tenía el tema.
+ */
+@Composable
+private fun LightStatusBarIcons(active: Boolean) {
+    val view = LocalView.current
+    if (view.isInEditMode) return
+    DisposableEffect(view, active) {
+        var context = view.context
+        while (context is ContextWrapper && context !is Activity) context = context.baseContext
+        val window = (context as? Activity)?.window
+        if (window == null || !active) return@DisposableEffect onDispose {}
+        val controller = WindowCompat.getInsetsController(window, view)
+        val previous = controller.isAppearanceLightStatusBars
+        controller.isAppearanceLightStatusBars = false
+        onDispose { controller.isAppearanceLightStatusBars = previous }
+    }
+}
 
 /** Silueta del árbol sobre el telón. */
 @Composable

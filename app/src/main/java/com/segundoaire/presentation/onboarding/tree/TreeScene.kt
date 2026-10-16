@@ -123,11 +123,11 @@ internal fun SceneAtmosphere(
     Canvas(
         modifier
             .clearAndSetSemantics { }
-            .offset(y = (-SkyBleed).dp)
-            .requiredSize(TreeRules.FrameWidth.dp, (TreeRules.FrameHeight + 2 * SkyBleed).dp)
+            .offset(x = (-SkyBleed).dp, y = (-SkyBleed).dp)
+            .requiredSize((TreeRules.FrameWidth + 2 * SkyBleed).dp, (TreeRules.FrameHeight + 2 * SkyBleed).dp)
     ) {
         scale(density, Offset.Zero) {
-            translate(top = SkyBleed) {
+            translate(left = SkyBleed, top = SkyBleed) {
                 // Luz del suelo: del color elegido abajo a transparente a la altura indicada
                 val skyColor = sky.value
                 if (skyColor.alpha > 0.001f) {
@@ -137,8 +137,8 @@ internal fun SceneAtmosphere(
                             startY = TreeRules.FrameHeight * (1f - skyFade),
                             endY = TreeRules.FrameHeight
                         ),
-                        topLeft = Offset(0f, -SkyBleed),
-                        size = Size(TreeRules.FrameWidth, TreeRules.FrameHeight + 2 * SkyBleed)
+                        topLeft = Offset(-SkyBleed, -SkyBleed),
+                        size = Size(TreeRules.FrameWidth + 2 * SkyBleed, TreeRules.FrameHeight + 2 * SkyBleed)
                     )
                 }
                 Suns.forEachIndexed { i, sun -> drawSun(sun, sunTimes[i].value, colors.glass2) }

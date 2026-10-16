@@ -347,6 +347,7 @@ El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo r
 ### Notas de diseño
 
 - Fondo: el prototipo usa `0xFFDAF1DE`; la app usa `background` (`0xFFEAF4EC`), el fondo vigente tras la Fase 16.5.
+- El telón y el cielo se dibujan más allá del marco (a los lados y por arriba) para que no queden franjas; los íconos de la barra de estado pasan a claros mientras el telón la cubre. El lienzo del árbol lleva márgenes arriba y abajo: las raíces bajan del área y la capa semitransparente las recortaba.
 - Cada arranque reproduce primero el splash BreathSplash (§9) sobre el flujo; un toque lo salta, sin texto.
 - Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
 - Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.
