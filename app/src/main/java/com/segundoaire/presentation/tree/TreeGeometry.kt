@@ -1,4 +1,4 @@
-package com.segundoaire.presentation.onboarding.tree
+package com.segundoaire.presentation.tree
 
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.cos
@@ -33,6 +33,7 @@ internal class NameLeafDef(val x: Float, val y: Float, val angle: Float)
 /**
  * Coordenadas del árbol, tal como están en el prototipo aprobado (SVG de 390 × 280
  * con `translate(195 255) scale(0.6) translate(-195 -515)`). Todo en unidades SVG.
+ * Las comparten el onboarding, el Panel, el Perfil y la imagen para compartir.
  */
 internal object TreeGeometry {
     const val AreaWidth = 390f
@@ -138,6 +139,16 @@ internal object TreeGeometry {
             angle = angle
         )
     }
+
+    /**
+     * Hojas nuevas del Panel: una por pausa respetada en la semana, en este orden
+     * (`leafSlots` de la referencia): x, y y ángulo. Se dibujan con [LeafPath] a escala 1.6.
+     */
+    val LeafSlots: List<NameLeafDef> = listOf(
+        NameLeafDef(300f, 210f, -20f), NameLeafDef(92f, 200f, 200f), NameLeafDef(320f, 150f, -10f),
+        NameLeafDef(70f, 140f, 190f), NameLeafDef(250f, 80f, -50f), NameLeafDef(140f, 78f, 230f),
+        NameLeafDef(330f, 260f, 10f), NameLeafDef(60f, 255f, 170f)
+    )
 
     // Trazos de las formas pequeñas (viewBox de 24 o coordenadas locales)
     const val LeafPath = "M0 0 C6 -8 18 -8 22 0 C18 8 6 8 0 0Z"

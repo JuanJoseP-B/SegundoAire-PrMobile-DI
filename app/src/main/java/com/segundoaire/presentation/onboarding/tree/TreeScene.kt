@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import com.segundoaire.presentation.designsystem.theme.Motion
+import com.segundoaire.presentation.tree.TreeGeometry
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.onboarding.LocalFrameColumn
 
