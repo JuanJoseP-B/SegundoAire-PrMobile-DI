@@ -39,4 +39,6 @@
     <string name="catalog_empty_message">Elige las apps ante las que quieres una pausa.</string>
     <string name="catalog_empty_action">Elegir apps</string>
     <string name="catalog_glass_wall_no_block">Sin bloque</string>
+    <string name="catalog_section_onboarding_tree">Onboarding árbol</string>
+    <string name="catalog_tree_replay">Repetir</string>
 </resources>

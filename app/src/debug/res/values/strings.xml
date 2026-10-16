@@ -62,4 +62,6 @@
     <string name="catalog_section_glass_wall" translatable="false">GlassWall</string>
     <string name="catalog_glass_wall_no_block">No block</string>
     <string name="catalog_sample_name" translatable="false">Ana</string>
+    <string name="catalog_section_onboarding_tree">Onboarding tree</string>
+    <string name="catalog_tree_replay">Replay</string>
 </resources>
