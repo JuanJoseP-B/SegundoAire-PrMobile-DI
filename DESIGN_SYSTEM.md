@@ -32,13 +32,14 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 
 | Token Kotlin | Claro | Oscuro | Uso |
 |---|---|---|---|
-| `background` | `0xFFDAF1DE` | `0xFF0D1F23` | Fondo de pantalla |
+| `background` | `0xFFEAF4EC` | `0xFF0D1F23` | Fondo de pantalla |
 | `onBackground` | `0xFF051F20` | `0xFFB0B4B8` | Texto principal (también sobre vidrio) |
-| `onBackgroundMuted` | `0xFF2C5649` | `0xFF8C9297` | Texto secundario |
-| `surfaceGlass` | `0xFF8EB69B` | `0xFF132E35` | Base sólida del vidrio (respaldo sin blur) |
-| `glass1` | `0x478EB69B` | `0x73132E35` | Vidrio sutil (28 % / 45 %) |
-| `glass2` | `0x738EB69B` | `0xA6132E35` | Vidrio estándar (45 % / 65 %) |
-| `glass3` | `0xA68EB69B` | `0xD1132E35` | Vidrio intenso (65 % / 82 %) |
+| `onBackgroundMuted` | `0xFF3D5A50` | `0xFF8C9297` | Texto secundario |
+| `surfaceGlass` | `0xFFF4FAF6` | `0xFF132E35` | Base sólida del vidrio (respaldo sin blur) |
+| `glass1` | `0x61FFFFFF` | `0x73132E35` | Vidrio sutil (38 % / 45 %) |
+| `glass2` | `0x94FFFFFF` | `0xA6132E35` | Vidrio estándar (58 % / 65 %) |
+| `glass3` | `0xBDFFFFFF` | `0xD1132E35` | Vidrio intenso (74 % / 82 %) |
+| `mint` | `0xFF8EB69B` | `0xFF86E0CF` | Centro del blob del splash |
 | `glassEdgeHi` | `0xB3FFFFFF` | `0x47B0B4B8` | Inicio del borde de luz (arriba-izquierda) |
 | `glassEdgeLo` | `0x14FFFFFF` | `0x0AB0B4B8` | Final del borde de luz |
 | `primary` | `0xFF235347` | `0xFF708792` | Acción principal, estado activo, anillo del timer |
@@ -84,6 +85,8 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | Claro | texto primario sobre `surfaceGlass` | #235347 · 3.88 | usar `onBackground` (7.61) |
 | Claro | texto secundario sobre `glass3` | — | #2C5649 · 4.68 |
 | Claro | borde de control / `background` | #8EB69B · 1.89 | `outline` #4A7A63 · 4.14 |
+
+**Nota:** Los valores de modo claro (background, onBackgroundMuted, surfaceGlass, glass1–3 y mint) en la sección 3.1 son propuestos y están sujetos a verificación de contraste WCAG AA en la Fase 16.5.
 
 ---
 
@@ -190,20 +193,58 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 
 ---
 
-## 9. Iconografía
+## 9. Splash El Respiro
+
+La pantalla de splash presenta una animación de respiración que revela la marca de SegundoAire.
+
+### Coreografía (6 s total, saltable con un toque)
+
+1. **Dos respiraciones iniciales** (0–4 s): blob orgánico en el centro con `Motion.splashBreath`, oscilando suavemente.
+2. **Bocanada profunda** (4–5 s): expansión radial del blob con `Motion.splashDeep`.
+3. **Liberación que cubre la pantalla** (5–5.5 s): el blob se expande y cubre toda la pantalla con gradiente, usando `Motion.splashRelease`.
+4. **Texto y marca** (5.5–6 s): aparición del texto con `Motion.splashText`; crossfade liso hacia la pantalla principal con `Motion.splashExit`.
+
+### Colores por token
+
+- **Centro del blob**: `mint` (claro `0xFF8EB69B`, oscuro `0xFF86E0CF`).
+- **Borde y cubrimiento**: `primary` (`0xFF235347` claro, `0xFF708792` oscuro).
+- **Texto**: `onPrimary` sobre el cubrimiento final.
+
+### Tokens Motion nuevos
+
+| Token | Tipo | Valores Compose | Uso |
+|---|---|---|---|
+| `Motion.splashBreath` | spring | `dampingRatio = 0.8f, stiffness = 200f` | Oscilación inicial del blob (2 ciclos) |
+| `Motion.splashDeep` | tween | `durationMillis = 1000, easing = EaseOutCubic` | Expansión radial (bocanada profunda) |
+| `Motion.splashRelease` | tween | `durationMillis = 500, easing = Linear` | Cubrimiento de pantalla |
+| `Motion.splashText` | tween | `durationMillis = 300, easing = Linear` | Aparición del texto (fundido) |
+| `Motion.splashHold` | lineal | `tween(1000, easing = LinearEasing)` | Pausa final (opcional) |
+| `Motion.splashExit` | tween | `durationMillis = 200, easing = Linear` | Crossfade hacia la pantalla principal |
+
+### Variante de reducir movimiento
+
+Si el sistema tiene `ANIMATOR_DURATION_SCALE = 0`, la animación se reduce a **1.2 s**: una serie de fundidos rápidos (blob entra, se expande, cubre, texto y crossfade).
+
+### Nota técnica
+
+La oscilación del borde del blob utiliza una **fase lineal interna** como única excepción documentada a la regla de easing del design system. Esto mantiene la ilusión de respiración continua mientras otros elementos siguen la curva de timing general.
+
+---
+
+## 10. Iconografía
 
 - Trazo 1.75 sobre rejilla de 24 dp, extremos y uniones redondeados: `Icons.Rounded.*` / Material Symbols Rounded (peso 400, grado 0). Importar solo los vectores usados, no `material-icons-extended` completo.
 - `play` y `stop` son los únicos íconos rellenos.
 - Íconos de app de ejemplo: formas geométricas sobre `app1…5`. Nunca logos reales.
 - Botones de proveedor: íconos genéricos (globo, dispositivo, sobre) hasta producción, donde se usan los recursos oficiales según las guías de cada marca.
 
-## 10. Accesibilidad
+## 11. Accesibilidad
 
 - Foco: 2 dp de `focusRing` con 3 dp de separación (3:1 o más en todas las superficies).
 - Controles de 48 dp o más. Toggle con `Role.Switch`; segmentado con `selectableGroup()` + `Role.RadioButton`.
 - GlassWall: diálogo modal; la cuenta de 10 s de Mindful se anuncia en el botón.
 - Texto de IA: `contentDescription` con el texto completo; el revelado es solo visual.
 
-## 11. Componentes de referencia
+## 12. Componentes de referencia
 
 Inventario a implementar en la Fase 10 (detalle visual en el design system): PrimaryButton (morph Iniciar ↔ Terminar), SecondaryButton, TextButton, ProviderButton, GlassCard (3 niveles), AppToggleRow, SegmentedSelector, RigorSelector, TimerRing, GlassTextField, ChoiceChip, RangeSelector, AnimatedCounter, BreathingCircle, HoldToCommitButton, RevealText, PermissionBanner, EmptyState, Skeleton, BottomNavBar (4 tabs), QuestionScaffold, GlassWall (Mindful / Strict).

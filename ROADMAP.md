@@ -15,8 +15,10 @@ Plan de trabajo por fases y tareas. Cada fase es una rama `feature/fase-N-slug` 
 | 14 · Bloques y GlassWall | `feature/fase-14-bloques-glasswall` | 10 |
 | 15 · Progreso | `feature/fase-15-progreso` | 6 |
 | 16 · Perfil y Ajustes | `feature/fase-16-perfil` | 7 |
+| 16.5 · Corrección de color | `feature/fase-16-5-color` | 5 |
+| 16.6 · Splash El Respiro | `feature/fase-16-6-splash-respiro` | 7 |
 | 17 · Pulido y release | `release/v1.0.0` | 5 |
-| **Total** | | **~87** (+12 existentes) |
+| **Total** | | **~99** (+12 existentes) |
 
 ---
 
@@ -143,9 +145,35 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F16-T6** Interruptor de modo demo
 - [x] **F16-T7** Tests (reinicio y preferencias) + cadenas EN/ES
 
+## Fase 16.5 · Corrección de color
+
+Objetivo: validar la nueva paleta en modo claro y asegurar que todos los componentes usan tokens.
+
+- [ ] **F16.5-T1** `Color.kt`: agregar los tokens nuevos (background, onBackgroundMuted, surfaceGlass, glass1–3, mint).
+- [ ] **F16.5-T2** `GlassCard` y componentes glass: corregir rellenos con los nuevos tokens (glass1–3 blanco al 38/58/74 %).
+- [ ] **F16.5-T3** Barrer pantallas: eliminar hex sueltos, usar solo `SegundoAireTheme.colors.*`.
+- [ ] **F16.5-T4** Tests de contraste WCAG AA: pares de color críticos con `colorContrast()` (uso interno, no publicado).
+- [ ] **F16.5-T5** Previews: todas las pantallas en claro y oscuro; verificar legibilidad.
+
+Aceptación: cero hex fuera de `Color.kt`, todas las pantallas con previews, tests de contraste pasan.
+
+## Fase 16.6 · Splash El Respiro
+
+Objetivo: implementar la pantalla de splash con coreografía de respiración y revelar la marca.
+
+- [ ] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
+- [ ] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
+- [ ] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
+- [ ] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
+- [ ] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
+- [ ] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
+- [ ] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
+
+Aceptación: splash anima 6 s (o 1.2 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
+
 ## Fase 17 · Pulido y release
 
-- [ ] **F17-T1** Ícono adaptativo y splash (SplashScreen API)
+- [ ] **F17-T1** Ícono adaptativo (SplashScreen API)
 - [ ] **F17-T2** Revisión visual completa en claro y oscuro: espaciados, contraste, textos cortados
 - [ ] **F17-T3** R8 y build de release
 - [ ] **F17-T4** README con capturas y versionName 1.0.0
