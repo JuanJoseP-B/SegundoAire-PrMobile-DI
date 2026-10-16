@@ -193,25 +193,9 @@
     <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
     <string name="setup_apps_no_results_title">No matches</string>
     <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
-    <string name="panel_greeting_morning">Good morning, %1$s</string>
-    <string name="panel_greeting_afternoon">Good afternoon, %1$s</string>
-    <string name="panel_greeting_evening">Good evening, %1$s</string>
     <string name="panel_greeting_morning_anonymous">Good morning</string>
     <string name="panel_greeting_afternoon_anonymous">Good afternoon</string>
     <string name="panel_greeting_evening_anonymous">Good evening</string>
-    <string name="panel_goal_eyebrow">Your goal</string>
-    <string name="panel_impact_eyebrow">Today</string>
-    <plurals name="panel_impact_watched">
-        <item quantity="one">app watched</item>
-        <item quantity="other">apps watched</item>
-    </plurals>
-    <string name="panel_message_eyebrow">For you</string>
-    <string name="panel_message_thinking">Thinking…</string>
-    <string name="panel_message_another">Another message</string>
-    <string name="panel_apps_title">Your apps</string>
-    <string name="panel_apps_edit">Edit apps</string>
-    <string name="panel_app_watching">Watching</string>
-    <string name="panel_app_off">Off</string>
     <string name="panel_empty_title">No watched apps yet</string>
     <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
     <string name="panel_empty_action">Choose apps</string>
@@ -449,4 +433,66 @@
     <string name="splash_skip">Skip intro</string>
     <string name="splash_eyebrow">Take a second breath</string>
     <string name="splash_loading_description">SegundoAire loading</string>
+
+    <!-- Main app · Panel (Phase 17) -->
+    <string name="panel_greeting_named">%1$s,</string>
+    <string name="panel_recovered_unit">min</string>
+    <string name="panel_recovered_today">reclaimed today</string>
+    <plurals name="panel_pauses_label">
+        <item quantity="one">pause honored</item>
+        <item quantity="other">pauses honored</item>
+    </plurals>
+    <plurals name="panel_openings_label">
+        <item quantity="one">opening avoided</item>
+        <item quantity="other">openings avoided</item>
+    </plurals>
+    <string name="panel_block_title">Focus block</string>
+    <string name="panel_block_remaining">%1$s left</string>
+    <string name="duration_minutes">%1$d min</string>
+    <string name="duration_hours_minutes">%1$d h %2$d min</string>
+
+    <!-- Panel coach -->
+    <string name="coach_title">Your coach</string>
+    <string name="coach_status_thinking">Looking at your day…</string>
+    <string name="coach_status_ready">Just now</string>
+    <string name="coach_thinking_description">Your coach is thinking</string>
+    <string name="coach_another">Another suggestion</string>
+    <string name="coach_ask_eyebrow">Ask</string>
+    <string name="coach_ask_week">How am I doing this week?</string>
+    <string name="coach_ask_idea">Give me an idea for today</string>
+    <string name="coach_ask_hardest">When is it hardest for me?</string>
+    <string name="coach_action_create_block">Create a block</string>
+    <string name="coach_action_start_15">Start 15 min</string>
+    <string name="coach_action_progress">See progress</string>
+    <string name="coach_action_remind">Remind me</string>
+    <string name="coach_action_not_now">Not now</string>
+    <string name="coach_action_other_idea">Another idea</string>
+    <string name="coach_toast_remind">Noted. Keep it in mind today.</string>
+    <plurals name="coach_msg_hardest">
+        <item quantity="one">This week your hardest moment was around %1$s, with %2$d opening interrupted. A block before then can help.</item>
+        <item quantity="other">This week your hardest moment was around %1$s, with %2$d openings interrupted. A block before then can help.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_more">
+        <item quantity="one">You\'ve honored %1$d pause today, more than yesterday. Each one helps your tree grow.</item>
+        <item quantity="other">You\'ve honored %1$d pauses today, more than yesterday. Each one helps your tree grow.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_today">
+        <item quantity="one">You\'ve honored %1$d pause today. Each one helps your tree grow.</item>
+        <item quantity="other">You\'ve honored %1$d pauses today. Each one helps your tree grow.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_yesterday">
+        <item quantity="one">Yesterday you honored %1$d pause. Today your tree is waiting for the first one.</item>
+        <item quantity="other">Yesterday you honored %1$d pauses. Today your tree is waiting for the first one.</item>
+    </plurals>
+    <plurals name="coach_msg_week">
+        <item quantity="one">In the last 7 days you reclaimed %1$s and honored %2$d pause. You\'re growing.</item>
+        <item quantity="other">In the last 7 days you reclaimed %1$s and honored %2$d pauses. You\'re growing.</item>
+    </plurals>
+    <string name="coach_msg_idea_free_time">An idea for today: mute social notifications until the afternoon and see how much time you get back.</string>
+    <string name="coach_msg_idea_sleep">An idea for tonight: leave your phone away from the bed and wake up screen-free.</string>
+    <string name="coach_msg_idea_focus">An idea for today: before the hardest task of your day, protect 15 minutes with a block.</string>
+    <string name="coach_msg_idea_presence">An idea for today: at your next meal, leave your phone in another room.</string>
+    <string name="coach_msg_idea_mental_health">An idea for today: before opening an app, take three breaths and decide if you really want in.</string>
+    <string name="coach_msg_idea_general">An idea for today: pick a screen-free moment and protect it with a block.</string>
+    <string name="coach_msg_first">I\'m still getting to know your day. Start with a 15-minute block and I\'ll tell you what changes.</string>
 </resources>

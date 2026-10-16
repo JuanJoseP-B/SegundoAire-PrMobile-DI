@@ -118,6 +118,7 @@ Salen del objeto `T` de `docs/design/app-dashboard/app-dashboard-referencia.html
 | `petal` | `0xFFF4FBF5` | `0xFFDCE3E0` | Pétalos de las flores (el centro es `gold`) |
 | `wood` | `0x598EB69B` | `0xE6132E35` | Corte del tronco en Progreso |
 | `aiCard` | `0xEBF0FAF2` | `0xFF11282D` | Relleno de la tarjeta del coach |
+| `accent` | `0xFF235347` | `0xFF86E0CF` | Palabra en cursiva de los títulos serif y semilla del coach (su halo es `glow` al 14 %) |
 | `tree1` · `tree2` · `tree3` | `0x80235347` · `0x8C2E7D63` · `0xD98EB69B` | `0xE62D4A53` · `0x993E8C7A` · `0x5986E0CF` | Follaje, alternado por círculo (`i % 3`) |
 | `heroSkyMorning` | `0x66FFC896` | `0x1FFFC896` | Luz radial del héroe, 6:00–10:59 |
 | `heroSkyDay` | `0x73FFF6BE` | `0x14FFF6BE` | 11:00–16:59 |
@@ -156,7 +157,7 @@ En Compose, `letterSpacing` en em: `(-0.02).em`. Mapear también al `Typography`
 
 ### 4.1 Serif del onboarding: Fraunces
 
-Los títulos del onboarding "Lo que crece cuando pausas" van en **Fraunces** (Google Fonts, licencia OFL): `res/font/fraunces_variable.ttf` y `fraunces_italic_variable.ttf`, con el eje óptico `opsz` fijo en 96 y `wght` por peso (`FrauncesFontFamily`). El resto de la app sigue en Manrope.
+Los títulos del onboarding "Lo que crece cuando pausas" y las cifras y nombres de la app principal (§14) van en **Fraunces** (Google Fonts, licencia OFL): `res/font/fraunces_variable.ttf` y `fraunces_italic_variable.ttf`, con el eje óptico `opsz` fijo en 96 y `wght` por peso (`FrauncesFontFamily`). El resto de la app sigue en Manrope.
 
 | Estilo | Tamaño / interlineado | Peso | Tracking | Uso |
 |---|---|---|---|---|
@@ -394,3 +395,31 @@ El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo r
 - Cada arranque reproduce primero el splash BreathSplash (§9) sobre el flujo; un toque lo salta, sin texto.
 - Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
 - Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.
+
+## 14. App principal (Fase 17)
+
+Fuente: `docs/design/app-dashboard/app-dashboard-referencia.html`. La geometría del árbol es la del onboarding y vive en `presentation/tree` (`TreeGeometry`, `TreePaths`, `drawGrownTree`); el estado del árbol (`TreeState`) está en el dominio y lo arma `TreeRepository`.
+
+### Barra inferior y pestañas
+
+- Vidrio `Level3` de 68 dp con radio 32, a 16 dp de los lados y 20 dp del borde inferior.
+- Indicador de 64 × 32 dp en `primary`, a 6 dp del borde superior, que se desliza con `Motion.navIndicator`; el ícono activo pasa a `onPrimary` y la etiqueta (11 sp) a peso 700.
+- La pestaña que entra se desplaza 24 dp en la dirección del tab (`Motion.page`) y ambas se funden (`Motion.pageFade`). La pestaña se guarda en el `SavedStateHandle` de la ruta `home`.
+- Íconos de pestaña con los trazos de la referencia (hoja, reloj, anillos, persona).
+
+### Panel
+
+| Bloque | Detalle |
+|---|---|
+| Saludo | "Buenos días / Buenas tardes / Buenas noches" (5–11, 12–18, 19–4) en `bodyMd` muted y el nombre en Fraunces 30 / 36 |
+| Héroe (300 dp) | Luz radial por hora (`heroSky*`, elipse 120 % × 90 % en (70 %, 0)), luciérnagas de 20:00 a 6:00, colina `hill` de borde a borde y el árbol a escala 0.5 con base en (195, 256) y balanceo de ±0,8° en 7 s |
+| Árbol | Tronco en `trunk`, follaje `tree1..3`, una flor por meta (posición de su opción en el onboarding) y una hoja `leaf` por pausa respetada de la semana (máx. 8, `LeafSlots`, escala 1.6); las nuevas brotan con `Motion.bloom(700)` al volver al Panel |
+| Cifras | "47 min" en Fraunces 44 / 48 tabular ("min" a 22 sp) y "recuperados hoy"; a la derecha pausas respetadas y aperturas evitadas de hoy |
+| Bloque activo | Vidrio con anillo de 36 dp (r 14, trazo 4) y "Quedan m:ss"; entra con fundido y 10 dp de subida; al tocarlo abre el bloque |
+| Coach | Borde de 1,5 dp en `glassEdgeHi` sobre radio 26; tarjeta `aiCard` de radio 24 con padding 20. Piensa 1,4 s (brillo cónico de `glow`, tres puntos de 6 dp en `accent`, skeleton de 12 dp al 100 / 86 / 60 %) y revela el texto en Fraunces 20 / 28; las dos acciones (sólida y vidrio) entran al terminar. TalkBack lee el texto completo de una vez |
+| Pregúntale | Eyebrow y tres chips: semana, idea para hoy, cuándo cuesta más |
+
+Las acciones del coach actúan de verdad: "Crear un bloque" lleva a Bloques (no programa horarios), "Iniciar 15 min" inicia un bloque con el rigor sugerido, "Ver progreso" lleva a Progreso y "Recuérdamelo" muestra un aviso que no promete notificaciones. Los mensajes se generan en el dispositivo (`LocalCoachRepository`) con los datos de la última semana.
+
+**Aviso breve (`ShellToast`)**: vidrio `Level2` con radio 16, a 24 dp de los lados y 16 dp sobre la barra; 2,6 s en total y TalkBack lo lee como estado.
+

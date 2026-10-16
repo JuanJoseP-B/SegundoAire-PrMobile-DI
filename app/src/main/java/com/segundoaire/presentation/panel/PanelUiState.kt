@@ -1,29 +1,41 @@
 package com.segundoaire.presentation.panel
 
 import androidx.compose.runtime.Immutable
-import com.segundoaire.domain.model.BlockedApp
-import com.segundoaire.domain.model.Goal
+import com.segundoaire.domain.model.ActiveBlock
+import com.segundoaire.domain.model.CoachMessage
 import com.segundoaire.domain.model.GreetingPeriod
+import com.segundoaire.domain.model.TodayStats
+import com.segundoaire.domain.model.TreeState
 
 /** Permiso que falta; el banner abre el ajuste exacto de cada uno. */
 enum class MissingPermission { ACCESSIBILITY, OVERLAY }
 
-/** Estado único del Panel: encabezado, dato de impacto, mensaje, apps y permisos. */
+/**
+ * La tarjeta del coach. Mientras [isThinking] muestra el brillo, los puntos y el
+ * skeleton; después revela [message]. [revision] cambia con cada mensaje nuevo para
+ * que el revelado empiece de nuevo aunque el texto se repita.
+ */
+@Immutable
+data class CoachUiState(
+    val message: CoachMessage? = null,
+    val isThinking: Boolean = true,
+    val revision: Int = 0
+)
+
+/**
+ * Estado único del Panel: saludo, héroe con el árbol, cifras de hoy, bloque en curso,
+ * coach y permisos pendientes. [hour] es la hora local con la que se eligen el saludo,
+ * la luz del héroe y las luciérnagas.
+ */
 @Immutable
 data class PanelUiState(
-    /** `true` hasta que llegan las apps y el perfil; evita mostrar el estado vacío por error. */
-    val isLoading: Boolean = true,
     val greeting: GreetingPeriod = GreetingPeriod.MORNING,
+    val hour: Int = 9,
     val name: String = "",
-    val mainGoal: Goal? = null,
-    /** Minutos recuperados hoy. Lo alimenta la Fase 15; hasta entonces el Panel muestra las apps vigiladas. */
-    val recoveredMinutesToday: Int = 0,
-    val apps: List<BlockedApp> = emptyList(),
-    /** Apps cuya entrada escalonada ya se mostró en esta sesión: no se vuelve a animar. */
-    val animatedPackages: Set<String> = emptySet(),
-    /** Último mensaje de la tarjeta de IA; `null` mientras no llegó el primero. */
-    val message: String? = null,
-    val isThinking: Boolean = false,
+    val stats: TodayStats = TodayStats(),
+    val tree: TreeState = TreeState(),
+    val activeBlock: ActiveBlock? = null,
+    val coach: CoachUiState = CoachUiState(),
     val hasOverlayPermission: Boolean = true,
     val isAccessibilityEnabled: Boolean = true
 ) {
@@ -34,7 +46,16 @@ data class PanelUiState(
             !hasOverlayPermission -> MissingPermission.OVERLAY
             else -> null
         }
+}
 
-    val watchedAppsCount: Int get() = apps.count { it.isBlocked }
-    val hasApps: Boolean get() = apps.isNotEmpty()
+/** Lo que el Panel le pide al contenedor: cambiar de pestaña, abrir el bloque o mostrar un aviso. */
+sealed interface PanelEffect {
+    data object OpenBlocks : PanelEffect
+    data object OpenProgress : PanelEffect
+
+    /** Un bloque en curso: se abre su vista (el modo enfoque). */
+    data object OpenActiveBlock : PanelEffect
+
+    /** "Recuérdamelo": un aviso que no promete ninguna notificación. */
+    data object RemindToast : PanelEffect
 }

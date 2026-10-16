@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -19,9 +20,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,18 +53,33 @@ fun MainShell(
     onOpenTutorial: () -> Unit,
     onResetCompleted: () -> Unit,
     modifier: Modifier = Modifier,
-    onOpenComponentCatalog: (() -> Unit)? = null
+    onOpenComponentCatalog: (() -> Unit)? = null,
+    viewModel: MainShellViewModel = hiltViewModel()
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(MainTab.PANEL) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
+    val toast by viewModel.toast.collectAsStateWithLifecycle()
 
     MainShellContent(
         selectedTab = selectedTab,
-        onTabSelected = { selectedTab = it },
-        modifier = modifier
+        onTabSelected = viewModel::selectTab,
+        modifier = modifier,
+        overlay = { barPadding ->
+            ShellToast(
+                message = toast,
+                onDone = viewModel::onToastDone,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(barPadding)
+                    .padding(bottom = SegundoAireTheme.spacing.space4)
+            )
+        }
     ) { tab, contentPadding ->
         when (tab) {
             MainTab.PANEL -> PanelRoute(
-                onEditApps = onEditApps,
+                onOpenTab = viewModel::selectTab,
+                // El modo enfoque llega con Bloques; hasta entonces el bloque se ve en su pestaña
+                onOpenActiveBlock = { viewModel.selectTab(MainTab.BLOCKS) },
+                onToast = viewModel::showToast,
                 contentPadding = contentPadding,
                 onTitleLongClick = onOpenComponentCatalog
             )
@@ -79,7 +95,10 @@ fun MainShell(
 }
 
 /**
- * Estructura del shell sin dependencias de datos: [content] pinta la pestaña.
+ * Estructura del shell sin dependencias de datos: [content] pinta la pestaña y
+ * [overlay] lo que flota encima (el aviso breve), con el alto de la barra como padding.
+ * Al cambiar de pestaña, la que entra se desplaza 24 dp en la dirección del tab
+ * (`Motion.page`) mientras ambas se funden (`Motion.pageFade`).
  * El contenido es la fuente del desenfoque (`hazeSource`) de la barra, que va
  * encima y por eso pasa por detrás de ella. [content] recibe como padding el
  * alto de la barra para que su último elemento pueda quedar libre.
@@ -89,6 +108,7 @@ internal fun MainShellContent(
     selectedTab: MainTab,
     onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
+    overlay: @Composable BoxScope.(barPadding: PaddingValues) -> Unit = {},
     content: @Composable (MainTab, PaddingValues) -> Unit
 ) {
     val colors = SegundoAireTheme.colors
@@ -119,14 +139,14 @@ internal fun MainShellContent(
                     transitionSpec = {
                         // El tab de índice mayor entra por la derecha; en RTL, por la izquierda
                         val toward = if ((targetState.ordinal > initialState.ordinal) != rtl) 1 else -1
-                        val enterFade = fadeIn(motion.nav())
-                        val exitFade = fadeOut(motion.nav())
+                        val enterFade = fadeIn(motion.pageFade())
+                        val exitFade = fadeOut(motion.pageFade())
                         // Con reducir movimiento el desplazamiento es 0 y queda solo el fundido
                         if (slideOffsetPx == 0) {
                             enterFade togetherWith exitFade
                         } else {
-                            (slideInHorizontally(motion.nav()) { toward * slideOffsetPx } + enterFade) togetherWith
-                                (slideOutHorizontally(motion.nav()) { -toward * slideOffsetPx } + exitFade)
+                            (slideInHorizontally(motion.page()) { toward * slideOffsetPx } + enterFade) togetherWith
+                                (slideOutHorizontally(motion.page()) { -toward * slideOffsetPx } + exitFade)
                         }
                     },
                     label = "mainTabs"
@@ -143,6 +163,7 @@ internal fun MainShellContent(
                     .onSizeChanged { barHeightPx = it.height }
                     .navigationBarsPadding()
             )
+            overlay(barPadding)
         }
     }
 }

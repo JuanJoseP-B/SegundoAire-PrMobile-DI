@@ -191,26 +191,9 @@
     <string name="setup_apps_empty_message">No encontramos apps que puedas abrir desde tu pantalla de inicio.</string>
     <string name="setup_apps_no_results_title">Sin coincidencias</string>
     <string name="setup_apps_no_results_message">Ninguna app coincide con \"%1$s\". Prueba con otro nombre.</string>
-    <string name="panel_greeting_morning">Buenos días, %1$s</string>
-    <string name="panel_greeting_afternoon">Buenas tardes, %1$s</string>
-    <string name="panel_greeting_evening">Buenas noches, %1$s</string>
     <string name="panel_greeting_morning_anonymous">Buenos días</string>
     <string name="panel_greeting_afternoon_anonymous">Buenas tardes</string>
     <string name="panel_greeting_evening_anonymous">Buenas noches</string>
-    <string name="panel_goal_eyebrow">Tu objetivo</string>
-    <string name="panel_impact_eyebrow">Hoy</string>
-    <plurals name="panel_impact_watched">
-        <item quantity="one">app vigilada</item>
-        <item quantity="many">apps vigiladas</item>
-        <item quantity="other">apps vigiladas</item>
-    </plurals>
-    <string name="panel_message_eyebrow">Para ti</string>
-    <string name="panel_message_thinking">Pensando…</string>
-    <string name="panel_message_another">Otro mensaje</string>
-    <string name="panel_apps_title">Tus apps</string>
-    <string name="panel_apps_edit">Editar apps</string>
-    <string name="panel_app_watching">Vigilando</string>
-    <string name="panel_app_off">Apagada</string>
     <string name="panel_empty_title">Aún no vigilas ninguna app</string>
     <string name="panel_empty_message">Elige las apps ante las que quieres un segundo de aire.</string>
     <string name="panel_empty_action">Elegir apps</string>
@@ -450,4 +433,66 @@
     <string name="splash_skip">Omitir intro</string>
     <string name="splash_eyebrow">Toma un segundo aire</string>
     <string name="splash_loading_description">SegundoAire cargando</string>
+
+    <!-- App principal · Panel (Fase 17) -->
+    <string name="panel_greeting_named">%1$s,</string>
+    <string name="panel_recovered_unit">min</string>
+    <string name="panel_recovered_today">recuperados hoy</string>
+    <plurals name="panel_pauses_label">
+        <item quantity="one">pausa respetada</item>
+        <item quantity="other">pausas respetadas</item>
+    </plurals>
+    <plurals name="panel_openings_label">
+        <item quantity="one">apertura evitada</item>
+        <item quantity="other">aperturas evitadas</item>
+    </plurals>
+    <string name="panel_block_title">Bloque de enfoque</string>
+    <string name="panel_block_remaining">Quedan %1$s</string>
+    <string name="duration_minutes">%1$d min</string>
+    <string name="duration_hours_minutes">%1$d h %2$d min</string>
+
+    <!-- Coach del Panel -->
+    <string name="coach_title">Tu coach</string>
+    <string name="coach_status_thinking">Mirando tu día…</string>
+    <string name="coach_status_ready">Hace un momento</string>
+    <string name="coach_thinking_description">Tu coach está pensando</string>
+    <string name="coach_another">Otra sugerencia</string>
+    <string name="coach_ask_eyebrow">Pregúntale</string>
+    <string name="coach_ask_week">¿Cómo voy esta semana?</string>
+    <string name="coach_ask_idea">Dame una idea para hoy</string>
+    <string name="coach_ask_hardest">¿Cuándo me cuesta más?</string>
+    <string name="coach_action_create_block">Crear un bloque</string>
+    <string name="coach_action_start_15">Iniciar 15 min</string>
+    <string name="coach_action_progress">Ver progreso</string>
+    <string name="coach_action_remind">Recuérdamelo</string>
+    <string name="coach_action_not_now">Ahora no</string>
+    <string name="coach_action_other_idea">Otra idea</string>
+    <string name="coach_toast_remind">Anotado. Tenlo presente hoy.</string>
+    <plurals name="coach_msg_hardest">
+        <item quantity="one">Esta semana tu momento más difícil fue cerca de las %1$s, con %2$d apertura interrumpida. Un bloque antes de esa hora puede ayudarte.</item>
+        <item quantity="other">Esta semana tu momento más difícil fue cerca de las %1$s, con %2$d aperturas interrumpidas. Un bloque antes de esa hora puede ayudarte.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_more">
+        <item quantity="one">Hoy llevas %1$d pausa respetada, más que ayer. Cada una hace crecer tu árbol.</item>
+        <item quantity="other">Hoy llevas %1$d pausas respetadas, más que ayer. Cada una hace crecer tu árbol.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_today">
+        <item quantity="one">Hoy llevas %1$d pausa respetada. Cada una hace crecer tu árbol.</item>
+        <item quantity="other">Hoy llevas %1$d pausas respetadas. Cada una hace crecer tu árbol.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_yesterday">
+        <item quantity="one">Ayer respetaste %1$d pausa. Hoy tu árbol espera la primera.</item>
+        <item quantity="other">Ayer respetaste %1$d pausas. Hoy tu árbol espera la primera.</item>
+    </plurals>
+    <plurals name="coach_msg_week">
+        <item quantity="one">En los últimos 7 días recuperaste %1$s y respetaste %2$d pausa. Vas creciendo.</item>
+        <item quantity="other">En los últimos 7 días recuperaste %1$s y respetaste %2$d pausas. Vas creciendo.</item>
+    </plurals>
+    <string name="coach_msg_idea_free_time">Una idea para hoy: silencia las notificaciones de redes hasta la tarde y mira cuánto tiempo te queda.</string>
+    <string name="coach_msg_idea_sleep">Una idea para esta noche: deja el celular lejos de la cama y despiértate sin pantalla.</string>
+    <string name="coach_msg_idea_focus">Una idea para hoy: antes de lo más difícil del día, protege 15 min con un bloque.</string>
+    <string name="coach_msg_idea_presence">Una idea para hoy: en tu próxima comida, deja el celular en otra habitación.</string>
+    <string name="coach_msg_idea_mental_health">Una idea para hoy: antes de abrir una app, respira tres veces y decide si de verdad quieres entrar.</string>
+    <string name="coach_msg_idea_general">Una idea para hoy: elige un momento sin pantalla y protégelo con un bloque.</string>
+    <string name="coach_msg_first">Todavía estoy conociendo tu día. Empieza con un bloque de 15 min y te cuento qué cambia.</string>
 </resources>
