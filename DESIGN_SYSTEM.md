@@ -71,8 +71,8 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | `firefly` | `0xFFE6F5B0` | `0xFFE6F5B0` | Onboarding del árbol: luciérnagas de la noche y la madrugada |
 | `skyMorning` | `0x73FFC496` | `0x73FFC496` | Luz del suelo al elegir "Mañana" (45 %) |
 | `skyAfternoon` | `0x73FFF6BE` | `0x73FFF6BE` | Luz del suelo al elegir "Tarde" (45 %) |
-| `skyDusk` | `0x73F4A06E` | `0x73F4A06E` | Luz del suelo al elegir "Noche" (45 %) |
-| `skyNight` | `0x9E0D1F23` | `0x9E040C0E` | Luz del suelo al elegir "Madrugada" (62 %) |
+| `skyNight` | `0xBF0E1640` | `0xBF050A24` | Luz del suelo al elegir "Noche": azul nocturno (75 %), sube hasta el 70 % del alto |
+| `skyLate` | `0x9E0D1F23` | `0x9E040C0E` | Luz del suelo al elegir "Madrugada" (62 %) |
 
 ### 3.2 Reglas de uso
 
@@ -226,7 +226,7 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 
 ### 8.1 Movimiento del onboarding del árbol
 
-Tokens añadidos para "Lo que crece cuando pausas" (prototipo `docs/design/onboarding-arbol`). Con reducir movimiento todos los finitos pasan a `tween(150)` y los infinitos no se arrancan (el árbol aparece en su etapa, sin balanceo, ondas, luces ni hojas que caen; los contadores muestran el valor final).
+Tokens añadidos para "Lo que crece cuando pausas". Con reducir movimiento todos los finitos pasan a `tween(150)` y los infinitos no se arrancan (el árbol aparece en su etapa, sin balanceo, ondas, luces ni hojas que caen; los contadores muestran el valor final).
 
 | Token | Valores | Uso |
 |---|---|---|
@@ -309,7 +309,7 @@ Inventario a implementar en la Fase 10 (detalle visual en el design system): Pri
 
 ## 13. Onboarding "Lo que crece cuando pausas"
 
-Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustarlo; sobrante del mismo color de fondo). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso. Referencias: `docs/design/onboarding-arbol/`.
+Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustarlo a la zona segura —barras del sistema y muesca—; el sobrante es del mismo color de fondo y la colina y el cielo se extienden bajo las barras). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso.
 
 | # | Paso | Árbol / escena |
 |---|---|---|
@@ -347,5 +347,6 @@ El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo r
 ### Notas de diseño
 
 - Fondo: el prototipo usa `0xFFDAF1DE`; la app usa `background` (`0xFFEAF4EC`), el fondo vigente tras la Fase 16.5.
+- Cada arranque reproduce primero el splash BreathSplash (§9) sobre el flujo; un toque lo salta, sin texto.
 - Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
 - Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.
