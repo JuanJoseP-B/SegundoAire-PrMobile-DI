@@ -22,13 +22,14 @@ class GetGreetingPeriodUseCaseTest {
     }
 
     @Test
-    fun `de 12 a 19 saluda por la tarde`() {
+    fun `de 12 a 18 saluda por la tarde`() {
         assertEquals(GreetingPeriod.AFTERNOON, periodAt(12))
-        assertEquals(GreetingPeriod.AFTERNOON, periodAt(19, 59))
+        assertEquals(GreetingPeriod.AFTERNOON, periodAt(18, 59))
     }
 
     @Test
-    fun `de 20 a 4 saluda por la noche`() {
+    fun `de 19 a 4 saluda por la noche`() {
+        assertEquals(GreetingPeriod.EVENING, periodAt(19))
         assertEquals(GreetingPeriod.EVENING, periodAt(20))
         assertEquals(GreetingPeriod.EVENING, periodAt(0))
         assertEquals(GreetingPeriod.EVENING, periodAt(4, 59))
