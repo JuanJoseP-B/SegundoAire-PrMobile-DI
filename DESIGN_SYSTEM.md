@@ -294,7 +294,7 @@ Con `ANIMATOR_DURATION_SCALE = 0` no hay movimiento: la forma aparece quieta con
 - Trazo 1.75 sobre rejilla de 24 dp, extremos y uniones redondeados: `Icons.Rounded.*` / Material Symbols Rounded (peso 400, grado 0). Importar solo los vectores usados, no `material-icons-extended` completo.
 - `play` y `stop` son los únicos íconos rellenos.
 - Íconos de app de ejemplo: formas geométricas sobre `app1…5`. Nunca logos reales.
-- Botones de proveedor: íconos genéricos (globo, dispositivo, sobre) hasta producción, donde se usan los recursos oficiales según las guías de cada marca.
+- Botones de proveedor: íconos genéricos (globo, dispositivo, sobre) hasta producción, donde se usan los recursos oficiales según las guías de cada marca. Excepción: en el login del onboarding (§13) el de Google lleva la "G" de cuatro colores (`GoogleLogoColors`, iguales en claro y oscuro) y el de Apple la manzana en `onBackground`; el del correo conserva el sobre.
 
 ## 11. Accesibilidad
 

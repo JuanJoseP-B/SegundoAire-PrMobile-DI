@@ -66,7 +66,7 @@ app/src/main/java/com/segundoaire/
 5. **Tema:** las pantallas y componentes nuevos llevan `@Preview` en claro y oscuro.
 6. **Accesibilidad:** área táctil de 48 dp o más, `contentDescription` en íconos con acción, roles semánticos en toggles y segmentados.
 7. **Vidrio:** blur con Haze en Android 12+ dentro de la app. El overlay usa `FLAG_BLUR_BEHIND` en 12+ y scrim en 10–11. Nunca dependas del blur para el contraste del texto.
-8. **Logos de marca:** prohibidos en mockups y placeholders; los botones de proveedor usan íconos genéricos hasta producción.
+8. **Logos de marca:** prohibidos en mockups y placeholders. Única excepción, por decisión del Director: los botones de Google y Apple del login del onboarding llevan su logotipo (`GoogleLogo`, `AppleLogo`).
 
 ## Flujo Git
 
