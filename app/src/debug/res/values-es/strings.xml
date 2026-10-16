@@ -40,8 +40,6 @@
     <string name="catalog_empty_action">Elegir apps</string>
     <string name="catalog_glass_wall_no_block">Sin bloque</string>
     <string name="catalog_splash_replay">Repetir animación</string>
-    <string name="catalog_splash_full">Completa</string>
-    <string name="catalog_splash_short">Abreviada</string>
-    <string name="catalog_splash_reduced_note">Con el interruptor de reducir movimiento activo se reproduce la versión reducida (unos 1.2 s, sin blob).</string>
+    <string name="catalog_splash_reduced_note">Con el interruptor de reducir movimiento activo se reproduce la versión reducida (unos 1.5 s, forma quieta).</string>
     <string name="catalog_splash_done">Terminó</string>
 </resources>

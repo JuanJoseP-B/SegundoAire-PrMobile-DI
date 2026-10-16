@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +31,9 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.components.GlassCard
+import com.segundoaire.presentation.designsystem.components.LocalEntranceHold
+import com.segundoaire.presentation.designsystem.components.staggerIn
+import com.segundoaire.presentation.splash.BreathSplashSpec
 import com.segundoaire.presentation.designsystem.components.QuestionScaffold
 import com.segundoaire.presentation.designsystem.components.stepContentTransform
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
@@ -81,6 +85,10 @@ fun WelcomeScreen(
 
     BackHandler(enabled = current > 0, onBack = onPreviousPage)
 
+    // Solo entra escalonada si se compone mientras el splash cubre la app (fase 6 de El Respiro)
+    val entranceHeld = LocalEntranceHold.current
+    val animateEntrance = remember { entranceHeld }
+
     QuestionScaffold(
         primaryLabel = stringResource(
             if (isLast) R.string.onboarding_welcome_start else R.string.onboarding_continue
@@ -92,6 +100,7 @@ fun WelcomeScreen(
         Spacer(Modifier.height(spacing.space16))
         AnimatedContent(
             targetState = current,
+            modifier = Modifier.staggerIn(animateEntrance, index = 0, stepMillis = BreathSplashSpec.EntranceStaggerMillis),
             transitionSpec = {
                 val direction = if (targetState > initialState) reading else -reading
                 stepContentTransform(motion, offset, direction)
@@ -101,7 +110,11 @@ fun WelcomeScreen(
             WelcomeCardContent(cards[index])
         }
         Spacer(Modifier.height(spacing.space6))
-        PageDots(current = current, total = cards.size)
+        PageDots(
+            current = current,
+            total = cards.size,
+            modifier = Modifier.staggerIn(animateEntrance, index = 1, stepMillis = BreathSplashSpec.EntranceStaggerMillis)
+        )
     }
 }
 
@@ -132,11 +145,11 @@ private fun WelcomeCardContent(card: WelcomeCard) {
 }
 
 @Composable
-private fun PageDots(current: Int, total: Int) {
+private fun PageDots(current: Int, total: Int, modifier: Modifier = Modifier) {
     val colors = SegundoAireTheme.colors
     val description = stringResource(R.string.onboarding_welcome_page, current + 1, total)
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .semantics { contentDescription = description },
         horizontalArrangement = Arrangement.spacedBy(

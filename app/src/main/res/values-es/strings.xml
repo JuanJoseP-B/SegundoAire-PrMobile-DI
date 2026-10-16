@@ -327,4 +327,6 @@
     </string-array>
 
     <string name="splash_skip">Omitir intro</string>
+    <string name="splash_eyebrow">Toma un segundo aire</string>
+    <string name="splash_loading_description">SegundoAire cargando</string>
 </resources>
