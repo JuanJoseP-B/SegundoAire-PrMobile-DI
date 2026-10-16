@@ -70,7 +70,7 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 ### 3.2 Reglas de uso
 
 - `primary` como **texto** solo sobre `background`. Sobre vidrio, usar `onBackground` (o `primary` a 24 sp o más, o en íconos).
-- En claro, nunca `onBackgroundMuted` sobre `surfaceGlass` sólido (2.7:1).
+- En claro, `onBackgroundMuted` sobre `surfaceGlass` sólido cumple (7.15:1) con los valores actuales; el 2.7:1 era del `surfaceGlass` anterior (`#8EB69B`).
 - `error` y `success` tienen luminosidad parecida: siempre acompañados de ícono y palabra.
 - Hover/pressed: `stateLayer` sobre superficies neutras; en el botón primario, `primaryHover` / `primaryPressed`.
 - Mapear al `ColorScheme` de Material 3 solo para componentes M3 que se usen (primary, onPrimary, secondary, background, surface = `surfaceGlass`, error, outline). El resto vive en `SegundoAireColors`, expuesto con un `CompositionLocal`.
@@ -86,7 +86,18 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | Claro | texto secundario sobre `glass3` | — | #2C5649 · 4.68 |
 | Claro | borde de control / `background` | #8EB69B · 1.89 | `outline` #4A7A63 · 4.14 |
 
-**Nota:** Los valores de modo claro (background, onBackgroundMuted, surfaceGlass, glass1–3 y mint) en la sección 3.1 son propuestos y están sujetos a verificación de contraste WCAG AA en la Fase 16.5.
+**Verificación de la Fase 16.5:** los valores de modo claro de la sección 3.1 (background, onBackgroundMuted, surfaceGlass, glass1–3 y mint) se verificaron con `ColorContrastTest` y **ninguno necesitó ajuste**. Los vidrios se miden compuestos sobre `background`.
+
+| Modo | Par | Contraste |
+|---|---|---|
+| Claro | `onBackground` / `background` | 15.25 |
+| Claro | `onBackgroundMuted` / `background` | 6.72 |
+| Claro | `primary` / `background` | 7.77 |
+| Claro | `onPrimary` / `primary` | 7.34 |
+| Claro | `outline` / `background` (borde, mín. 3) | 4.38 |
+| Claro | `onBackground` / `onBackgroundMuted` sobre `surfaceGlass` | 16.23 / 7.15 |
+| Claro | `onBackground` / `onBackgroundMuted` sobre `glass1` · `glass2` · `glass3` | 15.96 · 16.34 · 16.65 / 7.03 · 7.20 · 7.34 |
+| Oscuro | `onBackgroundMuted` sobre `glass1` · `glass2` · `glass3` (el más bajo) | 5.02 · 4.84 · 4.70 |
 
 ---
 
