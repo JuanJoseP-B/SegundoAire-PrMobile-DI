@@ -38,11 +38,21 @@ internal object TreeGeometry {
     const val AreaWidth = 390f
     const val AreaHeight = 280f
 
+    /**
+     * El lienzo del árbol es más grande que su área: las raíces bajan hasta ~100 unidades por
+     * debajo del suelo y, con la capa semitransparente, todo lo que sale del lienzo se recorta.
+     */
+    const val BleedTop = 90f
+    const val BleedBottom = 150f
+
     /** Dónde empieza el área del árbol dentro del marco de 390 × 844. */
     const val AreaTop = 564f
 
     /** Origen del escalado de la capa del árbol: 50 % de ancho y 91 % de alto. */
     val LayerOrigin = Offset(AreaWidth * 0.5f, AreaHeight * 0.91f)
+
+    /** El mismo origen (91 % del área, el suelo) como fracción del lienzo con márgenes. */
+    const val OriginFraction = (BleedTop + AreaHeight * 0.91f) / (BleedTop + AreaHeight + BleedBottom)
 
     /** Punto del SVG que queda en el suelo del área: `translate(195 255) … translate(-195 -515)`. */
     val GroupTranslate = Offset(195f, 255f)

@@ -91,27 +91,29 @@ internal fun OnboardingTree(
 
     Canvas(
         modifier = modifier
-            .offset(y = TreeGeometry.AreaTop.dp)
-            .requiredSize(TreeGeometry.AreaWidth.dp, TreeGeometry.AreaHeight.dp)
+            .offset(y = (TreeGeometry.AreaTop - TreeGeometry.BleedTop).dp)
+            .requiredSize(TreeGeometry.AreaWidth.dp, (TreeGeometry.BleedTop + TreeGeometry.AreaHeight + TreeGeometry.BleedBottom).dp)
             .graphicsLayer {
                 translationX = animations.translateX.value * density
                 translationY = animations.translateY.value * density
                 scaleX = animations.scale.value
                 scaleY = animations.scale.value
-                transformOrigin = TransformOrigin(0.5f, 0.91f)
+                transformOrigin = TransformOrigin(0.5f, TreeGeometry.OriginFraction)
                 alpha = animations.opacity.value.coerceIn(0f, 1f)
             }
     ) {
         // 1 unidad del SVG = 1 dp del marco; el grupo del prototipo coloca el suelo en (195, 255)
         scale(density, Offset.Zero) {
-            translate(TreeGeometry.GroupTranslate.x, TreeGeometry.GroupTranslate.y) {
-                scale(TreeGeometry.GroupScale, Offset.Zero) {
-                    translate(-TreeGeometry.GroupPivot.x, -TreeGeometry.GroupPivot.y) {
-                        drawRoots(animations, paths, colors, rootProgress)
-                        drawRipples(animations, colors)
-                        drawSeed(animations, colors)
-                        rotate(animations.sway.value, TreeGeometry.SwayPivot) {
-                            drawCrown(animations, paths, colors)
+            translate(top = TreeGeometry.BleedTop) {
+                translate(TreeGeometry.GroupTranslate.x, TreeGeometry.GroupTranslate.y) {
+                    scale(TreeGeometry.GroupScale, Offset.Zero) {
+                        translate(-TreeGeometry.GroupPivot.x, -TreeGeometry.GroupPivot.y) {
+                            drawRoots(animations, paths, colors, rootProgress)
+                            drawRipples(animations, colors)
+                            drawSeed(animations, colors)
+                            rotate(animations.sway.value, TreeGeometry.SwayPivot) {
+                                drawCrown(animations, paths, colors)
+                            }
                         }
                     }
                 }
