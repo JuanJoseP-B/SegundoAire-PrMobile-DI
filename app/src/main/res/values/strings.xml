@@ -407,6 +407,7 @@
     <string name="onb_plan_block_afternoon">Afternoon · 2:00 – 3:00 pm</string>
     <string name="onb_plan_block_evening">Evening · 9:00 – 10:00 pm</string>
     <string name="onb_plan_block_late">Late night · 12:00 – 1:00 am</string>
+    <string name="onb_plan_mode">Mode %1$s</string>
     <string name="onb_plan_mindful_value">A 10 s pause before you open</string>
     <string name="onb_plan_strict_value">No way out until the block ends</string>
     <string name="onb_plan_daily">Daily goal</string>

@@ -408,6 +408,7 @@
     <string name="onb_plan_block_afternoon">Tarde · 14:00 – 15:00</string>
     <string name="onb_plan_block_evening">Noche · 21:00 – 22:00</string>
     <string name="onb_plan_block_late">Madrugada · 00:00 – 01:00</string>
+    <string name="onb_plan_mode">Modo %1$s</string>
     <string name="onb_plan_mindful_value">Una pausa de 10 s antes de abrir</string>
     <string name="onb_plan_strict_value">Sin salida hasta que termine el bloque</string>
     <string name="onb_plan_daily">Meta diaria</string>
