@@ -309,7 +309,7 @@ Inventario a implementar en la Fase 10 (detalle visual en el design system): Pri
 
 ## 13. Onboarding "Lo que crece cuando pausas"
 
-Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustarlo a la zona segura —barras del sistema y muesca—; el sobrante es del mismo color de fondo y la colina y el cielo se extienden bajo las barras). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso.
+Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustar la columna a la zona segura —barras del sistema y muesca—; el fondo llega a los cuatro bordes). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso.
 
 | # | Paso | Árbol / escena |
 |---|---|---|
@@ -347,7 +347,7 @@ El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo r
 ### Notas de diseño
 
 - Fondo: el prototipo usa `0xFFDAF1DE`; la app usa `background` (`0xFFEAF4EC`), el fondo vigente tras la Fase 16.5.
-- El telón y el cielo se dibujan más allá del marco (a los lados y por arriba) para que no queden franjas; los íconos de la barra de estado pasan a claros mientras el telón la cubre. El lienzo del árbol lleva márgenes arriba y abajo: las raíces bajan del área y la capa semitransparente las recortaba.
+- El marco ocupa toda la ventana, también bajo las barras del sistema: el cielo, la colina y el telón se dibujan a pantalla completa (sin franjas a los lados) y solo el contenido con coordenadas del prototipo va en la columna de 390 × 844 dp, centrada en la zona segura. Los íconos de la barra de estado pasan a claros mientras el telón la cubre. El lienzo del árbol lleva márgenes arriba y abajo: las raíces bajan del área y la capa semitransparente las recortaba.
 - Cada arranque reproduce primero el splash BreathSplash (§9) sobre el flujo; un toque lo salta, sin texto.
 - Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
 - Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.
