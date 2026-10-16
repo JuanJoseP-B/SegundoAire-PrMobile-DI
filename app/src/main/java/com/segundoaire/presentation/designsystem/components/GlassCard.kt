@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,9 +74,10 @@ fun GlassCard(
 private fun GlassCardSample() {
     val colors = SegundoAireTheme.colors
     val spacing = SegundoAireTheme.spacing
+    // Fondo con color para que se note el relleno de cada nivel (mint → background)
     Column(
         modifier = Modifier
-            .background(colors.background)
+            .background(Brush.verticalGradient(listOf(colors.mint, colors.background)))
             .padding(spacing.space6),
         verticalArrangement = Arrangement.spacedBy(spacing.space4)
     ) {
