@@ -169,7 +169,7 @@ Objetivo: implementar la pantalla de splash con coreografía de respiración y r
 - [x] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
 - [x] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
 
-Aceptación: splash anima 6 s (o 1.2 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
+Aceptación: splash anima 16 s (o 1.5 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
 
 ## Fase 17 · Pulido y release
 
