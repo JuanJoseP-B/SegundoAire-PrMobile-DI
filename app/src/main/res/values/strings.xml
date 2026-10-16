@@ -439,8 +439,8 @@
     <string name="onb_login_password_placeholder">At least 8 characters</string>
     <string name="onb_login_create">Create account</string>
     <string name="onb_login_connecting">Creating your account</string>
-    <string name="onb_login_web">Continue with a web account</string>
-    <string name="onb_login_device">Continue with this device</string>
+    <string name="onb_login_web">Continue with Google</string>
+    <string name="onb_login_device">Continue with Apple</string>
     <string name="onb_login_mail">Continue with email</string>
     <string name="onb_login_guest">Continue without an account</string>
     <string name="onb_curtain_tagline">Your tree has taken root.</string>

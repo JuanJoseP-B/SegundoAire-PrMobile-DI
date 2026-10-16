@@ -440,8 +440,8 @@
     <string name="onb_login_password_placeholder">Mínimo 8 caracteres</string>
     <string name="onb_login_create">Crear cuenta</string>
     <string name="onb_login_connecting">Creando tu cuenta</string>
-    <string name="onb_login_web">Continuar con cuenta web</string>
-    <string name="onb_login_device">Continuar con este dispositivo</string>
+    <string name="onb_login_web">Continuar con Google</string>
+    <string name="onb_login_device">Continuar con Apple</string>
     <string name="onb_login_mail">Continuar con correo</string>
     <string name="onb_login_guest">Continuar sin cuenta</string>
     <string name="onb_curtain_tagline">Tu árbol ya echó raíces.</string>
