@@ -42,7 +42,7 @@ fun AnimatedCounter(
             animationSpec = motion.calm(),
             label = "counterFade"
         ) { shown ->
-            Text(text = format(shown), style = style, color = color, maxLines = 1)
+            Text(text = format(shown), style = style, color = color)
         }
     } else {
         val counted by animateIntAsState(
@@ -50,7 +50,7 @@ fun AnimatedCounter(
             animationSpec = motion.calm(),
             label = "counter"
         )
-        Text(text = format(counted), modifier = semantics, style = style, color = color, maxLines = 1)
+        Text(text = format(counted), modifier = semantics, style = style, color = color)
     }
 }
 

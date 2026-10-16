@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.presentation.designsystem.theme.DarkSegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.LightSegundoAireColors
@@ -26,7 +27,11 @@ class MainActivity : AppCompatActivity() {
     private val themeViewModel: ThemeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Antes de super: cambia el tema de arranque por el de la app
+        val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
+        // El splash se queda hasta que DataStore entrega el tema: así no hay un fondo vacío entre ambos
+        splash.setKeepOnScreenCondition { themeViewModel.themeMode.value == null }
         enableEdgeToEdge()
         setContent {
             val themeMode by themeViewModel.themeMode.collectAsStateWithLifecycle()

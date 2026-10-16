@@ -153,12 +153,15 @@ fun TimerRing(
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = timeText,
-                style = SegundoAireTheme.typography.displayTimer,
-                color = colors.onBackground,
-                maxLines = 1
-            )
+            // El anillo mide 280 dp: a 72 sp el número ya ocupa casi todo el ancho útil
+            LimitFontScale(max = 1f) {
+                Text(
+                    text = timeText,
+                    style = SegundoAireTheme.typography.displayTimer,
+                    color = colors.onBackground,
+                    maxLines = 1
+                )
+            }
             if (label != null) {
                 Text(
                     text = label,

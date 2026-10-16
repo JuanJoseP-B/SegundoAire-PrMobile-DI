@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 
@@ -89,8 +89,9 @@ internal fun ButtonLabel(
             text = text,
             style = SegundoAireTheme.typography.labelLg,
             color = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            textAlign = TextAlign.Center,
+            // Con fuente grande la etiqueta baja de línea en vez de cortarse
+            modifier = Modifier.weight(1f, fill = false)
         )
     }
 }

@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -214,8 +213,6 @@ private fun PanelHeader(
             text = greetingText(state.greeting, state.name.trim()),
             style = typography.headlineMd,
             color = colors.onBackground,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.semantics { heading() }
         )
         state.mainGoal?.let { goal ->
