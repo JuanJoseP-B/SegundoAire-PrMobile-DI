@@ -13,6 +13,8 @@ data class SegundoAireColors(
     val glass1: Color,
     val glass2: Color,
     val glass3: Color,
+    // Centro del blob del splash
+    val mint: Color,
     val glassEdgeHi: Color,
     val glassEdgeLo: Color,
     val primary: Color,
@@ -48,13 +50,14 @@ data class SegundoAireColors(
 
 // Claro (predeterminado)
 val LightSegundoAireColors = SegundoAireColors(
-    background = Color(0xFFDAF1DE),
+    background = Color(0xFFEAF4EC),
     onBackground = Color(0xFF051F20),
-    onBackgroundMuted = Color(0xFF2C5649),
-    surfaceGlass = Color(0xFF8EB69B),
-    glass1 = Color(0x478EB69B),
-    glass2 = Color(0x738EB69B),
-    glass3 = Color(0xA68EB69B),
+    onBackgroundMuted = Color(0xFF3D5A50),
+    surfaceGlass = Color(0xFFF4FAF6),
+    glass1 = Color(0x61FFFFFF),
+    glass2 = Color(0x94FFFFFF),
+    glass3 = Color(0xBDFFFFFF),
+    mint = Color(0xFF8EB69B),
     glassEdgeHi = Color(0xB3FFFFFF),
     glassEdgeLo = Color(0x14FFFFFF),
     primary = Color(0xFF235347),
@@ -95,6 +98,7 @@ val DarkSegundoAireColors = SegundoAireColors(
     glass1 = Color(0x73132E35),
     glass2 = Color(0xA6132E35),
     glass3 = Color(0xD1132E35),
+    mint = Color(0xFF86E0CF),
     glassEdgeHi = Color(0x47B0B4B8),
     glassEdgeLo = Color(0x0AB0B4B8),
     primary = Color(0xFF708792),
