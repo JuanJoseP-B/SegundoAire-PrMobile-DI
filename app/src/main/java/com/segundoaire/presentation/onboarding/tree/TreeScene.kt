@@ -9,6 +9,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -42,6 +43,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import com.segundoaire.presentation.designsystem.theme.Motion
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.onboarding.LocalFrameColumn
 
 // ---- Atmósfera: luces, cielo y luciérnagas ----
 
@@ -62,8 +64,6 @@ private val Fireflies = listOf(
 private const val SunBlur = 28f
 private const val FireflyPeriodMillis = 4000
 
-/** El cielo se extiende más allá del marco para que no se vea el borde en pantallas más altas. */
-private const val SkyBleed = 300f
 
 /** Luz del suelo y su desvanecimiento hacia arriba, como fracción del alto. */
 private val SkyFade = floatArrayOf(0.55f, 0.55f, 0.7f, 0.58f)
@@ -120,14 +120,18 @@ internal fun SceneAtmosphere(
         }
     }
 
+    val column = LocalFrameColumn.current
     Canvas(
         modifier
             .clearAndSetSemantics { }
-            .offset(x = (-SkyBleed).dp, y = (-SkyBleed).dp)
-            .requiredSize((TreeRules.FrameWidth + 2 * SkyBleed).dp, (TreeRules.FrameHeight + 2 * SkyBleed).dp)
+            .fillMaxSize()
     ) {
-        scale(density, Offset.Zero) {
-            translate(left = SkyBleed, top = SkyBleed) {
+        // Las coordenadas son las del prototipo, desde la esquina de la columna de diseño;
+        // el cielo cubre toda la ventana, también a los lados y bajo las barras
+        translate(column.x, column.y) {
+            scale(density, Offset.Zero) {
+                val left = -column.x / density
+                val top = -column.y / density
                 // Luz del suelo: del color elegido abajo a transparente a la altura indicada
                 val skyColor = sky.value
                 if (skyColor.alpha > 0.001f) {
@@ -137,8 +141,8 @@ internal fun SceneAtmosphere(
                             startY = TreeRules.FrameHeight * (1f - skyFade),
                             endY = TreeRules.FrameHeight
                         ),
-                        topLeft = Offset(-SkyBleed, -SkyBleed),
-                        size = Size(TreeRules.FrameWidth + 2 * SkyBleed, TreeRules.FrameHeight + 2 * SkyBleed)
+                        topLeft = Offset(left, top),
+                        size = Size(size.width / density, size.height / density)
                     )
                 }
                 Suns.forEachIndexed { i, sun -> drawSun(sun, sunTimes[i].value, colors.glass2) }
@@ -212,17 +216,18 @@ internal fun OnboardingHill(animations: TreeAnimations, modifier: Modifier = Mod
     }
     val curve = remember { PathParser().parsePathString(TreeGeometry.HillCurve).toPath() }
 
+    val column = LocalFrameColumn.current
     Canvas(
         modifier
-            .requiredSize(TreeRules.FrameWidth.dp, TreeRules.FrameHeight.dp)
-            .graphicsLayer {
-                translationY = animations.hillY.value * density
-                alpha = animations.hillOpacity.value.coerceIn(0f, 1f)
-            }
+            .fillMaxSize()
+            .graphicsLayer { alpha = animations.hillOpacity.value.coerceIn(0f, 1f) }
     ) {
-        scale(density, Offset.Zero) {
-            drawPath(fill, colors.mint.copy(alpha = 0.42f))
-            drawPath(curve, colors.primary.copy(alpha = 0.25f), style = Stroke(width = 1.25f))
+        // La colina llega a los dos bordes de la ventana y hacia abajo; solo su altura es del prototipo
+        translate(column.x, column.y + animations.hillY.value * density) {
+            scale(density, Offset.Zero) {
+                drawPath(fill, colors.mint.copy(alpha = 0.42f))
+                drawPath(curve, colors.primary.copy(alpha = 0.25f), style = Stroke(width = 1.25f))
+            }
         }
     }
 }

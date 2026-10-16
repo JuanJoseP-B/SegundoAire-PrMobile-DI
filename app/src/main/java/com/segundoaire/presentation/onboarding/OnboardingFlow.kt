@@ -416,7 +416,8 @@ private fun OnboardingScene(
     OnboardingFrame {
         GlassBackdrop {
             Box(Modifier.fillMaxSize()) {
-                // Fondo vivo: es lo que desenfocan los vidrios
+                // Fondo vivo: es lo que desenfocan los vidrios. Cielo y colina cubren toda la
+                // ventana; el árbol y las hojas van en la columna de diseño
                 Box(Modifier.fillMaxSize().glassBackdrop()) {
                     SceneAtmosphere(
                         moment = moment,
@@ -425,106 +426,110 @@ private fun OnboardingScene(
                         reducedMotion = motion.reduced
                     )
                     OnboardingHill(animations)
-                    OnboardingTree(
-                        animations,
-                        rootProgress = { index -> TreeRules.rootProgress(step, ui.hold.hold, index) }
-                    )
-                    FallingLeaves(gust = ui.gust, petals = ui.petals, reducedMotion = motion.reduced)
+                    FrameColumn {
+                        OnboardingTree(
+                            animations,
+                            rootProgress = { index -> TreeRules.rootProgress(step, ui.hold.hold, index) }
+                        )
+                        FallingLeaves(gust = ui.gust, petals = ui.petals, reducedMotion = motion.reduced)
+                    }
                 }
 
-                WelcomeDots(page = welcomePage, visible = step <= OnboardingStep.WelcomeLast)
-                GrowthVine(step)
+                FrameColumn {
+                    WelcomeDots(page = welcomePage, visible = step <= OnboardingStep.WelcomeLast)
+                    GrowthVine(step)
 
-                // Bienvenida: textos a media velocidad y botón
-                StepLayer(0, layer, layerPosition, 0.5f) { WelcomeTexts(welcomePage) }
-                StepLayer(0, layer, layerPosition, 1f) { WelcomeContent(welcomePage, onNext) }
+                    // Bienvenida: textos a media velocidad y botón
+                    StepLayer(0, layer, layerPosition, 0.5f) { WelcomeTexts(welcomePage) }
+                    StepLayer(0, layer, layerPosition, 1f) { WelcomeContent(welcomePage, onNext) }
 
-                StepLayer(1, layer, layerPosition, 0.5f) { NameText(number, total) }
-                StepLayer(1, layer, layerPosition, 1f) {
-                    NameContent(
-                        name = state.name,
-                        nameError = state.nameError,
-                        canContinue = state.isNameValid,
-                        onNameChange = onNameChange,
-                        onContinue = onNext
-                    )
-                }
+                    StepLayer(1, layer, layerPosition, 0.5f) { NameText(number, total) }
+                    StepLayer(1, layer, layerPosition, 1f) {
+                        NameContent(
+                            name = state.name,
+                            nameError = state.nameError,
+                            canContinue = state.isNameValid,
+                            onNameChange = onNameChange,
+                            onContinue = onNext
+                        )
+                    }
 
-                StepLayer(2, layer, layerPosition, 0.5f) { GoalsText(number, total, state.displayName) }
-                StepLayer(2, layer, layerPosition, 1f) {
-                    GoalsContent(
-                        picks = picks,
-                        shown = ui.shown && step == OnboardingStep.Goals,
-                        shakeIndex = ui.shakeIndex,
-                        onPick = onPickGoal,
-                        onContinue = onNext
-                    )
-                }
+                    StepLayer(2, layer, layerPosition, 0.5f) { GoalsText(number, total, state.displayName) }
+                    StepLayer(2, layer, layerPosition, 1f) {
+                        GoalsContent(
+                            picks = picks,
+                            shown = ui.shown && step == OnboardingStep.Goals,
+                            shakeIndex = ui.shakeIndex,
+                            onPick = onPickGoal,
+                            onContinue = onNext
+                        )
+                    }
 
-                StepLayer(3, layer, layerPosition, 0.5f) { UsageText(number, total) }
-                StepLayer(3, layer, layerPosition, 1f) {
-                    UsageContent(use = state.usageRange.index, onPick = onPickUsage, onContinue = onNext)
-                }
+                    StepLayer(3, layer, layerPosition, 0.5f) { UsageText(number, total) }
+                    StepLayer(3, layer, layerPosition, 1f) {
+                        UsageContent(use = state.usageRange.index, onPick = onPickUsage, onContinue = onNext)
+                    }
 
-                StepLayer(4, layer, layerPosition, 0.5f) { MomentText(number, total) }
-                StepLayer(4, layer, layerPosition, 1f) {
-                    MomentContent(
-                        moment = moment,
-                        shown = ui.shown && step == OnboardingStep.Moment,
-                        onPick = onPickMoment,
-                        onContinue = onNext
-                    )
-                }
+                    StepLayer(4, layer, layerPosition, 0.5f) { MomentText(number, total) }
+                    StepLayer(4, layer, layerPosition, 1f) {
+                        MomentContent(
+                            moment = moment,
+                            shown = ui.shown && step == OnboardingStep.Moment,
+                            onPick = onPickMoment,
+                            onContinue = onNext
+                        )
+                    }
 
-                StepLayer(5, layer, layerPosition, 0.5f) { RevealText(number, total) }
-                StepLayer(5, layer, layerPosition, 1f) {
-                    RevealContent(
-                        active = step == OnboardingStep.Reveal,
-                        usageIndex = state.usageRange.index,
-                        onContinue = onNext
-                    )
-                }
+                    StepLayer(5, layer, layerPosition, 0.5f) { RevealText(number, total) }
+                    StepLayer(5, layer, layerPosition, 1f) {
+                        RevealContent(
+                            active = step == OnboardingStep.Reveal,
+                            usageIndex = state.usageRange.index,
+                            onContinue = onNext
+                        )
+                    }
 
-                StepLayer(6, layer, layerPosition, 0.5f) { BreathText(number, total) }
-                StepLayer(6, layer, layerPosition, 1f) {
-                    BreathContent(active = step == OnboardingStep.Breath, done = ui.breathDone, onContinue = onNext)
-                }
+                    StepLayer(6, layer, layerPosition, 0.5f) { BreathText(number, total) }
+                    StepLayer(6, layer, layerPosition, 1f) {
+                        BreathContent(active = step == OnboardingStep.Breath, done = ui.breathDone, onContinue = onNext)
+                    }
 
-                StepLayer(7, layer, layerPosition, 0.5f) { PlanText(number, total, state.displayName) }
-                StepLayer(7, layer, layerPosition, 1f) {
-                    PlanContent(active = step == OnboardingStep.Plan, rows = plan, onContinue = onNext)
-                }
+                    StepLayer(7, layer, layerPosition, 0.5f) { PlanText(number, total, state.displayName) }
+                    StepLayer(7, layer, layerPosition, 1f) {
+                        PlanContent(active = step == OnboardingStep.Plan, rows = plan, onContinue = onNext)
+                    }
 
-                StepLayer(8, layer, layerPosition, 0.5f) { CommitText(number, total) }
-                StepLayer(8, layer, layerPosition, 1f) {
-                    CommitContent(
-                        active = step == OnboardingStep.Commit,
-                        name = state.displayName,
-                        committed = ui.committed,
-                        controller = ui.hold,
-                        onMark = onHoldMark,
-                        onCommit = onCommit
-                    )
-                }
+                    StepLayer(8, layer, layerPosition, 0.5f) { CommitText(number, total) }
+                    StepLayer(8, layer, layerPosition, 1f) {
+                        CommitContent(
+                            active = step == OnboardingStep.Commit,
+                            name = state.displayName,
+                            committed = ui.committed,
+                            controller = ui.hold,
+                            onMark = onHoldMark,
+                            onCommit = onCommit
+                        )
+                    }
 
-                StepLayer(9, layer, layerPosition, 0.5f) { PermissionsText(number, total) }
-                StepLayer(9, layer, layerPosition, 1f) {
-                    PermissionsContent(granted = permissions, onEnable = onEnablePermission, onContinue = onNext)
-                }
+                    StepLayer(9, layer, layerPosition, 0.5f) { PermissionsText(number, total) }
+                    StepLayer(9, layer, layerPosition, 1f) {
+                        PermissionsContent(granted = permissions, onEnable = onEnablePermission, onContinue = onNext)
+                    }
 
-                StepLayer(10, layer, layerPosition, 1f) {
-                    LoginContent(
-                        state = emailState,
-                        phase = ui.loginPhase,
-                        onEmailChange = onEmailChange,
-                        onPasswordChange = onPasswordChange,
-                        onFieldBlur = onFieldBlur,
-                        onCreate = onCreateAccount,
-                        onWeb = { onProvider(AuthMode.GOOGLE) },
-                        onDevice = { onProvider(AuthMode.APPLE) },
-                        onMail = onCreateAccount,
-                        onGuest = { onProvider(AuthMode.GUEST) }
-                    )
+                    StepLayer(10, layer, layerPosition, 1f) {
+                        LoginContent(
+                            state = emailState,
+                            phase = ui.loginPhase,
+                            onEmailChange = onEmailChange,
+                            onPasswordChange = onPasswordChange,
+                            onFieldBlur = onFieldBlur,
+                            onCreate = onCreateAccount,
+                            onWeb = { onProvider(AuthMode.GOOGLE) },
+                            onDevice = { onProvider(AuthMode.APPLE) },
+                            onMail = onCreateAccount,
+                            onGuest = { onProvider(AuthMode.GUEST) }
+                        )
+                    }
                 }
 
                 CurtainOverlay(
@@ -535,14 +540,16 @@ private fun OnboardingScene(
                 )
 
                 // Arriba del telón: atrás y sonido
-                val onCurtain = step >= OnboardingStep.Login
-                BackButton(
-                    visible = step > OnboardingStep.Seed && step < OnboardingStep.Done &&
-                        !(step == OnboardingStep.Commit && ui.committed),
-                    onCurtain = onCurtain,
-                    onClick = onBack
-                )
-                SoundButton(enabled = state.soundEnabled, onCurtain = onCurtain, onToggle = onSoundToggle)
+                FrameColumn {
+                    val onCurtain = step >= OnboardingStep.Login
+                    BackButton(
+                        visible = step > OnboardingStep.Seed && step < OnboardingStep.Done &&
+                            !(step == OnboardingStep.Commit && ui.committed),
+                        onCurtain = onCurtain,
+                        onClick = onBack
+                    )
+                    SoundButton(enabled = state.soundEnabled, onCurtain = onCurtain, onToggle = onSoundToggle)
+                }
             }
         }
     }

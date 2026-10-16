@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.scale
@@ -42,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.segundoaire.R
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.onboarding.FrameColumn
+import com.segundoaire.presentation.onboarding.LocalFrameColumn
 import com.segundoaire.presentation.onboarding.emphasized
 import com.segundoaire.presentation.onboarding.tree.TreeRules
 
@@ -50,8 +53,6 @@ internal enum class CurtainState { Up, Cover, Rest }
 
 private const val CoverHeight = 1000f
 private const val RestHeight = 270f
-private const val Bleed = 300f
-private const val CurveHeight = 80f
 private const val TreeTopHidden = 600f
 private const val TreeTopRest = 70f
 private const val TreeSize = 190f
@@ -126,39 +127,35 @@ internal fun CurtainOverlay(
                 }
             )
     ) {
-        // Telón y borde curvo; se extienden más allá del marco por arriba y por los lados para
-        // cubrir la barra de estado y las franjas que deja el ajuste a la pantalla
-        Canvas(
-            Modifier
-                .offset(x = (-Bleed).dp, y = (-Bleed).dp)
-                .requiredSize((TreeRules.FrameWidth + 2 * Bleed).dp, (CoverHeight + Bleed + CurveHeight).dp)
-        ) {
-            scale(density, Offset.Zero) {
-                translate(left = Bleed, top = Bleed) {
+        // Telón y borde curvo: cubren toda la ventana (también bajo las barras y a los lados);
+        // solo su altura y su curva son las del prototipo, medidas desde arriba de la columna
+        val column = LocalFrameColumn.current
+        Canvas(Modifier.fillMaxSize()) {
+            translate(column.x, column.y) {
+                scale(density, Offset.Zero) {
+                    val left = -column.x / density
+                    val top = -column.y / density
+                    val right = left + size.width / density
                     val h = height.value
-                    drawRect(
-                        colors.secondaryDeep,
-                        Offset(-Bleed, -Bleed),
-                        androidx.compose.ui.geometry.Size(TreeRules.FrameWidth + 2 * Bleed, h + Bleed)
-                    )
+                    drawRect(colors.secondaryDeep, Offset(left, top), Size(right - left, h - top))
                     val alpha = curveAlpha.value
                     if (alpha > 0.001f) {
                         curveBase.rewind()
                         // De un borde casi plano (V4, C 300 30 140 20 0 30) a uno curvo (V10, C 300 80 140 40 0 64);
-                        // a los lados del marco el borde sigue plano hasta el final de la pantalla
+                        // fuera de la columna el borde sigue plano hasta el final de la ventana
                         val t = curve.value
-                        val right = h - 1f + lerp(4f, 10f, t)
-                        val left = h - 1f + lerp(30f, 64f, t)
-                        curveBase.moveTo(-Bleed, h - 1f)
-                        curveBase.lineTo(TreeRules.FrameWidth + Bleed, h - 1f)
-                        curveBase.lineTo(TreeRules.FrameWidth + Bleed, right)
-                        curveBase.lineTo(TreeRules.FrameWidth, right)
+                        val edgeRight = h - 1f + lerp(4f, 10f, t)
+                        val edgeLeft = h - 1f + lerp(30f, 64f, t)
+                        curveBase.moveTo(left, h - 1f)
+                        curveBase.lineTo(right, h - 1f)
+                        curveBase.lineTo(right, edgeRight)
+                        curveBase.lineTo(TreeRules.FrameWidth, edgeRight)
                         curveBase.cubicTo(
                             300f, h - 1f + lerp(30f, 80f, t),
                             140f, h - 1f + lerp(20f, 40f, t),
-                            0f, left
+                            0f, edgeLeft
                         )
-                        curveBase.lineTo(-Bleed, left)
+                        curveBase.lineTo(left, edgeLeft)
                         curveBase.close()
                         drawPath(curveBase, colors.secondaryDeep.copy(alpha = colors.secondaryDeep.alpha * alpha))
                     }
@@ -167,6 +164,7 @@ internal fun CurtainOverlay(
         }
 
         // Contenido del telón: solo se ve donde el telón ya llegó
+        FrameColumn {
         Box(
             Modifier
                 .fillMaxSize()
@@ -207,6 +205,7 @@ internal fun CurtainOverlay(
                     onFinish = onFinish
                 )
             }
+        }
         }
     }
 }
