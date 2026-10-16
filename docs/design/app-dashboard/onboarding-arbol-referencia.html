@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Onboarding · Lo que crece cuando pausas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#235347}a:hover{color:#1B443A}
+.tr-root{position:relative;width:390px;height:844px;overflow:hidden;background:#DAF1DE;font-family:"Manrope",system-ui,sans-serif;color:#051F20}
+.tr-title{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:34px;line-height:40px;letter-spacing:-0.015em;color:#051F20;font-variation-settings:"opsz" 96}
+.tr-title em{font-style:italic;font-weight:400;color:#235347}
+.tr-sub{font-size:15px;line-height:22px;color:#2C5649;margin-top:10px}
+.tr-chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px 0 10px;border-radius:999px;background:rgba(218,241,222,0.6);border:1px solid rgba(255,255,255,0.7);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#2C5649;backdrop-filter:blur(12px)}
+.tr-btn{position:absolute;left:16px;right:16px;bottom:40px;height:52px;border:0;border-radius:999px;background:#235347;color:#DAF1DE;font-family:inherit;font-size:15px;font-weight:600;letter-spacing:.01em;cursor:pointer;transition:transform 180ms cubic-bezier(.34,1.56,.64,1),background-color 200ms ease}
+.tr-btn:active{transform:scale(.95)}
+.tr-btn:disabled{background:rgba(5,31,32,0.10);color:rgba(5,31,32,0.38);cursor:default;transform:none}
+.tr-btn:focus-visible,.tr-opt:focus-visible,.tr-back:focus-visible,.tr-input:focus-visible,.tr-icon-btn:focus-visible,.tr-node:focus-visible,.tr-small:focus-visible{outline:2px solid #235347;outline-offset:3px}
+.tr-back,.tr-icon-btn{position:absolute;top:12px;width:48px;height:48px;border:0;background:transparent;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 300ms ease,color 400ms ease;z-index:6}
+.tr-back{left:8px}.tr-icon-btn{right:8px}
+.tr-opt{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:0 16px;box-sizing:border-box;border-radius:16px;font-family:inherit;font-size:16px;font-weight:600;text-align:left;cursor:pointer;backdrop-filter:blur(12px);transition:transform 520ms cubic-bezier(.34,1.56,.64,1),opacity 300ms ease-out,background-color 220ms ease,color 220ms ease,border-color 220ms ease}
+.tr-input{width:100%;height:52px;box-sizing:border-box;padding:0 16px;border-radius:16px;border:1px solid #4A7A63;background:rgba(218,241,222,.6);font-family:inherit;font-size:16px;color:#051F20;backdrop-filter:blur(12px)}
+.tr-label{font-size:12px;font-weight:600;letter-spacing:.02em;color:#2C5649}
+.tr-glass{border-radius:24px;background:rgba(218,241,222,0.62);border:1px solid rgba(255,255,255,0.7);box-shadow:0 2px 6px rgba(5,31,32,.06),0 8px 24px rgba(5,31,32,.08);backdrop-filter:blur(20px)}
+.tr-small{height:40px;padding:0 16px;border-radius:999px;border:0;background:#235347;color:#DAF1DE;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.tr-node{position:absolute;top:-24px;width:48px;height:48px;margin-left:-24px;border:0;background:transparent;cursor:pointer;border-radius:999px;display:flex;align-items:center;justify-content:center}
+.tr-shake{animation:tr-shake 380ms cubic-bezier(.36,.07,.19,.97)}
+.tr-pop{animation:tr-pop 420ms cubic-bezier(.34,1.56,.64,1)}
+@keyframes tr-shake{20%{translate:-6px 0}40%{translate:5px 0}60%{translate:-3px 0}80%{translate:2px 0}}
+@keyframes tr-pop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+.tr-ripple{transform-box:fill-box;transform-origin:50% 50%;animation:tr-ripple 4s cubic-bezier(.2,.6,.3,1) infinite;opacity:0}
+@keyframes tr-ripple{0%{transform:scale(.2);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.tr-sun{position:absolute;border-radius:50%;filter:blur(28px);animation:tr-drift 22s ease-in-out infinite alternate}
+@keyframes tr-drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,20px) scale(1.15)}100%{transform:translate(-20px,40px) scale(.95)}}
+.tr-sway{transform-box:view-box;transform-origin:195px 515px;animation:tr-sway 7s ease-in-out infinite alternate}
+@keyframes tr-sway{0%{transform:rotate(-0.8deg)}100%{transform:rotate(0.8deg)}}
+.tr-fall-a{animation:tr-fall-a 2.8s cubic-bezier(.3,.1,.4,1) forwards}
+.tr-fall-b{animation:tr-fall-b 2.8s cubic-bezier(.3,.1,.4,1) forwards}
+@keyframes tr-fall-a{0%{transform:translate(0,-30px) rotate(0);opacity:0}15%{opacity:.5}50%{transform:translate(40px,300px) rotate(160deg)}100%{transform:translate(-10px,720px) rotate(340deg);opacity:0}}
+@keyframes tr-fall-b{0%{transform:translate(0,-30px) rotate(0);opacity:0}15%{opacity:.5}50%{transform:translate(40px,300px) rotate(160deg)}100%{transform:translate(-10px,720px) rotate(340deg);opacity:0}}
+.tr-ff{position:absolute;width:6px;height:6px;border-radius:50%;background:#E6F5B0;box-shadow:0 0 10px 3px rgba(230,245,176,.7);animation:tr-ff 4s ease-in-out infinite alternate}
+@keyframes tr-ff{0%{transform:translate(0,0);opacity:.2}50%{opacity:1}100%{transform:translate(18px,-26px);opacity:.3}}
+.rv-on .rv-ring{animation:rv-draw 1.8s cubic-bezier(.45,0,.2,1) forwards}
+.rv-ring{stroke-dashoffset:1}
+@keyframes rv-draw{to{stroke-dashoffset:0}}
+.rv-on .rv-late{animation:rv-in 600ms cubic-bezier(.22,1,.36,1) forwards}
+.rv-late{opacity:0}
+@keyframes rv-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.rv-good .rv-ring{stroke:#2E7D63;transition:stroke 900ms ease}
+.br-on .br-canopy{animation:br 8s ease-in-out 3}
+.br-canopy{transform-origin:50% 60%}
+@keyframes br{0%,100%{transform:scale(.62)}50%{transform:scale(1)}}
+.br-on .br-in{animation:br-in 8s ease-in-out 3}
+.br-on .br-out{animation:br-out 8s ease-in-out 3}
+.br-in{opacity:1}.br-out{opacity:0}
+@keyframes br-in{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}
+@keyframes br-out{0%,45%{opacity:0}50%,95%{opacity:1}100%{opacity:0}}
+.pl-on .pl-row{animation:rv-in 520ms cubic-bezier(.22,1,.36,1) forwards}
+.pl-row{opacity:0}
+.tr-spin{animation:tr-spin 900ms linear infinite}
+@keyframes tr-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.tr-sun,.tr-ripple,.tr-fall-a,.tr-fall-b,.tr-sway,.tr-ff{animation:none}.br-on .br-canopy{animation:none}}
+</style>
+</helmet>
+<div class="tr-root">
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<div class="tr-sun" style="left: -40px; top: 40px; width: 220px; height: 220px; background: rgba(255,255,255,0.55)"></div>
+<div class="tr-sun" style="left: 220px; top: 160px; width: 180px; height: 180px; background: rgba(255,255,255,0.45); animation-duration: 28s"></div>
+</div>
+
+<div aria-hidden="true" style="{{skyStyle}}"></div>
+<div aria-hidden="true" style="{{ffStyle}}">
+<div class="tr-ff" style="left: 60px; top: 560px"></div>
+<div class="tr-ff" style="left: 140px; top: 640px; animation-delay: 1s"></div>
+<div class="tr-ff" style="left: 250px; top: 590px; animation-delay: 2s"></div>
+<div class="tr-ff" style="left: 320px; top: 680px; animation-delay: .5s"></div>
+<div class="tr-ff" style="left: 200px; top: 720px; animation-delay: 1.5s"></div>
+<div class="tr-ff" style="left: 30px; top: 700px; animation-delay: 2.5s"></div>
+</div>
+
+<div aria-hidden="true" style="{{hillStyle}}">
+<svg width="390" height="844" viewBox="0 0 390 844" style="display: block">
+<path d="M-10 26 C70 2 140 18 195 14 C255 10 320 -6 400 20 L400 844 L-10 844 Z" fill="rgba(142,182,155,0.42)"></path>
+<path d="M-10 26 C70 2 140 18 195 14 C255 10 320 -6 400 20" fill="none" stroke="#235347" stroke-opacity="0.25" stroke-width="1.25"></path>
+</svg>
+</div>
+
+<div aria-hidden="true" style="{{treeLayer}}">
+<svg width="390" height="280" viewBox="0 0 390 280" style="display: block; overflow: visible">
+<g transform="translate(195 255) scale(0.6) translate(-195 -515)">
+<sc-for list="{{roots}}" as="s" hint-placeholder-count="5">
+<path d="{{s.d}}" fill="none" stroke="#163832" stroke-width="{{s.w}}" stroke-linecap="round" pathLength="1" stroke-dasharray="1" style="{{s.style}}"></path>
+</sc-for>
+<g style="{{rippleStyle}}">
+<ellipse class="tr-ripple" cx="195" cy="514" rx="40" ry="8" fill="none" stroke="#235347" stroke-width="1.5"></ellipse>
+<ellipse class="tr-ripple" cx="195" cy="514" rx="40" ry="8" fill="none" stroke="#235347" stroke-width="1.5" style="animation-delay: 1.3s"></ellipse>
+<ellipse class="tr-ripple" cx="195" cy="514" rx="40" ry="8" fill="none" stroke="#235347" stroke-width="1.5" style="animation-delay: 2.6s"></ellipse>
+</g>
+<ellipse cx="195" cy="510" rx="11" ry="7" fill="#235347" style="{{seedStyle}}"></ellipse>
+<g class="tr-sway">
+<sc-for list="{{segs}}" as="s" hint-placeholder-count="10">
+<path d="{{s.d}}" fill="none" stroke="#235347" stroke-width="{{s.w}}" stroke-linecap="round" pathLength="1" stroke-dasharray="1" style="{{s.style}}"></path>
+</sc-for>
+<sc-for list="{{blobs}}" as="b" hint-placeholder-count="19">
+<circle cx="{{b.cx}}" cy="{{b.cy}}" r="{{b.r}}" style="{{b.style}}"></circle>
+</sc-for>
+<sc-for list="{{leaves}}" as="l" hint-placeholder-count="8">
+<g transform="{{l.tf}}"><path d="M0 0 C6 -8 18 -8 22 0 C18 8 6 8 0 0Z" fill="#2E7D63" fill-opacity="0.85" style="{{l.style}}"></path></g>
+</sc-for>
+<sc-for list="{{nameLeaves}}" as="l" hint-placeholder-count="10">
+<g transform="{{l.tf}}"><path d="M0 0 C5 -6 13 -6 17 0 C13 6 5 6 0 0Z" fill="#163832" fill-opacity="0.9" style="{{l.style}}"></path></g>
+</sc-for>
+<sc-for list="{{flowers}}" as="f" hint-placeholder-count="5">
+<g transform="{{f.tf}}"><g style="{{f.style}}">
+<circle cx="0" cy="-8" r="7" fill="#DAF1DE"></circle>
+<circle cx="7.6" cy="-2.5" r="7" fill="#DAF1DE"></circle>
+<circle cx="4.7" cy="6.5" r="7" fill="#DAF1DE"></circle>
+<circle cx="-4.7" cy="6.5" r="7" fill="#DAF1DE"></circle>
+<circle cx="-7.6" cy="-2.5" r="7" fill="#DAF1DE"></circle>
+<circle cx="0" cy="0" r="4.5" fill="#C9B26B"></circle>
+</g></g>
+</sc-for>
+</g>
+</g>
+</svg>
+</div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; z-index: 4">
+<sc-for list="{{fall}}" as="f" hint-placeholder-count="7">
+<div class="{{f.cls}}" style="{{f.style}}">
+<svg width="18" height="18" viewBox="0 0 24 24"><path d="{{f.d}}" fill="{{f.color}}"></path></svg>
+</div>
+</sc-for>
+</div>
+
+<div aria-hidden="true" style="{{dotsStyle}}">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="3">
+<div style="{{d.style}}"></div>
+</sc-for>
+</div>
+
+<svg aria-hidden="true" width="390" height="40" viewBox="0 0 390 40" style="{{vineStyle}}">
+<path d="M64 20 C100 12 130 28 160 20 S220 12 250 20 S310 28 326 20" fill="none" stroke="rgba(5,31,32,0.12)" stroke-width="4" stroke-linecap="round"></path>
+<path d="M64 20 C100 12 130 28 160 20 S220 12 250 20 S310 28 326 20" fill="none" stroke="#235347" stroke-width="4" stroke-linecap="round" pathLength="1" stroke-dasharray="1" style="{{vineFill}}"></path>
+</svg>
+
+<button type="button" class="tr-back" aria-label="Atrás" onClick="{{back}}" style="{{backStyle}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</button>
+<button type="button" class="tr-icon-btn" aria-label="Sonido" aria-pressed="{{soundPressed}}" onClick="{{toggleSound}}" style="{{soundStyle}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="{{soundWave}}"></path></svg>
+</button>
+
+<!-- B1–B3 -->
+<div style="{{L0t}}">
+<sc-for list="{{bTexts}}" as="t" hint-placeholder-count="3">
+<div style="{{t.style}}">
+<span class="tr-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#235347" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"></path></svg>{{t.eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">{{t.a}}<em>{{t.em}}</em>{{t.b}}</div>
+<div class="tr-sub" style="max-width: 300px; margin-left: auto; margin-right: auto">{{t.body}}</div>
+</div>
+</sc-for>
+</div>
+<div style="{{L0c}}">
+<button type="button" class="tr-btn" onClick="{{next}}">{{bLabel}}</button>
+</div>
+
+<!-- 1 Nombre -->
+<div style="{{L1t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">¿Cómo te <em>llamamos</em>?</div>
+<div class="tr-sub">Cada letra le da una hoja a tu árbol.</div>
+</div>
+<div style="{{L1c}}">
+<div style="position: absolute; left: 16px; right: 16px; top: 268px; display: flex; flex-direction: column; gap: 8px">
+<label for="tr-name" class="tr-label">Tu nombre</label>
+<input id="tr-name" class="tr-input" type="text" maxlength="20" placeholder="Escribe tu nombre" value="{{name}}" onChange="{{onName}}">
+<div style="{{greetStyle}}">Encantados, {{nameShown}}.</div>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}" disabled="{{nameEmpty}}">Continuar</button>
+</div>
+
+<!-- 2 Objetivo -->
+<div style="{{L2t}}">
+<span class="tr-chip">{{eyebrow}} · Elige hasta 2</span>
+<div class="tr-title" style="margin-top: 14px">¿Qué quieres <em>lograr</em>{{q2Tail}}</div>
+</div>
+<div style="{{L2c}}">
+<div style="position: absolute; left: 16px; right: 16px; top: 238px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="5">
+<button type="button" class="{{o.cls}}" style="{{o.style}}" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}">
+<span class="{{o.iconCls}}" style="display: flex; width: 24px; height: 24px; flex: none">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="{{o.fill}}" stroke="{{o.stroke}}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{o.icon}}"></path></svg>
+</span>
+<span>{{o.label}}</span>
+</button>
+</sc-for>
+<div style="{{hintStyle}}">Ya elegiste 2. Quita una para cambiar.</div>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}" disabled="{{picksEmpty}}">Continuar</button>
+</div>
+
+<!-- 3 Uso diario -->
+<div style="{{L3t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">¿Cuánto tiempo pasas en el <em>celular</em>?</div>
+<div class="tr-sub">Un cálculo aproximado basta.</div>
+</div>
+<div style="{{L3c}}">
+<div style="position: absolute; left: 0; right: 0; top: 268px; text-align: center">
+<div style="font-family: Fraunces, Georgia, serif; font-size: 56px; line-height: 60px; font-weight: 500; letter-spacing: -0.02em; color: #235347">{{useLabel}}</div>
+<div class="tr-sub" style="margin-top: 4px">al día</div>
+</div>
+<div role="radiogroup" aria-label="Horas al día" style="position: absolute; left: 40px; width: 310px; top: 420px; height: 2px">
+<svg aria-hidden="true" width="310" height="20" viewBox="0 0 310 20" style="position: absolute; left: 0; top: -10px; overflow: visible"><path d="M-8 12 C60 4 120 16 160 10 S260 4 318 10" fill="none" stroke="#235347" stroke-width="3" stroke-linecap="round"></path></svg>
+<div aria-hidden="true" style="{{thumbStyle}}">
+<svg width="36" height="36" viewBox="0 0 24 24"><path d="M3 12 C6 4 18 4 21 12 C18 20 6 20 3 12Z" fill="#2E7D63"></path><path d="M3 12 H19" stroke="#DAF1DE" stroke-width="1"></path></svg>
+</div>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="5">
+<button type="button" role="radio" aria-checked="{{n.checked}}" aria-label="{{n.label}}" class="tr-node" style="{{n.style}}" onClick="{{n.pick}}">
+<span aria-hidden="true" style="{{n.dot}}"></span>
+</button>
+</sc-for>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="5">
+<div aria-hidden="true" style="{{n.capStyle}}">{{n.label}}</div>
+</sc-for>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}">Continuar</button>
+</div>
+
+<!-- 4 Momento -->
+<div style="{{L4t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">¿Cuándo te <em>atrapa</em> más?</div>
+<div class="tr-sub">Ahí pondremos tu primer bloque.</div>
+</div>
+<div style="{{L4c}}">
+<div role="radiogroup" aria-label="Momento del día" style="position: absolute; left: 16px; right: 16px; top: 262px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{moments}}" as="o" hint-placeholder-count="4">
+<button type="button" role="radio" aria-checked="{{o.pressed}}" class="tr-opt" style="{{o.style}}" onClick="{{o.pick}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{o.stroke}}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{o.icon}}"></path></svg>
+<span style="flex: 1">{{o.label}}</span>
+<span style="font-size: 13px; font-weight: 500; opacity: 0.8">{{o.hours}}</span>
+</button>
+</sc-for>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}" disabled="{{momentEmpty}}">Continuar</button>
+</div>
+
+<!-- 5 Revelación -->
+<div style="{{L5t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px; font-size: 28px; line-height: 34px">No es para asustarte. Es para que lo <em>veas</em>.</div>
+</div>
+<div style="{{L5c}}">
+<div class="{{revealCls}}" style="position: absolute; left: 0; right: 0; top: 200px">
+<div style="position: relative; width: 220px; height: 220px; margin: 0 auto">
+<svg aria-hidden="true" width="220" height="220" viewBox="0 0 220 220" style="position: absolute; inset: 0">
+<sc-for list="{{rings}}" as="r" hint-placeholder-count="7">
+<ellipse class="rv-ring" cx="110" cy="110" rx="{{r.rx}}" ry="{{r.ry}}" fill="none" stroke="#235347" stroke-opacity="{{r.op}}" stroke-width="2" pathLength="1" stroke-dasharray="1" style="{{r.style}}"></ellipse>
+</sc-for>
+</svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<div style="font-family: Fraunces, Georgia, serif; font-size: 52px; line-height: 56px; font-weight: 500; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">{{yearsShown}}</div>
+<div style="font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #2C5649">años</div>
+</div>
+</div>
+<div class="tr-sub rv-late" style="text-align: center; padding: 0 32px; margin-top: 12px; animation-delay: 1.9s">frente a una pantalla en los próximos 50 años, a tu ritmo actual.</div>
+<div class="rv-late" style="text-align: center; font-size: 12px; color: #2C5649; margin-top: 6px; font-variant-numeric: tabular-nums; animation-delay: 2.1s">{{formula}}</div>
+<div class="tr-glass rv-late" style="margin: 20px 16px 0; padding: 20px; animation-delay: 2.6s">
+<div style="font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #2C5649">La buena noticia</div>
+<div style="font-size: 16px; line-height: 24px; margin-top: 6px">Si recuperas 1 h al día, ganas <strong style="font-family: Fraunces, Georgia, serif; font-size: 22px; color: #235347; font-variant-numeric: tabular-nums">{{goodShown}} años</strong> para ti.</div>
+</div>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}">Continuar</button>
+</div>
+
+<!-- 6 Respiración -->
+<div style="{{L6t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">Respira <em>con</em> tu árbol</div>
+<div class="tr-sub">Tres respiraciones. Así se sentirá cada pausa.</div>
+</div>
+<div style="{{L6c}}">
+<div class="{{breathCls}}" style="position: absolute; left: 0; right: 0; top: 270px; text-align: center">
+<svg aria-hidden="true" width="260" height="260" viewBox="0 0 260 260" style="display: block; margin: 0 auto; overflow: visible">
+<g class="br-canopy" style="transform-box: fill-box">
+<circle cx="130" cy="120" r="70" fill="#2E7D63" fill-opacity="0.45"></circle>
+<circle cx="80" cy="140" r="50" fill="#235347" fill-opacity="0.4"></circle>
+<circle cx="180" cy="140" r="50" fill="#8EB69B" fill-opacity="0.75"></circle>
+<circle cx="105" cy="90" r="45" fill="#8EB69B" fill-opacity="0.6"></circle>
+<circle cx="160" cy="88" r="45" fill="#235347" fill-opacity="0.35"></circle>
+<circle cx="130" cy="160" r="55" fill="#2E7D63" fill-opacity="0.35"></circle>
+</g>
+</svg>
+<div style="position: relative; height: 40px; margin-top: 12px">
+<div class="br-in" style="position: absolute; inset: 0; font-family: Fraunces, Georgia, serif; font-size: 26px; font-style: italic; color: #235347">Inhala</div>
+<div class="br-out" style="position: absolute; inset: 0; font-family: Fraunces, Georgia, serif; font-size: 26px; font-style: italic; color: #235347">Exhala</div>
+</div>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}">{{breathLabel}}</button>
+</div>
+
+<!-- 7 Plan -->
+<div style="{{L7t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">El plan de <em>{{nameShown}}</em></div>
+<div class="tr-sub">Hecho con lo que nos contaste. Lo puedes cambiar cuando quieras.</div>
+</div>
+<div style="{{L7c}}">
+<div class="{{planCls}}" style="position: absolute; left: 16px; right: 16px; top: 264px">
+<div class="tr-glass" style="padding: 8px 20px">
+<sc-for list="{{planRows}}" as="r" hint-placeholder-count="4">
+<div class="pl-row" style="{{r.style}}">
+<span style="width: 40px; height: 40px; border-radius: 12px; background: rgba(35,83,71,0.12); display: flex; align-items: center; justify-content: center; flex: none">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#235347" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.icon}}"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-size: 12px; font-weight: 600; color: #2C5649">{{r.k}}</span>
+<span style="font-size: 16px; font-weight: 600; line-height: 22px">{{r.v}}</span>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}">Me gusta este plan</button>
+</div>
+
+<!-- 8 Compromiso -->
+<div style="{{L8t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">Echa <em>raíces</em></div>
+</div>
+<div style="{{L8c}}">
+<div class="tr-glass" style="position: absolute; left: 16px; right: 16px; top: 190px; padding: 24px">
+<div style="font-family: Fraunces, Georgia, serif; font-size: 22px; line-height: 30px; font-style: italic">“Yo, {{nameShown}}, me comprometo a darme un segundo aire antes de abrir lo que me distrae.”</div>
+<div style="margin-top: 16px; font-size: 13px; color: #2C5649">— {{nameShown}} · {{today}}</div>
+</div>
+<button type="button" class="tr-btn" style="overflow: hidden; touch-action: none; user-select: none" onPointerDown="{{holdStart}}" onPointerUp="{{holdEnd}}" onPointerLeave="{{holdEnd}}" onPointerCancel="{{holdEnd}}" aria-label="Mantén presionado para comprometerte">
+<span aria-hidden="true" style="{{holdFill}}"></span>
+<span style="position: relative">{{holdLabel}}</span>
+</button>
+</div>
+
+<!-- 9 Permisos -->
+<div style="{{L9t}}">
+<span class="tr-chip">{{eyebrow}}</span>
+<div class="tr-title" style="margin-top: 14px">Un último <em>paso</em></div>
+<div class="tr-sub">SegundoAire necesita esto para poder darte la pausa.</div>
+</div>
+<div style="{{L9c}}">
+<div style="position: absolute; left: 16px; right: 16px; top: 262px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{perms}}" as="p" hint-placeholder-count="3">
+<div class="tr-glass" style="display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 16px; border-radius: 16px">
+<span class="{{p.iconCls}}" style="{{p.iconStyle}}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{p.icon}}"></path></svg>
+</span>
+<span style="flex: 1; min-width: 0">
+<span style="display: block; font-size: 15px; font-weight: 600">{{p.title}}</span>
+<span style="display: block; font-size: 13px; line-height: 18px; color: #2C5649">{{p.desc}}</span>
+</span>
+<sc-if value="{{p.pending}}" hint-placeholder-val="{{ true }}">
+<button type="button" class="tr-small" onClick="{{p.grant}}">Activar</button>
+</sc-if>
+<sc-if value="{{p.granted}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 13px; font-weight: 600; color: #1F6B3A">Listo</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<button type="button" class="tr-btn" onClick="{{next}}" disabled="{{permsBlocked}}">Continuar</button>
+</div>
+
+<!-- Telón (login y cierre) -->
+<div aria-hidden="{{curtainHidden}}" style="{{curtainStyle}}">
+<div style="position: absolute; left: 24px; top: 72px; color: #DAF1DE">
+<div style="font-family: Fraunces, Georgia, serif; font-size: 30px; font-weight: 500; letter-spacing: -0.01em">SegundoAire</div>
+<div style="font-size: 14px; color: rgba(218,241,222,0.78); margin-top: 4px">Tu árbol ya echó raíces.</div>
+</div>
+<svg aria-hidden="true" width="190" height="190" viewBox="0 0 190 190" style="{{curtainTree}}">
+<path d="M95 190 C93 160 97 130 95 100" stroke="#8EB69B" stroke-opacity="0.6" stroke-width="5" fill="none" stroke-linecap="round"></path>
+<circle cx="95" cy="70" r="44" fill="#8EB69B" fill-opacity="0.32"></circle>
+<circle cx="58" cy="92" r="32" fill="#2E7D63" fill-opacity="0.45"></circle>
+<circle cx="132" cy="92" r="32" fill="#8EB69B" fill-opacity="0.25"></circle>
+<circle cx="76" cy="52" r="28" fill="#2E7D63" fill-opacity="0.4"></circle>
+<circle cx="118" cy="50" r="28" fill="#8EB69B" fill-opacity="0.3"></circle>
+<circle cx="70" cy="66" r="6" fill="#DAF1DE" fill-opacity="0.8"></circle>
+<circle cx="124" cy="78" r="6" fill="#DAF1DE" fill-opacity="0.8"></circle>
+</svg>
+<div style="{{doneStyle}}">
+<div style="font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 46px; font-weight: 500; color: #DAF1DE">Todo listo, <em style="font-weight: 400">{{nameShown}}</em>.</div>
+<div style="font-size: 15px; line-height: 22px; color: rgba(218,241,222,0.8); margin-top: 12px">Tu árbol te espera en el panel principal.<br>Crece con cada minuto que recuperas.</div>
+<button type="button" style="margin-top: 32px; height: 52px; padding: 0 28px; border-radius: 999px; border: 1px solid rgba(218,241,222,0.5); background: transparent; color: #DAF1DE; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" onClick="{{restart}}">Repetir desde el inicio</button>
+</div>
+</div>
+<svg aria-hidden="true" width="390" height="80" viewBox="0 0 390 80" style="{{curveStyle}}">
+<path d="{{curvePath}}" fill="#0B2B26" style="transition: d 900ms cubic-bezier(.7,0,.2,1)"></path>
+</svg>
+
+<!-- 10 Login -->
+<div style="{{L10c}}">
+<div style="position: absolute; left: 24px; right: 24px; top: 340px">
+<div class="tr-title" style="font-size: 30px; line-height: 36px">Guarda <em>tu árbol</em></div>
+<div class="tr-sub" style="margin-top: 6px">Crea tu cuenta para no perder tu progreso.</div>
+</div>
+<div style="position: absolute; left: 16px; right: 16px; top: 430px; display: flex; flex-direction: column; gap: 6px">
+<label for="tr-email" class="tr-label">Correo</label>
+<input id="tr-email" class="tr-input" type="email" placeholder="tu@correo.com" autocomplete="email">
+<label for="tr-pass" class="tr-label" style="margin-top: 8px">Contraseña</label>
+<input id="tr-pass" class="tr-input" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+</div>
+<button type="button" class="tr-btn" style="{{loginBtn}}" onClick="{{login}}" aria-label="Crear cuenta">
+<sc-if value="{{loginIdle}}" hint-placeholder-val="{{ true }}"><span>Crear cuenta</span></sc-if>
+<sc-if value="{{loginBusy}}" hint-placeholder-val="{{ false }}">
+<svg class="tr-spin" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="display: block; margin: 0 auto"><path d="M12 3 C15 6 15 9 12 12 C9 9 9 6 12 3Z" fill="#DAF1DE"></path><path d="M12 21 C9 18 9 15 12 12 C15 15 15 18 12 21Z" fill="#DAF1DE" fill-opacity="0.5"></path></svg>
+</sc-if>
+</button>
+<div style="position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 16px">
+<button type="button" class="tr-icon-btn" style="position: static; border: 1px solid rgba(5,31,32,0.15); background: rgba(218,241,222,0.6); color: #235347" aria-label="Continuar con cuenta web" onClick="{{login}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg></button>
+<button type="button" class="tr-icon-btn" style="position: static; border: 1px solid rgba(5,31,32,0.15); background: rgba(218,241,222,0.6); color: #235347" aria-label="Continuar con este dispositivo" onClick="{{login}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"></rect><path d="M11 18h2"></path></svg></button>
+<button type="button" class="tr-icon-btn" style="position: static; border: 1px solid rgba(5,31,32,0.15); background: rgba(218,241,222,0.6); color: #235347" aria-label="Continuar con correo" onClick="{{login}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></button>
+</div>
+<button type="button" style="position: absolute; left: 0; right: 0; margin: 0 auto; width: 200px; top: 770px; height: 48px; border: 0; background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; color: #235347; cursor: pointer" onClick="{{login}}">Continuar sin cuenta</button>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { step: 0, name: '', picks: [], shake: -1, shown: false, gust: 0, use: 2, moment: -1,
+      revA: 0, revB: 0, breathDone: false, hold: 0, committed: false, perms: [false, false, false],
+      curtain: 'up', loginPhase: 'idle', sound: true, petals: false };
+    this.tick = this.tick.bind(this);
+    this.last = 0; this.holding = false; this.marks = {};
+  }
+  componentDidMount() { this.raf = requestAnimationFrame(this.tick); }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); [this.t1, this.t2, this.t3, this.t4].forEach(function (t) { clearTimeout(t); }); }
+  // ---------- sonido y háptica ----------
+  audio() {
+    if (!this.state.sound) return null;
+    try { if (!this.ac) this.ac = new (window.AudioContext || window.webkitAudioContext)(); if (this.ac.state === 'suspended') this.ac.resume(); } catch (e) { return null; }
+    return this.ac;
+  }
+  tone(f, dur, gain, delay, f2, type) {
+    var ac = this.audio(); if (!ac) return;
+    var t = ac.currentTime + (delay || 0);
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+    if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  wind() {
+    var ac = this.audio(); if (!ac) return;
+    var len = ac.sampleRate * 1.2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1);
+    var s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(), t = ac.currentTime;
+    s.buffer = buf; f.type = 'bandpass'; f.frequency.setValueAtTime(400, t); f.frequency.linearRampToValueAtTime(900, t + 0.6); f.Q.value = 0.8;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.035, t + 0.4); g.gain.linearRampToValueAtTime(0, t + 1.2);
+    s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t);
+  }
+  sfx(n) {
+    if (n === 'step') { this.wind(); this.tone(523, 0.5, 0.03, 0.05); this.tone(784, 0.6, 0.025, 0.14); }
+    if (n === 'pop') this.tone(740, 0.14, 0.04, 0, 1180);
+    if (n === 'drop') { this.tone(620, 0.32, 0.03, 0, 470); this.tone(1240, 0.12, 0.006, 0, 940); }
+    if (n === 'bloom') { this.tone(659, 0.5, 0.03); this.tone(784, 0.5, 0.03, 0.08); this.tone(988, 0.7, 0.03, 0.16); }
+    if (n === 'commit') { this.tone(392, 1.4, 0.035); this.tone(494, 1.4, 0.03, 0.1); this.tone(587, 1.6, 0.03, 0.2); this.tone(784, 1.8, 0.025, 0.35); }
+    if (n === 'deny') this.tone(220, 0.18, 0.03, 0, 180, 'triangle');
+  }
+  buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+  // ---------- bucle de animación ----------
+  tick(now) {
+    var dt = this.last ? Math.min(now - this.last, 50) : 0; this.last = now;
+    var st = this.state, up = {};
+    if (st.step === 7 && this.revStart) {
+      var t = now - this.revStart;
+      var a = Math.min(1, t / 1800), b = Math.min(1, Math.max(0, (t - 2700) / 1200));
+      a = 1 - Math.pow(1 - a, 3); b = 1 - Math.pow(1 - b, 3);
+      if (a !== st.revA) up.revA = a; if (b !== st.revB) up.revB = b;
+    }
+    if (st.step === 10 && !st.committed) {
+      var h = st.hold;
+      if (this.holding) {
+        h = Math.min(1, h + dt / 1500);
+        if (h >= 0.33 && !this.marks.a) { this.marks.a = 1; this.buzz(8); this.sfx('drop'); }
+        if (h >= 0.66 && !this.marks.b) { this.marks.b = 1; this.buzz(8); this.sfx('drop'); }
+        if (h >= 1) { this.commit(); }
+      } else if (h > 0) { h = Math.max(0, h - dt / 300); }
+      if (h !== st.hold) up.hold = h;
+    }
+    for (var k in up) { this.setState(up); break; }
+    this.raf = requestAnimationFrame(this.tick);
+  }
+  commit() {
+    var self = this;
+    this.holding = false;
+    this.setState({ hold: 1, committed: true, petals: true, gust: this.state.gust + 1 });
+    this.buzz([30, 40, 60]); this.sfx('commit');
+    this.t3 = setTimeout(function () { self.go(11); }, 1600);
+  }
+  go(to) {
+    if (to < 0 || to > 13) return;
+    var self = this, from = this.state.step;
+    clearTimeout(this.t1); clearTimeout(this.t2);
+    var up = { step: to, shown: false, gust: this.state.gust + 1, petals: false };
+    if (to === 7) { this.revStart = performance.now(); up.revA = 0; up.revB = 0; }
+    if (to === 8) { up.breathDone = false; this.t2 = setTimeout(function () { self.setState({ breathDone: true }); }, 24000); }
+    if (to === 10) { up.hold = 0; up.committed = false; this.marks = {}; }
+    if (to === 12) { up.curtain = 'cover'; up.loginPhase = 'idle'; this.t2 = setTimeout(function () { self.setState({ curtain: 'rest' }); }, 850); }
+    if (to < 12) up.curtain = 'up';
+    if (to === 13) up.curtain = 'cover';
+    this.setState(up);
+    if (to === 4 || to === 6) this.t1 = setTimeout(function () { self.setState({ shown: true }); }, 420);
+    this.sfx('step'); this.buzz(10);
+  }
+  renderVals() {
+    var self = this, st = this.state, step = st.step;
+    var W = 390, scr = step < 3 ? 0 : step - 2, inB = step < 3;
+    var NAV = 'transform 620ms cubic-bezier(.22,1,.36,1), opacity 380ms ease-out';
+    function layer(idx, f, extra) {
+      var dx = (idx - scr) * W * f, on = idx === scr;
+      return 'position: absolute; inset: 0; transform: translateX(' + dx + 'px); opacity: ' + (on ? 1 : 0) + '; transition: ' + NAV + (on ? ', opacity 380ms ease-out 180ms' : '') + '; pointer-events: ' + (on ? 'auto' : 'none') + '; visibility: ' + (Math.abs(idx - scr) > 1 ? 'hidden' : 'visible') + ';' + (extra || '');
+    }
+    var TXT = ' inset: auto; left: 24px; right: 24px; top: 104px;';
+    var GROW = 'cubic-bezier(.45,0,.2,1)', SPRING = 'cubic-bezier(.34,1.56,.64,1)';
+    var stage = Math.min(step, 4);
+    var nm = (st.name || '').trim(), nameShown = nm || 'Juan';
+
+    // ---------- árbol ----------
+    var segDefs = [
+      ['M195 515 C195 490 193 470 196 440', 5, 1, 0], ['M195 515 C190 450 202 380 195 300', 10, 2, 0],
+      ['M196 400 C215 385 235 380 255 362', 4.5, 2, 400], ['M194 370 C175 355 158 345 140 328', 4.5, 2, 480],
+      ['M195 300 C190 250 200 210 195 165', 8, 3, 0], ['M195 250 C220 235 245 228 278 210', 4.5, 3, 350],
+      ['M195 232 C170 218 150 208 115 196', 4.5, 3, 420], ['M195 190 C212 160 232 140 262 126', 3.5, 4, 0],
+      ['M195 185 C178 155 158 140 128 124', 3.5, 4, 80], ['M195 170 L195 110', 3.5, 4, 120]
+    ];
+    var segs = segDefs.map(function (s) {
+      var on = stage >= s[2];
+      return { d: s[0], w: s[1], style: 'stroke-dashoffset: ' + (on ? 0 : 1) + '; transition: stroke-dashoffset ' + (on ? 900 : 350) + 'ms ' + GROW + ' ' + (on ? s[3] : 0) + 'ms;' };
+    });
+    var rootDefs = [['M195 515 C190 560 170 600 140 650', 5], ['M195 515 C200 570 230 610 270 660', 5], ['M195 515 C196 580 192 640 195 710', 6], ['M182 560 C150 580 120 590 80 600', 3], ['M210 572 C250 585 280 592 315 600', 3]];
+    var rootP = step === 10 ? st.hold : (step > 10 ? 1 : 0);
+    var roots = rootDefs.map(function (r, i) {
+      var p = Math.max(0, Math.min(1, rootP * 1.25 - i * 0.06));
+      return { d: r[0], w: r[1], style: 'stroke-dashoffset: ' + (1 - p).toFixed(3) + '; opacity: ' + (step >= 10 && step <= 11 ? 0.9 : 0) + '; transition: opacity 400ms ease;' };
+    });
+    var C = [['#235347', 0.5], ['#2E7D63', 0.55], ['#8EB69B', 0.85]];
+    var blobDefs = [
+      [196, 300, 40, 2], [255, 352, 32, 2], [140, 318, 32, 2], [228, 318, 28, 2], [165, 300, 28, 2],
+      [195, 170, 52, 3], [278, 205, 40, 3], [115, 192, 40, 3], [245, 240, 34, 3], [148, 232, 34, 3], [205, 228, 36, 3],
+      [195, 100, 56, 4], [262, 118, 46, 4], [128, 116, 46, 4], [305, 160, 38, 4], [85, 155, 38, 4], [235, 150, 44, 4], [155, 148, 44, 4], [195, 140, 48, 4]
+    ];
+    var wilt = step === 5 ? [0, 2, 5, 8, 12][st.use] : 0;
+    var cnt = {};
+    var blobs = blobDefs.map(function (b, i) {
+      var on = stage >= b[3];
+      var k = cnt[b[3]] = (cnt[b[3]] || 0) + 1;
+      var c = C[i % 3], w = ((i * 7) % 19) < wilt;
+      return { cx: b[0], cy: b[1], r: b[2], style: 'fill: ' + (w ? '#C9B26B' : c[0]) + '; fill-opacity: ' + (w ? 0.45 : c[1]) + '; transform-box: fill-box; transform-origin: 50% 70%; transform: scale(' + (on ? (w ? 0.88 : 1) : 0) + '); transition: fill 700ms ease, fill-opacity 700ms ease, transform ' + (on ? 760 : 280) + 'ms ' + (on ? SPRING : 'ease-in') + ' ' + (on && step <= 4 ? 550 + k * 90 : 0) + 'ms;' };
+    });
+    var leafDefs = [[196, 442, -150, 1, 1.5], [196, 442, -30, 1, 1.5], [196, 452, -160, 1, 1.1], [196, 452, -20, 1, 1.1],
+      [300, 330, -15, 2, 1.2], [92, 300, 195, 2, 1.2], [330, 180, -10, 3, 1.2], [62, 170, 190, 3, 1.2]];
+    var lc = {};
+    var leaves = leafDefs.map(function (l) {
+      var on = stage >= l[3];
+      var k = lc[l[3]] = (lc[l[3]] || 0) + 1;
+      return { tf: 'translate(' + l[0] + ' ' + l[1] + ') rotate(' + l[2] + ') scale(' + l[4] + ')', style: 'transform-box: fill-box; transform-origin: 0% 50%; transform: scale(' + (on ? 1 : 0) + '); transition: transform ' + (on ? 640 : 260) + 'ms ' + (on ? SPRING : 'ease-in') + ' ' + (on && step <= 4 ? 700 + k * 90 : 0) + 'ms;' };
+    });
+    var nl = (st.name || '').length, nameLeaves = [];
+    for (var i = 0; i < 10; i++) {
+      var ang = -150 + i * 22, rad = 58 + (i % 2) * 10;
+      var x = 195 + Math.cos(ang * Math.PI / 180) * rad, y = 200 + Math.sin(ang * Math.PI / 180) * rad * 0.8;
+      var on = step >= 3 && i < nl;
+      nameLeaves.push({ tf: 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + ang + ')', style: 'transform-box: fill-box; transform-origin: 0% 50%; transform: scale(' + (on ? 1.2 : 0) + '); transition: transform ' + (on ? 520 : 220) + 'ms ' + (on ? SPRING : 'ease-in') + ';' });
+    }
+    var flowerPos = [[262, 112], [128, 110], [195, 82], [250, 160], [140, 158]];
+    var flowers = flowerPos.map(function (p, i) {
+      var on = (step >= 4 && st.picks.indexOf(i) >= 0) || (st.committed && step >= 10);
+      return { tf: 'translate(' + p[0] + ' ' + p[1] + ')', style: 'transform-box: fill-box; transform-origin: 50% 50%; transform: scale(' + (on ? 1.3 : 0) + ') rotate(' + (on ? 0 : -90) + 'deg); transition: transform ' + (on ? 700 : 280) + 'ms ' + (on ? SPRING : 'ease-in') + ' ' + (on ? i * 90 : 0) + 'ms;' };
+    });
+    // posición del árbol por paso
+    var groundB = 470, tY = 0, tS = 1, tO = 0.32;
+    if (inB) { tY = groundB - 819; tS = 1.55; tO = 0.75; }
+    if (step === 7) tO = 0.12;
+    if (step === 8) tO = 0.1;
+    if (step === 9) tO = 0.2;
+    if (step === 10) { tY = -210; tS = 1.15; tO = 0.5; }
+    if (step === 11) tO = 0.25;
+    if (step >= 12) tO = 0;
+    var treeLayer = 'position: absolute; left: 0; top: 564px; width: 390px; height: 280px; pointer-events: none; transform-origin: 50% 91%; transform: translateX(' + (-Math.min(scr, 1) * W * 0.1) + 'px) translateY(' + tY + 'px) scale(' + tS + '); opacity: ' + tO + '; transition: transform 1000ms cubic-bezier(.3,1.06,.5,1), opacity 600ms ease;';
+    var hillY = inB ? groundB - 14 : (step === 10 ? 819 + tY - 14 : 805);
+    var hillStyle = 'position: absolute; left: 0; top: 0; pointer-events: none; opacity: ' + (step >= 12 ? 0 : 1) + '; transform: translateY(' + hillY + 'px); transition: transform 1000ms cubic-bezier(.3,1.06,.5,1), opacity 500ms ease;';
+    var fallDefs = [[40, 120, 0, 2.6], [120, 60, 180, 3.0], [210, 140, 90, 2.4], [300, 80, 260, 2.9], [80, 220, 340, 2.7], [250, 30, 420, 3.2], [340, 180, 140, 2.5]];
+    var LEAF = 'M2 12 C6 4 18 4 22 12 C18 20 6 20 2 12Z', PETAL = 'M12 3 C17 7 17 15 12 21 C7 15 7 7 12 3Z';
+    var fall = fallDefs.map(function (f, i) {
+      var cls = st.gust === 0 ? '' : (st.gust % 2 ? 'tr-fall-a' : 'tr-fall-b');
+      var pet = st.petals && i % 2 === 0;
+      return { cls: cls, d: st.petals ? PETAL : LEAF, color: pet ? '#C9B26B' : (st.petals ? '#8EB69B' : '#2E7D63'), style: 'position: absolute; left: ' + f[0] + 'px; top: ' + f[1] + 'px; width: 18px; height: 18px; opacity: 0; animation-delay: ' + f[2] + 'ms; animation-duration: ' + f[3] + 's;' };
+    });
+    // ---------- cielo por momento ----------
+    var skies = ['linear-gradient(to top, rgba(255,196,150,0.45), rgba(255,220,180,0) 55%)', 'linear-gradient(to top, rgba(255,246,190,0.45), rgba(255,246,190,0) 55%)', 'linear-gradient(to top, rgba(244,160,110,0.45), rgba(244,160,110,0) 55%)', 'linear-gradient(to top, rgba(13,31,35,0.62), rgba(13,31,35,0) 58%)'];
+    var showSky = step === 6 && st.moment >= 0;
+    var skyStyle = 'position: absolute; inset: 0; pointer-events: none; background: ' + (st.moment >= 0 ? skies[st.moment] : 'none') + '; opacity: ' + (showSky ? 1 : 0) + '; transition: opacity 900ms ease, background 900ms ease;';
+    var ffStyle = 'position: absolute; inset: 0; pointer-events: none; opacity: ' + (showSky && (st.moment === 2 || st.moment === 3) ? 1 : 0) + '; transition: opacity 900ms ease;';
+    // ---------- textos B ----------
+    var texts = [
+      ['01 · Semilla', 'Respira ', 'antes', ' de abrir', 'Una pausa breve entre tú y las apps que te atrapan.'],
+      ['02 · Brote', 'Una pausa, ', 'no', ' un castigo', 'Antes de abrir una app que elijas, tendrás un momento para decidir.'],
+      ['03 · Copa', 'Recupera ', 'tu tiempo', '', 'Cada pausa que eliges hace crecer algo tuyo.']
+    ];
+    var bi = Math.min(step, 2);
+    var bTexts = texts.map(function (t, i) {
+      var dx = i === bi ? 0 : (i < bi ? -24 : 24);
+      return { eyebrow: t[0], a: t[1], em: t[2], b: t[3], body: t[4], style: 'position: absolute; left: 24px; right: 24px; top: ' + (groundB + 44) + 'px; text-align: center; transform: translateX(' + dx + 'px); opacity: ' + (i === bi ? 1 : 0) + '; transition: transform 520ms cubic-bezier(.22,1,.36,1), opacity 300ms ease-out' + (i === bi ? ' 120ms' : '') + ';' };
+    });
+    var dots = [0, 1, 2].map(function (i) {
+      return { style: 'height: 4px; border-radius: 2px; width: ' + (i === bi ? 28 : 12) + 'px; background: ' + (i === bi ? '#235347' : 'rgba(5,31,32,0.2)') + '; transition: width 400ms cubic-bezier(.34,1.3,.64,1), background-color 300ms ease;' };
+    });
+    // ---------- objetivo ----------
+    var optDefs = [
+      ['Pasar menos tiempo en redes', 'M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7', true],
+      ['Dormir mejor', 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z', true],
+      ['Concentrarme al estudiar', 'M12 3c4 4 5 9 0 18-5-9-4-14 0-18zM12 8v9', true],
+      ['Estar más presente', 'M12 3v8M12 11c-3 2-5 5-6 9M12 11c3 2 5 5 6 9M12 11v9', false],
+      ['Bajar la ansiedad', 'M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z', true]
+    ];
+    var full = st.picks.length >= 2;
+    var opts = optDefs.map(function (o, i) {
+      var on = st.picks.indexOf(i) >= 0, shown = st.shown && step === 4;
+      var d = shown ? (80 + 60 * i) : 0;
+      return {
+        label: o[0], icon: o[1], fill: on && o[2] ? 'rgba(218,241,222,0.9)' : 'none', stroke: on ? '#DAF1DE' : '#235347',
+        iconCls: on ? 'tr-pop' : '', pressed: on ? 'true' : 'false', cls: 'tr-opt' + (st.shake === i ? ' tr-shake' : ''),
+        style: 'border: 1px solid ' + (on ? '#163832' : 'rgba(255,255,255,0.7)') + '; background: ' + (on ? '#163832' : 'rgba(218,241,222,0.6)') + '; color: ' + (on ? '#DAF1DE' : (full ? 'rgba(5,31,32,0.45)' : '#051F20')) + '; transform: translateY(' + (shown ? 0 : 32) + 'px); opacity: ' + (shown ? 1 : 0) + '; transition-delay: ' + d + 'ms, ' + d + 'ms, 0ms, 0ms, 0ms;',
+        pick: function () {
+          var p = self.state.picks.slice(), k = p.indexOf(i);
+          if (k >= 0) { p.splice(k, 1); self.setState({ picks: p }); self.sfx('drop'); return; }
+          if (p.length >= 2) { clearTimeout(self.t4); self.setState({ shake: i }); self.sfx('deny'); self.buzz(25); self.t4 = setTimeout(function () { self.setState({ shake: -1 }); }, 400); return; }
+          p.push(i); self.setState({ picks: p }); self.sfx('bloom'); self.buzz(15);
+        }
+      };
+    });
+    // ---------- uso ----------
+    var useLabels = ['menos de 2 h', '2 – 4 h', '4 – 6 h', '6 – 8 h', 'más de 8 h'], caps = ['<2', '2–4', '4–6', '6–8', '8+'];
+    var nodes = caps.map(function (c, i) {
+      var x = i * 77.5, on = st.use === i;
+      return {
+        label: useLabels[i], checked: on ? 'true' : 'false', style: 'left: ' + x + 'px;',
+        dot: 'width: 12px; height: 12px; border-radius: 50%; background: ' + (i <= st.use ? '#235347' : '#DAF1DE') + '; border: 2px solid #235347; box-sizing: border-box; transition: background-color 300ms ease;',
+        capStyle: 'position: absolute; top: 34px; left: ' + x + 'px; width: 48px; margin-left: -24px; text-align: center; font-size: 12px; font-weight: 600; color: ' + (on ? '#235347' : '#2C5649') + ';',
+        pick: function () { self.setState({ use: i }); self.sfx('drop'); self.buzz(6); }
+      };
+    });
+    var thumbStyle = 'position: absolute; top: -40px; left: ' + (st.use * 77.5 - 18) + 'px; width: 36px; height: 36px; transform: rotate(-35deg); transition: left 520ms ' + SPRING + '; pointer-events: none;';
+    // ---------- momento ----------
+    var momDefs = [
+      ['Mañana', '6 – 12 h', 'M3 18h18M6 14a6 6 0 0 1 12 0M12 4v3M4.5 8.5l2 2M19.5 8.5l-2 2'],
+      ['Tarde', '12 – 18 h', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5'],
+      ['Noche', '18 – 24 h', 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'],
+      ['Madrugada', '0 – 6 h', 'M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5zM18 15l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z']
+    ];
+    var moments = momDefs.map(function (m, i) {
+      var on = st.moment === i, shown = st.shown && step === 6, d = shown ? 80 + 60 * i : 0;
+      return { label: m[0], hours: m[1], icon: m[2], pressed: on ? 'true' : 'false', stroke: on ? '#DAF1DE' : '#235347',
+        style: 'border: 1px solid ' + (on ? '#163832' : 'rgba(255,255,255,0.7)') + '; background: ' + (on ? '#163832' : 'rgba(218,241,222,0.66)') + '; color: ' + (on ? '#DAF1DE' : '#051F20') + '; transform: translateY(' + (shown ? 0 : 32) + 'px); opacity: ' + (shown ? 1 : 0) + '; transition-delay: ' + d + 'ms, ' + d + 'ms, 0ms, 0ms, 0ms;',
+        pick: function () { self.setState({ moment: i }); self.sfx('pop'); self.buzz(10); } };
+    });
+    // ---------- revelación ----------
+    var hours = [1.5, 3, 5, 7, 9][st.use];
+    var years = hours * 365 * 50 / 8760, good = 365 * 50 / 8760;
+    function fmt(v) { return v.toFixed(1).replace('.', ','); }
+    var rings = [];
+    for (var r = 0; r < 7; r++) rings.push({ rx: 34 + r * 12, ry: 30 + r * 11.4, op: 0.25 + r * 0.1, style: 'animation-delay: ' + (r * 120) + 'ms;' });
+    // ---------- plan ----------
+    var momNames = ['Mañana · 07:00 – 08:00', 'Tarde · 14:00 – 15:00', 'Noche · 21:00 – 22:00', 'Madrugada · 00:00 – 01:00'];
+    var goals = st.picks.map(function (i) { return optDefs[i][0]; });
+    var planDefs = [
+      ['Tus metas', goals.length ? goals.join(' · ') : 'Vivir con más calma', 'M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7'],
+      ['Primer bloque de enfoque', st.moment >= 0 ? momNames[st.moment] : momNames[2], 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2'],
+      ['Modo Mindful', 'Una pausa de 10 s antes de abrir', 'M12 3c4 4 5 9 0 18-5-9-4-14 0-18zM12 8v9'],
+      ['Meta diaria', 'Recuperar 1 h al día', 'M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z']
+    ];
+    var planRows = planDefs.map(function (p, i) {
+      return { k: p[0], v: p[1], icon: p[2], style: 'display: flex; align-items: center; gap: 14px; padding: 14px 0;' + (i < 3 ? ' border-bottom: 1px solid rgba(5,31,32,0.1);' : '') + ' animation-delay: ' + (200 + i * 90) + 'ms;' };
+    });
+    // ---------- permisos ----------
+    var permDefs = [
+      ['Acceso a uso', 'Para saber qué app se abre. Requerido.', 'M4 19V9M10 19V5M16 19v-7M22 19H2'],
+      ['Mostrar sobre otras apps', 'Para mostrar la pausa a tiempo. Requerido.', 'M4 6h16v12H4zM8 10h8v4H8z'],
+      ['Notificaciones', 'Para avisarte del bloque. Opcional.', 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0']
+    ];
+    var perms = permDefs.map(function (p, i) {
+      var g = st.perms[i];
+      return { title: p[0], desc: p[1], icon: g ? 'M5 12l5 5 9-10' : p[2], pending: !g, granted: g, iconCls: g ? 'tr-pop' : '',
+        iconStyle: 'width: 40px; height: 40px; border-radius: 12px; flex: none; display: flex; align-items: center; justify-content: center; background: ' + (g ? '#CDEBD3' : '#F2E2BE') + '; color: ' + (g ? '#1F6B3A' : '#7A4F00') + '; transition: background-color 500ms ease;',
+        grant: function () { var a = self.state.perms.slice(); a[i] = true; self.setState({ perms: a }); self.sfx('pop'); self.buzz(15); } };
+    });
+    // ---------- telón ----------
+    var cH = st.curtain === 'up' ? 0 : (st.curtain === 'cover' ? 900 : 270);
+    var CURVE = 'cubic-bezier(.7,0,.2,1)';
+    var curtainStyle = 'position: absolute; left: 0; top: 0; width: 390px; height: ' + cH + 'px; background: #0B2B26; overflow: hidden; z-index: 5; transition: height 900ms ' + CURVE + ';';
+    var curveStyle = 'position: absolute; left: 0; top: ' + (cH - 1) + 'px; z-index: 5; opacity: ' + (st.curtain === 'up' ? 0 : 1) + '; transition: top 900ms ' + CURVE + ', opacity 200ms ease ' + (st.curtain === 'up' ? '700ms' : '0ms') + ';';
+    var curvePath = st.curtain === 'rest' ? 'M0 0 H390 V10 C300 80 140 40 0 64 Z' : 'M0 0 H390 V4 C300 30 140 20 0 30 Z';
+    var loginBusy = st.loginPhase === 'busy';
+    var loginBtn = 'top: 610px; bottom: auto; ' + (loginBusy ? 'left: 169px; right: 169px;' : 'left: 16px; right: 16px;') + ' transition: left 500ms ' + SPRING + ', right 500ms ' + SPRING + ', transform 180ms ease;';
+    var vp = step >= 3 && step <= 11 ? (step - 2) / 9 : (step > 11 ? 1 : 0);
+    var light = step >= 12;
+    var today = new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+    return {
+      treeLayer: treeLayer, hillStyle: hillStyle, segs: segs, roots: roots, blobs: blobs, leaves: leaves, nameLeaves: nameLeaves, flowers: flowers, fall: fall,
+      skyStyle: skyStyle, ffStyle: ffStyle,
+      seedStyle: 'transform-box: fill-box; transform-origin: 50% 50%; transform: scale(' + (step === 0 ? 1 : 0.6) + '); transition: transform 600ms ' + SPRING + ';',
+      rippleStyle: 'opacity: ' + (step === 0 ? 1 : 0) + '; transition: opacity 500ms ease;',
+      dotsStyle: 'position: absolute; left: 0; right: 0; top: 30px; display: flex; justify-content: center; gap: 6px; opacity: ' + (inB ? 1 : 0) + '; transition: opacity 300ms ease;',
+      vineStyle: 'position: absolute; left: 0; top: 16px; opacity: ' + (step >= 3 && step <= 11 ? 1 : 0) + '; transition: opacity 400ms ease-out;',
+      vineFill: 'stroke-dashoffset: ' + (1 - vp).toFixed(3) + '; transition: stroke-dashoffset 800ms ' + GROW + ' 200ms;',
+      backStyle: 'color: ' + (light ? '#DAF1DE' : '#051F20') + '; opacity: ' + (step > 0 && step < 13 && step !== 10 || (step === 10 && !st.committed) ? (step > 0 ? 1 : 0) : 0) + '; pointer-events: ' + (step > 0 && step < 13 ? 'auto' : 'none') + ';',
+      soundStyle: 'color: ' + (light ? '#DAF1DE' : '#051F20') + ';',
+      soundPressed: st.sound ? 'true' : 'false',
+      soundWave: st.sound ? 'M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11' : 'M16 9l5 6M21 9l-5 6',
+      toggleSound: function () { self.setState({ sound: !self.state.sound }); },
+      bTexts: bTexts, dots: dots, bLabel: step >= 2 ? 'Empezar' : 'Siguiente',
+      L0t: layer(0, 0.5), L0c: layer(0, 1),
+      L1t: layer(1, 0.5, TXT), L1c: layer(1, 1), L2t: layer(2, 0.5, TXT), L2c: layer(2, 1),
+      L3t: layer(3, 0.5, TXT), L3c: layer(3, 1), L4t: layer(4, 0.5, TXT), L4c: layer(4, 1),
+      L5t: layer(5, 0.5, TXT), L5c: layer(5, 1), L6t: layer(6, 0.5, TXT), L6c: layer(6, 1),
+      L7t: layer(7, 0.5, TXT), L7c: layer(7, 1), L8t: layer(8, 0.5, TXT), L8c: layer(8, 1),
+      L9t: layer(9, 0.5, TXT), L9c: layer(9, 1), L10c: layer(10, 1, ' z-index: 4;'),
+      eyebrow: 'Paso ' + Math.max(1, Math.min(9, step - 2)) + ' de 9',
+      name: st.name, nameShown: nameShown, nameEmpty: nm ? null : true,
+      greetStyle: 'margin-top: 8px; font-family: Fraunces, Georgia, serif; font-style: italic; font-size: 20px; color: #235347; opacity: ' + (nm ? 1 : 0) + '; transform: translateY(' + (nm ? 0 : 6) + 'px); transition: opacity 400ms ease, transform 400ms ease;',
+      onName: function (e) { var v = e.target.value; if (v.length > (self.state.name || '').length) { self.buzz(5); } self.setState({ name: v }); },
+      q2Tail: nm ? ', ' + nm + '?' : '?', opts: opts, picksEmpty: st.picks.length ? null : true,
+      hintStyle: 'font-size: 13px; color: #2C5649; text-align: center; margin-top: 4px; opacity: ' + (full && step === 4 ? 1 : 0) + '; transition: opacity 300ms ease;',
+      useLabel: useLabels[st.use], nodes: nodes, thumbStyle: thumbStyle,
+      moments: moments, momentEmpty: st.moment >= 0 ? null : true,
+      revealCls: step === 7 ? ('rv-on' + (st.revB > 0 ? ' rv-good' : '')) : '', rings: rings,
+      yearsShown: fmt(years * st.revA), goodShown: fmt(good * st.revB),
+      formula: String(hours).replace('.', ',') + ' h × 365 × 50 ÷ 8.760',
+      breathCls: step === 8 ? 'br-on' : '', breathLabel: st.breathDone ? 'Continuar' : 'Saltar',
+      planCls: step === 9 ? 'pl-on' : '', planRows: planRows,
+      today: today,
+      holdFill: 'position: absolute; left: 0; top: 0; bottom: 0; width: ' + (st.hold * 100).toFixed(1) + '%; background: #2E7D63;',
+      holdLabel: st.committed ? 'Comprometido' : 'Mantén para comprometerte',
+      holdStart: function (e) { if (self.state.committed) return; self.holding = true; self.audio(); self.buzz(5); },
+      holdEnd: function () { self.holding = false; },
+      perms: perms, permsBlocked: st.perms[0] && st.perms[1] ? null : true,
+      curtainStyle: curtainStyle, curveStyle: curveStyle, curvePath: curvePath, curtainHidden: st.curtain === 'up' ? 'true' : 'false',
+      curtainTree: 'position: absolute; right: 8px; top: ' + (st.curtain === 'rest' ? 70 : 600) + 'px; opacity: ' + (st.curtain === 'rest' ? 1 : 0) + '; transition: top 900ms ' + CURVE + ', opacity 500ms ease;',
+      doneStyle: 'position: absolute; left: 24px; right: 24px; top: 300px; text-align: center; opacity: ' + (step === 13 ? 1 : 0) + '; transform: translateY(' + (step === 13 ? 0 : 12) + 'px); transition: opacity 600ms ease 700ms, transform 600ms ease 700ms; pointer-events: ' + (step === 13 ? 'auto' : 'none') + ';',
+      loginBtn: loginBtn, loginBusy: loginBusy, loginIdle: !loginBusy,
+      login: function () { if (self.state.loginPhase !== 'idle') return; self.setState({ loginPhase: 'busy' }); self.buzz(10); self.t2 = setTimeout(function () { self.go(13); self.sfx('commit'); self.buzz([20, 30, 40]); }, 1500); },
+      next: function () { self.go(self.state.step + 1); },
+      back: function () { self.go(self.state.step - 1); },
+      restart: function () { self.setState({ picks: [], name: '', use: 2, moment: -1, perms: [false, false, false], committed: false, hold: 0 }); self.go(0); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SegundoAire · App</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#235347}a:hover{color:#1B443A}
+.sa-app{position:relative;width:390px;height:844px;overflow:hidden;background:var(--bg);color:var(--on);font-family:"Manrope",system-ui,sans-serif;transition:background-color 400ms ease}
+.sa-serif{font-family:"Fraunces",Georgia,serif;font-variation-settings:"opsz" 96;letter-spacing:-0.015em}
+.sa-serif em{font-style:italic;font-weight:400;color:var(--accent)}
+.sa-glass{background:var(--glass);border:1px solid var(--edge);border-radius:24px;box-shadow:var(--shadow);backdrop-filter:blur(20px)}
+.sa-eyebrow{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sa-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:120px;box-sizing:border-box;scrollbar-width:none}
+.sa-scroll::-webkit-scrollbar{display:none}
+.sa-page{position:absolute;inset:0;transition:transform 520ms cubic-bezier(.22,1,.36,1),opacity 320ms ease}
+.sa-btn{height:52px;border:0;border-radius:999px;background:var(--primary);color:var(--onPrimary);font-family:inherit;font-size:15px;font-weight:600;letter-spacing:.01em;cursor:pointer;transition:transform 180ms cubic-bezier(.34,1.56,.64,1)}
+.sa-btn:active{transform:scale(.95)}
+.sa-chip{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--edge);background:var(--glass);color:var(--on);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(12px);transition:transform 160ms ease}
+.sa-chip:active{transform:scale(.96)}
+.sa-chip-solid{background:var(--primary);color:var(--onPrimary);border-color:transparent}
+.sa-row{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;width:100%;box-sizing:border-box;border:0;background:transparent;color:var(--on);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer}
+.sa-nav{position:absolute;left:16px;right:16px;bottom:20px;height:68px;border-radius:32px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;z-index:5;background:var(--glass3);border:1px solid var(--edge);box-shadow:var(--shadow3);backdrop-filter:blur(32px)}
+.sa-navbtn{position:relative;height:60px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--on);font-family:inherit;font-size:11px;font-weight:500}
+.sa-switch{position:relative;width:52px;height:32px;border-radius:999px;border:0;cursor:pointer;flex:none;transition:background-color 250ms ease}
+.sa-switch span{position:absolute;top:50%;border-radius:50%;background:#fff;transition:left 380ms cubic-bezier(.34,1.56,.64,1),width 380ms cubic-bezier(.34,1.56,.64,1),height 380ms cubic-bezier(.34,1.56,.64,1)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.sa-sway{transform-box:view-box;transform-origin:195px 515px;animation:sa-sway 7s ease-in-out infinite alternate}
+@keyframes sa-sway{0%{transform:rotate(-0.8deg)}100%{transform:rotate(0.8deg)}}
+.sa-newleaf{transform-box:fill-box;transform-origin:0% 50%;animation:sa-grow 700ms cubic-bezier(.34,1.56,.64,1) both}
+@keyframes sa-grow{from{transform:scale(0)}to{transform:scale(1)}}
+.sa-ff{position:absolute;width:5px;height:5px;border-radius:50%;background:#E6F5B0;box-shadow:0 0 8px 3px rgba(230,245,176,.6);animation:sa-ff 4s ease-in-out infinite alternate}
+@keyframes sa-ff{0%{transform:translate(0,0);opacity:.2}50%{opacity:1}100%{transform:translate(14px,-20px);opacity:.3}}
+.sa-think{position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 70%,var(--glow) 85%,transparent 100%);animation:sa-rot 2.4s linear infinite}
+@keyframes sa-rot{to{transform:rotate(360deg)}}
+.sa-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:sa-dot 1s ease-in-out infinite}
+@keyframes sa-dot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.sa-skel{height:12px;border-radius:8px;background:var(--outlineVar);animation:sa-skel 1.4s ease-in-out infinite}
+@keyframes sa-skel{0%,100%{opacity:.5}50%{opacity:1}}
+.sa-seed{transform-origin:50% 50%;animation:sa-breathe 4s ease-in-out infinite alternate}
+@keyframes sa-breathe{from{transform:scale(.88)}to{transform:scale(1.06)}}
+.sa-in{animation:sa-in 520ms cubic-bezier(.22,1,.36,1) both}
+@keyframes sa-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.gw-leaf-fall{animation:gw-fall 1.6s cubic-bezier(.3,.1,.3,1) both}
+@keyframes gw-fall{0%{transform:translate(-60px,-260px) rotate(-40deg);opacity:0}20%{opacity:1}60%{transform:translate(30px,-80px) rotate(80deg)}100%{transform:translate(0,0) rotate(20deg);opacity:1}}
+.gw-leaf-rise{animation:gw-rise 1s cubic-bezier(.5,0,.2,1) both}
+@keyframes gw-rise{0%{transform:translate(0,0) rotate(20deg);opacity:1}100%{transform:translate(40px,-420px) rotate(-30deg) scale(.4);opacity:0}}
+.gw-breath .gw-canopy{animation:gw-br 8s ease-in-out 1 both}
+.gw-canopy{transform-origin:50% 60%;transform:scale(.62)}
+@keyframes gw-br{0%{transform:scale(.62)}50%{transform:scale(1)}100%{transform:scale(.62)}}
+.gw-breath .gw-in{animation:gw-in 8s ease-in-out 1 both}
+.gw-breath .gw-out{animation:gw-out 8s ease-in-out 1 both}
+.gw-in,.gw-out{opacity:0}
+@keyframes gw-in{0%,45%{opacity:1}50%,100%{opacity:0}}
+@keyframes gw-out{0%,45%{opacity:0}50%,95%{opacity:1}100%{opacity:0}}
+.sa-toast{animation:sa-toast 2.6s ease both}
+@keyframes sa-toast{0%{opacity:0;transform:translateY(12px)}12%,80%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(12px)}}
+@media (prefers-reduced-motion: reduce){.sa-sway,.sa-ff,.sa-think,.sa-seed,.sa-dot{animation:none}}
+</style>
+</helmet>
+<div class="sa-app" style="{{rootVars}}">
+
+<!-- ================= PANEL ================= -->
+<div class="sa-page" style="{{p0}}">
+<div class="sa-scroll">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; padding: 52px 20px 0">
+<div>
+<div style="font-size: 14px; color: var(--muted)">{{greeting}},</div>
+<div class="sa-serif" style="font-size: 30px; line-height: 36px; font-weight: 500">Juan</div>
+</div>
+<button type="button" class="sa-chip" onClick="{{openWall}}" style="display: flex; align-items: center; gap: 6px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"></rect><path d="M11 18h2"></path></svg>
+Simular abrir app
+</button>
+</div>
+
+<div style="position: relative; height: 300px; margin-top: 4px">
+<div aria-hidden="true" style="{{skyStyle}}"></div>
+<div aria-hidden="true" style="{{ffStyle}}">
+<div class="sa-ff" style="left: 60px; top: 160px"></div>
+<div class="sa-ff" style="left: 300px; top: 120px; animation-delay: 1s"></div>
+<div class="sa-ff" style="left: 250px; top: 220px; animation-delay: 2s"></div>
+<div class="sa-ff" style="left: 110px; top: 90px; animation-delay: 1.5s"></div>
+</div>
+<svg aria-hidden="true" width="390" height="300" viewBox="0 0 390 300" style="position: absolute; inset: 0">
+<path d="M-10 262 C70 240 140 256 195 252 C255 248 320 232 400 256 L400 300 L-10 300 Z" style="fill: var(--hill)"></path>
+<g transform="translate(195 256) scale(0.5) translate(-195 -515)">
+<g class="sa-sway">
+<sc-for list="{{segs}}" as="s" hint-placeholder-count="10"><path d="{{s.d}}" fill="none" stroke-width="{{s.w}}" stroke-linecap="round" style="stroke: var(--trunk)"></path></sc-for>
+<sc-for list="{{blobs}}" as="b" hint-placeholder-count="19"><circle cx="{{b.cx}}" cy="{{b.cy}}" r="{{b.r}}" style="{{b.style}}"></circle></sc-for>
+<sc-for list="{{flowers}}" as="f" hint-placeholder-count="2">
+<g transform="{{f.tf}}"><circle cx="0" cy="-8" r="7" style="fill: var(--petal)"></circle><circle cx="7.6" cy="-2.5" r="7" style="fill: var(--petal)"></circle><circle cx="4.7" cy="6.5" r="7" style="fill: var(--petal)"></circle><circle cx="-4.7" cy="6.5" r="7" style="fill: var(--petal)"></circle><circle cx="-7.6" cy="-2.5" r="7" style="fill: var(--petal)"></circle><circle cx="0" cy="0" r="4.5" fill="#C9B26B"></circle></g>
+</sc-for>
+<sc-for list="{{panelLeaves}}" as="l" hint-placeholder-count="3">
+<g transform="{{l.tf}}"><path class="sa-newleaf" d="M0 0 C6 -8 18 -8 22 0 C18 8 6 8 0 0Z" style="fill: var(--leaf)"></path></g>
+</sc-for>
+</g>
+</g>
+</svg>
+<div style="position: absolute; left: 20px; bottom: 4px">
+<div class="sa-serif" style="font-size: 44px; line-height: 48px; font-weight: 500; font-variant-numeric: tabular-nums">{{savedMin}} <span style="font-size: 22px">min</span></div>
+<div style="font-size: 13px; font-weight: 600; color: var(--muted)">recuperados hoy</div>
+</div>
+<div style="position: absolute; right: 20px; bottom: 8px; text-align: right; font-size: 13px; line-height: 20px; color: var(--muted)">
+<div><strong style="color: var(--on); font-variant-numeric: tabular-nums">{{pauses}}</strong> pausas respetadas</div>
+<div><strong style="color: var(--on); font-variant-numeric: tabular-nums">12</strong> aperturas evitadas</div>
+</div>
+</div>
+
+<sc-if value="{{blockRunning}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="sa-glass sa-in" onClick="{{openFocus}}" style="margin: 16px 16px 0; width: 358px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; cursor: pointer; font-family: inherit; color: var(--on); text-align: left">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" stroke-width="4" style="stroke: var(--outlineVar)"></circle><circle cx="18" cy="18" r="14" fill="none" stroke-width="4" stroke-linecap="round" pathLength="1" stroke-dasharray="1" transform="rotate(-90 18 18)" style="{{miniRing}}"></circle></svg>
+<span style="flex: 1"><span style="display: block; font-size: 15px; font-weight: 600">Bloque de enfoque</span><span style="display: block; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums">Quedan {{remainText}}</span></span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+</sc-if>
+
+<div style="position: relative; margin: 20px 16px 0; border-radius: 26px; overflow: hidden; padding: 1.5px">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: var(--edge)"></div>
+<sc-if value="{{aiThinking}}" hint-placeholder-val="{{ false }}"><div class="sa-think" aria-hidden="true"></div></sc-if>
+<div style="position: relative; border-radius: 24px; padding: 20px; background: var(--aiCard); backdrop-filter: blur(20px)">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg class="sa-seed" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" style="fill: var(--accentSoft)"></circle><path d="M18 9 C24 14 24 22 18 28 C12 22 12 14 18 9Z" style="fill: var(--accent)"></path><path d="M18 14v10" stroke-width="1.5" stroke-linecap="round" style="stroke: var(--aiCard)"></path></svg>
+<div style="flex: 1">
+<div style="font-size: 15px; font-weight: 700">Tu coach</div>
+<div style="font-size: 12px; color: var(--muted)">{{aiStatus}}</div>
+</div>
+<button type="button" class="sa-chip" style="min-height: 36px; padding: 0 10px" aria-label="Otra sugerencia" onClick="{{aiNext}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"></path></svg>
+</button>
+</div>
+<div aria-live="polite" aria-label="{{aiFull}}" style="min-height: 96px; margin-top: 14px">
+<sc-if value="{{aiThinking}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 4px">
+<div style="display: flex; gap: 5px"><span class="sa-dot"></span><span class="sa-dot" style="animation-delay: .15s"></span><span class="sa-dot" style="animation-delay: .3s"></span></div>
+<div class="sa-skel" style="width: 100%"></div><div class="sa-skel" style="width: 86%"></div><div class="sa-skel" style="width: 60%"></div>
+</div>
+</sc-if>
+<sc-if value="{{aiReady}}" hint-placeholder-val="{{ true }}">
+<div class="sa-serif" aria-hidden="true" style="font-size: 20px; line-height: 28px; font-weight: 400">{{aiShown}}</div>
+</sc-if>
+</div>
+<div style="{{aiActionsStyle}}">
+<button type="button" class="sa-chip sa-chip-solid" onClick="{{aiA}}">{{aiALabel}}</button>
+<button type="button" class="sa-chip" onClick="{{aiB}}">{{aiBLabel}}</button>
+</div>
+</div>
+</div>
+<div style="padding: 14px 16px 0">
+<div class="sa-eyebrow" style="margin-bottom: 8px">Pregúntale</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{askChips}}" as="c" hint-placeholder-count="3"><button type="button" class="sa-chip" onClick="{{c.ask}}">{{c.label}}</button></sc-for>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= BLOQUES ================= -->
+<div class="sa-page" style="{{p1}}">
+<div class="sa-scroll">
+<div style="padding: 52px 20px 0">
+<div class="sa-eyebrow">Bloques</div>
+<div class="sa-serif" style="font-size: 30px; line-height: 36px; font-weight: 500; margin-top: 4px">Protege tu <em>atención</em></div>
+</div>
+<div class="sa-glass" style="margin: 20px 16px 0; padding: 20px">
+<div style="font-size: 17px; font-weight: 700">Iniciar bloque</div>
+<div style="font-size: 13px; color: var(--muted); margin-top: 2px">Las apps vigiladas quedarán en pausa.</div>
+<div role="radiogroup" aria-label="Duración" style="position: relative; margin-top: 16px; height: 44px; border-radius: 999px; background: var(--glass1); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<div aria-hidden="true" style="{{durIndicator}}"></div>
+<sc-for list="{{durs}}" as="d" hint-placeholder-count="4">
+<button type="button" role="radio" aria-checked="{{d.on}}" style="{{d.style}}" onClick="{{d.pick}}">{{d.label}}</button>
+</sc-for>
+</div>
+<div role="radiogroup" aria-label="Modo" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px">
+<sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+<button type="button" role="radio" aria-checked="{{m.on}}" style="{{m.style}}" onClick="{{m.pick}}">
+<span style="display: block; font-size: 15px; font-weight: 700">{{m.label}}</span>
+<span style="display: block; font-size: 12px; line-height: 16px; color: var(--muted); margin-top: 2px">{{m.desc}}</span>
+</button>
+</sc-for>
+</div>
+<button type="button" class="sa-btn" style="position: relative; overflow: hidden; width: 100%; margin-top: 16px; touch-action: none; user-select: none" onPointerDown="{{holdStart}}" onPointerUp="{{holdEnd}}" onPointerLeave="{{holdEnd}}" onPointerCancel="{{holdEnd}}" aria-label="Mantén presionado para empezar el bloque">
+<span aria-hidden="true" style="{{holdFill}}"></span>
+<span style="position: relative">{{holdLabel}}</span>
+</button>
+<div style="font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px">Mantén presionado 1,5 s</div>
+</div>
+<div style="padding: 24px 20px 8px; display: flex; justify-content: space-between; align-items: baseline">
+<div style="font-size: 17px; font-weight: 700">Apps vigiladas</div>
+<div style="font-size: 13px; color: var(--muted)">Hoy</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 16px">
+<sc-for list="{{apps}}" as="a" hint-placeholder-count="4">
+<div class="sa-glass" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px">
+<span aria-hidden="true" style="{{a.icon}}"></span>
+<span style="flex: 1"><span style="display: block; font-size: 16px; font-weight: 600">{{a.name}}</span><span style="display: block; font-size: 13px; color: var(--muted)"><strong style="color: var(--on); font-variant-numeric: tabular-nums">{{a.min}} min</strong> hoy</span></span>
+<button type="button" role="switch" aria-checked="{{a.on}}" aria-label="Vigilar {{a.name}}" class="sa-switch" style="{{a.track}}" onClick="{{a.toggle}}"><span style="{{a.thumb}}"></span></button>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<!-- ================= PROGRESO ================= -->
+<div class="sa-page" style="{{p2}}">
+<div class="sa-scroll">
+<div style="padding: 52px 20px 0">
+<div class="sa-eyebrow">Progreso</div>
+<div class="sa-serif" style="font-size: 30px; line-height: 36px; font-weight: 500; margin-top: 4px">Tus anillos de <em>crecimiento</em></div>
+</div>
+<div style="position: relative; width: 260px; height: 230px; margin: 16px auto 0">
+<svg aria-hidden="true" width="260" height="230" viewBox="0 0 260 230">
+<ellipse cx="130" cy="115" rx="124" ry="108" style="fill: var(--wood)"></ellipse>
+<sc-for list="{{rings}}" as="r" hint-placeholder-count="14">
+<ellipse cx="{{r.cx}}" cy="{{r.cy}}" rx="{{r.rx}}" ry="{{r.ry}}" fill="none" style="{{r.style}}"></ellipse>
+</sc-for>
+<circle cx="130" cy="115" r="5" style="fill: var(--trunk)"></circle>
+</svg>
+</div>
+<div class="sa-in" style="text-align: center; margin-top: 4px" aria-live="polite">
+<div class="sa-serif" style="font-size: 22px; font-weight: 500">{{selDayTitle}}</div>
+<div style="font-size: 13px; color: var(--muted)">{{selDaySub}}</div>
+</div>
+<div class="sa-glass" style="margin: 18px 16px 0; padding: 16px 12px 12px">
+<div style="display: flex; justify-content: space-between; padding: 0 6px"><div style="font-size: 15px; font-weight: 700">Esta semana</div><div style="font-size: 12px; color: var(--muted)">Meta: 30 min/día</div></div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-items: end; height: 150px; margin-top: 8px">
+<sc-for list="{{week}}" as="w" hint-placeholder-count="7">
+<button type="button" aria-label="{{w.aria}}" aria-pressed="{{w.on}}" onClick="{{w.pick}}" style="height: 150px; border: 0; background: transparent; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; font-family: inherit; color: var(--on)">
+<span style="{{w.flower}}"><svg width="16" height="16" viewBox="-10 -10 20 20" aria-hidden="true"><circle cx="0" cy="-5" r="4" style="fill: var(--petal)"></circle><circle cx="4.8" cy="-1.5" r="4" style="fill: var(--petal)"></circle><circle cx="3" cy="4" r="4" style="fill: var(--petal)"></circle><circle cx="-3" cy="4" r="4" style="fill: var(--petal)"></circle><circle cx="-4.8" cy="-1.5" r="4" style="fill: var(--petal)"></circle><circle r="2.5" fill="#C9B26B"></circle></svg></span>
+<span style="{{w.stem}}"></span>
+<span style="{{w.lbl}}">{{w.d}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 8px 16px 0">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div class="sa-glass" style="padding: 16px; border-radius: 20px">
+<div class="sa-serif" style="font-size: 26px; line-height: 32px; font-weight: 500; font-variant-numeric: tabular-nums">{{s.v}}</div>
+<div style="font-size: 12px; color: var(--muted); margin-top: 2px">{{s.k}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<!-- ================= PERFIL ================= -->
+<div class="sa-page" style="{{p3}}">
+<div class="sa-scroll">
+<div style="padding: 52px 20px 0; display: flex; align-items: center; gap: 16px">
+<svg aria-hidden="true" width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="36" style="fill: var(--accentSoft)"></circle><path d="M36 64 C35 54 37 46 36 38" stroke-width="3" stroke-linecap="round" style="stroke: var(--trunk)"></path><circle cx="36" cy="28" r="15" style="fill: var(--leaf); fill-opacity: .7"></circle><circle cx="25" cy="36" r="11" style="fill: var(--trunk); fill-opacity: .55"></circle><circle cx="47" cy="36" r="11" style="fill: var(--leaf); fill-opacity: .45"></circle></svg>
+<div>
+<div class="sa-serif" style="font-size: 30px; line-height: 36px; font-weight: 500">Juan</div>
+<div style="font-size: 13px; color: var(--muted)">Plantado el 16 oct 2026</div>
+</div>
+</div>
+<div style="padding: 24px 20px 8px" class="sa-eyebrow">Tus metas</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px">
+<span class="sa-chip" style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"></path></svg>Menos tiempo en redes</span>
+<span class="sa-chip" style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg>Dormir mejor</span>
+<button type="button" class="sa-chip" style="border-style: dashed">Editar</button>
+</div>
+<div style="padding: 24px 20px 8px" class="sa-eyebrow">Ajustes</div>
+<div class="sa-glass" style="margin: 0 16px; padding: 4px 0">
+<button type="button" class="sa-row"><span style="flex: 1">Plan y modo</span><span style="font-size: 13px; font-weight: 500; color: var(--muted)">{{modeName}}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<div style="height: 1px; margin: 0 16px; background: var(--outlineVar)"></div>
+<div class="sa-row" style="cursor: default"><span style="flex: 1">Sonidos y vibración</span><button type="button" role="switch" aria-checked="{{soundOn}}" aria-label="Sonidos y vibración" class="sa-switch" style="{{soundTrack}}" onClick="{{toggleSound}}"><span style="{{soundThumb}}"></span></button></div>
+<div style="height: 1px; margin: 0 16px; background: var(--outlineVar)"></div>
+<button type="button" class="sa-row"><span style="flex: 1">Recordatorios</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<div style="height: 1px; margin: 0 16px; background: var(--outlineVar)"></div>
+<button type="button" class="sa-row"><span style="flex: 1">Permisos</span><span style="font-size: 13px; font-weight: 600; color: var(--success)">Activos</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<div style="height: 1px; margin: 0 16px; background: var(--outlineVar)"></div>
+<button type="button" class="sa-row"><span style="flex: 1">Cuenta</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+<button type="button" class="sa-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 358px; margin: 20px 16px 0">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"></path></svg>
+Compartir mi árbol
+</button>
+</div>
+</div>
+
+<!-- ================= NAV ================= -->
+<nav class="sa-nav" aria-label="Navegación principal">
+<div aria-hidden="true" style="{{navInd}}"></div>
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" class="sa-navbtn" aria-current="{{t.cur}}" onClick="{{t.go}}">
+<span style="position: relative; display: flex; width: 64px; height: 32px; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{t.ic}}"><path d="{{t.icon}}"></path></svg></span>
+<span style="{{t.lbl}}">{{t.label}}</span>
+</button>
+</sc-for>
+</nav>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div class="sa-toast sa-glass" role="status" style="position: absolute; left: 24px; right: 24px; bottom: 104px; z-index: 6; padding: 12px 16px; border-radius: 16px; font-size: 14px; font-weight: 600; text-align: center">{{toastText}}</div>
+</sc-if>
+
+<!-- ================= MODO ENFOQUE ================= -->
+<div role="dialog" aria-label="Bloque de enfoque" style="{{focusStyle}}">
+<div style="position: absolute; left: 0; right: 0; top: 70px; text-align: center">
+<div style="font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(218,241,222,0.7)">Bloque de enfoque · {{modeName}}</div>
+</div>
+<svg aria-hidden="true" width="390" height="844" viewBox="0 0 390 844" style="position: absolute; inset: 0">
+<g class="sa-seed" style="transform-origin: 195px 700px; opacity: .22">
+<path d="M195 844 C192 790 198 760 195 720" stroke="#8EB69B" stroke-width="6" fill="none"></path>
+<circle cx="195" cy="690" r="58" fill="#8EB69B"></circle><circle cx="150" cy="715" r="40" fill="#2E7D63"></circle><circle cx="240" cy="715" r="40" fill="#8EB69B"></circle><circle cx="170" cy="660" r="36" fill="#2E7D63"></circle><circle cx="222" cy="656" r="36" fill="#8EB69B"></circle>
+</g>
+<circle cx="195" cy="330" r="120" fill="none" stroke="rgba(218,241,222,0.12)" stroke-width="10"></circle>
+<circle cx="195" cy="330" r="120" fill="none" stroke="#708792" stroke-width="10" stroke-linecap="round" pathLength="1" stroke-dasharray="1" transform="rotate(-90 195 330)" style="{{bigRing}}"></circle>
+<circle r="16" fill="#86E0CF" fill-opacity="0.25" cx="{{tipX}}" cy="{{tipY}}" class="sa-seed"></circle>
+<circle r="7" fill="#86E0CF" cx="{{tipX}}" cy="{{tipY}}"></circle>
+</svg>
+<div style="position: absolute; left: 0; right: 0; top: 290px; text-align: center; color: #DAF1DE">
+<div style="font-size: 72px; line-height: 76px; font-weight: 300; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">{{remainText}}</div>
+<div style="font-size: 13px; color: rgba(218,241,222,0.7)">restantes</div>
+</div>
+<div style="position: absolute; left: 24px; right: 24px; top: 500px; text-align: center; color: rgba(218,241,222,0.85); font-family: Fraunces, Georgia, serif; font-style: italic; font-size: 20px">Tu árbol crece mientras no miras.</div>
+<button type="button" onClick="{{endBlock}}" style="position: absolute; left: 16px; right: 16px; bottom: 40px; height: 52px; border: 0; border-radius: 999px; background: #2D4A53; color: #DAF1DE; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{endLabel}}</button>
+<button type="button" onClick="{{closeFocus}}" aria-label="Minimizar" style="position: absolute; top: 12px; left: 8px; width: 48px; height: 48px; border: 0; background: transparent; color: #DAF1DE; cursor: pointer; border-radius: 999px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+
+<!-- ================= GLASSWALL ================= -->
+<div style="{{wallStyle}}" role="dialog" aria-modal="true" aria-label="Toma un segundo aire">
+<div aria-hidden="true" style="{{fakeApp}}">
+<div style="height: 90px; background: #6B8FC9"></div>
+<div style="display: flex; gap: 10px; padding: 14px"><div style="width: 56px; height: 56px; border-radius: 50%; background: #C98B6B"></div><div style="width: 56px; height: 56px; border-radius: 50%; background: #B58BC9"></div><div style="width: 56px; height: 56px; border-radius: 50%; background: #C9B26B"></div><div style="width: 56px; height: 56px; border-radius: 50%; background: #6BC9B5"></div></div>
+<div style="margin: 0 14px; height: 380px; border-radius: 16px; background: linear-gradient(160deg, #C98B6B, #B58BC9 50%, #6B8FC9)"></div>
+<div style="margin: 14px; height: 200px; border-radius: 16px; background: linear-gradient(160deg, #6BC9B5, #C9B26B)"></div>
+</div>
+<div aria-hidden="true" style="{{scrimStyle}}"></div>
+<div style="{{wallContent}}">
+<div style="position: absolute; left: 0; right: 0; top: 64px; text-align: center">
+<div style="font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--wallMuted)">Videos cortos · {{wallMode}}</div>
+<div class="sa-serif" style="font-size: 32px; line-height: 40px; font-weight: 500; margin-top: 8px; color: var(--wallOn)">Toma un <em>segundo aire</em></div>
+</div>
+<div class="{{wallBreathCls}}" style="position: absolute; left: 0; right: 0; top: 180px; height: 300px">
+<svg aria-hidden="true" width="390" height="300" viewBox="0 0 390 300" style="position: absolute; inset: 0">
+<g class="gw-canopy" style="{{canopyStyle}}">
+<sc-for list="{{wallBlobs}}" as="b" hint-placeholder-count="7"><circle cx="{{b.cx}}" cy="{{b.cy}}" r="{{b.r}}" style="{{b.style}}"></circle></sc-for>
+</g>
+<path d="M195 300 C192 270 198 250 195 225" stroke-width="7" stroke-linecap="round" fill="none" style="stroke: var(--wallTrunk)"></path>
+</svg>
+<div style="{{leafStyle}}" class="{{leafCls}}" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M2 12 C6 4 18 4 22 12 C18 20 6 20 2 12Z" style="fill: var(--wallLeaf)"></path><path d="M2 12 H20" stroke-width="1" style="stroke: var(--wallOn); stroke-opacity: .4"></path></svg></div>
+<div style="position: absolute; left: 0; right: 0; bottom: -6px; height: 40px; text-align: center">
+<div class="gw-in sa-serif" style="position: absolute; inset: 0; font-size: 26px; font-style: italic; color: var(--wallOn)">Inhala</div>
+<div class="gw-out sa-serif" style="position: absolute; inset: 0; font-size: 26px; font-style: italic; color: var(--wallOn)">Exhala</div>
+</div>
+</div>
+<div style="{{askStyle}}">
+<div style="font-size: 17px; line-height: 24px; font-weight: 600; text-align: center; color: var(--wallOn)">Llevas 23 min en esta app hoy.<br>¿Es lo que querías?</div>
+<div style="font-size: 13px; text-align: center; margin-top: 6px; color: var(--wallMuted)">Tu árbol lleva {{weekLeaves}} hojas esta semana.</div>
+<sc-if value="{{isMindful}}" hint-placeholder-val="{{ true }}">
+<div style="margin-top: 14px">
+<div style="font-size: 12px; text-align: center; color: var(--wallMuted)">¿Para qué entras?</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px">
+<sc-for list="{{intents}}" as="it" hint-placeholder-count="3"><button type="button" aria-pressed="{{it.on}}" style="{{it.style}}" onClick="{{it.pick}}">{{it.label}}</button></sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{isStrict}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; justify-content: center; margin-top: 14px"><span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 999px; background: var(--wallChip); color: var(--wallOn); font-size: 13px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Se abre a las 18:30</span></div>
+</sc-if>
+<button type="button" class="sa-btn" style="width: 100%; margin-top: 16px; background: var(--wallBtn); color: var(--wallBtnOn)" onClick="{{wallBack}}">Volver a mi bloque</button>
+<sc-if value="{{isMindful}}" hint-placeholder-val="{{ true }}">
+<button type="button" style="{{continueStyle}}" onClick="{{wallContinue}}" disabled="{{continueDisabled}}">
+<svg width="28" height="16" viewBox="0 0 28 16" aria-hidden="true"><path d="M2 14 C8 14 12 10 14 6" fill="none" stroke-width="2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" style="{{stemStyle}}"></path><path d="M14 6 C16 2 22 1 26 3 C24 8 18 9 14 6Z" style="{{stemLeaf}}"></path></svg>
+{{continueLabel}}
+</button>
+</sc-if>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { tab: 0, prev: 0, aiIdx: 0, aiThinking: true, aiN: 0, dur: 2, mode: 'mindful', hold: 0, block: null, now: Date.now(), focusOpen: false,
+      apps: [true, true, true, false], day: 4, wall: null, wallPhase: '', count: 10, intent: -1, extra: 0, saved: 47, pauses: 3, sound: true, toast: '', toastKey: 0 };
+    this.tick = this.tick.bind(this); this.last = 0; this.holding = false; this.timers = [];
+  }
+  componentDidMount() { this.raf = requestAnimationFrame(this.tick); this.think(0); var s = this; this.iv = setInterval(function () { if (s.state.block) s.setState({ now: Date.now() }); }, 250); }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearInterval(this.iv); clearInterval(this.rev); this.timers.forEach(clearTimeout); }
+  later(fn, ms) { this.timers.push(setTimeout(fn, ms)); }
+  // ---- sonido ----
+  audio() { if (!this.state.sound) return null; try { if (!this.ac) this.ac = new (window.AudioContext || window.webkitAudioContext)(); if (this.ac.state === 'suspended') this.ac.resume(); } catch (e) { return null; } return this.ac; }
+  tone(f, dur, gain, delay, f2) { var ac = this.audio(); if (!ac) return; var t = ac.currentTime + (delay || 0); var o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + dur + 0.05); }
+  sfx(n) {
+    if (n === 'drop') { this.tone(620, 0.32, 0.03, 0, 470); this.tone(1240, 0.12, 0.006, 0, 940); }
+    if (n === 'bloom') { this.tone(659, 0.5, 0.03); this.tone(784, 0.5, 0.03, 0.08); this.tone(988, 0.7, 0.03, 0.16); }
+    if (n === 'calm') { this.tone(392, 1.6, 0.025); this.tone(587, 1.8, 0.02, 0.15); }
+    if (n === 'commit') { this.tone(392, 1.4, 0.03); this.tone(494, 1.4, 0.025, 0.1); this.tone(587, 1.6, 0.025, 0.2); }
+  }
+  buzz(p) { if (!this.state.sound) return; try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+  toast(t) { this.setState({ toast: t, toastKey: this.state.toastKey + 1 }); var s = this; clearTimeout(this.tt); this.tt = setTimeout(function () { s.setState({ toast: '' }); }, 2600); }
+  // ---- IA ----
+  msgs() { return [
+    { t: 'Ayer la noche fue tu momento más difícil: 48 min en videos cortos después de las 21:00. ¿Te armo un bloque suave a esa hora?', a: ['Crear bloque 21:00', 'Ahora no'], act: ['blocks', 'next'] },
+    { t: 'Hoy llevas ' + this.state.pauses + ' pausas respetadas, más que el martes. Una más antes de las 18:00 y tu árbol florece.', a: ['Iniciar 15 min', 'Ver progreso'], act: ['start15', 'progress'] },
+    { t: 'Abres la red social sobre todo al despertar. ¿Probamos dejar el celular lejos de la cama esta noche?', a: ['Recuérdamelo', 'Otra idea'], act: ['remind', 'next'] }
+  ]; }
+  think(i) {
+    var s = this; clearInterval(this.rev);
+    this.setState({ aiIdx: i, aiThinking: true, aiN: 0 });
+    this.later(function () {
+      s.setState({ aiThinking: false });
+      var full = s.msgs()[i].t;
+      s.rev = setInterval(function () { var n = s.state.aiN + 2; if (n >= full.length) { n = full.length; clearInterval(s.rev); } s.setState({ aiN: n }); }, 36);
+    }, 1400);
+  }
+  aiDo(act) {
+    if (act === 'next') this.think((this.state.aiIdx + 1) % 3);
+    if (act === 'blocks') { this.setTab(1); this.toast('Bloque de 21:00 listo para hoy'); }
+    if (act === 'progress') this.setTab(2);
+    if (act === 'start15') { this.setState({ dur: 2 }); this.startBlock(15); }
+    if (act === 'remind') this.toast('Te lo recordaré a las 22:00');
+    this.sfx('drop');
+  }
+  setTab(i) { this.setState({ prev: this.state.tab, tab: i }); this.buzz(6); }
+  // ---- bloque ----
+  startBlock(min) { this.setState({ block: { total: min * 60000, start: Date.now() }, now: Date.now(), focusOpen: true, hold: 0 }); this.sfx('commit'); this.buzz([20, 30, 40]); }
+  tick(now) {
+    var dt = this.last ? Math.min(now - this.last, 50) : 0; this.last = now;
+    var h = this.state.hold;
+    if (this.holding) { h = Math.min(1, h + dt / 1500); if (h >= 1) { this.holding = false; this.startBlock([5, 10, 15, 30][this.state.dur]); h = 0; } }
+    else if (h > 0) h = Math.max(0, h - dt / 300);
+    if (h !== this.state.hold) this.setState({ hold: h });
+    this.raf = requestAnimationFrame(this.tick);
+  }
+  // ---- GlassWall ----
+  openWall() {
+    var s = this; this.timers.forEach(clearTimeout); this.timers = [];
+    this.setState({ wall: true, wallPhase: 'enter', count: 10, intent: -1, focusOpen: false });
+    this.later(function () { s.setState({ wallPhase: 'breath' }); s.sfx('calm'); }, 1700);
+    this.later(function () { s.setState({ wallPhase: 'ask' }); s.countdown(); }, 9700);
+  }
+  countdown() { var s = this; var step = function () { if (s.state.wallPhase !== 'ask' || s.state.count <= 0) return; s.setState({ count: s.state.count - 1 }); s.later(step, 1000); }; this.later(step, 1000); }
+  closeWall(reward) {
+    var s = this;
+    if (reward) {
+      this.setState({ wallPhase: 'rise' }); this.sfx('drop'); this.buzz(15);
+      this.later(function () { s.setState({ wall: null, wallPhase: '', tab: 0, extra: s.state.extra + 1, pauses: s.state.pauses + 1, saved: s.state.saved + 3 }); s.sfx('bloom'); s.buzz([10, 30, 20]); }, 1000);
+    } else { this.setState({ wallPhase: 'leave' }); this.later(function () { s.setState({ wall: null, wallPhase: '' }); s.toast('Disfruta tus 5 min'); }, 450); }
+  }
+  renderVals() {
+    var self = this, st = this.state, dark = !!this.props.dark;
+    var T = dark ? {
+      bg: '#0D1F23', on: '#B0B4B8', muted: '#8C9297', glass: 'rgba(19,46,53,0.65)', glass1: 'rgba(19,46,53,0.45)', glass3: 'rgba(19,46,53,0.82)', edge: 'rgba(176,180,184,0.18)', shadow: '0 2px 6px rgba(0,0,0,.22), 0 8px 24px rgba(0,0,0,.28)', shadow3: '0 4px 12px rgba(0,0,0,.28), 0 16px 48px rgba(0,0,0,.4)',
+      primary: '#708792', onPrimary: '#0D1F23', accent: '#86E0CF', accentSoft: 'rgba(134,224,207,0.14)', glow: '#86E0CF', outlineVar: 'rgba(176,180,184,0.12)', focus: '#86E0CF', success: '#A6D99A',
+      hill: 'rgba(19,46,53,0.95)', trunk: '#5E7A84', leaf: '#86E0CF', petal: '#DCE3E0', wood: 'rgba(19,46,53,0.9)', aiCard: '#11282D', secondary: '#2D4A53', onSecondary: '#B0B4B8',
+      tree: [['#2D4A53', 0.9], ['#3E8C7A', 0.6], ['#86E0CF', 0.35]],
+      wallScrim: 'rgba(4,12,14,0.72)', wallOn: '#DCE3E0', wallMuted: '#8C9297', wallTrunk: '#5E7A84', wallLeaf: '#86E0CF', wallBtn: '#708792', wallBtnOn: '#0D1F23', wallChip: 'rgba(176,180,184,0.14)'
+    } : {
+      bg: '#DAF1DE', on: '#051F20', muted: '#2C5649', glass: 'rgba(218,241,222,0.62)', glass1: 'rgba(142,182,155,0.28)', glass3: 'rgba(218,241,222,0.82)', edge: 'rgba(255,255,255,0.7)', shadow: '0 2px 6px rgba(5,31,32,.06), 0 8px 24px rgba(5,31,32,.08)', shadow3: '0 4px 12px rgba(5,31,32,.08), 0 16px 48px rgba(5,31,32,.14)',
+      primary: '#235347', onPrimary: '#DAF1DE', accent: '#235347', accentSoft: 'rgba(46,125,99,0.14)', glow: '#2E7D63', outlineVar: 'rgba(5,31,32,0.12)', focus: '#235347', success: '#1F6B3A',
+      hill: 'rgba(142,182,155,0.5)', trunk: '#235347', leaf: '#2E7D63', petal: '#F4FBF5', wood: 'rgba(142,182,155,0.35)', aiCard: 'rgba(240,250,242,0.92)', secondary: '#163832', onSecondary: '#DAF1DE',
+      tree: [['#235347', 0.5], ['#2E7D63', 0.55], ['#8EB69B', 0.85]],
+      wallScrim: 'rgba(218,241,222,0.78)', wallOn: '#051F20', wallMuted: '#2C5649', wallTrunk: '#235347', wallLeaf: '#2E7D63', wallBtn: '#235347', wallBtnOn: '#DAF1DE', wallChip: 'rgba(5,31,32,0.08)'
+    };
+    var rootVars = ['bg', 'on', 'muted', 'glass', 'glass1', 'glass3', 'edge', 'shadow', 'shadow3', 'primary', 'onPrimary', 'accent', 'accentSoft', 'glow', 'outlineVar', 'focus', 'success', 'hill', 'trunk', 'leaf', 'petal', 'wood', 'aiCard', 'wallOn', 'wallMuted', 'wallTrunk', 'wallLeaf', 'wallBtn', 'wallBtnOn', 'wallChip'].map(function (k) { return '--' + k + ': ' + T[k]; }).join('; ') + ';';
+    var SPRING = 'cubic-bezier(.34,1.56,.64,1)';
+    // páginas
+    function page(i) { var d = i - st.tab, on = d === 0; return 'transform: translateX(' + (on ? 0 : (d > 0 ? 24 : -24)) + 'px); opacity: ' + (on ? 1 : 0) + '; pointer-events: ' + (on ? 'auto' : 'none') + '; visibility: ' + (on ? 'visible' : 'hidden') + '; transition: transform 520ms cubic-bezier(.22,1,.36,1), opacity 320ms ease, visibility 0s ' + (on ? '0s' : '320ms') + ';'; }
+    // hora
+    var hr = new Date().getHours();
+    var greeting = hr < 12 ? 'Buenos días' : (hr < 19 ? 'Buenas tardes' : 'Buenas noches');
+    var night = hr < 6 || hr >= 20;
+    var sky = hr < 6 ? 'rgba(13,31,35,' + (dark ? 0.0 : 0.22) + ')' : hr < 11 ? 'rgba(255,200,150,' + (dark ? 0.12 : 0.4) + ')' : hr < 17 ? 'rgba(255,246,190,' + (dark ? 0.08 : 0.45) + ')' : hr < 20 ? 'rgba(244,160,110,' + (dark ? 0.14 : 0.42) + ')' : 'rgba(13,31,35,' + (dark ? 0.0 : 0.22) + ')';
+    var skyStyle = 'position: absolute; inset: 0; background: radial-gradient(120% 90% at 70% 0%, ' + sky + ', transparent 70%);';
+    // árbol
+    var segDefs = [['M195 515 C190 450 202 380 195 300', 10], ['M196 400 C215 385 235 380 255 362', 4.5], ['M194 370 C175 355 158 345 140 328', 4.5], ['M195 300 C190 250 200 210 195 165', 8], ['M195 250 C220 235 245 228 278 210', 4.5], ['M195 232 C170 218 150 208 115 196', 4.5], ['M195 190 C212 160 232 140 262 126', 3.5], ['M195 185 C178 155 158 140 128 124', 3.5], ['M195 170 L195 110', 3.5]];
+    var segs = segDefs.map(function (s) { return { d: s[0], w: s[1] }; });
+    var blobDefs = [[196, 300, 40], [255, 352, 32], [140, 318, 32], [228, 318, 28], [165, 300, 28], [195, 170, 52], [278, 205, 40], [115, 192, 40], [245, 240, 34], [148, 232, 34], [205, 228, 36], [195, 100, 56], [262, 118, 46], [128, 116, 46], [305, 160, 38], [85, 155, 38], [235, 150, 44], [155, 148, 44], [195, 140, 48]];
+    var blobs = blobDefs.map(function (b, i) { var c = T.tree[i % 3]; return { cx: b[0], cy: b[1], r: b[2], style: 'fill: ' + c[0] + '; fill-opacity: ' + c[1] + ';' }; });
+    var flowers = [[262, 112], [128, 110]].map(function (p) { return { tf: 'translate(' + p[0] + ' ' + p[1] + ') scale(1.3)' }; });
+    var leafSlots = [[300, 210, -20], [92, 200, 200], [320, 150, -10], [70, 140, 190], [250, 80, -50], [140, 78, 230], [330, 260, 10], [60, 255, 170]];
+    var panelLeaves = leafSlots.slice(0, Math.min(st.extra, 8)).map(function (l) { return { tf: 'translate(' + l[0] + ' ' + l[1] + ') rotate(' + l[2] + ') scale(1.6)' }; });
+    // IA
+    var m = this.msgs()[st.aiIdx];
+    var aiReady = !st.aiThinking, done = aiReady && st.aiN >= m.t.length;
+    var askDefs = [['¿Cómo voy esta semana?', 1], ['Dame una idea para hoy', 2], ['¿Cuándo me cuesta más?', 0]];
+    var askChips = askDefs.map(function (a) { return { label: a[0], ask: function () { self.sfx('drop'); self.think(a[1]); } }; });
+    // bloque
+    var b = st.block, remain = 0, prog = 0;
+    if (b) { var el = (st.now - b.start) * 30; prog = Math.min(1, el / b.total); remain = Math.max(0, b.total - el); }
+    var rs = Math.ceil(remain / 1000), remainText = Math.floor(rs / 60) + ':' + ('0' + (rs % 60)).slice(-2);
+    var ang = -Math.PI / 2 + prog * Math.PI * 2;
+    var finished = b && prog >= 1;
+    // duración y modo
+    var durLabels = ['5 min', '10 min', '15 min', '30 min'];
+    var durs = durLabels.map(function (l, i) { var on = st.dur === i; return { label: l, on: on ? 'true' : 'false', style: 'position: relative; height: 44px; border: 0; background: transparent; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: ' + (on ? T.onPrimary : T.on) + '; transition: color 250ms ease;', pick: function () { self.setState({ dur: i }); self.sfx('drop'); self.buzz(6); } }; });
+    var durIndicator = 'position: absolute; top: 4px; bottom: 4px; width: calc(25% - 4px); left: calc(' + (st.dur * 25) + '% + 2px); border-radius: 999px; background: ' + T.primary + '; transition: left 450ms ' + SPRING + ';';
+    var modeDefs = [['mindful', 'Mindful', 'Pausa de 10 s y decides.'], ['strict', 'Strict', 'Sin salida hasta que termine.']];
+    var modes = modeDefs.map(function (md) { var on = st.mode === md[0]; return { label: md[1], desc: md[2], on: on ? 'true' : 'false', style: 'text-align: left; padding: 12px 14px; border-radius: 16px; cursor: pointer; font-family: inherit; color: ' + T.on + '; background: ' + T.glass1 + '; border: 2px solid ' + (on ? T.primary : 'transparent') + '; transition: border-color 250ms ease;', pick: function () { self.setState({ mode: md[0] }); self.sfx('drop'); self.buzz(6); } }; });
+    // apps
+    var appDefs = [['Videos cortos', 48, '#C98B6B', '50%'], ['Red social', 31, '#6B8FC9', '12px'], ['Mensajería', 22, '#B58BC9', '30% 70% 70% 30%'], ['Juegos', 9, '#C9B26B', '4px']];
+    var apps = appDefs.map(function (a, i) { var on = st.apps[i]; return { name: a[0], min: a[1], on: on ? 'true' : 'false',
+      icon: 'width: 44px; height: 44px; border-radius: 12px; flex: none; background: ' + a[2] + '; box-shadow: inset 0 0 0 12px ' + a[2] + ', inset 0 0 0 22px rgba(255,255,255,0.35);',
+      track: 'background: ' + (on ? T.primary : T.outlineVar) + '; box-shadow: inset 0 0 0 ' + (on ? 0 : 2) + 'px ' + T.muted + ';',
+      thumb: 'width: ' + (on ? 24 : 16) + 'px; height: ' + (on ? 24 : 16) + 'px; left: ' + (on ? 24 : 8) + 'px; transform: translateY(-50%); background: ' + (on ? T.onPrimary : T.muted) + ';',
+      toggle: function () { var a2 = self.state.apps.slice(); a2[i] = !a2[i]; self.setState({ apps: a2 }); self.sfx('drop'); self.buzz(8); } }; });
+    // progreso
+    var days = [['L', 'Lun 12', 32], ['M', 'Mar 13', 18], ['X', 'Mié 14', 45], ['J', 'Jue 15', 52], ['V', 'Hoy', st.saved], ['S', 'Sáb 17', -1], ['D', 'Dom 18', -1]];
+    var history = [22, 35, 12, 40, 28, 15, 38, 32, 18, 45, 52, st.saved];
+    var rings = history.map(function (v, i) {
+      var k = i + 1, rx = 14 + k * 9, ry = rx * 0.87, wob = (i % 3) - 1;
+      var sel = (st.day <= 4) && (i === history.length - 5 + st.day);
+      return { cx: 130 + wob, cy: 115 - wob, rx: rx, ry: ry, style: 'stroke: ' + (sel ? T.glow : (v >= 30 ? T.leaf : T.trunk)) + '; stroke-opacity: ' + (sel ? 1 : (v >= 30 ? 0.7 : 0.35)) + '; stroke-width: ' + (sel ? 5 : Math.max(1.5, v / 12)) + '; transition: stroke 300ms ease, stroke-width 300ms ease;' };
+    });
+    var sd = days[st.day];
+    var week = days.map(function (d, i) {
+      var v = d[2], on = st.day === i, h = v < 0 ? 0 : Math.round(v / 60 * 96) + 6;
+      return { d: d[0], on: on ? 'true' : 'false', aria: d[1] + (v >= 0 ? ', ' + v + ' min recuperados' : ', sin datos'),
+        flower: 'display: block; height: 16px; opacity: ' + (v >= 30 ? 1 : 0) + ';',
+        stem: 'display: block; width: ' + (on ? 10 : 6) + 'px; height: ' + Math.max(h, 6) + 'px; border-radius: 6px; background: ' + (v < 0 ? 'transparent' : (on ? T.glow : T.trunk)) + '; border: ' + (v < 0 ? '1.5px dashed ' + T.muted : '0') + '; box-sizing: border-box; opacity: ' + (v < 0 ? 0.5 : (on ? 1 : 0.6)) + '; transition: height 500ms ' + SPRING + ', width 300ms ease, background-color 300ms ease;',
+        lbl: 'font-size: 12px; font-weight: ' + (on ? 700 : 500) + '; color: ' + (on ? T.on : T.muted) + ';',
+        pick: function () { if (v < 0) return; self.setState({ day: i }); self.sfx('drop'); self.buzz(6); } };
+    });
+    var stats = [{ v: '3 h 14 min', k: 'recuperados esta semana' }, { v: '41', k: 'aperturas evitadas' }, { v: '5 días', k: 'mejor racha' }, { v: '21:00', k: 'tu hora más difícil' }];
+    // nav
+    var tabDefs = [['Panel', 'M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7'], ['Bloques', 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z'], ['Progreso', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'], ['Perfil', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c1.5-4 4.5-6 8-6s6.5 2 8 6']];
+    var tabs = tabDefs.map(function (t, i) { var on = st.tab === i; return { label: t[0], icon: t[1], cur: on ? 'page' : 'false', ic: 'position: relative; stroke: ' + (on ? T.onPrimary : T.on) + '; transition: stroke 250ms ease;', lbl: 'font-weight: ' + (on ? 700 : 500) + ';', go: function () { self.setTab(i); } }; });
+    var navInd = 'position: absolute; top: 6px; width: 64px; height: 32px; border-radius: 999px; background: ' + T.primary + '; left: calc(' + (st.tab * 25 + 12.5) + '% - 32px); transition: left 520ms cubic-bezier(.3,1.2,.5,1);';
+    // GlassWall
+    var ph = st.wallPhase, open = !!st.wall, strict = st.mode === 'strict';
+    var visible = open && ph !== 'leave';
+    var wallBlobs = [[195, 150, 70], [140, 170, 50], [250, 170, 50], [165, 115, 45], [225, 112, 45], [195, 195, 55], [195, 95, 40]].map(function (bb, i) {
+      var c = strict ? [dark ? '#3A4A50' : '#9AA8A2', 0.6] : T.tree[i % 3];
+      return { cx: bb[0], cy: bb[1], r: bb[2], style: 'fill: ' + c[0] + '; fill-opacity: ' + c[1] + '; transition: fill 600ms ease;' };
+    });
+    var leafCls = ph === 'rise' ? 'gw-leaf-rise' : (ph ? 'gw-leaf-fall' : '');
+    var asking = ph === 'ask' || ph === 'rise';
+    var intentDefs = ['Responder un mensaje', 'Buscar algo', 'Solo aburrimiento'];
+    var intents = intentDefs.map(function (l, i) { var on = st.intent === i; return { label: l, on: on ? 'true' : 'false', style: 'min-height: 36px; padding: 0 12px; border-radius: 999px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid ' + (on ? 'transparent' : T.edge) + '; background: ' + (on ? T.wallBtn : T.wallChip) + '; color: ' + (on ? T.wallBtnOn : T.wallOn) + ';', pick: function () { self.setState({ intent: i }); self.sfx('drop'); } }; });
+    var canCont = st.count <= 0;
+    var contProg = (10 - st.count) / 10;
+    return {
+      rootVars: rootVars, p0: page(0), p1: page(1), p2: page(2), p3: page(3),
+      greeting: greeting, skyStyle: skyStyle, ffStyle: 'position: absolute; inset: 0; opacity: ' + (night ? 1 : 0) + ';',
+      segs: segs, blobs: blobs, flowers: flowers, panelLeaves: panelLeaves,
+      savedMin: st.saved, pauses: st.pauses,
+      blockRunning: !!b && !finished, remainText: remainText,
+      miniRing: 'stroke: ' + T.primary + '; stroke-dashoffset: ' + (1 - prog).toFixed(3) + ';',
+      openFocus: function () { self.setState({ focusOpen: true }); },
+      aiThinking: st.aiThinking, aiReady: aiReady, aiShown: m.t.slice(0, st.aiN), aiFull: aiReady ? m.t : 'Tu coach está pensando',
+      aiStatus: st.aiThinking ? 'Mirando tu día…' : 'Hace un momento',
+      aiActionsStyle: 'display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; opacity: ' + (done ? 1 : 0) + '; transform: translateY(' + (done ? 0 : 6) + 'px); transition: opacity 400ms ease, transform 400ms ease; pointer-events: ' + (done ? 'auto' : 'none') + ';',
+      aiALabel: m.a[0], aiBLabel: m.a[1], aiA: function () { self.aiDo(m.act[0]); }, aiB: function () { self.aiDo(m.act[1]); },
+      aiNext: function () { self.sfx('drop'); self.think((self.state.aiIdx + 1) % 3); }, askChips: askChips,
+      openWall: function () { self.openWall(); },
+      durs: durs, durIndicator: durIndicator, modes: modes, apps: apps,
+      holdFill: 'position: absolute; left: 0; top: 0; bottom: 0; width: ' + (st.hold * 100).toFixed(1) + '%; background: ' + T.glow + '; opacity: .55;',
+      holdLabel: b && !finished ? 'Bloque en curso' : 'Mantén para empezar',
+      holdStart: function () { if (self.state.block && !finished) { self.setState({ focusOpen: true }); return; } self.holding = true; self.audio(); self.buzz(5); },
+      holdEnd: function () { self.holding = false; },
+      rings: rings, selDayTitle: sd[1] + ' · ' + sd[2] + ' min', selDaySub: sd[2] >= 30 ? 'Día de flor: cumpliste tu meta' : 'Un anillo fino también es crecimiento', week: week, stats: stats,
+      modeName: strict ? 'Strict' : 'Mindful',
+      soundOn: st.sound ? 'true' : 'false',
+      soundTrack: 'background: ' + (st.sound ? T.primary : T.outlineVar) + ';',
+      soundThumb: 'width: ' + (st.sound ? 24 : 16) + 'px; height: ' + (st.sound ? 24 : 16) + 'px; left: ' + (st.sound ? 24 : 8) + 'px; transform: translateY(-50%); background: ' + (st.sound ? T.onPrimary : T.muted) + ';',
+      toggleSound: function () { self.setState({ sound: !self.state.sound }); },
+      tabs: tabs, navInd: navInd, toast: !!st.toast, toastText: st.toast,
+      focusStyle: 'position: absolute; inset: 0; z-index: 8; background: #0B2B26; opacity: ' + (st.focusOpen && b ? 1 : 0) + '; transform: translateY(' + (st.focusOpen && b ? 0 : 40) + 'px); pointer-events: ' + (st.focusOpen && b ? 'auto' : 'none') + '; transition: opacity 500ms ease, transform 600ms cubic-bezier(.22,1,.36,1);',
+      bigRing: 'stroke-dashoffset: ' + (1 - prog).toFixed(4) + ';',
+      tipX: (195 + Math.cos(ang) * 120).toFixed(1), tipY: (330 + Math.sin(ang) * 120).toFixed(1),
+      endLabel: finished ? 'Volver al panel' : 'Terminar bloque',
+      endBlock: function () { var fin = finished; self.setState({ block: null, focusOpen: false }); if (fin) { self.setState({ extra: self.state.extra + 1, saved: self.state.saved + 15 }); self.sfx('bloom'); } else self.toast('Bloque terminado. Mañana sigue creciendo.'); },
+      closeFocus: function () { self.setState({ focusOpen: false }); },
+      wallStyle: 'position: absolute; inset: 0; z-index: 9; pointer-events: ' + (open ? 'auto' : 'none') + '; visibility: ' + (open ? 'visible' : 'hidden') + ';',
+      fakeApp: 'position: absolute; inset: 0; background: #F4F4F4; filter: blur(' + (visible ? 14 : 0) + 'px); transform: scale(' + (visible ? 1.05 : 1) + '); transition: filter 600ms ease, transform 600ms ease;',
+      scrimStyle: 'position: absolute; inset: 0; background: ' + T.wallScrim + '; opacity: ' + (visible ? 1 : 0) + '; transition: opacity 600ms ease;',
+      wallContent: 'position: absolute; inset: 0; opacity: ' + (visible ? 1 : 0) + '; transform: scale(' + (visible ? 1 : 0.92) + '); transition: opacity 500ms ease ' + (visible ? '320ms' : '0ms') + ', transform 500ms ease ' + (visible ? '320ms' : '0ms') + ';',
+      wallMode: strict ? 'Strict' : 'Mindful',
+      wallBreathCls: ph === 'breath' ? 'gw-breath' : '',
+      canopyStyle: 'transform-box: fill-box;' + (asking ? ' transform: scale(.8); transition: transform 800ms ease;' : ''),
+      wallBlobs: wallBlobs,
+      leafStyle: 'position: absolute; left: 178px; top: 130px; width: 34px; height: 34px;' + (ph === '' ? ' opacity: 0;' : ''),
+      leafCls: leafCls,
+      askStyle: 'position: absolute; left: 16px; right: 16px; bottom: 36px; opacity: ' + (asking ? 1 : 0) + '; transform: translateY(' + (asking ? 0 : 16) + 'px); transition: opacity 600ms ease, transform 600ms cubic-bezier(.22,1,.36,1); pointer-events: ' + (asking ? 'auto' : 'none') + ';',
+      weekLeaves: 12 + st.extra, isMindful: !strict, isStrict: strict, intents: intents,
+      wallBack: function () { self.closeWall(true); }, wallContinue: function () { self.closeWall(false); },
+      continueDisabled: canCont ? null : true,
+      continueStyle: 'width: 100%; height: 48px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; cursor: ' + (canCont ? 'pointer' : 'default') + '; color: ' + (canCont ? T.wallOn : T.wallMuted) + ';',
+      stemStyle: 'stroke: ' + T.wallLeaf + '; stroke-dashoffset: ' + (1 - contProg).toFixed(2) + '; transition: stroke-dashoffset 1s linear;',
+      stemLeaf: 'fill: ' + T.wallLeaf + '; transform-box: fill-box; transform-origin: 0% 100%; transform: scale(' + (canCont ? 1 : 0) + '); transition: transform 500ms ' + SPRING + ';',
+      continueLabel: canCont ? 'Continuar 5 min' : 'Continuar en ' + st.count + '…'
+    };
+  }
+}
+</script>
+</body>
+</html>
