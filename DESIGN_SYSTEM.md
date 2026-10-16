@@ -106,6 +106,32 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | Claro | `onBackground` / `onBackgroundMuted` sobre `glass1` · `glass2` · `glass3` | 15.96 · 16.34 · 16.65 / 7.03 · 7.20 · 7.34 |
 | Oscuro | `onBackgroundMuted` sobre `glass1` · `glass2` · `glass3` (el más bajo) | 5.02 · 4.84 · 4.70 |
 
+### 3.4 Tokens de la app principal (Fase 17)
+
+Salen del objeto `T` de `docs/design/app-dashboard/app-dashboard-referencia.html`. Los tokens vigentes (`background`, `glass*`, `onBackgroundMuted`…) no cambian: la referencia usa `#DAF1DE` de fondo y otros vidrios, pero la app conserva los de §3.1. Los colores con opacidad ya la llevan en el alfa.
+
+| Token Kotlin | Claro | Oscuro | Uso |
+|---|---|---|---|
+| `hill` | `0x808EB69B` | `0xF2132E35` | Colina del héroe del Panel |
+| `trunk` | `0xFF235347` | `0xFF5E7A84` | Tronco y ramas; anillos sin meta; tallos de la semana |
+| `leaf` | `0xFF2E7D63` | `0xFF86E0CF` | Hojas nuevas del árbol; anillos de días con meta |
+| `petal` | `0xFFF4FBF5` | `0xFFDCE3E0` | Pétalos de las flores (el centro es `gold`) |
+| `wood` | `0x598EB69B` | `0xE6132E35` | Corte del tronco en Progreso |
+| `aiCard` | `0xEBF0FAF2` | `0xFF11282D` | Relleno de la tarjeta del coach |
+| `tree1` · `tree2` · `tree3` | `0x80235347` · `0x8C2E7D63` · `0xD98EB69B` | `0xE62D4A53` · `0x993E8C7A` · `0x5986E0CF` | Follaje, alternado por círculo (`i % 3`) |
+| `heroSkyMorning` | `0x66FFC896` | `0x1FFFC896` | Luz radial del héroe, 6:00–10:59 |
+| `heroSkyDay` | `0x73FFF6BE` | `0x14FFF6BE` | 11:00–16:59 |
+| `heroSkyEvening` | `0x6BF4A06E` | `0x24F4A06E` | 17:00–19:59 |
+| `heroSkyNight` | `0x380D1F23` | `0x000D1F23` | 20:00–5:59 (con luciérnagas) |
+| `wallScrim` | `0xC7DAF1DE` | `0xB8040C0E` | Velo del GlassWall a pantalla completa |
+| `wallOn` · `wallMuted` | `0xFF051F20` · `0xFF2C5649` | `0xFFDCE3E0` · `0xFF8C9297` | Texto del GlassWall |
+| `wallTrunk` · `wallLeaf` | `0xFF235347` · `0xFF2E7D63` | `0xFF5E7A84` · `0xFF86E0CF` | Tronco, hoja y tallo de "Continuar" |
+| `wallBtn` · `wallBtnOn` | `0xFF235347` · `0xFFDAF1DE` | `0xFF708792` · `0xFF0D1F23` | "Volver a mi bloque" y chip de intención elegido |
+| `wallChip` · `wallChipEdge` | `0x14051F20` · `0xB3FFFFFF` | `0x24B0B4B8` · `0x2EB0B4B8` | Chips de intención y chip del candado |
+| `wallWinter` | `0x999AA8A2` | `0x993A4A50` | Copa gris (invierno) en Strict |
+
+**Modo enfoque (`FocusColors`)**: siempre oscuro, igual en los dos temas. Fondo `0xFF0B2B26` (el `secondaryDeep` claro), texto `0xFFDAF1DE` (al 70 % el secundario y al 85 % la frase), pista del anillo `0x1FDAF1DE`, progreso `0xFF708792`, punta `0xFF86E0CF`, botón `0xFF2D4A53` y la silueta del árbol en `0xFF8EB69B` / `0xFF2E7D63` al 22 %.
+
 ---
 
 ## 4. Tipografía (`Type.kt`)
@@ -245,6 +271,23 @@ Tokens añadidos para "Lo que crece cuando pausas". Con reducir movimiento todos
 | `Motion.shake` | lineal 380 ms; `shakeOffset` interpola ±6 / 5 / 3 / 2 dp con `ShakeEasing` | Tercera meta no permitida |
 | `Motion.breathHalf` | `tween(4000, ease-in-out)` por mitad: 3 ciclos de 8 s, escala 0.62 ↔ 1 | Respiración de la copa (`Motion.breath` sigue siendo el bucle de 4 + 4 s) |
 | `Motion.dot` / `spin` | 400 ms `CubicBezier(.34, 1.3, .64, 1)` / 900 ms lineal infinito | Puntos de la bienvenida / semilla del botón ocupado |
+
+### 8.2 Movimiento de la app principal
+
+Con reducir movimiento los finitos pasan a `tween(150)` y los bucles no se arrancan (el árbol queda quieto, el coach muestra sus puntos sin latir y el texto completo).
+
+| Token | Valores | Uso |
+|---|---|---|
+| `Motion.navIndicator` | `tween(520, CubicBezier(.3, 1.2, .5, 1))` | Indicador de 64 × 32 dp de la barra inferior |
+| `Motion.page` / `pageFade` | 520 ms `CubicBezier(.22, 1, .36, 1)` el desplazamiento de 24 dp; 320 ms "ease" el fundido | Cambio de pestaña |
+| `Motion.think` | 2400 ms lineal, infinito | Brillo cónico de `glow` que gira en el borde del coach |
+| `Motion.drift(d)` | ya existente: 500 ms puntos del coach (desfase 150 ms), 700 ms skeleton, 4000 ms semilla del coach y punta del anillo | Bucles de espera y respiración |
+| `Motion.reveal` | ya existente: 18 ms por carácter | Texto del coach (Fraunces 20 / 28) |
+| `Motion.bloom(700)` | ya existente | Hoja nueva que brota en el Panel |
+| `Motion.rise(600)` + `fade(500)` | ya existentes | Entrada del modo enfoque (sube 40 dp) |
+| Toast | 2,6 s: entra en 312 ms (`rise`), sale en 520 ms (`fade`) | Avisos breves del Panel |
+
+El coach "piensa" 1,4 s (`Motion.CoachThinkingMillis`) antes de revelar el texto; las acciones entran con `fade(400)` y 6 dp de subida al terminar el revelado.
 
 ---
 
