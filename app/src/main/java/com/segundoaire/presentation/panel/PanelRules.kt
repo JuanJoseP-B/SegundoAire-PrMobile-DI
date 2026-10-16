@@ -16,10 +16,4 @@ internal object PanelRules {
 
     /** Las luciérnagas salen entre las 20:00 y las 6:00. */
     fun firefliesVisible(hour: Int): Boolean = hour < 6 || hour >= 20
-
-    /** "m:ss" del tiempo restante: los minutos sin cero a la izquierda, como en la referencia. */
-    fun clockText(totalSeconds: Int): String {
-        val seconds = totalSeconds.coerceAtLeast(0)
-        return "%d:%02d".format(seconds / 60, seconds % 60)
-    }
 }

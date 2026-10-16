@@ -23,12 +23,23 @@ class MainShellViewModel @Inject constructor(
 
     val selectedTab: StateFlow<MainTab> = savedStateHandle.getStateFlow(KEY_TAB, MainTab.PANEL)
 
+    /** El modo enfoque está abierto (se ve si además hay un bloque en curso o recién completado). */
+    val isFocusOpen: StateFlow<Boolean> = savedStateHandle.getStateFlow(KEY_FOCUS, false)
+
     private val _toast = MutableStateFlow<ShellToastMessage?>(null)
     val toast: StateFlow<ShellToastMessage?> = _toast.asStateFlow()
     private var toastCount = 0L
 
     fun selectTab(tab: MainTab) {
         savedStateHandle[KEY_TAB] = tab
+    }
+
+    fun openFocus() {
+        savedStateHandle[KEY_FOCUS] = true
+    }
+
+    fun closeFocus() {
+        savedStateHandle[KEY_FOCUS] = false
     }
 
     fun showToast(text: String) {
@@ -42,5 +53,6 @@ class MainShellViewModel @Inject constructor(
 
     private companion object {
         const val KEY_TAB = "main_tab"
+        const val KEY_FOCUS = "focus_open"
     }
 }

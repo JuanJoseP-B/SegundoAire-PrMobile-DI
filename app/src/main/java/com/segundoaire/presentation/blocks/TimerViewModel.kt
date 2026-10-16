@@ -6,6 +6,8 @@ import com.segundoaire.domain.model.ActiveBlock
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
+import com.segundoaire.domain.usecase.GetUserProfileUseCase
+import com.segundoaire.domain.usecase.ToggleAppBlockStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -14,9 +16,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,7 +28,10 @@ import java.time.Clock
 import javax.inject.Inject
 
 /**
- * Bloques: elige duración y rigor, e inicia o termina el bloque activo.
+ * Bloques y modo enfoque: elige duración y rigor, inicia o termina el bloque activo
+ * y vigila las apps. Lo comparten la pestaña Bloques y el modo enfoque del
+ * contenedor (el mismo ViewModel de la entrada `home`). El rigor arranca en el
+ * sugerido del perfil ("Plan y modo") hasta que el usuario elige otro.
  *
  * El restante nunca se acumula tick a tick: cada emisión es `endsAt - reloj`, así
  * que rotar, salir a otra app o cerrar la pantalla no lo desvía. El tick de un
@@ -34,13 +41,16 @@ import javax.inject.Inject
 @HiltViewModel
 class TimerViewModel @Inject constructor(
     getBlockedApps: GetBlockedAppsUseCase,
+    getUserProfile: GetUserProfileUseCase,
+    private val toggleAppBlockStatus: ToggleAppBlockStatusUseCase,
     private val blockRepository: BlockRepository,
     private val clock: Clock
 ) : ViewModel() {
 
+    // rigor = null: todavía no eligió, se usa el sugerido del perfil
     private data class Selection(
         val minutes: Int = ActiveBlock.DEFAULT_DURATION_MINUTES,
-        val rigor: RigorLevel = RigorLevel.MINDFUL
+        val rigor: RigorLevel? = null
     )
 
     private data class Running(val block: ActiveBlock, val remainingMillis: Long)
@@ -69,24 +79,27 @@ class TimerViewModel @Inject constructor(
         }
     }
 
+    private val suggestedRigor = getUserProfile().map { it.suggestedRigor }.distinctUntilChanged()
+
     val uiState: StateFlow<TimerUiState> = combine(
         selection,
         running,
         getBlockedApps(),
-        completedMinutes
-    ) { selection, running, apps, completedMinutes ->
+        completedMinutes,
+        suggestedRigor
+    ) { selection, running, apps, completedMinutes, suggested ->
         // Un bloque en curso manda sobre un completado que quedó sin ver
         val completed = completedMinutes.takeIf { running == null }
         TimerUiState(
             selectedMinutes = running?.block?.durationMinutes ?: selection.minutes,
-            rigor = running?.block?.rigor ?: selection.rigor,
+            rigor = running?.block?.rigor ?: selection.rigor ?: suggested,
             isRunning = running != null,
             remainingMillis = when {
                 running != null -> running.remainingMillis
                 completed != null -> 0L
                 else -> selection.minutes * ActiveBlock.MILLIS_PER_MINUTE
             },
-            watchedAppsCount = apps.count { it.isBlocked },
+            apps = apps.map { WatchedApp(it.packageName, it.appName, it.isBlocked) },
             completedMinutes = completed
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialState())
@@ -104,7 +117,12 @@ class TimerViewModel @Inject constructor(
     fun onStart() {
         if (activeBlock.value != null) return
         val chosen = selection.value
-        viewModelScope.launch { blockRepository.start(chosen.minutes, chosen.rigor) }
+        val rigor = chosen.rigor ?: uiState.value.rigor
+        viewModelScope.launch { blockRepository.start(chosen.minutes, rigor) }
+    }
+
+    fun onToggleApp(packageName: String, isBlocked: Boolean) {
+        viewModelScope.launch { toggleAppBlockStatus(packageName, isBlocked) }
     }
 
     /** Termina el bloque antes de tiempo. En Strict la pantalla solo lo llama tras el hold. */

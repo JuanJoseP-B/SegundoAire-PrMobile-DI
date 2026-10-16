@@ -60,6 +60,7 @@ import com.segundoaire.domain.model.GreetingPeriod
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.TodayStats
 import com.segundoaire.domain.model.TreeState
+import com.segundoaire.presentation.blocks.BlockRules
 import com.segundoaire.presentation.designsystem.components.ActionChip
 import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.components.PermissionBanner
@@ -239,7 +240,7 @@ private fun ActiveBlockContent(block: ActiveBlock, nowMillis: () -> Long, onClic
         }
     }
     val progress = block.progress(now)
-    val remaining = PanelRules.clockText(block.remainingSeconds(now))
+    val remaining = BlockRules.clockText(block.remainingSeconds(now))
 
     GlassCard(
         modifier = Modifier.fillMaxWidth(),

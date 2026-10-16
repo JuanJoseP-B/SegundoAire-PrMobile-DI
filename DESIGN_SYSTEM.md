@@ -237,7 +237,7 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 | `Motion.reveal` | por carácter | 18 ms entre caracteres; cada uno con fundido + subida de 4 dp | Texto de la IA |
 | `Motion.step` | spring + desplazamiento | desplazamiento 24 dp + fundido; `dampingRatio = 1f, stiffness = 400f` * | Cambio entre preguntas del onboarding |
 | `Motion.breath` | ciclo | 4000 ms inhalar + 4000 ms exhalar, `FastOutSlowInEasing`, infinito | Círculo de respiración |
-| `Motion.hold` | lineal | `tween(1500, easing = LinearEasing)` | Botón hold-to-commit (tiempo real) |
+| `Motion.hold` | lineal | `tween(1500, easing = LinearEasing)`; al soltar antes, `Motion.holdRelease` lo vacía en 300 ms, también lineal | Botón hold-to-commit (tiempo real) |
 
 \* Curva y rigidez no especificadas numéricamente en el design system ("ease-out suave", "spring sin rebote"); estos son los valores propuestos. Ajustar comparando con la tarjeta MotionLab.
 
@@ -422,4 +422,21 @@ Fuente: `docs/design/app-dashboard/app-dashboard-referencia.html`. La geometría
 Las acciones del coach actúan de verdad: "Crear un bloque" lleva a Bloques (no programa horarios), "Iniciar 15 min" inicia un bloque con el rigor sugerido, "Ver progreso" lleva a Progreso y "Recuérdamelo" muestra un aviso que no promete notificaciones. Los mensajes se generan en el dispositivo (`LocalCoachRepository`) con los datos de la última semana.
 
 **Aviso breve (`ShellToast`)**: vidrio `Level2` con radio 16, a 24 dp de los lados y 16 dp sobre la barra; 2,6 s en total y TalkBack lo lee como estado.
+
+### Bloques
+
+- Encabezado compartido con Progreso (`ScreenHeader`): eyebrow y título Fraunces 30 / 36 con la palabra `*marcada*` en cursiva `accent`.
+- Tarjeta "Iniciar bloque" (vidrio `Level2`, padding 20): segmentado de 5 / 10 / 15 / 30 min de 44 dp sobre `glass1` con indicador `primary` que se desliza con `Motion.toggle`; Mindful / Strict en dos tarjetas `glass1` de radio 16 (la activa con borde `primary` de 2 dp); botón de 52 dp que se mantiene 1,5 s con relleno `glow` al 55 % y se vacía en 300 ms al soltar. Con un bloque en curso dice "Bloque en curso" y un toque abre el modo enfoque.
+- El rigor arranca en el sugerido del perfil ("Plan y modo") hasta que se elige otro. No hay bloques programados.
+- Apps vigiladas: `AppToggleRow` con ícono genérico `app1..5` (sin logos), los minutos estimados de hoy y el toggle; "Editar" abre la selección de apps.
+- Toggle (`Toggle`, todo el sistema): pista de 52 × 32; apagado `outlineVariant` con borde muted de 2 dp y pulgar muted de 16 dp; encendido `primary` con pulgar `onPrimary` de 24 dp; el pulgar se desliza y crece con `Motion.toggle`.
+
+### Modo enfoque
+
+Pantalla completa sobre el contenedor, siempre oscura (`FocusColors`) y con íconos claros en la barra de estado. Entra subiendo 40 dp (`Motion.rise(600)`) mientras se funde (`Motion.fade(500)`).
+
+- Eyebrow "Bloque de enfoque · Mindful/Strict"; anillo de 240 dp (trazo 10, pista al 12 %, avance `Progress` con extremo redondo) con una punta `Tip` de 7 dp y su halo de 16 dp al 25 % que respira (0.88 ↔ 1.06, 4 s).
+- Tiempo restante en `displayTimer` (72 sp, peso 300, tabular) y "restantes"; la frase "Tu árbol crece mientras no miras." en Fraunces cursiva 20; el árbol en silueta al 22 % respirando abajo.
+- "Terminar bloque" (en Strict hay que mantenerlo 1,5 s) y la flecha para minimizar; atrás también minimiza. Al completarse, el botón pasa a "Volver al panel". El tiempo es real.
+- Un bloque que vence con la app abierta abre el modo enfoque para mostrarse completado.
 

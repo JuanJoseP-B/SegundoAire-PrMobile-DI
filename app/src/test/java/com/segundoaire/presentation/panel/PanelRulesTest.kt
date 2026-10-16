@@ -28,12 +28,4 @@ class PanelRulesTest {
         assertFalse(PanelRules.firefliesVisible(6))
         assertFalse(PanelRules.firefliesVisible(19))
     }
-
-    @Test
-    fun `el reloj del bloque muestra minutos sin cero y segundos con dos cifras`() {
-        assertEquals("12:04", PanelRules.clockText(724))
-        assertEquals("0:09", PanelRules.clockText(9))
-        assertEquals("30:00", PanelRules.clockText(1800))
-        assertEquals("0:00", PanelRules.clockText(-5))
-    }
 }

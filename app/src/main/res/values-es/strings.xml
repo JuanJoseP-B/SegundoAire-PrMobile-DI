@@ -13,13 +13,9 @@
     <string name="nav_profile">Perfil</string>
     <string name="coming_soon_title">Muy pronto</string>
     <string name="coming_soon_message">Estamos preparando esta sección. Vuelve pronto.</string>
-    <string name="timer_title">Bloques de enfoque</string>
     <string name="timer_state_focused">ENFOCADO</string>
     <string name="timer_state_ready">LISTO</string>
     <string name="timer_state_completed">COMPLETADO</string>
-    <string name="timer_completed_title">Bloque completado</string>
-    <string name="timer_completed_caption">para ti</string>
-    <string name="timer_completed_done">Listo</string>
     <string name="timer_duration_title">Duración</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Nivel de rigor</string>
@@ -27,13 +23,6 @@
     <string name="timer_rigor_strict_desc">Inquebrantable hasta que termine el bloque</string>
     <string name="timer_start">Iniciar bloque</string>
     <string name="timer_stop">Terminar bloque</string>
-    <string name="timer_hold_to_end">Mantén para terminar</string>
-    <plurals name="timer_watched">
-        <item quantity="one">%d app vigilada</item>
-        <item quantity="many">%d apps vigiladas</item>
-        <item quantity="other">%d apps vigiladas</item>
-    </plurals>
-    <string name="timer_no_watched_apps">Elige apps en el Panel para que tu bloque las vigile.</string>
     <string name="accessibility_service_description">Detecta qué aplicación se está abriendo para darte un momento de calma. Todo permanece en tu dispositivo.</string>
     <string name="permission_title">Un pequeño paso para cuidar tu tiempo</string>
     <string name="permission_subtitle">Para mostrarte una pausa amable antes de abrir apps que te distraen, SegundoAire necesita permiso para mostrarse sobre otras apps. Solo aparece cuando abres una app que tú elegiste y nada sale de tu dispositivo.</string>
@@ -495,4 +484,31 @@
     <string name="coach_msg_idea_mental_health">Una idea para hoy: antes de abrir una app, respira tres veces y decide si de verdad quieres entrar.</string>
     <string name="coach_msg_idea_general">Una idea para hoy: elige un momento sin pantalla y protégelo con un bloque.</string>
     <string name="coach_msg_first">Todavía estoy conociendo tu día. Empieza con un bloque de 15 min y te cuento qué cambia.</string>
+
+    <!-- App principal · Bloques y modo enfoque (Fase 17) -->
+    <string name="blocks_title">Protege tu *atención*</string>
+    <string name="blocks_start_title">Iniciar bloque</string>
+    <string name="blocks_start_body">Las apps vigiladas quedarán en pausa.</string>
+    <string name="blocks_mode_label">Modo</string>
+    <string name="blocks_mindful_desc">Pausa de 10 s y decides.</string>
+    <string name="blocks_strict_desc">Sin salida hasta que termine.</string>
+    <string name="blocks_hold">Mantén para empezar</string>
+    <string name="blocks_hold_running">Bloque en curso</string>
+    <string name="blocks_hold_hint">Mantén presionado 1,5 s</string>
+    <string name="blocks_hold_description">Mantén presionado para empezar el bloque</string>
+    <string name="blocks_apps_title">Apps vigiladas</string>
+    <string name="blocks_apps_edit">Editar</string>
+    <string name="blocks_apps_edit_description">Editar apps vigiladas</string>
+    <string name="blocks_app_minutes">~%1$d min</string>
+    <string name="blocks_app_today">hoy</string>
+    <string name="blocks_app_no_data">Sin medición todavía</string>
+    <string name="blocks_app_watch">Vigilar %1$s</string>
+    <string name="focus_eyebrow">Bloque de enfoque · %1$s</string>
+    <string name="focus_remaining">restantes</string>
+    <string name="focus_quote">Tu árbol crece mientras no miras.</string>
+    <string name="focus_end">Terminar bloque</string>
+    <string name="focus_end_hold">Mantén para terminar</string>
+    <string name="focus_back_to_panel">Volver al panel</string>
+    <string name="focus_minimize">Minimizar</string>
+    <string name="focus_end_toast">Bloque terminado. Mañana sigue creciendo.</string>
 </resources>

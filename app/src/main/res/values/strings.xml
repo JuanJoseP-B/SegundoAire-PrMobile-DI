@@ -13,13 +13,9 @@
     <string name="nav_profile">Profile</string>
     <string name="coming_soon_title">Coming soon</string>
     <string name="coming_soon_message">We\'re getting this section ready. Check back soon.</string>
-    <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
     <string name="timer_state_completed">COMPLETE</string>
-    <string name="timer_completed_title">Block complete</string>
-    <string name="timer_completed_caption">for you</string>
-    <string name="timer_completed_done">Done</string>
     <string name="timer_duration_title">Duration</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Strictness</string>
@@ -27,12 +23,6 @@
     <string name="timer_rigor_strict_desc">Unbreakable until the block ends</string>
     <string name="timer_start">Start block</string>
     <string name="timer_stop">End block</string>
-    <string name="timer_hold_to_end">Hold to end block</string>
-    <plurals name="timer_watched">
-        <item quantity="one">%d app being watched</item>
-        <item quantity="other">%d apps being watched</item>
-    </plurals>
-    <string name="timer_no_watched_apps">Pick apps in the Dashboard so your block can watch them.</string>
     <string name="accessibility_service_description">Detects which app is opening so SegundoAire can give you a moment to breathe. Everything stays on your device.</string>
     <string name="permission_title">One small step to protect your time</string>
     <string name="permission_subtitle">To show a gentle pause before distracting apps open, SegundoAire needs permission to display over other apps. It only appears when you open an app you chose, and nothing leaves your device.</string>
@@ -495,4 +485,31 @@
     <string name="coach_msg_idea_mental_health">An idea for today: before opening an app, take three breaths and decide if you really want in.</string>
     <string name="coach_msg_idea_general">An idea for today: pick a screen-free moment and protect it with a block.</string>
     <string name="coach_msg_first">I\'m still getting to know your day. Start with a 15-minute block and I\'ll tell you what changes.</string>
+
+    <!-- Main app · Blocks and focus mode (Phase 17) -->
+    <string name="blocks_title">Protect your *attention*</string>
+    <string name="blocks_start_title">Start a block</string>
+    <string name="blocks_start_body">Your watched apps will be paused.</string>
+    <string name="blocks_mode_label">Mode</string>
+    <string name="blocks_mindful_desc">A 10 s pause, then you decide.</string>
+    <string name="blocks_strict_desc">No way out until it ends.</string>
+    <string name="blocks_hold">Hold to start</string>
+    <string name="blocks_hold_running">Block in progress</string>
+    <string name="blocks_hold_hint">Press and hold for 1.5 s</string>
+    <string name="blocks_hold_description">Press and hold to start the block</string>
+    <string name="blocks_apps_title">Watched apps</string>
+    <string name="blocks_apps_edit">Edit</string>
+    <string name="blocks_apps_edit_description">Edit watched apps</string>
+    <string name="blocks_app_minutes">~%1$d min</string>
+    <string name="blocks_app_today">today</string>
+    <string name="blocks_app_no_data">Not measured yet</string>
+    <string name="blocks_app_watch">Watch %1$s</string>
+    <string name="focus_eyebrow">Focus block · %1$s</string>
+    <string name="focus_remaining">left</string>
+    <string name="focus_quote">Your tree grows while you look away.</string>
+    <string name="focus_end">End block</string>
+    <string name="focus_end_hold">Hold to end</string>
+    <string name="focus_back_to_panel">Back to panel</string>
+    <string name="focus_minimize">Minimize</string>
+    <string name="focus_end_toast">Block ended. It keeps growing tomorrow.</string>
 </resources>

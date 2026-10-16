@@ -30,8 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import com.segundoaire.R
+import com.segundoaire.presentation.blocks.FocusLayer
 import com.segundoaire.presentation.blocks.TimerRoute
 import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
@@ -42,7 +45,7 @@ import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
  * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
- * [onEditApps] abre la selección de apps desde el Panel y [onOpenTutorial] el
+ * [onEditApps] abre la selección de apps desde Bloques y [onOpenTutorial] el
  * tutorial desde Ajustes. [onResetCompleted] vuelve a la bienvenida tras reiniciar
  * la app. [onOpenComponentCatalog]
  * solo se pasa en debug (pulsación larga en el saludo del Panel).
@@ -58,12 +61,24 @@ fun MainShell(
 ) {
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val toast by viewModel.toast.collectAsStateWithLifecycle()
+    val focusOpen by viewModel.isFocusOpen.collectAsStateWithLifecycle()
+    val endedText = stringResource(R.string.focus_end_toast)
 
     MainShellContent(
         selectedTab = selectedTab,
         onTabSelected = viewModel::selectTab,
         modifier = modifier,
         overlay = { barPadding ->
+            FocusLayer(
+                open = focusOpen,
+                onOpen = viewModel::openFocus,
+                onClose = viewModel::closeFocus,
+                onBackToPanel = {
+                    viewModel.closeFocus()
+                    viewModel.selectTab(MainTab.PANEL)
+                },
+                onEnded = { viewModel.showToast(endedText) }
+            )
             ShellToast(
                 message = toast,
                 onDone = viewModel::onToastDone,
@@ -77,13 +92,16 @@ fun MainShell(
         when (tab) {
             MainTab.PANEL -> PanelRoute(
                 onOpenTab = viewModel::selectTab,
-                // El modo enfoque llega con Bloques; hasta entonces el bloque se ve en su pestaña
-                onOpenActiveBlock = { viewModel.selectTab(MainTab.BLOCKS) },
+                onOpenActiveBlock = viewModel::openFocus,
                 onToast = viewModel::showToast,
                 contentPadding = contentPadding,
                 onTitleLongClick = onOpenComponentCatalog
             )
-            MainTab.BLOCKS -> TimerRoute(contentPadding = contentPadding)
+            MainTab.BLOCKS -> TimerRoute(
+                onOpenFocus = viewModel::openFocus,
+                onEditApps = onEditApps,
+                contentPadding = contentPadding
+            )
             MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
             MainTab.PROFILE -> ProfileRoute(
                 contentPadding = contentPadding,

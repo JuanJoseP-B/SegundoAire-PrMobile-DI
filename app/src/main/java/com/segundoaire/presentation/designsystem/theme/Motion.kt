@@ -40,6 +40,7 @@ object Motion {
     const val BreathInhaleMillis = 4000
     const val BreathExhaleMillis = 4000
     const val HoldMillis = 1500
+    const val HoldReleaseMillis = 300
     const val ReducedFadeMillis = 150
 
     // La hoja del GlassWall entra creciendo desde esta escala
@@ -73,6 +74,9 @@ object Motion {
     )
 
     fun <T> hold(): FiniteAnimationSpec<T> = tween(durationMillis = HoldMillis, easing = LinearEasing)
+
+    /** Al soltar antes de tiempo, el relleno del hold se vacía en 300 ms, también lineal. */
+    fun <T> holdRelease(): FiniteAnimationSpec<T> = tween(durationMillis = HoldReleaseMillis, easing = LinearEasing)
 
     fun <T> reducedFade(): FiniteAnimationSpec<T> = tween(durationMillis = ReducedFadeMillis)
 
@@ -281,6 +285,8 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     fun breath(): InfiniteRepeatableSpec<Float> = Motion.breath()
 
     fun <T> hold(): FiniteAnimationSpec<T> = Motion.hold()
+
+    fun <T> holdRelease(): FiniteAnimationSpec<T> = Motion.holdRelease()
 
     // Onboarding del árbol: con reducir movimiento todo es un fundido de 150 ms. Los bucles
     // (sway, drift, ripple, spin) no tienen versión reducida: quien los usa no los arranca
