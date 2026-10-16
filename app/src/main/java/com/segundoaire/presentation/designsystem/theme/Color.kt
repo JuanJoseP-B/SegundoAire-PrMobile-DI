@@ -62,6 +62,8 @@ data class SegundoAireColors(
     val petal: Color,
     val wood: Color,
     val aiCard: Color,
+    // Acento de la serif y de la semilla del coach (primary en claro, glow en oscuro)
+    val accent: Color,
     // Tonos del follaje, ya con su opacidad; se alternan por círculo
     val tree1: Color,
     val tree2: Color,
@@ -138,6 +140,7 @@ val LightSegundoAireColors = SegundoAireColors(
     petal = Color(0xFFF4FBF5),
     wood = Color(0x598EB69B),
     aiCard = Color(0xEBF0FAF2),
+    accent = Color(0xFF235347),
     tree1 = Color(0x80235347),
     tree2 = Color(0x8C2E7D63),
     tree3 = Color(0xD98EB69B),
@@ -209,6 +212,7 @@ val DarkSegundoAireColors = SegundoAireColors(
     petal = Color(0xFFDCE3E0),
     wood = Color(0xE6132E35),
     aiCard = Color(0xFF11282D),
+    accent = Color(0xFF86E0CF),
     tree1 = Color(0xE62D4A53),
     tree2 = Color(0x993E8C7A),
     tree3 = Color(0x5986E0CF),
