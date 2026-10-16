@@ -2,6 +2,7 @@ package com.segundoaire
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +18,9 @@ import com.segundoaire.presentation.designsystem.theme.LightSegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.isDark
 import com.segundoaire.presentation.navigation.AppNavHost
+import com.segundoaire.presentation.navigation.AppViewModel
 import com.segundoaire.presentation.navigation.ThemeViewModel
+import com.segundoaire.presentation.splash.SplashGate
 import dagger.hilt.android.AndroidEntryPoint
 
 // AppCompatActivity: setApplicationLocales cambia el idioma en caliente solo con ella
@@ -26,12 +29,22 @@ class MainActivity : AppCompatActivity() {
 
     private val themeViewModel: ThemeViewModel by viewModels()
 
+    // Misma instancia que usa AppNavHost: la actividad es su dueña
+    private val appViewModel: AppViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Antes de super: cambia el tema de arranque por el de la app
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
-        // El splash se queda hasta que DataStore entrega el tema: así no hay un fondo vacío entre ambos
-        splash.setKeepOnScreenCondition { themeViewModel.themeMode.value == null }
+        // El splash se queda hasta que DataStore entrega el tema y el destino inicial, máximo 1 s
+        val startedAt = SystemClock.elapsedRealtime()
+        splash.setKeepOnScreenCondition {
+            SplashGate.keepOnScreen(
+                themeLoaded = themeViewModel.themeMode.value != null,
+                destinationLoaded = appViewModel.startDestination.value != null,
+                elapsedMillis = SystemClock.elapsedRealtime() - startedAt
+            )
+        }
         enableEdgeToEdge()
         setContent {
             val themeMode by themeViewModel.themeMode.collectAsStateWithLifecycle()
@@ -57,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 SegundoAireTheme(darkTheme = darkTheme) {
-                    AppNavHost()
+                    AppNavHost(appViewModel)
                 }
             }
         }
