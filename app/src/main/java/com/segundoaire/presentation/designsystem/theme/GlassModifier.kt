@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.tooling.preview.Preview
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 
@@ -71,15 +70,19 @@ fun Modifier.glass(
     val backdrop = LocalGlassBackdrop.current
     val edge = remember(glass) { Brush.linearGradient(listOf(glass.edgeHi, glass.edgeLo)) }
 
+    // El relleno se pinta siempre aquí, con su alfa, encima del blur. No se delega en el
+    // tint de Haze: dentro de la fuente del blur (el MainShell) el tint no se veía y las
+    // tarjetas quedaban solo con borde.
     val surface = when {
         backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-            Modifier.hazeEffect(backdrop) {
-                blurEnabled = true
-                blurRadius = style.blur
-                backgroundColor = background
-                tints = listOf(HazeTint(style.fill))
-                noiseFactor = 0f
-            }
+            Modifier
+                .hazeEffect(backdrop) {
+                    blurEnabled = true
+                    blurRadius = style.blur
+                    backgroundColor = background
+                    noiseFactor = 0f
+                }
+                .background(style.fill)
         LocalWindowBlurBehind.current -> Modifier.background(style.fill)
         else -> Modifier.background(style.fillNoBlur)
     }
