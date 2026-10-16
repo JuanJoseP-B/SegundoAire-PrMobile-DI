@@ -111,9 +111,9 @@ object Motion {
     const val RippleMillis = 4000
 
     /** Trazo que se dibuja: ramas, raíces, anillos y la enredadera. Sale más rápido de lo que entra. */
-    fun <T> grow(appear: Boolean = true, delayMillis: Int = 0): FiniteAnimationSpec<T> =
+    fun <T> grow(appear: Boolean = true, delayMillis: Int = 0, durationMillis: Int = GrowMillis): FiniteAnimationSpec<T> =
         if (appear) {
-            tween(durationMillis = GrowMillis, delayMillis = delayMillis, easing = GrowEasing)
+            tween(durationMillis = durationMillis, delayMillis = delayMillis, easing = GrowEasing)
         } else {
             tween(durationMillis = GrowExitMillis, easing = GrowEasing)
         }
@@ -239,8 +239,12 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     // (sway, drift, ripple, spin) no tienen versión reducida: quien los usa no los arranca
     // cuando [reduced] es verdadero.
 
-    fun <T> grow(appear: Boolean = true, delayMillis: Int = 0): FiniteAnimationSpec<T> =
-        if (reduced) Motion.reducedFade() else Motion.grow(appear, delayMillis)
+    fun <T> grow(
+        appear: Boolean = true,
+        delayMillis: Int = 0,
+        durationMillis: Int = Motion.GrowMillis
+    ): FiniteAnimationSpec<T> =
+        if (reduced) Motion.reducedFade() else Motion.grow(appear, delayMillis, durationMillis)
 
     fun <T> bloom(
         appear: Boolean,
