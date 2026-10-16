@@ -153,3 +153,14 @@ val DarkSegundoAireColors = SegundoAireColors(
     skyNight = Color(0xBF050A24),
     skyLate = Color(0x9E040C0E)
 )
+
+/**
+ * Colores de la marca Google para su logotipo en el botón de proveedor. No cambian con el
+ * tema: las guías de la marca exigen sus cuatro colores en claro y en oscuro.
+ */
+object GoogleLogoColors {
+    val Red = Color(0xFFEA4335)
+    val Blue = Color(0xFF4285F4)
+    val Yellow = Color(0xFFFBBC05)
+    val Green = Color(0xFF34A853)
+}

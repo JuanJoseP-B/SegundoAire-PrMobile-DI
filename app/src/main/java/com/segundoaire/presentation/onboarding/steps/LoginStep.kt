@@ -52,6 +52,8 @@ import com.segundoaire.presentation.auth.EmailAuthUiState
 import com.segundoaire.presentation.designsystem.components.GlassTextField
 import com.segundoaire.presentation.designsystem.components.TextButton
 import com.segundoaire.presentation.designsystem.components.pressScale
+import com.segundoaire.presentation.designsystem.icons.AppleLogo
+import com.segundoaire.presentation.designsystem.icons.GoogleLogo
 import com.segundoaire.presentation.designsystem.icons.SegundoAireIcons
 import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.Motion
@@ -149,9 +151,18 @@ internal fun LoginContent(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
     ) {
-        ProviderIconButton(SegundoAireIcons.Globe, stringResource(R.string.onb_login_web), !busy, onWeb)
-        ProviderIconButton(SegundoAireIcons.Device, stringResource(R.string.onb_login_device), !busy, onDevice)
-        ProviderIconButton(SegundoAireIcons.Envelope, stringResource(R.string.onb_login_mail), !busy, onMail)
+        ProviderIconButton(stringResource(R.string.onb_login_web), !busy, onWeb) { GoogleLogo() }
+        ProviderIconButton(stringResource(R.string.onb_login_device), !busy, onDevice) {
+            AppleLogo(tint = SegundoAireTheme.colors.onBackground)
+        }
+        ProviderIconButton(stringResource(R.string.onb_login_mail), !busy, onMail) {
+            Icon(
+                SegundoAireIcons.Envelope,
+                contentDescription = null,
+                tint = SegundoAireTheme.colors.primary,
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 
     Box(Modifier.offset(y = 770.dp).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
@@ -253,7 +264,7 @@ private fun Seed(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ProviderIconButton(icon: ImageVector, description: String, enabled: Boolean, onClick: () -> Unit) {
+private fun ProviderIconButton(description: String, enabled: Boolean, onClick: () -> Unit, icon: @Composable () -> Unit) {
     val colors = SegundoAireTheme.colors
     val source = remember { MutableInteractionSource() }
     val shape = SegundoAireTheme.shapes.radiusFull
@@ -273,6 +284,6 @@ private fun ProviderIconButton(icon: ImageVector, description: String, enabled: 
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center
     ) {
-        Icon(icon, contentDescription = null, tint = colors.primary, modifier = Modifier.size(20.dp))
+        icon()
     }
 }
