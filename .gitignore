@@ -9,3 +9,11 @@ captures/
 *.apk
 *.aab
 SEGUNDOAIRE_SPEC.md
+
+# Firma de release: nunca al repositorio
+keystore.properties
+*.jks
+*.keystore
+
+# Sesión del compilador de Kotlin
+.kotlin/

@@ -35,8 +35,8 @@ import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.designsystem.theme.glass
 
-// 40 dp de segmento + 4 dp de margen por lado = 48 dp de área táctil
-private val SegmentMinHeight = 40.dp
+// El margen del contenedor no es táctil: el segmento mismo mide 48 dp (§10)
+private val SegmentMinHeight = 48.dp
 
 /**
  * Selector de una opción entre pocas, con un indicador `primary` que se desliza

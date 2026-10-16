@@ -447,4 +447,7 @@
     <string name="onb_curtain_tagline">Tu árbol ya echó raíces.</string>
     <string name="onb_done_title">Todo listo, *%1$s*.</string>
     <string name="onb_done_body">Tu árbol te espera en el panel principal.\nCrece con cada minuto que recuperas.</string>
+    <string name="splash_skip">Omitir intro</string>
+    <string name="splash_eyebrow">Toma un segundo aire</string>
+    <string name="splash_loading_description">SegundoAire cargando</string>
 </resources>

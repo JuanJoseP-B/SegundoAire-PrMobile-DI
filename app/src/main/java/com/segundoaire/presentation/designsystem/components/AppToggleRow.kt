@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
@@ -83,17 +82,13 @@ fun AppToggleRow(
             Text(
                 text = name,
                 style = SegundoAireTheme.typography.titleMd,
-                color = if (enabled) colors.onBackground else colors.disabledContent,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                color = if (enabled) colors.onBackground else colors.disabledContent
             )
             if (supportingText != null) {
                 Text(
                     text = supportingText,
                     style = SegundoAireTheme.typography.bodyMd,
-                    color = if (enabled) colors.onBackgroundMuted else colors.disabledContent,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    color = if (enabled) colors.onBackgroundMuted else colors.disabledContent
                 )
             }
         }

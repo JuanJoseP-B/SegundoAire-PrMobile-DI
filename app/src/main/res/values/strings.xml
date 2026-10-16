@@ -446,4 +446,7 @@
     <string name="onb_curtain_tagline">Your tree has taken root.</string>
     <string name="onb_done_title">All set, *%1$s*.</string>
     <string name="onb_done_body">Your tree is waiting in the main panel.\nIt grows with every minute you win back.</string>
+    <string name="splash_skip">Skip intro</string>
+    <string name="splash_eyebrow">Take a second breath</string>
+    <string name="splash_loading_description">SegundoAire loading</string>
 </resources>

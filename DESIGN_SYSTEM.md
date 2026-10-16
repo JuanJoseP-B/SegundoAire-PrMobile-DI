@@ -250,39 +250,42 @@ Tokens añadidos para "Lo que crece cuando pausas" (prototipo `docs/design/onboa
 
 ## 9. Splash El Respiro
 
-La pantalla de splash presenta una animación de respiración que revela la marca de SegundoAire.
+Pantalla de carga de 16 s que se reproduce una vez por arranque (`BreathSplash`). Una forma orgánica aparece, respira, hace una bocanada profunda y se expande hasta cubrir la pantalla; entonces se revela el nombre de la app y todo se funde hacia la pantalla de abajo. Se dibuja como overlay sobre el grafo de navegación, que ya está compuesto. Un toque salta directo a la fase 6.
 
-### Coreografía (6 s total, saltable con un toque)
+### Coreografía (16 s)
 
-1. **Dos respiraciones iniciales** (0–4 s): blob orgánico en el centro con `Motion.splashBreath`, oscilando suavemente.
-2. **Bocanada profunda** (4–5 s): expansión radial del blob con `Motion.splashDeep`.
-3. **Liberación que cubre la pantalla** (5–5.5 s): el blob se expande y cubre toda la pantalla con gradiente, usando `Motion.splashRelease`.
-4. **Texto y marca** (5.5–6 s): aparición del texto con `Motion.splashText`; crossfade liso hacia la pantalla principal con `Motion.splashExit`.
+| Fase | Tiempo | Qué pasa |
+|---|---|---|
+| 1 · Presencia | 0 – 1.2 s | La forma (unos 150 dp) pasa de escala 0.55 y alfa 0 a 1 y 1, con ease-out suave. |
+| 2 · Respiro normal | 1.2 – 5.2 s | Escala 1 → 1.14 → 1; 2 s inhalar y 2 s exhalar, `FastOutSlowIn`. |
+| 3 · Bocanada profunda | 5.2 – 10 s | Escala 1 → 1.6 en 4 s con `CubicBezier(0.45, 0, 0.35, 1)` y se sostiene 0.8 s. |
+| 4 · Liberación | 10 – 11.6 s | La forma no se contrae: se expande con `CubicBezier(0.55, 0, 0.2, 1)` hasta cubrir la pantalla (escala = diagonal / radio × 1.15). Al final entra un relleno sólido de `primary`. |
+| 5 · Revelación | 11.6 – 15 s | "SegundoAire" (32 sp, peso 500, -0.01 em) con fundido y subida de 8 dp, y debajo el eyebrow (11 sp, peso 500, +0.08 em, 85 %), ambos en `onPrimary`. Se sostiene 2.5 s. |
+| 6 · Ingreso | 15 – 16 s | El overlay se funde 0.8 s con ease-out; las tarjetas de la bienvenida suben 24 dp y aparecen escalonadas, 120 ms entre una y otra. |
 
-### Colores por token
+### La forma
 
-- **Centro del blob**: `mint` (claro `0xFF8EB69B`, oscuro `0xFF86E0CF`).
-- **Borde y cubrimiento**: `primary` (`0xFF235347` claro, `0xFF708792` oscuro).
-- **Texto**: `onPrimary` sobre el cubrimiento final.
+- Dos capas translúcidas superpuestas: `primary` al 55 % y `glow` al 45 %, más un halo radial de `glow` al 22 %.
+- Cada capa es un `Path` cerrado de 8 puntos con curvas cúbicas (Catmull-Rom). El radio de cada punto oscila con senos de fases distintas, ±5.5 %.
+- Periodos de 7 s (capa de `primary`) y 5.5 s (capa de `glow`); esta última rota entre 40° y 70°.
+- Mezcla: Multiply en claro y Screen en oscuro, porque multiplicar sobre un fondo casi negro haría desaparecer las capas.
+- Colores solo por token: `background`, `primary`, `glow`, `onPrimary`.
 
-### Tokens Motion nuevos
+### Tiempos y curvas: `BreathSplashSpec`
 
-| Token | Tipo | Valores Compose | Uso |
-|---|---|---|---|
-| `Motion.splashBreath` | spring | `dampingRatio = 0.8f, stiffness = 200f` | Oscilación inicial del blob (2 ciclos) |
-| `Motion.splashDeep` | tween | `durationMillis = 1000, easing = EaseOutCubic` | Expansión radial (bocanada profunda) |
-| `Motion.splashRelease` | tween | `durationMillis = 500, easing = Linear` | Cubrimiento de pantalla |
-| `Motion.splashText` | tween | `durationMillis = 300, easing = Linear` | Aparición del texto (fundido) |
-| `Motion.splashHold` | lineal | `tween(1000, easing = LinearEasing)` | Pausa final (opcional) |
-| `Motion.splashExit` | tween | `durationMillis = 200, easing = Linear` | Crossfade hacia la pantalla principal |
+Todas las duraciones, curvas y medidas viven en el objeto `BreathSplashSpec` (`presentation/splash`). Es la **única excepción** a "todo movimiento sale de `Motion`": las curvas `CubicBezier` son propias de esta pantalla, y los `tween` no aparecen en ningún otro archivo del splash. Cambiar un tiempo es cambiar una constante de ese objeto; `BreathSplashSpecTest` comprueba que las fases suman 16 s.
 
-### Variante de reducir movimiento
+La fase del borde de cada capa es un `tween` lineal infinito. Con frecuencias enteras de seno, gira una vuelta completa sin salto al reiniciar.
 
-Si el sistema tiene `ANIMATOR_DURATION_SCALE = 0`, la animación se reduce a **1.2 s**: una serie de fundidos rápidos (blob entra, se expande, cubre, texto y crossfade).
+### Reducir movimiento (1.5 s)
 
-### Nota técnica
+Con `ANIMATOR_DURATION_SCALE = 0` no hay movimiento: la forma aparece quieta con un fundido de 150 ms, hay una pausa de 450 ms, el color `primary` cubre y el título entra (150 ms, sin subida), una pausa de 600 ms y el overlay se funde en 150 ms.
 
-La oscilación del borde del blob utiliza una **fase lineal interna** como única excepción documentada a la regla de easing del design system. Esto mantiene la ilusión de respiración continua mientras otros elementos siguen la curva de timing general.
+### Accesibilidad
+
+- El contenedor tiene `contentDescription` "SegundoAire cargando".
+- Un toque salta a la fase 6; el overlay se lleva los toques mientras dura.
+- Si la actividad se recrea con el splash a medias (rotación), se da por terminado en vez de reiniciarlo.
 
 ---
 

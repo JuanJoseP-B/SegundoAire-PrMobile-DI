@@ -64,4 +64,8 @@
     <string name="catalog_sample_name" translatable="false">Ana</string>
     <string name="catalog_section_onboarding_tree">Onboarding tree</string>
     <string name="catalog_tree_replay">Replay</string>
+    <string name="catalog_section_splash" translatable="false">Splash</string>
+    <string name="catalog_splash_replay">Replay animation</string>
+    <string name="catalog_splash_reduced_note">With the reduce-motion switch on, the reduced version plays (about 1.5 s, still shape).</string>
+    <string name="catalog_splash_done">Finished</string>
 </resources>

@@ -55,6 +55,7 @@ fun CatalogSections() {
     SkeletonSection()
     GlassWallSection()
     OnboardingTreeSection()
+    SplashSection()
 }
 
 @Composable
