@@ -34,6 +34,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         dataStore.edit { prefs -> if (prefs[PLANTED_AT] == null) prefs[PLANTED_AT] = atMillis }
     }
 
+    override val isSoundEnabled: Flow<Boolean> = dataStore.data
+        .map { prefs -> prefs[SOUND_ENABLED] ?: true }
+        .distinctUntilChanged()
+
+    override suspend fun setSoundEnabled(enabled: Boolean) {
+        dataStore.edit { prefs -> prefs[SOUND_ENABLED] = enabled }
+    }
+
     override val isDemoMode: Flow<Boolean> = dataStore.data
         .map { prefs -> prefs[IS_DEMO_MODE] ?: false }
         .distinctUntilChanged()
@@ -56,5 +64,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         val IS_DEMO_MODE = booleanPreferencesKey("is_demo_mode")
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val PLANTED_AT = longPreferencesKey("tree_planted_at")
+        val SOUND_ENABLED = booleanPreferencesKey("sound_enabled")
     }
 }

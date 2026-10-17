@@ -25,6 +25,13 @@ class FakeUserPreferencesRepository(
         if (planted.value == null) planted.value = atMillis
     }
 
+    val sound = MutableStateFlow(true)
+    override val isSoundEnabled: Flow<Boolean> = sound
+
+    override suspend fun setSoundEnabled(enabled: Boolean) {
+        sound.value = enabled
+    }
+
     private val demo = MutableStateFlow(demoMode)
     override val isDemoMode: Flow<Boolean> = demo
 

@@ -113,4 +113,13 @@ class UserPreferencesRepositoryImplTest {
 
         assertEquals(1_000L, repository.plantedAtMillis.first())
     }
+
+    @Test
+    fun `los sonidos arrancan encendidos y se pueden apagar`() = scope.runTest {
+        assertTrue(repository.isSoundEnabled.first())
+
+        repository.setSoundEnabled(false)
+
+        assertFalse(repository.isSoundEnabled.first())
+    }
 }

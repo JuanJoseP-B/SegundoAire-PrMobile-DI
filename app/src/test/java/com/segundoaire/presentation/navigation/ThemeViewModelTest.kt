@@ -80,6 +80,10 @@ class ThemeViewModelTest {
 
         override suspend fun markPlanted(atMillis: Long) = Unit
 
+        override val isSoundEnabled: Flow<Boolean> = flowOf(true)
+
+        override suspend fun setSoundEnabled(enabled: Boolean) = Unit
+
         override val isDemoMode: Flow<Boolean> = flowOf(false)
 
         override suspend fun setDemoMode(enabled: Boolean) = Unit
