@@ -189,34 +189,10 @@
     <string name="panel_empty_title">No watched apps yet</string>
     <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
     <string name="panel_empty_action">Choose apps</string>
-    <string name="progress_title">Progress</string>
     <string name="progress_demo_chip">Sample data</string>
-    <string name="progress_impact_eyebrow">This week</string>
-    <plurals name="progress_impact_minutes">
-        <item quantity="one">minute recovered</item>
-        <item quantity="other">minutes recovered</item>
-    </plurals>
-    <string name="progress_avoided_eyebrow">Openings avoided</string>
-    <plurals name="progress_avoided_label">
-        <item quantity="one">time you went back</item>
-        <item quantity="other">times you went back</item>
-    </plurals>
-    <string name="progress_streak_eyebrow">Streak</string>
-    <plurals name="progress_streak_label">
-        <item quantity="one">day in a row</item>
-        <item quantity="other">days in a row</item>
-    </plurals>
-    <string name="progress_week_title">Your week</string>
-    <string name="progress_week_caption">Minutes recovered each day</string>
-    <plurals name="progress_week_day">
-        <item quantity="one">%1$s: %2$d minute</item>
-        <item quantity="other">%1$s: %2$d minutes</item>
-    </plurals>
-    <string name="progress_empty_title">Your progress starts here</string>
-    <string name="progress_empty_message">Finish a block or go back from the GlassWall, and you\'ll see it here.</string>
-    <string name="profile_title">Profile</string>
     <string name="profile_goals_title">Your goals</string>
     <string name="profile_goals_subtitle">Pick up to %1$d. The first one you pick is your main goal.</string>
+    <string name="profile_title">Profile</string>
     <string name="profile_account_title">Your account</string>
     <string name="profile_account_google">Google</string>
     <string name="profile_account_apple">Apple</string>
@@ -512,4 +488,23 @@
     <string name="focus_back_to_panel">Back to panel</string>
     <string name="focus_minimize">Minimize</string>
     <string name="focus_end_toast">Block ended. It keeps growing tomorrow.</string>
+
+    <!-- Main app · Progress (Phase 17) -->
+    <string name="progress_heading">Your *growth* rings</string>
+    <string name="progress_today">Today</string>
+    <string name="progress_day_title">%1$s · %2$d min</string>
+    <string name="progress_day_flower">Flower day: you reached your goal</string>
+    <string name="progress_day_thin">A thin ring is growth too</string>
+    <string name="progress_week_label">This week</string>
+    <string name="progress_goal">Goal: %1$d min/day</string>
+    <string name="progress_day_description">%1$s, %2$d min reclaimed</string>
+    <string name="progress_day_future">%1$s, no data</string>
+    <string name="progress_stat_week_minutes">reclaimed this week</string>
+    <string name="progress_stat_streak">best streak</string>
+    <plurals name="progress_streak_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="progress_stat_hardest">your hardest hour</string>
+    <string name="progress_stat_no_data" translatable="false">—</string>
 </resources>

@@ -440,3 +440,9 @@ Pantalla completa sobre el contenedor, siempre oscura (`FocusColors`) y con íco
 - "Terminar bloque" (en Strict hay que mantenerlo 1,5 s) y la flecha para minimizar; atrás también minimiza. Al completarse, el botón pasa a "Volver al panel". El tiempo es real.
 - Un bloque que vence con la app abierta abre el modo enfoque para mostrarse completado.
 
+### Progreso
+
+- Corte del tronco de 260 × 230: madera `wood` (elipse de 124 × 108) y un anillo por día desde que se plantó el árbol (al menos la semana en curso, hasta 12), del más antiguo en el centro a hoy. Radio horizontal 14 + 9·k y vertical al 87 %, con un vaivén de ±1 en el centro. Grosor = minutos ÷ 12 (mínimo 1,5); los días con meta (30 min o más) en `leaf` al 70 % y el resto en `trunk` al 35 %. El día elegido se ilumina en `glow` con trazo 5 (`Motion.fade(300)`). Médula de 5 en `trunk`.
+- Título del día en Fraunces 22 ("Jue 15 · 52 min" u "Hoy · 47 min") y debajo "Día de flor: cumpliste tu meta" o "Un anillo fino también es crecimiento".
+- Semana de lunes a domingo en vidrio: siete tallos de 6 dp (10 dp el elegido, en `glow`) cuya altura es 96 dp por hora más 6 (tope de una hora) y crece con `Motion.toggle`; una flor de 16 dp si se cumplió la meta; los días que no llegan llevan borde punteado al 50 % y no se pueden elegir.
+- Cuatro tarjetas: recuperados esta semana, aperturas evitadas (todas las intercepciones, como en el Panel), mejor racha de todo el historial y la hora con más intercepciones de los últimos 7 días. Con el modo demo, un chip "Datos de ejemplo".

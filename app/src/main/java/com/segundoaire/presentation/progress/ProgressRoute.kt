@@ -25,6 +25,7 @@ fun ProgressRoute(
 
     ProgressScreen(
         state = state,
+        onDaySelected = viewModel::onDaySelected,
         modifier = modifier,
         contentPadding = contentPadding
     )
