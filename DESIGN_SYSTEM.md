@@ -187,7 +187,7 @@ Tres niveles. Todos con borde de 1 dp en gradiente lineal de `glassEdgeHi` (arri
 - Android 10–11: sin blur; el relleno sube un 20 % de opacidad (por ejemplo, `glass2` claro de 45 % a 65 %).
 - Sombras: `Modifier.dropShadow` (Compose 1.9+) con las dos capas; si no está disponible, `Modifier.shadow` con `ambientColor`/`spotColor` aproximados.
 - El texto cumple contraste sobre el relleno solo; nunca dependas del blur.
-- **GlassWall (overlay sobre otras apps):** Haze no aplica, porque el fondo es otra ventana. Usar `WindowManager.LayoutParams.FLAG_BLUR_BEHIND` + `blurBehindRadius` (32 dp en px) en Android 12+, escuchando `addCrossWindowBlurEnabledListener`; en 10–11 o con el blur desactivado, solo `scrim`.
+- **GlassWall (overlay sobre otras apps):** Haze no aplica, porque el fondo es otra ventana. Usar `WindowManager.LayoutParams.FLAG_BLUR_BEHIND` + `blurBehindRadius` (`GlassBlurWall`, 14 dp en px) en Android 12+, escuchando `addCrossWindowBlurEnabledListener`; en 10–11 o con el blur desactivado, solo `wallScrim`.
 
 ---
 
@@ -453,4 +453,36 @@ Pantalla completa sobre el contenedor, siempre oscura (`FocusColors`) y con íco
 - "Tus metas" en chips con su ícono y "Editar" con borde punteado: abre una hoja inferior con el nombre, las metas y "Guardar" (se cierra al guardar).
 - Ajustes en vidrio, filas de 56 dp con divisores `outlineVariant`: "Plan y modo" (hoja con Mindful / Strict: el rigor con el que arrancan los bloques), "Sonidos y vibración" (interruptor guardado en DataStore que sigue el `SoundManager`), "Permisos" ("Activos" en `success` o "Pendientes" en `warning`; abre el ajuste del que falta) y "Cuenta" (subpantalla con la cuenta simulada, idioma, tema, tutorial, modo demo y reiniciar). No hay fila de recordatorios.
 - "Compartir mi árbol": imagen de 1080 × 1500 con el árbol sobre su colina y el corte del tronco, sin nombre ni datos personales, entregada con `ACTION_SEND` a través de un `FileProvider` (solo la carpeta `cache/shared`).
+
+### GlassWall
+
+Pantalla completa sobre la app interceptada (ventana `TYPE_APPLICATION_OVERLAY`). Coreografía (`GlassWallChoreography`, tiempos en `Motion.Wall*`):
+
+| Momento | Qué pasa |
+|---|---|
+| 0 ms | Sube `wallScrim` y el blur de 14 dp de la ventana (Android 12+; en 10–11 solo el velo), `Motion.fade(600)`. A los 320 ms entra el contenido con fundido de 500 ms y escala de 0.92 a 1. Una hoja `wallLeaf` cae al centro en 1,6 s (de (−60, −260) y −40° a su lugar y 20°, curva `WallFallEasing` por tramo). |
+| 1,7 s | Respiración de 8 s: la copa (siete círculos `tree1..3`) escala de 0.62 a 1 y vuelve, con "Inhala / Exhala" en Fraunces cursiva 26 y el sonido de calma. Sin botones. |
+| 9,7 s | Sube el bloque de contexto (`Motion.rise(600)`, 16 dp) y la copa queda en 0.8: "Llevas {min} min en esta app hoy. ¿Es lo que querías?" (estimación) y "Tu árbol lleva {n} hojas esta semana". Mindful y sin bloque: "¿Para qué entras?" con tres chips que se guardan para el coach, "Volver" y "Continuar en 10…" con un tallo que se dibuja en 10 s y una hoja que brota al habilitarse. Strict: copa `wallWinter`, chip con candado "Se abre a las {hora}" y sin continuar. |
+| Volver | La hoja sube y se va en 1 s (`WallRiseEasing`) con la gota y `Confirm`; se abre el Panel, donde brota la hoja nueva con el arpegio. Si la actividad no se puede abrir, se va al inicio. |
+| Continuar | El muro se funde en 450 ms y un aviso del sistema dice "Disfruta tus {n} min" (sin bloque) o "Disfruta. Tu bloque sigue en marcha." (Mindful). |
+
+Diálogo modal con el foco inicial en "Volver"; botón "Volver a mi bloque" de 52 dp en `wallBtn` / `wallBtnOn`. Con reducir movimiento la respiración es un cambio de opacidad y no hay hoja que cae ni que sube.
+
+### Medición de uso
+
+Los minutos de cada app vigilada se estiman con los eventos del servicio de accesibilidad, sin `UsageStatsManager` ni permisos nuevos: el rato empieza al entrar a la app (o al pulsar "Continuar") y termina al cambiar de app o al apagar la pantalla. Se acumula en memoria y se vuelca a Room por lotes (cambio de app, pantalla apagada y cada 5 min); los ratos de más de 3 h, de menos de 1 s o con el reloj hacia atrás se descartan y los que cruzan la medianoche se parten. Room v3 (`app_usage_sessions` e `interception_events.intent`, una sola migración). Con el modo demo, las lecturas devuelven minutos e intenciones de ejemplo.
+
+### Sonido y háptica
+
+`Feedback` (con el `SoundManager` de la app, provisto por `LocalSoundManager`):
+
+| Evento | Sonido | Háptica |
+|---|---|---|
+| Duración, modo, día, toggle; acciones y preguntas del coach | Gota | `ContextClick` |
+| Iniciar bloque | Acorde | Patrón 20 / 30 / 40 ms |
+| Entrar a la respiración del GlassWall | Calma (Sol4 1,6 s y Re5 1,8 s) | — |
+| Volver a mi bloque | Gota y, al brotar la hoja, arpegio | `Confirm` |
+| Terminar un bloque completo | Arpegio | `Confirm` |
+
+Todo se apaga desde Perfil → Sonidos y vibración, y el sonido respeta el modo silencio. Sin sonido de teclado ni "tick".
 
