@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Háptica del onboarding: el patrón del compromiso -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Android 13+: el permiso opcional de avisos del onboarding -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Visibilidad de paquetes (Android 11+): solo las apps con ícono de lanzador,
          sin QUERY_ALL_PACKAGES -->

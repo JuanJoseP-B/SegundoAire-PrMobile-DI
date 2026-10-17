@@ -66,6 +66,13 @@ Claro es el predeterminado. En pantallas, siempre por token (`SegundoAireTheme.c
 | `warningContainer` | `0xFFF2E2BE` | `0xFF33290F` | Fondo de banners de permisos |
 | `scrim` | `0x52051F20` | `0x99040C0E` | Velo del GlassWall (bajo el blur) |
 | `app1` … `app5` | `0xFFC98B6B` `0xFF6B8FC9` `0xFFB58BC9` `0xFFC9B26B` `0xFF6BC9B5` | `0xFFB07A5F` `0xFF5F7DB0` `0xFF9C7AB0` `0xFFB09B5F` `0xFF5FB09E` | Íconos de app placeholder |
+| `gold` | `0xFFC9B26B` | `0xFFB09B5F` | Onboarding del árbol: follaje marchito, centro de las flores, pétalos |
+| `blossom` | `0xFFDAF1DE` | `0xFFD0E8D6` | Onboarding del árbol: pétalos de las flores, semilla del telón |
+| `firefly` | `0xFFE6F5B0` | `0xFFE6F5B0` | Onboarding del árbol: luciérnagas de la noche y la madrugada |
+| `skyMorning` | `0x73FFC496` | `0x73FFC496` | Luz del suelo al elegir "Mañana" (45 %) |
+| `skyAfternoon` | `0x73FFF6BE` | `0x73FFF6BE` | Luz del suelo al elegir "Tarde" (45 %) |
+| `skyNight` | `0xBF0E1640` | `0xBF050A24` | Luz del suelo al elegir "Noche": azul nocturno (75 %), sube hasta el 70 % del alto |
+| `skyLate` | `0x9E0D1F23` | `0x9E040C0E` | Luz del suelo al elegir "Madrugada" (62 %) |
 
 ### 3.2 Reglas de uso
 
@@ -120,6 +127,18 @@ Fuente: **Manrope** variable en `res/font/manrope_variable.ttf` (Google Fonts), 
 | `labelSm` | 11 / 16 sp | 500 | 0.06 em (0.08 em en mayúsculas) | Metadatos y eyebrows |
 
 En Compose, `letterSpacing` en em: `(-0.02).em`. Mapear también al `Typography` de M3 (displayLarge = `displayTimer`, displayMedium = `displayImpact`, etc.) para componentes M3.
+
+### 4.1 Serif del onboarding: Fraunces
+
+Los títulos del onboarding "Lo que crece cuando pausas" van en **Fraunces** (Google Fonts, licencia OFL): `res/font/fraunces_variable.ttf` y `fraunces_italic_variable.ttf`, con el eje óptico `opsz` fijo en 96 y `wght` por peso (`FrauncesFontFamily`). El resto de la app sigue en Manrope.
+
+| Estilo | Tamaño / interlineado | Peso | Tracking | Uso |
+|---|---|---|---|---|
+| `serifTitle` | 34 / 40 sp | 500 | -0.015 em | Título de cada paso del onboarding |
+| `serifEmphasis` | (hereda) | 400 cursiva | — | Palabra clave del título, en `primary` (`*palabra*` en las cadenas) |
+| `serif(size, lineHeight, …)` | a medida | 400 o 500 | a medida | Cifras grandes (56 / 60 y 52 / 56), frases en cursiva (22, 26 y 20), wordmark (30), cierre (40 / 46) |
+
+En las cadenas la palabra clave se marca con asteriscos: `Respira *antes* de abrir`. Mindful y Strict no se traducen.
 
 ---
 
@@ -204,58 +223,69 @@ Nueve tokens. Ninguna pantalla usa `spring()` o `tween()` directamente.
 
 ---
 
+
+### 8.1 Movimiento del onboarding del árbol
+
+Tokens añadidos para "Lo que crece cuando pausas". Con reducir movimiento todos los finitos pasan a `tween(150)` y los infinitos no se arrancan (el árbol aparece en su etapa, sin balanceo, ondas, luces ni hojas que caen; los contadores muestran el valor final).
+
+| Token | Valores | Uso |
+|---|---|---|
+| `Motion.grow` | `tween(900, CubicBezier(.45, 0, .2, 1))`, retraso por rama; sale en 350 ms; los anillos de la revelación usan 1800 ms | Ramas, raíces, anillos y enredadera que se dibujan |
+| `Motion.bloom` | `tween(d, CubicBezier(.34, 1.56, .64, 1))` con `d` = 760 follaje, 640 hojas, 520 hojas del nombre, 700 flores, 600 semilla, 520 hoja-pulgar y opciones, 420 "pop"; al salir, `ease-in` en 280 / 260 / 220 / 280 ms | Brotar con rebote suave |
+| `Motion.sway` | `tween(7000, ease-in-out)`, ida y vuelta, ±0.8° sobre (195, 515) | Balanceo continuo del árbol |
+| `Motion.drift(d)` | `tween(d, ease-in-out)`, ida y vuelta: 22 s y 28 s luces de fondo, 4 s luciérnagas | Vaivén lento decorativo |
+| `Motion.ripple` | `tween(4000, CubicBezier(.2, .6, .3, 1))`, desfase de 1.3 s entre tres ondas | Ondas del suelo en la semilla |
+| `Motion.gust` | tiempo lineal 0→1 en 2.4–3.2 s; cada tramo usa `CubicBezier(.3, .1, .4, 1)` (`GustEasing`) | Hojas y pétalos que caen en cada cambio de paso |
+| `Motion.curtain` | `tween(900, CubicBezier(.7, 0, .2, 1))` | Telón del login y del cierre |
+| `Motion.settle` | `tween(1000, CubicBezier(.3, 1.06, .5, 1))` | Árbol y colina cambian de lugar por paso |
+| `Motion.layer` / `layerFade` | 620 ms `CubicBezier(.22, 1, .36, 1)` el desplazamiento; 380 ms `ease-out` el fundido (la capa que entra espera 180 ms) | Cambio de paso: texto a media velocidad y contenido a velocidad completa |
+| `Motion.rise` | `tween(d, CubicBezier(.22, 1, .36, 1))`, 520–600 ms | Filas del plan, textos tardíos de la revelación |
+| `Motion.fade(d)` | `tween(d, CubicBezier(.25, .1, .25, 1))` | Opacidad y color (cielo, puntos, saludo, marchitado) |
+| `Motion.count` | `tween(d, CubicBezier(.33, 1, .68, 1))`: contador 1800 ms, "buena noticia" 1200 ms | Contadores de la revelación |
+| `Motion.shake` | lineal 380 ms; `shakeOffset` interpola ±6 / 5 / 3 / 2 dp con `ShakeEasing` | Tercera meta no permitida |
+| `Motion.breathHalf` | `tween(4000, ease-in-out)` por mitad: 3 ciclos de 8 s, escala 0.62 ↔ 1 | Respiración de la copa (`Motion.breath` sigue siendo el bucle de 4 + 4 s) |
+| `Motion.dot` / `spin` | 400 ms `CubicBezier(.34, 1.3, .64, 1)` / 900 ms lineal infinito | Puntos de la bienvenida / semilla del botón ocupado |
+
+---
+
 ## 9. Splash El Respiro
 
-La pantalla de splash presenta una animación de respiración que revela la marca de SegundoAire.
+Pantalla de carga de 16 s que se reproduce una vez por arranque (`BreathSplash`). Una forma orgánica aparece, respira, hace una bocanada profunda y se expande hasta cubrir la pantalla; entonces se revela el nombre de la app y todo se funde hacia la pantalla de abajo. Se dibuja como overlay sobre el grafo de navegación, que ya está compuesto. Un toque salta directo a la fase 6.
 
-### Coreografía (6 s total, saltable con un toque)
+### Coreografía (16 s)
 
-1. **Dos respiraciones iniciales** (0–4 s): blob orgánico en el centro con `Motion.splashBreath`, oscilando suavemente.
-2. **Bocanada profunda** (4–5 s): expansión radial del blob con `Motion.splashDeep`.
-3. **Liberación que cubre la pantalla** (5–5.5 s): el blob se expande y cubre toda la pantalla con gradiente, usando `Motion.splashRelease`.
-4. **Texto y marca** (5.5–6 s): aparición del texto con `Motion.splashText`; crossfade liso hacia la pantalla principal con `Motion.splashExit`.
+| Fase | Tiempo | Qué pasa |
+|---|---|---|
+| 1 · Presencia | 0 – 1.2 s | La forma (unos 150 dp) pasa de escala 0.55 y alfa 0 a 1 y 1, con ease-out suave. |
+| 2 · Respiro normal | 1.2 – 5.2 s | Escala 1 → 1.14 → 1; 2 s inhalar y 2 s exhalar, `FastOutSlowIn`. |
+| 3 · Bocanada profunda | 5.2 – 10 s | Escala 1 → 1.6 en 4 s con `CubicBezier(0.45, 0, 0.35, 1)` y se sostiene 0.8 s. |
+| 4 · Liberación | 10 – 11.6 s | La forma no se contrae: se expande con `CubicBezier(0.55, 0, 0.2, 1)` hasta cubrir la pantalla (escala = diagonal / radio × 1.15). Al final entra un relleno sólido de `primary`. |
+| 5 · Revelación | 11.6 – 15 s | "SegundoAire" (32 sp, peso 500, -0.01 em) con fundido y subida de 8 dp, y debajo el eyebrow (11 sp, peso 500, +0.08 em, 85 %), ambos en `onPrimary`. Se sostiene 2.5 s. |
+| 6 · Ingreso | 15 – 16 s | El overlay se funde 0.8 s con ease-out; las tarjetas de la bienvenida suben 24 dp y aparecen escalonadas, 120 ms entre una y otra. |
 
-### Colores por token
+### La forma
 
-- **Centro del blob**: `mint` (claro `0xFF8EB69B`, oscuro `0xFF86E0CF`).
-- **Borde y cubrimiento**: `primary` (`0xFF235347` claro, `0xFF708792` oscuro).
-- **Texto**: `onPrimary` sobre el cubrimiento final.
+- Dos capas translúcidas superpuestas: `primary` al 55 % y `glow` al 45 %, más un halo radial de `glow` al 22 %.
+- Cada capa es un `Path` cerrado de 8 puntos con curvas cúbicas (Catmull-Rom). El radio de cada punto oscila con senos de fases distintas, ±5.5 %.
+- Periodos de 7 s (capa de `primary`) y 5.5 s (capa de `glow`); esta última rota entre 40° y 70°.
+- Mezcla: Multiply en claro y Screen en oscuro, porque multiplicar sobre un fondo casi negro haría desaparecer las capas.
+- Colores solo por token: `background`, `primary`, `glow`, `onPrimary`.
 
-### Tokens Motion nuevos
+### Tiempos y curvas: `BreathSplashSpec`
 
-| Token | Tipo | Valores Compose | Uso |
-|---|---|---|---|
-| `Motion.splashBreath` | spring | `dampingRatio = 0.8f, stiffness = 200f` | Oscilación inicial del blob (2 ciclos) |
-| `Motion.splashDeep` | tween | `durationMillis = 1000, easing = EaseOutCubic` | Expansión radial (bocanada profunda) |
-| `Motion.splashRelease` | tween | `durationMillis = 500, easing = FastOutSlowInEasing` * | Cubrimiento de pantalla |
-| `Motion.splashText` | tween | `durationMillis = 300, easing = Linear` | Aparición del texto (fundido) |
-| `Motion.splashHold` | lineal | `tween(1000, easing = LinearEasing)` | Pausa final con el texto visible (solo en la versión completa) |
-| `Motion.splashExit` | tween | `durationMillis = 200, easing = Linear` | Crossfade hacia la pantalla principal |
-| `Motion.splashPhase` | lineal | `tween(6000, easing = LinearEasing)`, infinito | Fase interna del borde del blob (ver nota técnica) |
+Todas las duraciones, curvas y medidas viven en el objeto `BreathSplashSpec` (`presentation/splash`). Es la **única excepción** a "todo movimiento sale de `Motion`": las curvas `CubicBezier` son propias de esta pantalla, y los `tween` no aparecen en ningún otro archivo del splash. Cambiar un tiempo es cambiar una constante de ese objeto; `BreathSplashSpecTest` comprueba que las fases suman 16 s.
 
-\* La tabla original decía `Linear`; se implementó con `FastOutSlowInEasing` por indicación del Director, para que el cubrimiento arranque y termine suave.
+La fase del borde de cada capa es un `tween` lineal infinito. Con frecuencias enteras de seno, gira una vuelta completa sin salto al reiniciar.
 
-### Versiones y duración
+### Reducir movimiento (1.5 s)
 
-La duración sale de sumar los tokens (`SplashTimeline`, con test), no de cronometrar el teléfono.
+Con `ANIMATOR_DURATION_SCALE = 0` no hay movimiento: la forma aparece quieta con un fundido de 150 ms, hay una pausa de 450 ms, el color `primary` cubre y el título entra (150 ms, sin subida), una pausa de 600 ms y el overlay se funde en 150 ms.
 
-| Versión | Cuándo | Pasos | Duración |
-|---|---|---|---|
-| Completa | Onboarding sin completar (primera ejecución o tras "Reiniciar app") | 2 respiraciones (4 tramos de 1000 ms) + bocanada 1000 + tensión 150 + liberación 500 + texto 300 + pausa 1000 + salida 200 | **7.15 s** (6.15 s sin la pausa opcional) |
-| Abreviada | Onboarding ya completado | liberación 500 + texto 300 + salida 200 | **1.0 s** |
-| Reducir movimiento | `ANIMATOR_DURATION_SCALE = 0` | cubrimiento 150 + texto 150 + pausa 750 + salida 150 | **1.2 s** |
+### Accesibilidad
 
-Cada tramo de respiración es un spring `splashBreath` (1.0 ⇄ 1.2) seguido de una pausa que lo completa a 1000 ms. La pausa de tensión de 150 ms entre la bocanada y la liberación no está en la coreografía original.
-
-Un toque en cualquier momento salta directo a la salida (200 ms, 150 ms con reducir movimiento). El overlay se lleva los toques mientras dura y expone `app_name` como descripción de accesibilidad.
-
-### Variante de reducir movimiento
-
-Si el sistema tiene `ANIMATOR_DURATION_SCALE = 0`, la animación se reduce a **1.2 s**: no hay blob. El color `primary` cubre la pantalla con un fundido de 150 ms, aparece el texto, hay una pausa de 750 ms y todo se funde.
-
-### Nota técnica
-
-La oscilación del borde del blob utiliza una **fase lineal interna** como única excepción documentada a la regla de easing del design system. Esto mantiene la ilusión de respiración continua mientras otros elementos siguen la curva de timing general.
+- El contenedor tiene `contentDescription` "SegundoAire cargando".
+- Un toque salta a la fase 6; el overlay se lleva los toques mientras dura.
+- Si la actividad se recrea con el splash a medias (rotación), se da por terminado en vez de reiniciarlo.
 
 ---
 
@@ -264,7 +294,7 @@ La oscilación del borde del blob utiliza una **fase lineal interna** como únic
 - Trazo 1.75 sobre rejilla de 24 dp, extremos y uniones redondeados: `Icons.Rounded.*` / Material Symbols Rounded (peso 400, grado 0). Importar solo los vectores usados, no `material-icons-extended` completo.
 - `play` y `stop` son los únicos íconos rellenos.
 - Íconos de app de ejemplo: formas geométricas sobre `app1…5`. Nunca logos reales.
-- Botones de proveedor: íconos genéricos (globo, dispositivo, sobre) hasta producción, donde se usan los recursos oficiales según las guías de cada marca.
+- Botones de proveedor: íconos genéricos (globo, dispositivo, sobre) hasta producción, donde se usan los recursos oficiales según las guías de cada marca. Excepción: en el login del onboarding (§13) el de Google lleva la "G" de cuatro colores (`GoogleLogoColors`, iguales en claro y oscuro) y el de Apple la manzana en `onBackground`; el del correo conserva el sobre.
 
 ## 11. Accesibilidad
 
@@ -276,3 +306,48 @@ La oscilación del borde del blob utiliza una **fase lineal interna** como únic
 ## 12. Componentes de referencia
 
 Inventario a implementar en la Fase 10 (detalle visual en el design system): PrimaryButton (morph Iniciar ↔ Terminar), SecondaryButton, TextButton, ProviderButton, GlassCard (3 niveles), AppToggleRow, SegmentedSelector, RigorSelector, TimerRing, GlassTextField, ChoiceChip, RangeSelector, AnimatedCounter, BreathingCircle, HoldToCommitButton, RevealText, PermissionBanner, EmptyState, Skeleton, BottomNavBar (4 tabs), QuestionScaffold, GlassWall (Mindful / Strict).
+
+## 13. Onboarding "Lo que crece cuando pausas"
+
+Un solo `OnboardingFlow` de 14 pasos sobre un marco de diseño de 390 × 844 dp (la pantalla cambia la densidad del marco para ajustar la columna a la zona segura —barras del sistema y muesca—; el fondo llega a los cuatro bordes). Un árbol dibujado en un solo `Canvas`, con las coordenadas del SVG del prototipo, crece con cada respuesta: la semilla, el brote y la copa en la bienvenida; una hoja por letra del nombre (máx. 10); una flor por meta (máx. 2); el follaje que se dora según las horas de uso; las raíces con el compromiso. El paso vive en el ViewModel y el botón atrás del sistema retrocede un paso.
+
+| # | Paso | Árbol / escena |
+|---|---|---|
+| 0–2 | Bienvenida (semilla, brote, copa) | Escala 1.55, opacidad 0.75, suelo en y = 470 |
+| 3 | Nombre | Una hoja por letra |
+| 4 | Objetivo (máx. 2) | Una flor por meta; la tercera sacude la opción |
+| 5 | Uso diario | Selector en rama con hoja-pulgar; marchitado 0 / 2 / 5 / 8 / 12 |
+| 6 | Momento | Luz del suelo; luciérnagas en noche y madrugada |
+| 7 | Revelación | Anillos, contador 1,8 s, fórmula 1,9 s, buena noticia 2,6 s (`h × 365 × 50 ÷ 8.760`) |
+| 8 | Respiración | La copa de 0.62 a 1 en 8 s, tres ciclos; "Saltar" → "Continuar" a los 24 s |
+| 9 | Plan | Vidrio con cuatro filas cada 90 ms |
+| 10 | Compromiso | Mantener 1,5 s; al soltar se vacía en 300 ms; florece todo y avanza a los 1,6 s |
+| 11 | Permisos | Accesibilidad y mostrar sobre otras apps (requeridos) y notificaciones (opcional) |
+| 12 | Login | Telón `secondaryDeep` que baja en 900 ms y se retira a 270 dp; botón → círculo de 52 dp |
+| 13 | Cierre | El telón cubre todo: "Todo listo, {nombre}." |
+
+La barra de progreso es una enredadera que se dibuja de (paso − 2) / 9 en los pasos 3–11.
+
+### Sonido y háptica
+
+`SoundManager` sintetiza los sonidos (`SoundSynth`, sin archivos de audio) y los reproduce como sonificación: respeta el volumen y el modo silencio del teléfono. Interruptor de sonido arriba a la derecha, encendido por defecto. Volumen bajo (`MasterGain`).
+
+| Evento | Sonido | Háptica |
+|---|---|---|
+| Avanzar de paso | Viento (pasa-banda 400 → 900 Hz, 1,2 s) y dos notas (Do5, Sol5) | `ContextClick` |
+| Elegir meta (florece) | Arpegio Mi5, Sol5, Si5 | `Confirm` |
+| Quitar meta, elegir horas, marcas del 33 % y 66 % | **Gota** (620 → 470 Hz en 320 ms y armónico 1240 → 940 Hz) | `TextHandleMove` |
+| Elegir momento, activar permiso | Pop (740 → 1180 Hz, 140 ms) | `ContextClick` / `Confirm` |
+| Completar el compromiso y cerrar el login | Acorde abierto (Sol4, Si4, Re5, Sol5) | `LongPress` y patrón 30 / 40 / 60 ms |
+| Tercera meta no permitida | Tono grave (220 → 180 Hz) | `Reject` |
+| Escribir el nombre | **Sin sonido** | `TextHandleMove` por letra |
+
+El "tick" agudo del prototipo (1300 Hz, 50 ms) no existe en la app: la gota lo reemplaza en todos los lugares.
+
+### Notas de diseño
+
+- Fondo: el prototipo usa `0xFFDAF1DE`; la app usa `background` (`0xFFEAF4EC`), el fondo vigente tras la Fase 16.5.
+- El marco ocupa toda la ventana, también bajo las barras del sistema: el cielo, la colina y el telón se dibujan a pantalla completa (sin franjas a los lados) y solo el contenido con coordenadas del prototipo va en la columna de 390 × 844 dp, centrada en la zona segura. Los íconos de la barra de estado pasan a claros mientras el telón la cubre. El lienzo del árbol lleva márgenes arriba y abajo: las raíces bajan del área y la capa semitransparente las recortaba.
+- Cada arranque reproduce primero el splash BreathSplash (§9) sobre el flujo; un toque lo salta, sin texto.
+- Los permisos requeridos bloquean "Continuar". Mientras estén pendientes el Panel mostraría su banner; hoy el paso no ofrece "Hacerlo después".
+- Correspondencia con el perfil: "Pasar menos tiempo en redes" → `Goal.FREE_TIME`; Mañana → `WAKING_UP`, Tarde → `STUDY_OR_WORK`, Noche → `BEFORE_SLEEP`, Madrugada → `BORED`.

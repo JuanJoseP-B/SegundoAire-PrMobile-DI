@@ -1,8 +1,11 @@
 package com.segundoaire.presentation.designsystem.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
@@ -26,6 +29,33 @@ data class SegundoAireTypography(
     // labelSm en mayúsculas completas (eyebrows) abre el tracking a 0.08 em
     val labelSmCaps: TextStyle
         get() = labelSm.copy(letterSpacing = 0.08.em)
+
+    /**
+     * Título serif del onboarding (Fraunces, DESIGN_SYSTEM.md §4.1): 34 / 40 sp, peso 500,
+     * -0.015 em. La palabra clave va en [serifEmphasis].
+     */
+    val serifTitle: TextStyle
+        get() = serif(size = 34, lineHeight = 40, tracking = (-0.015).em)
+
+    /** Palabra clave de un título serif: cursiva, peso 400. El color lo pone quien la usa. */
+    val serifEmphasis: SpanStyle
+        get() = SpanStyle(fontFamily = FrauncesFontFamily, fontStyle = FontStyle.Italic, fontWeight = FontWeight.W400)
+
+    /** Fraunces a la medida para cifras grandes y frases del onboarding. */
+    fun serif(
+        size: Int,
+        lineHeight: Int,
+        weight: FontWeight = FontWeight.W500,
+        italic: Boolean = false,
+        tracking: TextUnit = 0.em
+    ): TextStyle = TextStyle(
+        fontFamily = FrauncesFontFamily,
+        fontWeight = weight,
+        fontStyle = if (italic) FontStyle.Italic else FontStyle.Normal,
+        fontSize = size.sp,
+        lineHeight = lineHeight.sp,
+        letterSpacing = tracking
+    )
 }
 
 val DefaultSegundoAireTypography = SegundoAireTypography(

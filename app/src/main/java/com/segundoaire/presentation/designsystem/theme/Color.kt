@@ -45,7 +45,16 @@ data class SegundoAireColors(
     val app2: Color,
     val app3: Color,
     val app4: Color,
-    val app5: Color
+    val app5: Color,
+    // Árbol del onboarding: follaje marchito, pétalos y luciérnagas
+    val gold: Color,
+    val blossom: Color,
+    val firefly: Color,
+    // Luz del suelo según el momento del día (ya con su opacidad)
+    val skyMorning: Color,
+    val skyAfternoon: Color,
+    val skyNight: Color,
+    val skyLate: Color
 )
 
 // Claro (predeterminado)
@@ -87,7 +96,14 @@ val LightSegundoAireColors = SegundoAireColors(
     app2 = Color(0xFF6B8FC9),
     app3 = Color(0xFFB58BC9),
     app4 = Color(0xFFC9B26B),
-    app5 = Color(0xFF6BC9B5)
+    app5 = Color(0xFF6BC9B5),
+    gold = Color(0xFFC9B26B),
+    blossom = Color(0xFFDAF1DE),
+    firefly = Color(0xFFE6F5B0),
+    skyMorning = Color(0x73FFC496),
+    skyAfternoon = Color(0x73FFF6BE),
+    skyNight = Color(0xBF0E1640),
+    skyLate = Color(0x9E0D1F23)
 )
 
 val DarkSegundoAireColors = SegundoAireColors(
@@ -128,5 +144,23 @@ val DarkSegundoAireColors = SegundoAireColors(
     app2 = Color(0xFF5F7DB0),
     app3 = Color(0xFF9C7AB0),
     app4 = Color(0xFFB09B5F),
-    app5 = Color(0xFF5FB09E)
+    app5 = Color(0xFF5FB09E),
+    gold = Color(0xFFB09B5F),
+    blossom = Color(0xFFD0E8D6),
+    firefly = Color(0xFFE6F5B0),
+    skyMorning = Color(0x73FFC496),
+    skyAfternoon = Color(0x73FFF6BE),
+    skyNight = Color(0xBF050A24),
+    skyLate = Color(0x9E040C0E)
 )
+
+/**
+ * Colores de la marca Google para su logotipo en el botón de proveedor. No cambian con el
+ * tema: las guías de la marca exigen sus cuatro colores en claro y en oscuro.
+ */
+object GoogleLogoColors {
+    val Red = Color(0xFFEA4335)
+    val Blue = Color(0xFF4285F4)
+    val Yellow = Color(0xFFFBBC05)
+    val Green = Color(0xFF34A853)
+}

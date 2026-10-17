@@ -23,4 +23,14 @@ class StaggerInTest {
     @Test
     fun `un indice negativo no adelanta la entrada`() =
         assertEquals(0, staggerDelayMillis(index = -3, reduced = false))
+
+    @Test
+    fun `el paso se puede cambiar - la bienvenida usa 120 ms`() {
+        assertEquals(120, staggerDelayMillis(index = 1, reduced = false, stepMillis = 120))
+        assertEquals(240, staggerDelayMillis(index = 2, reduced = false, stepMillis = 120))
+    }
+
+    @Test
+    fun `con reducir movimiento el paso tampoco espera`() =
+        assertEquals(0, staggerDelayMillis(index = 2, reduced = true, stepMillis = 120))
 }

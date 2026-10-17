@@ -19,15 +19,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.segundoaire.domain.model.StartDestination
-import com.segundoaire.presentation.auth.AuthGraphRoute
-import com.segundoaire.presentation.auth.authGraph
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogAvailable
 import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.main.MainShell
 import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
-import com.segundoaire.presentation.onboarding.onboardingGraph
+import com.segundoaire.presentation.onboarding.OnboardingAccountRoute
+import com.segundoaire.presentation.onboarding.OnboardingRoute
+import com.segundoaire.presentation.onboarding.OnboardingStep
 import com.segundoaire.presentation.setup.AppSelectionRoute
 import com.segundoaire.presentation.setup.SetupGraphRoute
 import com.segundoaire.presentation.setup.setupGraph
@@ -41,13 +41,13 @@ object Routes {
 
 private fun StartDestination.route(): String = when (this) {
     StartDestination.ONBOARDING -> OnboardingGraphRoute
-    StartDestination.ACCOUNT -> AuthGraphRoute
+    StartDestination.ACCOUNT -> OnboardingAccountRoute
     StartDestination.SETUP -> SetupGraphRoute
     StartDestination.MAIN -> Routes.HOME
 }
 
 /**
- * Navegación raíz: onboarding → cuenta → permisos → apps → principal.
+ * Navegación raíz: onboarding (con cuenta y permisos dentro) → apps → principal.
  *
  * Se entra por el primer paso que falta (ver [StartDestination]), y cada flujo
  * al terminar se quita de la pila con `popUpTo` inclusivo: desde el Panel,
@@ -80,28 +80,19 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
         popEnterTransition = { fadeIn(motion.nav()) },
         popExitTransition = { fadeOut(motion.nav()) }
     ) {
-        onboardingGraph(
-            navController = navController,
-            motion = motion,
-            stepOffsetPx = stepOffsetPx,
-            forward = forward,
-            onCompleted = {
-                navController.navigate(AuthGraphRoute) {
-                    popUpTo(OnboardingGraphRoute) { inclusive = true }
-                }
+        // Onboarding "Lo que crece cuando pausas": permisos, cuenta y cierre van dentro del flujo
+        val finishOnboarding: () -> Unit = {
+            navController.navigate(SetupGraphRoute) {
+                popUpTo(navController.graph.id) { inclusive = true }
             }
-        )
-        authGraph(
-            navController = navController,
-            motion = motion,
-            stepOffsetPx = stepOffsetPx,
-            forward = forward,
-            onCompleted = {
-                navController.navigate(SetupGraphRoute) {
-                    popUpTo(AuthGraphRoute) { inclusive = true }
-                }
-            }
-        )
+        }
+        composable(OnboardingGraphRoute) {
+            OnboardingRoute(onFinished = finishOnboarding)
+        }
+        // Onboarding completo pero sin cuenta: entra directo al login
+        composable(OnboardingAccountRoute) {
+            OnboardingRoute(onFinished = finishOnboarding, startStep = OnboardingStep.Login)
+        }
         setupGraph(
             navController = navController,
             motion = motion,
