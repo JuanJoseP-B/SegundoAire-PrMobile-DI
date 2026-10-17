@@ -18,6 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -44,6 +50,7 @@ val chipTextStyle: TextStyle
  * Chip de acción de la app principal: píldora de vidrio con borde de luz o, con
  * [solid], relleno `primary`. 40 dp visibles dentro de un área táctil de 48 dp,
  * con squish y anillo de foco. Sin [onClick] es solo una etiqueta (las metas del Perfil).
+ * Con [dashed] el borde es punteado; [leading] pone un ícono propio antes del texto.
  */
 @Composable
 fun ActionChip(
@@ -52,13 +59,31 @@ fun ActionChip(
     onClick: (() -> Unit)? = null,
     solid: Boolean = false,
     leadingIcon: ImageVector? = null,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    dashed: Boolean = false,
+    leading: (@Composable () -> Unit)? = null
 ) {
     val colors = SegundoAireTheme.colors
     val shape = CircleShape
     val source = remember { MutableInteractionSource() }
     val content = if (solid) colors.onPrimary else colors.onBackground
-    val surface = if (solid) Modifier.background(colors.primary, shape) else Modifier.glass(GlassLevel.Level2, shape)
+    val surface = when {
+        solid -> Modifier.background(colors.primary, shape)
+        // "Editar" de las metas: borde punteado sobre el vidrio
+        dashed -> Modifier
+            .glass(GlassLevel.Level2, shape)
+            .drawBehind {
+                val stroke = 1.dp.toPx()
+                drawRoundRect(
+                    color = colors.onBackgroundMuted,
+                    topLeft = Offset(stroke / 2, stroke / 2),
+                    size = Size(size.width - stroke, size.height - stroke),
+                    cornerRadius = CornerRadius(size.height / 2),
+                    style = Stroke(stroke, pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 3.dp.toPx())))
+                )
+            }
+        else -> Modifier.glass(GlassLevel.Level2, shape)
+    }
     val clickable = if (onClick != null) {
         Modifier
             .pressScale(source, enabled)
@@ -90,6 +115,10 @@ fun ActionChip(
         ) {
             if (leadingIcon != null) {
                 Icon(leadingIcon, contentDescription = null, tint = content, modifier = Modifier.size(ChipIconSize))
+                Spacer(Modifier.width(6.dp))
+            }
+            if (leading != null) {
+                leading()
                 Spacer(Modifier.width(6.dp))
             }
             Text(text = text, style = chipTextStyle, color = content)

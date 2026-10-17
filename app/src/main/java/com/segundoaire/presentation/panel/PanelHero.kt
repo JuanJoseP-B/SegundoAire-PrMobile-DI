@@ -62,7 +62,8 @@ private val HeroHeight = 300.dp
 private const val FrameWidth = 390f
 private const val TreeScale = 0.5f
 private val TreeBase = Offset(195f, 256f)
-private const val HillPath = "M-10 262 C70 240 140 256 195 252 C255 248 320 232 400 256 L400 300 L-10 300 Z"
+/** Colina del héroe en el marco de 390 × 300; también la usa la imagen para compartir. */
+internal const val HillPath = "M-10 262 C70 240 140 256 195 252 C255 248 320 232 400 256 L400 300 L-10 300 Z"
 
 // Luz radial: elipse de 120 % × 90 % centrada en (70 %, 0), transparente al 70 %
 private const val SkyCenterX = 0.7f

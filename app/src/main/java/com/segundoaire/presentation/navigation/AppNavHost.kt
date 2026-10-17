@@ -28,6 +28,7 @@ import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
 import com.segundoaire.presentation.onboarding.OnboardingAccountRoute
 import com.segundoaire.presentation.onboarding.OnboardingRoute
 import com.segundoaire.presentation.onboarding.OnboardingStep
+import com.segundoaire.presentation.profile.AccountSettingsRoute
 import com.segundoaire.presentation.setup.AppSelectionRoute
 import com.segundoaire.presentation.setup.SetupGraphRoute
 import com.segundoaire.presentation.setup.setupGraph
@@ -37,6 +38,7 @@ object Routes {
     const val HOME = "home"
     const val EDIT_APPS = "home/edit-apps"
     const val TUTORIAL = "home/tutorial"
+    const val ACCOUNT = "home/account"
 }
 
 private fun StartDestination.route(): String = when (this) {
@@ -107,13 +109,7 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
         composable(Routes.HOME) {
             MainShell(
                 onEditApps = { navController.navigate(Routes.EDIT_APPS) },
-                onOpenTutorial = { navController.navigate(Routes.TUTORIAL) },
-                // La app quedó como recién instalada: bienvenida y nada detrás, ni siquiera el Panel
-                onResetCompleted = {
-                    navController.navigate(OnboardingGraphRoute) {
-                        popUpTo(navController.graph.id) { inclusive = true }
-                    }
-                },
+                onOpenAccount = { navController.navigate(Routes.ACCOUNT) },
                 // Solo en debug: pulsación larga en el título del Panel
                 onOpenComponentCatalog = if (ComponentCatalogAvailable) {
                     { navController.navigate(ComponentCatalogRoute) }
@@ -130,8 +126,21 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
                 onBack = { navController.popBackStack() }
             )
         }
+        composable(Routes.ACCOUNT) {
+            // "Cuenta" del Perfil: tema, idioma, modo demo, tutorial y reiniciar
+            AccountSettingsRoute(
+                onBack = { navController.popBackStack() },
+                onOpenTutorial = { navController.navigate(Routes.TUTORIAL) },
+                // La app quedó como recién instalada: bienvenida y nada detrás, ni siquiera el Panel
+                onResetCompleted = {
+                    navController.navigate(OnboardingGraphRoute) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                }
+            )
+        }
         composable(Routes.TUTORIAL) {
-            // Solo se abre desde Ajustes; terminar o volver regresa a ellos
+            // Solo se abre desde Cuenta; terminar o volver regresa a ella
             TutorialScreen(
                 onDone = { navController.popBackStack() },
                 onBack = { navController.popBackStack() }

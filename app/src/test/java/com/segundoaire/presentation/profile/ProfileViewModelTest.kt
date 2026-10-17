@@ -2,12 +2,24 @@ package com.segundoaire.presentation.profile
 
 import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.Goal
+import com.segundoaire.domain.model.RigorLevel
+import com.segundoaire.domain.model.TreeState
 import com.segundoaire.domain.model.UsageRange
 import com.segundoaire.domain.model.UserProfile
+import com.segundoaire.domain.usecase.CheckAccessibilityEnabledUseCase
+import com.segundoaire.domain.usecase.CheckOverlayPermissionUseCase
 import com.segundoaire.domain.usecase.GetUserProfileUseCase
+import com.segundoaire.domain.usecase.MinutosPorDiaUseCase
 import com.segundoaire.domain.usecase.SaveUserProfileUseCase
 import com.segundoaire.presentation.onboarding.NameError
+import com.segundoaire.presentation.panel.MissingPermission
+import com.segundoaire.testing.FakeAccessibilityStatusRepository
+import com.segundoaire.testing.FakeBlockSessionRepository
+import com.segundoaire.testing.FakeOverlayPermissionRepository
+import com.segundoaire.testing.FakeTreeRepository
+import com.segundoaire.testing.FakeUserPreferencesRepository
 import com.segundoaire.testing.FakeUserProfileRepository
+import com.segundoaire.testing.MutableClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -21,6 +33,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import java.time.Instant
+import java.time.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileViewModelTest {
@@ -34,9 +48,22 @@ class ProfileViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
+    private val clock = MutableClock(Instant.parse("2026-10-16T10:00:00Z"))
+    private val trees = FakeTreeRepository()
+    private val preferences = FakeUserPreferencesRepository()
+    private val sessions = FakeBlockSessionRepository()
+    private val accessibility = FakeAccessibilityStatusRepository(enabled = true)
+    private val overlay = FakeOverlayPermissionRepository(granted = true)
+
     private fun viewModel() = ProfileViewModel(
         GetUserProfileUseCase(repository),
-        SaveUserProfileUseCase(repository)
+        SaveUserProfileUseCase(repository),
+        trees,
+        preferences,
+        MinutosPorDiaUseCase(sessions, clock),
+        CheckOverlayPermissionUseCase(overlay),
+        CheckAccessibilityEnabledUseCase(accessibility),
+        clock
     )
 
     // El perfil con el que ya salió del onboarding y del setup
@@ -256,5 +283,64 @@ class ProfileViewModelTest {
         assertEquals("Luis", state.name)
         assertEquals(listOf(Goal.FREE_TIME), state.goals)
         assertFalse(state.hasChanges)
+    }
+
+    // --- Árbol, plan y modo, sonido y permisos ---
+
+    @Test
+    fun `muestra el arbol y el nombre guardado`() = runTest(dispatcher) {
+        seedProfile()
+        trees.tree.value = TreeState(goals = listOf(Goal.SLEEP), plantedAt = LocalDate.of(2026, 10, 1))
+        val state = viewModel().uiState.value
+
+        assertEquals("Ana", state.savedName)
+        assertEquals(LocalDate.of(2026, 10, 1), state.tree.plantedAt)
+    }
+
+    @Test
+    fun `plan y modo guarda el rigor sin tocar el resto del perfil`() = runTest(dispatcher) {
+        seedProfile()
+        val viewModel = viewModel()
+
+        viewModel.onRigorChange(RigorLevel.STRICT)
+
+        assertEquals(RigorLevel.STRICT, repository.saved?.suggestedRigor)
+        assertEquals("Ana", repository.saved?.name)
+        assertEquals(RigorLevel.STRICT, viewModel.uiState.value.rigor)
+    }
+
+    @Test
+    fun `sonidos y vibracion se guarda en las preferencias`() = runTest(dispatcher) {
+        val viewModel = viewModel()
+        assertTrue(viewModel.uiState.value.soundEnabled)
+
+        viewModel.onSoundChange(false)
+
+        assertFalse(preferences.sound.value)
+        assertFalse(viewModel.uiState.value.soundEnabled)
+    }
+
+    @Test
+    fun `los permisos se releen al volver`() = runTest(dispatcher) {
+        accessibility.enabled = false
+        val viewModel = viewModel()
+        assertEquals(MissingPermission.ACCESSIBILITY, viewModel.uiState.value.missingPermission)
+
+        accessibility.enabled = true
+        viewModel.onResume()
+
+        assertEquals(null, viewModel.uiState.value.missingPermission)
+    }
+
+    @Test
+    fun `abrir la edicion parte de lo guardado`() = runTest(dispatcher) {
+        seedProfile()
+        val viewModel = viewModel()
+        viewModel.onNameChange("Otro")
+
+        viewModel.onEditStart()
+
+        assertEquals("Ana", viewModel.uiState.value.name)
+        assertFalse(viewModel.uiState.value.hasChanges)
     }
 }

@@ -3,6 +3,7 @@ package com.segundoaire.presentation.profile
 import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.usecase.GetAppLanguageUseCase
+import com.segundoaire.domain.usecase.GetUserProfileUseCase
 import com.segundoaire.domain.usecase.ObserveDemoModeUseCase
 import com.segundoaire.domain.usecase.ObserveThemeModeUseCase
 import com.segundoaire.domain.usecase.ResetAppUseCase
@@ -13,6 +14,7 @@ import com.segundoaire.testing.FakeAppLanguageRepository
 import com.segundoaire.testing.FakeAppResetRepository
 import com.segundoaire.testing.FakeBlockRepository
 import com.segundoaire.testing.FakeUserPreferencesRepository
+import com.segundoaire.testing.FakeUserProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -22,11 +24,11 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.time.Clock
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
@@ -52,7 +54,8 @@ class SettingsViewModelTest {
         SetThemeModeUseCase(prefs),
         ObserveDemoModeUseCase(prefs),
         SetDemoModeUseCase(prefs),
-        ResetAppUseCase(appReset, blocks, languages)
+        ResetAppUseCase(appReset, blocks, languages),
+        GetUserProfileUseCase(FakeUserProfileRepository())
     )
 
     @Test

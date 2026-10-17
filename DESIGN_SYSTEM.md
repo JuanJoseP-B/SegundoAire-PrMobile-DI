@@ -446,3 +446,11 @@ Pantalla completa sobre el contenedor, siempre oscura (`FocusColors`) y con íco
 - Título del día en Fraunces 22 ("Jue 15 · 52 min" u "Hoy · 47 min") y debajo "Día de flor: cumpliste tu meta" o "Un anillo fino también es crecimiento".
 - Semana de lunes a domingo en vidrio: siete tallos de 6 dp (10 dp el elegido, en `glow`) cuya altura es 96 dp por hora más 6 (tope de una hora) y crece con `Motion.toggle`; una flor de 16 dp si se cumplió la meta; los días que no llegan llevan borde punteado al 50 % y no se pueden elegir.
 - Cuatro tarjetas: recuperados esta semana, aperturas evitadas (todas las intercepciones, como en el Panel), mejor racha de todo el historial y la hora con más intercepciones de los últimos 7 días. Con el modo demo, un chip "Datos de ejemplo".
+
+### Perfil
+
+- Avatar de 72 dp con un árbol pequeño, el nombre en Fraunces 30 / 36 y "Plantado el {fecha}" (formato medio del idioma).
+- "Tus metas" en chips con su ícono y "Editar" con borde punteado: abre una hoja inferior con el nombre, las metas y "Guardar" (se cierra al guardar).
+- Ajustes en vidrio, filas de 56 dp con divisores `outlineVariant`: "Plan y modo" (hoja con Mindful / Strict: el rigor con el que arrancan los bloques), "Sonidos y vibración" (interruptor guardado en DataStore que sigue el `SoundManager`), "Permisos" ("Activos" en `success` o "Pendientes" en `warning`; abre el ajuste del que falta) y "Cuenta" (subpantalla con la cuenta simulada, idioma, tema, tutorial, modo demo y reiniciar). No hay fila de recordatorios.
+- "Compartir mi árbol": imagen de 1080 × 1500 con el árbol sobre su colina y el corte del tronco, sin nombre ni datos personales, entregada con `ACTION_SEND` a través de un `FileProvider` (solo la carpeta `cache/shared`).
+

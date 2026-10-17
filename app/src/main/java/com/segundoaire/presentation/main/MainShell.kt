@@ -44,17 +44,15 @@ import com.segundoaire.presentation.profile.ProfileRoute
 import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
- * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
- * [onEditApps] abre la selección de apps desde Bloques y [onOpenTutorial] el
- * tutorial desde Ajustes. [onResetCompleted] vuelve a la bienvenida tras reiniciar
- * la app. [onOpenComponentCatalog]
- * solo se pasa en debug (pulsación larga en el saludo del Panel).
+ * Contenedor principal: las cuatro pestañas, la barra inferior flotante, el modo
+ * enfoque y los avisos breves. [onEditApps] abre la selección de apps desde Bloques y
+ * [onOpenAccount] la subpantalla Cuenta del Perfil. [onOpenComponentCatalog] solo se
+ * pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
 fun MainShell(
     onEditApps: () -> Unit,
-    onOpenTutorial: () -> Unit,
-    onResetCompleted: () -> Unit,
+    onOpenAccount: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenComponentCatalog: (() -> Unit)? = null,
     viewModel: MainShellViewModel = hiltViewModel()
@@ -104,9 +102,9 @@ fun MainShell(
             )
             MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
             MainTab.PROFILE -> ProfileRoute(
-                contentPadding = contentPadding,
-                onOpenTutorial = onOpenTutorial,
-                onResetCompleted = onResetCompleted
+                onOpenAccount = onOpenAccount,
+                onToast = viewModel::showToast,
+                contentPadding = contentPadding
             )
         }
     }

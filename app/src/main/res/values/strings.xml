@@ -192,7 +192,6 @@
     <string name="progress_demo_chip">Sample data</string>
     <string name="profile_goals_title">Your goals</string>
     <string name="profile_goals_subtitle">Pick up to %1$d. The first one you pick is your main goal.</string>
-    <string name="profile_title">Profile</string>
     <string name="profile_account_title">Your account</string>
     <string name="profile_account_google">Google</string>
     <string name="profile_account_apple">Apple</string>
@@ -507,4 +506,24 @@
     </plurals>
     <string name="progress_stat_hardest">your hardest hour</string>
     <string name="progress_stat_no_data" translatable="false">—</string>
+
+    <!-- Main app · Profile (Phase 17) -->
+    <string name="profile_planted">Planted on %1$s</string>
+    <string name="profile_goals_eyebrow">Your goals</string>
+    <string name="profile_goals_edit">Edit</string>
+    <string name="profile_goals_edit_description">Edit your name and goals</string>
+    <string name="profile_row_plan">Plan and mode</string>
+    <string name="profile_row_sound">Sounds and vibration</string>
+    <string name="profile_row_permissions">Permissions</string>
+    <string name="profile_permissions_ok">Active</string>
+    <string name="profile_permissions_missing">Pending</string>
+    <string name="profile_row_account">Account</string>
+    <string name="profile_share">Share my tree</string>
+    <string name="profile_share_chooser">Share your tree</string>
+    <string name="profile_share_text">My SegundoAire tree grows with every pause.</string>
+    <string name="profile_share_failed">The image couldn\'t be prepared. Try again.</string>
+    <string name="profile_edit_title">Your name and goals</string>
+    <string name="profile_plan_body">This is how your new blocks start. You can change it on each block.</string>
+    <string name="profile_plan_done">Done</string>
+    <string name="account_title">Account</string>
 </resources>
