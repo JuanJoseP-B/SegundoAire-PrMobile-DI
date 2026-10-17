@@ -4,6 +4,7 @@ import com.segundoaire.data.local.dao.InterceptionEventDao
 import com.segundoaire.data.local.entity.InterceptionEventEntity
 import com.segundoaire.data.local.mapper.InterceptionEventMapper
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
@@ -38,6 +39,9 @@ class InterceptionEventRepositoryImpl @Inject constructor(
 
     override suspend fun setResult(id: Long, result: InterceptionResult) =
         dao.setResult(id, result.name)
+
+    override suspend fun setIntent(id: Long, intent: InterceptionIntent) =
+        dao.setIntent(id, intent.name)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeSince(fromMillis: Long): Flow<List<InterceptionEvent>> =

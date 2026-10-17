@@ -8,13 +8,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * La migración 1→2 contra los esquemas exportados en `app/schemas`. Usa su propia
- * base de prueba: no toca la de la app.
+ * Las migraciones 1→2 y 2→3 contra los esquemas exportados en `app/schemas`. Usa su
+ * propia base de prueba: no toca la de la app.
  */
 @RunWith(AndroidJUnit4::class)
 class MigrationTest {
@@ -83,6 +84,41 @@ class MigrationTest {
     }
 
     @Test
+    fun migrar_de_2_a_3_conserva_el_historial_y_agrega_uso_e_intencion() {
+        helper.createDatabase(TEST_DB, 2).use { db ->
+            db.execSQL(
+                "INSERT INTO interception_events (package_name, timestamp_millis, result) " +
+                    "VALUES ('com.instagram.android', 1000, 'VOLVIO')"
+            )
+        }
+
+        // Valida que el resultado coincide exactamente con schemas/3.json
+        helper.runMigrationsAndValidate(TEST_DB, 3, true, MIGRATION_2_3).use { db ->
+            // La intercepción vieja sigue ahí, sin intención
+            db.query("SELECT result, intent FROM interception_events").use { cursor ->
+                assertEquals(1, cursor.count)
+                cursor.moveToFirst()
+                assertEquals("VOLVIO", cursor.getString(0))
+                assertTrue(cursor.isNull(1))
+            }
+            db.execSQL("UPDATE interception_events SET intent = 'BORED' WHERE id = 1")
+            db.query("SELECT intent FROM interception_events").use { cursor ->
+                cursor.moveToFirst()
+                assertEquals("BORED", cursor.getString(0))
+            }
+
+            db.execSQL(
+                "INSERT INTO app_usage_sessions (package_name, started_at, ended_at) " +
+                    "VALUES ('com.instagram.android', 1000, 61000)"
+            )
+            db.query("SELECT ended_at - started_at FROM app_usage_sessions").use { cursor ->
+                cursor.moveToFirst()
+                assertEquals(60_000L, cursor.getLong(0))
+            }
+        }
+    }
+
+    @Test
     fun room_abre_la_base_migrada_sin_rehacerla() {
         helper.createDatabase(TEST_DB, 1).use { db ->
             db.execSQL(
@@ -93,14 +129,14 @@ class MigrationTest {
 
         // Sin fallbackToDestructiveMigration: si la migración no cuadra, Room falla aquí
         val database = Room.databaseBuilder(context, AppDatabase::class.java, TEST_DB)
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .build()
         try {
             database.openHelper.writableDatabase.query("SELECT COUNT(*) FROM blocked_apps").use { cursor ->
                 cursor.moveToFirst()
                 assertEquals(1, cursor.getInt(0))
             }
-            assertEquals(2, database.openHelper.readableDatabase.version)
+            assertEquals(3, database.openHelper.readableDatabase.version)
         } finally {
             database.close()
         }

@@ -15,6 +15,9 @@ interface InterceptionEventDao {
     @Query("UPDATE interception_events SET result = :result WHERE id = :id")
     suspend fun setResult(id: Long, result: String)
 
+    @Query("UPDATE interception_events SET intent = :intent WHERE id = :id")
+    suspend fun setIntent(id: Long, intent: String)
+
     @Query("SELECT * FROM interception_events WHERE timestamp_millis >= :fromMillis ORDER BY timestamp_millis")
     fun observeSince(fromMillis: Long): Flow<List<InterceptionEventEntity>>
 }

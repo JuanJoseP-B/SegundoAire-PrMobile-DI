@@ -10,6 +10,7 @@ import com.segundoaire.data.preferences.BlockRepositoryImpl
 import com.segundoaire.data.preferences.UserPreferencesRepositoryImpl
 import com.segundoaire.data.preferences.UserProfileRepositoryImpl
 import com.segundoaire.data.repository.AppResetRepositoryImpl
+import com.segundoaire.data.repository.AppUsageRepositoryImpl
 import com.segundoaire.data.repository.BlockSessionRepositoryImpl
 import com.segundoaire.data.repository.BlockedAppRepositoryImpl
 import com.segundoaire.data.repository.InterceptionEventRepositoryImpl
@@ -19,6 +20,7 @@ import com.segundoaire.data.tree.TreeRepositoryImpl
 import com.segundoaire.domain.repository.AccessibilityStatusRepository
 import com.segundoaire.domain.repository.AppLanguageRepository
 import com.segundoaire.domain.repository.AppResetRepository
+import com.segundoaire.domain.repository.AppUsageRepository
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.BlockedAppRepository
@@ -121,4 +123,10 @@ abstract class RepositoryModule {
     abstract fun bindCoachRepository(
         impl: LocalCoachRepository
     ): CoachRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAppUsageRepository(
+        impl: AppUsageRepositoryImpl
+    ): AppUsageRepository
 }

@@ -39,3 +39,25 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         )
     }
 }
+
+/**
+ * v2 → v3, una sola migración con las dos novedades de la Fase 17: la tabla del uso de
+ * las apps vigiladas y la intención de cada intercepción. Las filas que ya había
+ * quedan sin intención. El SQL es el de `schemas/3.json`.
+ */
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `interception_events` ADD COLUMN `intent` TEXT")
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `app_usage_sessions` (" +
+                "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "`package_name` TEXT NOT NULL, " +
+                "`started_at` INTEGER NOT NULL, " +
+                "`ended_at` INTEGER NOT NULL)"
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_app_usage_sessions_ended_at` " +
+                "ON `app_usage_sessions` (`ended_at`)"
+        )
+    }
+}

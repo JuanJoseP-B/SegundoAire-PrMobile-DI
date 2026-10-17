@@ -6,10 +6,12 @@ enum class InterceptionResult { VOLVIO, CONTINUO }
 /**
  * Una aparición del GlassWall sobre [packageName] en [timestampMillis] (ms desde epoch).
  * [result] es `null` mientras sigue a la vista o si el servicio se fue antes de cerrarlo.
+ * [intent] es lo que el usuario dijo que iba a hacer, si eligió un chip.
  */
 data class InterceptionEvent(
     val id: Long,
     val packageName: String,
     val timestampMillis: Long,
-    val result: InterceptionResult?
+    val result: InterceptionResult?,
+    val intent: InterceptionIntent? = null
 )
