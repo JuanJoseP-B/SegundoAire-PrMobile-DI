@@ -9,6 +9,7 @@ import com.segundoaire.domain.repository.BlockSessionRepository
 import com.segundoaire.domain.repository.CoachRepository
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import com.segundoaire.domain.repository.UserProfileRepository
+import com.segundoaire.domain.usecase.HoraMasDificilUseCase
 import kotlinx.coroutines.flow.first
 import java.time.Clock
 import java.time.Instant
@@ -61,14 +62,9 @@ internal class CoachInsights(
 ) {
     private fun Long.date(): LocalDate = Instant.ofEpochMilli(this).atZone(zone).toLocalDate()
 
-    private fun Long.hour(): Int = Instant.ofEpochMilli(this).atZone(zone).hour
-
     /** La hora con más intercepciones; en empate, la más tardía (suele ser la de la noche). */
-    fun hardestHour(): CoachMessage.HardestHour? = events
-        .groupingBy { it.timestampMillis.hour() }
-        .eachCount()
-        .maxWithOrNull(compareBy<Map.Entry<Int, Int>> { it.value }.thenBy { it.key })
-        ?.let { CoachMessage.HardestHour(hour = it.key, openings = it.value) }
+    fun hardestHour(): CoachMessage.HardestHour? = HoraMasDificilUseCase.hardestHour(events, zone)
+        ?.let { (hour, openings) -> CoachMessage.HardestHour(hour = hour, openings = openings) }
 
     fun pausesToday(): CoachMessage.PausesToday? {
         val respected = events.filter { it.result == InterceptionResult.VOLVIO }

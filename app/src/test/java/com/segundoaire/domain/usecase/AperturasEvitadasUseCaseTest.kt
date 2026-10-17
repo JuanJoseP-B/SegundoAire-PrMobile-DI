@@ -27,7 +27,7 @@ class AperturasEvitadasUseCaseTest {
     }
 
     @Test
-    fun `cuenta solo las veces que el usuario volvio`() = runTest {
+    fun `cuenta todas las intercepciones, se respetara la pausa o no`() = runTest {
         val useCase = useCase(
             event(1, "2026-10-13T08:00:00Z", InterceptionResult.VOLVIO),
             event(2, "2026-10-12T08:00:00Z", InterceptionResult.CONTINUO),
@@ -35,7 +35,7 @@ class AperturasEvitadasUseCaseTest {
             event(4, "2026-10-13T08:59:00Z", result = null)
         )
 
-        assertEquals(2, useCase().first())
+        assertEquals(4, useCase().first())
     }
 
     @Test
@@ -75,13 +75,12 @@ class AperturasEvitadasUseCaseTest {
     }
 
     @Test
-    fun `una intercepcion que se resuelve como volvio pasa a contar`() = runTest {
+    fun `una intercepcion cuenta desde que aparece el GlassWall`() = runTest {
         val repository = FakeInterceptionEventRepository()
         val avoided = AperturasEvitadasUseCase(repository, clock)()
-        val id = repository.record("com.instagram.android", clock.millis())
         assertEquals(0, avoided.first())
 
-        repository.setResult(id, InterceptionResult.VOLVIO)
+        repository.record("com.instagram.android", clock.millis())
 
         assertEquals(1, avoided.first())
     }
