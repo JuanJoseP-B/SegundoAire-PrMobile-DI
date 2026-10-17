@@ -54,6 +54,7 @@ fun CatalogSections() {
     EmptyStateSection()
     SkeletonSection()
     GlassWallSection()
+    AppMainSection()
     OnboardingTreeSection()
     SplashSection()
 }

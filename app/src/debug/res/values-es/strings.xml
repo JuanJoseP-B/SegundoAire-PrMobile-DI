@@ -44,4 +44,7 @@
     <string name="catalog_splash_replay">Repetir animación</string>
     <string name="catalog_splash_reduced_note">Con el interruptor de reducir movimiento activo se reproduce la versión reducida (unos 1.5 s, forma quieta).</string>
     <string name="catalog_splash_done">Terminó</string>
+    <string name="catalog_section_app_main">App principal</string>
+    <string name="catalog_glass_wall_simulate">Simular abrir app</string>
+    <string name="catalog_glass_wall_app">Videos cortos</string>
 </resources>

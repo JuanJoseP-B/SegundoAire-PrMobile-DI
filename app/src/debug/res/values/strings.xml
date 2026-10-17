@@ -68,4 +68,7 @@
     <string name="catalog_splash_replay">Replay animation</string>
     <string name="catalog_splash_reduced_note">With the reduce-motion switch on, the reduced version plays (about 1.5 s, still shape).</string>
     <string name="catalog_splash_done">Finished</string>
+    <string name="catalog_section_app_main">Main app</string>
+    <string name="catalog_glass_wall_simulate">Simulate opening an app</string>
+    <string name="catalog_glass_wall_app">Short videos</string>
 </resources>
