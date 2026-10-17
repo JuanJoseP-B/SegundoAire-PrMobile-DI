@@ -47,6 +47,12 @@ sealed interface CoachMessage {
         override val secondary = CoachAction.START_15
     }
 
+    /** Para qué entra más seguido, según los chips del GlassWall de la semana. */
+    data class IntentPattern(val intent: InterceptionIntent, val times: Int) : CoachMessage {
+        override val primary = CoachAction.REMIND
+        override val secondary = CoachAction.NEXT
+    }
+
     /** Una idea para hoy según el objetivo principal. */
     data class GoalIdea(val goal: Goal?) : CoachMessage {
         override val primary = CoachAction.REMIND

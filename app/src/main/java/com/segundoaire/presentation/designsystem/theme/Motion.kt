@@ -245,6 +245,26 @@ object Motion {
     /** Fundido de la pestaña que entra y la que sale. */
     fun <T> pageFade(): FiniteAnimationSpec<T> = tween(durationMillis = PageFadeMillis, easing = EaseEasing)
 
+    // GlassWall (DESIGN_SYSTEM.md §14): curvas de cada tramo; el tiempo corre lineal con gust()
+    const val WallLeafFallMillis = 1600
+    const val WallLeafRiseMillis = 1000
+    const val WallBreathMillis = 8000
+    const val WallScrimMillis = 600
+    const val WallContentMillis = 500
+    const val WallContentDelayMillis = 320
+    const val WallLeaveMillis = 450
+    const val WallAskMillis = 600
+    const val WallCanopyMillis = 800
+
+    /** La hoja que cae al centro del GlassWall. */
+    val WallFallEasing = CubicBezierEasing(0.3f, 0.1f, 0.3f, 1f)
+
+    /** La hoja que sube y se va al volver al bloque. */
+    val WallRiseEasing = CubicBezierEasing(0.5f, 0f, 0.2f, 1f)
+
+    /** Cada mitad de la respiración y los fundidos de Inhala / Exhala ("ease-in-out"). */
+    val WallBreathEasing = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
+
     /** Brillo cónico del borde del coach mientras piensa: una vuelta cada 2,4 s. */
     fun think(): InfiniteRepeatableSpec<Float> = infiniteRepeatable(
         animation = tween(durationMillis = ThinkMillis, easing = LinearEasing),

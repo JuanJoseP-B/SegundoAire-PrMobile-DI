@@ -24,8 +24,8 @@ import com.segundoaire.presentation.designsystem.catalog.ComponentCatalogRoute
 import com.segundoaire.presentation.designsystem.catalog.componentCatalog
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
 import com.segundoaire.presentation.main.MainShell
-import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
 import com.segundoaire.presentation.onboarding.OnboardingAccountRoute
+import com.segundoaire.presentation.onboarding.OnboardingGraphRoute
 import com.segundoaire.presentation.onboarding.OnboardingRoute
 import com.segundoaire.presentation.onboarding.OnboardingStep
 import com.segundoaire.presentation.profile.AccountSettingsRoute
@@ -107,7 +107,10 @@ fun AppNavHost(viewModel: AppViewModel = hiltViewModel()) {
             }
         )
         composable(Routes.HOME) {
+            val openPanel by viewModel.openPanelRequest.collectAsState()
             MainShell(
+                openPanelRequest = openPanel,
+                onOpenPanelHandled = viewModel::onOpenPanelHandled,
                 onEditApps = { navController.navigate(Routes.EDIT_APPS) },
                 onOpenAccount = { navController.navigate(Routes.ACCOUNT) },
                 // Solo en debug: pulsación larga en el título del Panel

@@ -8,6 +8,7 @@ import com.segundoaire.R
 import com.segundoaire.domain.model.CoachAction
 import com.segundoaire.domain.model.CoachMessage
 import com.segundoaire.domain.model.Goal
+import com.segundoaire.domain.model.InterceptionIntent
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -32,6 +33,15 @@ internal fun coachText(message: CoachMessage): String = when (message) {
         durationText(message.minutes),
         message.pauses
     )
+    is CoachMessage.IntentPattern -> pluralStringResource(
+        when (message.intent) {
+            InterceptionIntent.BORED -> R.plurals.coach_msg_intent_bored
+            InterceptionIntent.REPLY_MESSAGE -> R.plurals.coach_msg_intent_reply
+            InterceptionIntent.SEARCH -> R.plurals.coach_msg_intent_search
+        },
+        message.times,
+        message.times
+    )
     is CoachMessage.GoalIdea -> stringResource(ideaRes(message.goal))
     CoachMessage.FirstSteps -> stringResource(R.string.coach_msg_first)
 }
@@ -45,7 +55,11 @@ internal fun coachActionLabel(message: CoachMessage, action: CoachAction): Strin
         CoachAction.VIEW_PROGRESS -> R.string.coach_action_progress
         CoachAction.REMIND -> R.string.coach_action_remind
         CoachAction.NEXT ->
-            if (message is CoachMessage.GoalIdea) R.string.coach_action_other_idea else R.string.coach_action_not_now
+            if (message is CoachMessage.GoalIdea || message is CoachMessage.IntentPattern) {
+                R.string.coach_action_other_idea
+            } else {
+                R.string.coach_action_not_now
+            }
     }
 )
 

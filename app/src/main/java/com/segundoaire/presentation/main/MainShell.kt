@@ -19,12 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
@@ -33,6 +32,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
 import com.segundoaire.presentation.blocks.FocusLayer
 import com.segundoaire.presentation.blocks.TimerRoute
@@ -46,7 +47,8 @@ import com.segundoaire.presentation.progress.ProgressRoute
 /**
  * Contenedor principal: las cuatro pestañas, la barra inferior flotante, el modo
  * enfoque y los avisos breves. [onEditApps] abre la selección de apps desde Bloques y
- * [onOpenAccount] la subpantalla Cuenta del Perfil. [onOpenComponentCatalog] solo se
+ * [onOpenAccount] la subpantalla Cuenta del Perfil. [openPanelRequest] llega del GlassWall
+ * ("Volver a mi bloque") y pone el Panel a la vista. [onOpenComponentCatalog] solo se
  * pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
@@ -54,6 +56,8 @@ fun MainShell(
     onEditApps: () -> Unit,
     onOpenAccount: () -> Unit,
     modifier: Modifier = Modifier,
+    openPanelRequest: Long? = null,
+    onOpenPanelHandled: () -> Unit = {},
     onOpenComponentCatalog: (() -> Unit)? = null,
     viewModel: MainShellViewModel = hiltViewModel()
 ) {
@@ -61,6 +65,14 @@ fun MainShell(
     val toast by viewModel.toast.collectAsStateWithLifecycle()
     val focusOpen by viewModel.isFocusOpen.collectAsStateWithLifecycle()
     val endedText = stringResource(R.string.focus_end_toast)
+
+    // Vuelve del GlassWall: el Panel a la vista para que brote la hoja nueva
+    LaunchedEffect(openPanelRequest) {
+        if (openPanelRequest == null) return@LaunchedEffect
+        viewModel.closeFocus()
+        viewModel.selectTab(MainTab.PANEL)
+        onOpenPanelHandled()
+    }
 
     MainShellContent(
         selectedTab = selectedTab,

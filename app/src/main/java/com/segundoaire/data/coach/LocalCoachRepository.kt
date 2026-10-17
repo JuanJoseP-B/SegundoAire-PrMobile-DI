@@ -79,12 +79,23 @@ internal class CoachInsights(
         return if (minutes == 0 && pauses == 0) null else CoachMessage.WeekSummary(minutes, pauses)
     }
 
+    /** La intención más repetida de la semana, si se eligió al menos [MIN_INTENT_TIMES] veces. */
+    fun intentPattern(): CoachMessage.IntentPattern? = events
+        .mapNotNull { it.intent }
+        .groupingBy { it }
+        .eachCount()
+        .maxByOrNull { it.value }
+        ?.takeIf { it.value >= MIN_INTENT_TIMES }
+        ?.let { CoachMessage.IntentPattern(it.key, it.value) }
+
     /** Mensajes con datos y la idea del día; sin datos, primero se invita a empezar. */
     fun rotation(idea: CoachMessage.GoalIdea): List<CoachMessage> {
-        val withData = listOfNotNull(hardestHour(), pausesToday())
+        val withData = listOfNotNull(hardestHour(), intentPattern(), pausesToday())
         return if (withData.isEmpty()) listOf(CoachMessage.FirstSteps, idea) else withData + idea
     }
 }
+
+private const val MIN_INTENT_TIMES = 2
 
 /** El siguiente mensaje de la rotación: el que sigue al tipo de `previous`, dando la vuelta. */
 internal object CoachRotation {

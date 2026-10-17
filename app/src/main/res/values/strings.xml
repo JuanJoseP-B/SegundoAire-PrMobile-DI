@@ -29,24 +29,10 @@
     <string name="permission_grant">Allow in Settings</string>
     <string name="permission_skip">Not now</string>
     <string name="overlay_title">Take a second breath</string>
-    <string name="overlay_message_focus">%1$s, does this bring you closer to focusing better?</string>
-    <string name="overlay_message_sleep">%1$s, does this bring you closer to sleeping better?</string>
-    <string name="overlay_message_presence">%1$s, does this bring you closer to being present with your people?</string>
-    <string name="overlay_message_mental_health">%1$s, does this bring you closer to looking after your mental health?</string>
-    <string name="overlay_message_free_time">%1$s, does this bring you closer to getting time back for what you enjoy?</string>
-    <string name="overlay_message_generic">%1$s, is this what you wanted to do right now?</string>
-    <string name="overlay_message_focus_anon">Does this bring you closer to focusing better?</string>
-    <string name="overlay_message_sleep_anon">Does this bring you closer to sleeping better?</string>
-    <string name="overlay_message_presence_anon">Does this bring you closer to being present with your people?</string>
-    <string name="overlay_message_mental_health_anon">Does this bring you closer to looking after your mental health?</string>
-    <string name="overlay_message_free_time_anon">Does this bring you closer to getting time back for what you enjoy?</string>
     <string name="overlay_message_generic_anon">Is this what you wanted to do right now?</string>
     <string name="overlay_exit">Go back</string>
     <string name="overlay_continue">Continue</string>
-    <string name="overlay_continue_in">Continue in %1$d</string>
     <string name="overlay_back_to_block">Back to my block</string>
-    <string name="overlay_block_remaining">%1$s left in your block</string>
-    <string name="overlay_time_format" translatable="false">%1$02d:%2$02d</string>
     <string name="provider_continue_google">Continue with Google</string>
     <string name="provider_continue_apple">Continue with Apple</string>
     <string name="provider_continue_email">Continue with email</string>
@@ -453,6 +439,18 @@
         <item quantity="one">In the last 7 days you reclaimed %1$s and honored %2$d pause. You\'re growing.</item>
         <item quantity="other">In the last 7 days you reclaimed %1$s and honored %2$d pauses. You\'re growing.</item>
     </plurals>
+    <plurals name="coach_msg_intent_bored">
+        <item quantity="one">This week you came in %1$d time just out of boredom. Shall we try leaving the phone out of reach for a while?</item>
+        <item quantity="other">This week you came in %1$d times just out of boredom. Shall we try leaving the phone out of reach for a while?</item>
+    </plurals>
+    <plurals name="coach_msg_intent_reply">
+        <item quantity="one">This week you came in %1$d time to reply to a message. Reply and leave: the rest can wait.</item>
+        <item quantity="other">This week you came in %1$d times to reply to a message. Reply and leave: the rest can wait.</item>
+    </plurals>
+    <plurals name="coach_msg_intent_search">
+        <item quantity="one">This week you came in %1$d time to look something up. Write down what you need before opening the app.</item>
+        <item quantity="other">This week you came in %1$d times to look something up. Write down what you need before opening the app.</item>
+    </plurals>
     <string name="coach_msg_idea_free_time">An idea for today: mute social notifications until the afternoon and see how much time you get back.</string>
     <string name="coach_msg_idea_sleep">An idea for tonight: leave your phone away from the bed and wake up screen-free.</string>
     <string name="coach_msg_idea_focus">An idea for today: before the hardest task of your day, protect 15 minutes with a block.</string>
@@ -526,4 +524,26 @@
     <string name="profile_plan_body">This is how your new blocks start. You can change it on each block.</string>
     <string name="profile_plan_done">Done</string>
     <string name="account_title">Account</string>
+
+    <!-- Full-screen GlassWall (Phase 17) -->
+    <string name="wall_title">Take a *second breath*</string>
+    <string name="wall_eyebrow_mode">%1$s · %2$s</string>
+    <string name="wall_inhale">Breathe in</string>
+    <string name="wall_exhale">Breathe out</string>
+    <string name="wall_minutes_today">You\'ve spent %1$d min in this app today.\nIs this what you wanted?</string>
+    <string name="wall_minutes_none">You\'ve spent less than a minute in this app today.\nIs this what you wanted?</string>
+    <plurals name="wall_week_leaves">
+        <item quantity="one">Your tree has %1$d leaf this week.</item>
+        <item quantity="other">Your tree has %1$d leaves this week.</item>
+    </plurals>
+    <string name="wall_week_leaves_none">Your tree is waiting for this week\'s first leaf.</string>
+    <string name="wall_intent_question">What are you here for?</string>
+    <string name="wall_intent_reply">Reply to a message</string>
+    <string name="wall_intent_search">Look something up</string>
+    <string name="wall_intent_bored">Just bored</string>
+    <string name="wall_opens_at">Opens at %1$s</string>
+    <string name="wall_continue_in">Continue in %1$d…</string>
+    <string name="wall_continue_minutes">Continue %1$d min</string>
+    <string name="wall_toast_enjoy">Enjoy your %1$d min</string>
+    <string name="wall_toast_block">Enjoy. Your block is still on.</string>
 </resources>

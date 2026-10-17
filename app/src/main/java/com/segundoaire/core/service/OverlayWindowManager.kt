@@ -17,12 +17,14 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.segundoaire.domain.model.GlassWallState
-import com.segundoaire.domain.model.Goal
-import com.segundoaire.presentation.designsystem.theme.GlassBlurIntense
+import com.segundoaire.domain.model.InterceptionIntent
+import com.segundoaire.presentation.designsystem.theme.GlassBlurWall
 import com.segundoaire.presentation.designsystem.theme.LocalWindowBlurBehind
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.feedback.LocalSoundManager
+import com.segundoaire.presentation.onboarding.sound.SoundManager
 import com.segundoaire.presentation.overlay.GlassWall
+import com.segundoaire.presentation.overlay.GlassWallContent
 import com.segundoaire.presentation.overlay.GlassWallPhase
 import java.util.function.Consumer
 import kotlin.math.roundToInt
@@ -31,9 +33,9 @@ import kotlin.math.roundToInt
  * Aloja el GlassWall en una ventana TYPE_APPLICATION_OVERLAY.
  * Debe usarse desde el hilo principal (los callbacks del AccessibilityService lo son).
  *
- * El fondo es `scrim` y, en Android 12+, el blur de la propia ventana
- * (`FLAG_BLUR_BEHIND`). Si el sistema desactiva el blur entre ventanas (ahorro de
- * batería, ajustes de desarrollador), queda solo el scrim.
+ * El fondo es `wallScrim` y, en Android 12+, el blur de la propia ventana
+ * (`FLAG_BLUR_BEHIND`, 14 dp) sobre la app interceptada. Si el sistema desactiva el blur
+ * entre ventanas (ahorro de batería, ajustes de desarrollador), queda solo el velo.
  *
  * La vista se agrega primero y anima después: [show] no hace nada más que
  * `addView`, y la entrada arranca en el primer frame de la ventana. El radio del
@@ -42,16 +44,23 @@ import kotlin.math.roundToInt
  */
 class OverlayWindowManager(
     private val context: Context,
-    private val actions: Actions
+    private val actions: Actions,
+    private val sound: SoundManager? = null
 ) {
     interface Actions {
-        fun onExit()
+        /** "Volver": la hoja ya subió y se fue. */
+        fun onBack()
+
+        /** "Continuar": el muro ya se fundió. */
         fun onContinue()
+
+        /** Eligió para qué entraba (chips de Mindful). */
+        fun onIntent(intent: InterceptionIntent)
     }
 
     private val windowManager = context.getSystemService(WindowManager::class.java)
     private val blurRadiusPx =
-        (GlassBlurIntense.value * context.resources.displayMetrics.density).roundToInt()
+        (GlassBlurWall.value * context.resources.displayMetrics.density).roundToInt()
     private val handler = Handler(Looper.getMainLooper())
     private val removeRunnable = Runnable { remove() }
 
@@ -63,17 +72,17 @@ class OverlayWindowManager(
     // Estado de Compose: el vidrio de la hoja cambia de relleno según haya blur o no
     private var blurEnabled by mutableStateOf(false)
     private var phase by mutableStateOf(GlassWallPhase.Waiting)
-    private var content by mutableStateOf(Content())
+    private var content by mutableStateOf(GlassWallContent())
     private var backdropProgress = 0f
 
     val isShowing: Boolean get() = composeView != null
 
     /**
-     * [state] decide los botones; [name] y [goal] personalizan el mensaje. Todo llega
-     * ya leído de memoria. Devuelve `true` si en esta llamada se agregó la ventana.
+     * [content] llega ya leído de memoria (el estado, el nombre de la app, sus minutos de
+     * hoy y las hojas de la semana). Devuelve `true` si en esta llamada se agregó la ventana.
      */
-    fun show(state: GlassWallState, name: String, goal: Goal?): Boolean {
-        content = Content(state, name, goal)
+    fun show(content: GlassWallContent): Boolean {
+        this.content = content
         if (composeView != null) {
             // Otra intercepción mientras salía: vuelve a entrar desde donde iba
             if (phase == GlassWallPhase.Leaving) {
@@ -95,15 +104,16 @@ class OverlayWindowManager(
             filterTouchesWhenObscured = true
             setContent {
                 SegundoAireTheme {
-                    CompositionLocalProvider(LocalWindowBlurBehind provides blurEnabled) {
-                        val current = content
+                    CompositionLocalProvider(
+                        LocalWindowBlurBehind provides blurEnabled,
+                        LocalSoundManager provides sound
+                    ) {
                         GlassWall(
                             phase = phase,
-                            state = current.state,
-                            name = current.name,
-                            goal = current.goal,
-                            onExit = actions::onExit,
+                            content = content,
+                            onBack = actions::onBack,
                             onContinue = actions::onContinue,
+                            onIntent = actions::onIntent,
                             modifier = Modifier.fillMaxSize(),
                             onBackdropProgress = ::onBackdropProgress,
                             onHidden = ::onHidden
@@ -217,12 +227,6 @@ class OverlayWindowManager(
         val step = (progress.coerceIn(0f, 1f) * BLUR_STEPS).roundToInt()
         return blurRadiusPx * step / BLUR_STEPS
     }
-
-    private data class Content(
-        val state: GlassWallState = GlassWallState.NoBlock,
-        val name: String = "",
-        val goal: Goal? = null
-    )
 
     private companion object {
         const val TAG = "OverlayWindowManager"

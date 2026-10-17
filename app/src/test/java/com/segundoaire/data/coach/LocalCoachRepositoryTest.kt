@@ -5,6 +5,7 @@ import com.segundoaire.domain.model.CoachMessage
 import com.segundoaire.domain.model.CoachTopic
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.UserProfile
@@ -69,6 +70,26 @@ class LocalCoachRepositoryTest {
         assertNull(insights.pausesToday())
         assertNull(insights.week())
         assertNull(insights.hardestHour())
+    }
+
+    @Test
+    fun `la intencion mas repetida aparece desde dos veces`() {
+        val today = clock.instant.atZone(clock.zone).toLocalDate()
+        fun withIntent(id: Long, intent: InterceptionIntent) = event(id, "2026-10-16T09:00:00Z").copy(intent = intent)
+        val once = CoachInsights(listOf(withIntent(1, InterceptionIntent.BORED)), emptyList(), today, clock.zone)
+        val twice = CoachInsights(
+            listOf(
+                withIntent(1, InterceptionIntent.BORED),
+                withIntent(2, InterceptionIntent.SEARCH),
+                withIntent(3, InterceptionIntent.BORED)
+            ),
+            emptyList(),
+            today,
+            clock.zone
+        )
+
+        assertNull(once.intentPattern())
+        assertEquals(CoachMessage.IntentPattern(InterceptionIntent.BORED, 2), twice.intentPattern())
     }
 
     @Test
