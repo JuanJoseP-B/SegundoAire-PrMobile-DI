@@ -8,7 +8,7 @@ import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sin
 
-/** Los sonidos del onboarding. El teclado no tiene: solo una háptica leve. */
+/** Los sonidos de la app. El teclado no tiene: solo una háptica leve. */
 enum class Sfx {
     /** Avanzar de paso: viento suave y dos notas. */
     Step,
@@ -26,7 +26,10 @@ enum class Sfx {
     Commit,
 
     /** Una tercera meta no permitida: tono grave muy suave. */
-    Deny
+    Deny,
+
+    /** Entrar a la respiración del GlassWall: dos notas largas (Sol4 y Re5). */
+    Calm
 }
 
 /** Un tono: [endFrequency] hace un barrido exponencial; [triangle] cambia la onda. */
@@ -85,6 +88,7 @@ internal object SoundSynth {
             Tone(784f, 1.8f, 0.025f, 0.35f)
         )
         Sfx.Deny -> listOf(Tone(220f, 0.18f, 0.03f, endFrequency = 180f, triangle = true))
+        Sfx.Calm -> listOf(Tone(392f, 1.6f, 0.025f), Tone(587f, 1.8f, 0.02f, 0.15f))
     }
 
     fun hasWind(sfx: Sfx): Boolean = sfx == Sfx.Step

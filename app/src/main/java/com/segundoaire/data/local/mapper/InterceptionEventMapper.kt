@@ -2,6 +2,7 @@ package com.segundoaire.data.local.mapper
 
 import com.segundoaire.data.local.entity.InterceptionEventEntity
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 
 object InterceptionEventMapper {
@@ -11,6 +12,7 @@ object InterceptionEventMapper {
         id = entity.id,
         packageName = entity.packageName,
         timestampMillis = entity.timestampMillis,
-        result = InterceptionResult.entries.firstOrNull { it.name == entity.result }
+        result = InterceptionResult.entries.firstOrNull { it.name == entity.result },
+        intent = InterceptionIntent.entries.firstOrNull { it.name == entity.intent }
     )
 }

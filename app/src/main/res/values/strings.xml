@@ -13,13 +13,9 @@
     <string name="nav_profile">Profile</string>
     <string name="coming_soon_title">Coming soon</string>
     <string name="coming_soon_message">We\'re getting this section ready. Check back soon.</string>
-    <string name="timer_title">Focus blocks</string>
     <string name="timer_state_focused">FOCUSED</string>
     <string name="timer_state_ready">READY</string>
     <string name="timer_state_completed">COMPLETE</string>
-    <string name="timer_completed_title">Block complete</string>
-    <string name="timer_completed_caption">for you</string>
-    <string name="timer_completed_done">Done</string>
     <string name="timer_duration_title">Duration</string>
     <string name="timer_duration_option">%1$d min</string>
     <string name="timer_rigor_title">Strictness</string>
@@ -27,36 +23,16 @@
     <string name="timer_rigor_strict_desc">Unbreakable until the block ends</string>
     <string name="timer_start">Start block</string>
     <string name="timer_stop">End block</string>
-    <string name="timer_hold_to_end">Hold to end block</string>
-    <plurals name="timer_watched">
-        <item quantity="one">%d app being watched</item>
-        <item quantity="other">%d apps being watched</item>
-    </plurals>
-    <string name="timer_no_watched_apps">Pick apps in the Dashboard so your block can watch them.</string>
     <string name="accessibility_service_description">Detects which app is opening so SegundoAire can give you a moment to breathe. Everything stays on your device.</string>
     <string name="permission_title">One small step to protect your time</string>
     <string name="permission_subtitle">To show a gentle pause before distracting apps open, SegundoAire needs permission to display over other apps. It only appears when you open an app you chose, and nothing leaves your device.</string>
     <string name="permission_grant">Allow in Settings</string>
     <string name="permission_skip">Not now</string>
     <string name="overlay_title">Take a second breath</string>
-    <string name="overlay_message_focus">%1$s, does this bring you closer to focusing better?</string>
-    <string name="overlay_message_sleep">%1$s, does this bring you closer to sleeping better?</string>
-    <string name="overlay_message_presence">%1$s, does this bring you closer to being present with your people?</string>
-    <string name="overlay_message_mental_health">%1$s, does this bring you closer to looking after your mental health?</string>
-    <string name="overlay_message_free_time">%1$s, does this bring you closer to getting time back for what you enjoy?</string>
-    <string name="overlay_message_generic">%1$s, is this what you wanted to do right now?</string>
-    <string name="overlay_message_focus_anon">Does this bring you closer to focusing better?</string>
-    <string name="overlay_message_sleep_anon">Does this bring you closer to sleeping better?</string>
-    <string name="overlay_message_presence_anon">Does this bring you closer to being present with your people?</string>
-    <string name="overlay_message_mental_health_anon">Does this bring you closer to looking after your mental health?</string>
-    <string name="overlay_message_free_time_anon">Does this bring you closer to getting time back for what you enjoy?</string>
     <string name="overlay_message_generic_anon">Is this what you wanted to do right now?</string>
     <string name="overlay_exit">Go back</string>
     <string name="overlay_continue">Continue</string>
-    <string name="overlay_continue_in">Continue in %1$d</string>
     <string name="overlay_back_to_block">Back to my block</string>
-    <string name="overlay_block_remaining">%1$s left in your block</string>
-    <string name="overlay_time_format" translatable="false">%1$02d:%2$02d</string>
     <string name="provider_continue_google">Continue with Google</string>
     <string name="provider_continue_apple">Continue with Apple</string>
     <string name="provider_continue_email">Continue with email</string>
@@ -193,54 +169,13 @@
     <string name="setup_apps_empty_message">We couldn\'t find apps you can open from your home screen.</string>
     <string name="setup_apps_no_results_title">No matches</string>
     <string name="setup_apps_no_results_message">No app matches \"%1$s\". Try another name.</string>
-    <string name="panel_greeting_morning">Good morning, %1$s</string>
-    <string name="panel_greeting_afternoon">Good afternoon, %1$s</string>
-    <string name="panel_greeting_evening">Good evening, %1$s</string>
     <string name="panel_greeting_morning_anonymous">Good morning</string>
     <string name="panel_greeting_afternoon_anonymous">Good afternoon</string>
     <string name="panel_greeting_evening_anonymous">Good evening</string>
-    <string name="panel_goal_eyebrow">Your goal</string>
-    <string name="panel_impact_eyebrow">Today</string>
-    <plurals name="panel_impact_watched">
-        <item quantity="one">app watched</item>
-        <item quantity="other">apps watched</item>
-    </plurals>
-    <string name="panel_message_eyebrow">For you</string>
-    <string name="panel_message_thinking">Thinking…</string>
-    <string name="panel_message_another">Another message</string>
-    <string name="panel_apps_title">Your apps</string>
-    <string name="panel_apps_edit">Edit apps</string>
-    <string name="panel_app_watching">Watching</string>
-    <string name="panel_app_off">Off</string>
     <string name="panel_empty_title">No watched apps yet</string>
     <string name="panel_empty_message">Choose the apps you want a moment of air before opening.</string>
     <string name="panel_empty_action">Choose apps</string>
-    <string name="progress_title">Progress</string>
     <string name="progress_demo_chip">Sample data</string>
-    <string name="progress_impact_eyebrow">This week</string>
-    <plurals name="progress_impact_minutes">
-        <item quantity="one">minute recovered</item>
-        <item quantity="other">minutes recovered</item>
-    </plurals>
-    <string name="progress_avoided_eyebrow">Openings avoided</string>
-    <plurals name="progress_avoided_label">
-        <item quantity="one">time you went back</item>
-        <item quantity="other">times you went back</item>
-    </plurals>
-    <string name="progress_streak_eyebrow">Streak</string>
-    <plurals name="progress_streak_label">
-        <item quantity="one">day in a row</item>
-        <item quantity="other">days in a row</item>
-    </plurals>
-    <string name="progress_week_title">Your week</string>
-    <string name="progress_week_caption">Minutes recovered each day</string>
-    <plurals name="progress_week_day">
-        <item quantity="one">%1$s: %2$d minute</item>
-        <item quantity="other">%1$s: %2$d minutes</item>
-    </plurals>
-    <string name="progress_empty_title">Your progress starts here</string>
-    <string name="progress_empty_message">Finish a block or go back from the GlassWall, and you\'ll see it here.</string>
-    <string name="profile_title">Profile</string>
     <string name="profile_goals_title">Your goals</string>
     <string name="profile_goals_subtitle">Pick up to %1$d. The first one you pick is your main goal.</string>
     <string name="profile_account_title">Your account</string>
@@ -449,4 +384,166 @@
     <string name="splash_skip">Skip intro</string>
     <string name="splash_eyebrow">Take a second breath</string>
     <string name="splash_loading_description">SegundoAire loading</string>
+
+    <!-- Main app · Panel (Phase 17) -->
+    <string name="panel_greeting_named">%1$s,</string>
+    <string name="panel_recovered_unit">min</string>
+    <string name="panel_recovered_today">reclaimed today</string>
+    <plurals name="panel_pauses_label">
+        <item quantity="one">pause honored</item>
+        <item quantity="other">pauses honored</item>
+    </plurals>
+    <plurals name="panel_openings_label">
+        <item quantity="one">opening avoided</item>
+        <item quantity="other">openings avoided</item>
+    </plurals>
+    <string name="panel_block_title">Focus block</string>
+    <string name="panel_block_remaining">%1$s left</string>
+    <string name="duration_minutes">%1$d min</string>
+    <string name="duration_hours_minutes">%1$d h %2$d min</string>
+
+    <!-- Panel coach -->
+    <string name="coach_title">Your coach</string>
+    <string name="coach_status_thinking">Looking at your day…</string>
+    <string name="coach_status_ready">Just now</string>
+    <string name="coach_thinking_description">Your coach is thinking</string>
+    <string name="coach_another">Another suggestion</string>
+    <string name="coach_ask_eyebrow">Ask</string>
+    <string name="coach_ask_week">How am I doing this week?</string>
+    <string name="coach_ask_idea">Give me an idea for today</string>
+    <string name="coach_ask_hardest">When is it hardest for me?</string>
+    <string name="coach_action_create_block">Create a block</string>
+    <string name="coach_action_start_15">Start 15 min</string>
+    <string name="coach_action_progress">See progress</string>
+    <string name="coach_action_remind">Remind me</string>
+    <string name="coach_action_not_now">Not now</string>
+    <string name="coach_action_other_idea">Another idea</string>
+    <string name="coach_toast_remind">Noted. Keep it in mind today.</string>
+    <plurals name="coach_msg_hardest">
+        <item quantity="one">This week your hardest moment was around %1$s, with %2$d opening interrupted. A block before then can help.</item>
+        <item quantity="other">This week your hardest moment was around %1$s, with %2$d openings interrupted. A block before then can help.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_more">
+        <item quantity="one">You\'ve honored %1$d pause today, more than yesterday. Each one helps your tree grow.</item>
+        <item quantity="other">You\'ve honored %1$d pauses today, more than yesterday. Each one helps your tree grow.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_today">
+        <item quantity="one">You\'ve honored %1$d pause today. Each one helps your tree grow.</item>
+        <item quantity="other">You\'ve honored %1$d pauses today. Each one helps your tree grow.</item>
+    </plurals>
+    <plurals name="coach_msg_pauses_yesterday">
+        <item quantity="one">Yesterday you honored %1$d pause. Today your tree is waiting for the first one.</item>
+        <item quantity="other">Yesterday you honored %1$d pauses. Today your tree is waiting for the first one.</item>
+    </plurals>
+    <plurals name="coach_msg_week">
+        <item quantity="one">In the last 7 days you reclaimed %1$s and honored %2$d pause. You\'re growing.</item>
+        <item quantity="other">In the last 7 days you reclaimed %1$s and honored %2$d pauses. You\'re growing.</item>
+    </plurals>
+    <plurals name="coach_msg_intent_bored">
+        <item quantity="one">This week you came in %1$d time just out of boredom. Shall we try leaving the phone out of reach for a while?</item>
+        <item quantity="other">This week you came in %1$d times just out of boredom. Shall we try leaving the phone out of reach for a while?</item>
+    </plurals>
+    <plurals name="coach_msg_intent_reply">
+        <item quantity="one">This week you came in %1$d time to reply to a message. Reply and leave: the rest can wait.</item>
+        <item quantity="other">This week you came in %1$d times to reply to a message. Reply and leave: the rest can wait.</item>
+    </plurals>
+    <plurals name="coach_msg_intent_search">
+        <item quantity="one">This week you came in %1$d time to look something up. Write down what you need before opening the app.</item>
+        <item quantity="other">This week you came in %1$d times to look something up. Write down what you need before opening the app.</item>
+    </plurals>
+    <string name="coach_msg_idea_free_time">An idea for today: mute social notifications until the afternoon and see how much time you get back.</string>
+    <string name="coach_msg_idea_sleep">An idea for tonight: leave your phone away from the bed and wake up screen-free.</string>
+    <string name="coach_msg_idea_focus">An idea for today: before the hardest task of your day, protect 15 minutes with a block.</string>
+    <string name="coach_msg_idea_presence">An idea for today: at your next meal, leave your phone in another room.</string>
+    <string name="coach_msg_idea_mental_health">An idea for today: before opening an app, take three breaths and decide if you really want in.</string>
+    <string name="coach_msg_idea_general">An idea for today: pick a screen-free moment and protect it with a block.</string>
+    <string name="coach_msg_first">I\'m still getting to know your day. Start with a 15-minute block and I\'ll tell you what changes.</string>
+
+    <!-- Main app · Blocks and focus mode (Phase 17) -->
+    <string name="blocks_title">Protect your *attention*</string>
+    <string name="blocks_start_title">Start a block</string>
+    <string name="blocks_start_body">Your watched apps will be paused.</string>
+    <string name="blocks_mode_label">Mode</string>
+    <string name="blocks_mindful_desc">A 10 s pause, then you decide.</string>
+    <string name="blocks_strict_desc">No way out until it ends.</string>
+    <string name="blocks_hold">Hold to start</string>
+    <string name="blocks_hold_running">Block in progress</string>
+    <string name="blocks_hold_hint">Press and hold for 1.5 s</string>
+    <string name="blocks_hold_description">Press and hold to start the block</string>
+    <string name="blocks_apps_title">Watched apps</string>
+    <string name="blocks_apps_edit">Edit</string>
+    <string name="blocks_apps_edit_description">Edit watched apps</string>
+    <string name="blocks_app_minutes">~%1$d min</string>
+    <string name="blocks_app_today">today</string>
+    <string name="blocks_app_no_data">Not measured yet</string>
+    <string name="blocks_app_watch">Watch %1$s</string>
+    <string name="focus_eyebrow">Focus block · %1$s</string>
+    <string name="focus_remaining">left</string>
+    <string name="focus_quote">Your tree grows while you look away.</string>
+    <string name="focus_end">End block</string>
+    <string name="focus_end_hold">Hold to end</string>
+    <string name="focus_back_to_panel">Back to panel</string>
+    <string name="focus_minimize">Minimize</string>
+    <string name="focus_end_toast">Block ended. It keeps growing tomorrow.</string>
+
+    <!-- Main app · Progress (Phase 17) -->
+    <string name="progress_heading">Your *growth* rings</string>
+    <string name="progress_today">Today</string>
+    <string name="progress_day_title">%1$s · %2$d min</string>
+    <string name="progress_day_flower">Flower day: you reached your goal</string>
+    <string name="progress_day_thin">A thin ring is growth too</string>
+    <string name="progress_week_label">This week</string>
+    <string name="progress_goal">Goal: %1$d min/day</string>
+    <string name="progress_day_description">%1$s, %2$d min reclaimed</string>
+    <string name="progress_day_future">%1$s, no data</string>
+    <string name="progress_stat_week_minutes">reclaimed this week</string>
+    <string name="progress_stat_streak">best streak</string>
+    <plurals name="progress_streak_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="progress_stat_hardest">your hardest hour</string>
+    <string name="progress_stat_no_data" translatable="false">—</string>
+
+    <!-- Main app · Profile (Phase 17) -->
+    <string name="profile_planted">Planted on %1$s</string>
+    <string name="profile_goals_eyebrow">Your goals</string>
+    <string name="profile_goals_edit">Edit</string>
+    <string name="profile_goals_edit_description">Edit your name and goals</string>
+    <string name="profile_row_plan">Plan and mode</string>
+    <string name="profile_row_sound">Sounds and vibration</string>
+    <string name="profile_row_permissions">Permissions</string>
+    <string name="profile_permissions_ok">Active</string>
+    <string name="profile_permissions_missing">Pending</string>
+    <string name="profile_row_account">Account</string>
+    <string name="profile_share">Share my tree</string>
+    <string name="profile_share_chooser">Share your tree</string>
+    <string name="profile_share_text">My SegundoAire tree grows with every pause.</string>
+    <string name="profile_share_failed">The image couldn\'t be prepared. Try again.</string>
+    <string name="profile_edit_title">Your name and goals</string>
+    <string name="profile_plan_body">This is how your new blocks start. You can change it on each block.</string>
+    <string name="profile_plan_done">Done</string>
+    <string name="account_title">Account</string>
+
+    <!-- Full-screen GlassWall (Phase 17) -->
+    <string name="wall_title">Take a *second breath*</string>
+    <string name="wall_eyebrow_mode">%1$s · %2$s</string>
+    <string name="wall_inhale">Breathe in</string>
+    <string name="wall_exhale">Breathe out</string>
+    <string name="wall_minutes_today">You\'ve spent %1$d min in this app today.\nIs this what you wanted?</string>
+    <string name="wall_minutes_none">You\'ve spent less than a minute in this app today.\nIs this what you wanted?</string>
+    <plurals name="wall_week_leaves">
+        <item quantity="one">Your tree has %1$d leaf this week.</item>
+        <item quantity="other">Your tree has %1$d leaves this week.</item>
+    </plurals>
+    <string name="wall_week_leaves_none">Your tree is waiting for this week\'s first leaf.</string>
+    <string name="wall_intent_question">What are you here for?</string>
+    <string name="wall_intent_reply">Reply to a message</string>
+    <string name="wall_intent_search">Look something up</string>
+    <string name="wall_intent_bored">Just bored</string>
+    <string name="wall_opens_at">Opens at %1$s</string>
+    <string name="wall_continue_in">Continue in %1$d…</string>
+    <string name="wall_continue_minutes">Continue %1$d min</string>
+    <string name="wall_toast_enjoy">Enjoy your %1$d min</string>
+    <string name="wall_toast_block">Enjoy. Your block is still on.</string>
 </resources>

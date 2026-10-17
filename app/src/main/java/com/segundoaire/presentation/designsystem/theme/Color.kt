@@ -54,7 +54,37 @@ data class SegundoAireColors(
     val skyMorning: Color,
     val skyAfternoon: Color,
     val skyNight: Color,
-    val skyLate: Color
+    val skyLate: Color,
+    // App principal (§3.4): árbol del Panel, corte del tronco y tarjeta del coach
+    val hill: Color,
+    val trunk: Color,
+    val leaf: Color,
+    val petal: Color,
+    val wood: Color,
+    val aiCard: Color,
+    // Acento de la serif y de la semilla del coach (primary en claro, glow en oscuro)
+    val accent: Color,
+    // Tonos del follaje, ya con su opacidad; se alternan por círculo
+    val tree1: Color,
+    val tree2: Color,
+    val tree3: Color,
+    // Luz radial del héroe del Panel según la hora real (ya con su opacidad)
+    val heroSkyMorning: Color,
+    val heroSkyDay: Color,
+    val heroSkyEvening: Color,
+    val heroSkyNight: Color,
+    // GlassWall a pantalla completa
+    val wallScrim: Color,
+    val wallOn: Color,
+    val wallMuted: Color,
+    val wallTrunk: Color,
+    val wallLeaf: Color,
+    val wallBtn: Color,
+    val wallBtnOn: Color,
+    val wallChip: Color,
+    val wallChipEdge: Color,
+    // Copa gris (invierno) del GlassWall en Strict
+    val wallWinter: Color
 )
 
 // Claro (predeterminado)
@@ -103,7 +133,31 @@ val LightSegundoAireColors = SegundoAireColors(
     skyMorning = Color(0x73FFC496),
     skyAfternoon = Color(0x73FFF6BE),
     skyNight = Color(0xBF0E1640),
-    skyLate = Color(0x9E0D1F23)
+    skyLate = Color(0x9E0D1F23),
+    hill = Color(0x808EB69B),
+    trunk = Color(0xFF235347),
+    leaf = Color(0xFF2E7D63),
+    petal = Color(0xFFF4FBF5),
+    wood = Color(0x598EB69B),
+    aiCard = Color(0xEBF0FAF2),
+    accent = Color(0xFF235347),
+    tree1 = Color(0x80235347),
+    tree2 = Color(0x8C2E7D63),
+    tree3 = Color(0xD98EB69B),
+    heroSkyMorning = Color(0x66FFC896),
+    heroSkyDay = Color(0x73FFF6BE),
+    heroSkyEvening = Color(0x6BF4A06E),
+    heroSkyNight = Color(0x380D1F23),
+    wallScrim = Color(0xFFFFFFFF),
+    wallOn = Color(0xFF051F20),
+    wallMuted = Color(0xFF2C5649),
+    wallTrunk = Color(0xFF235347),
+    wallLeaf = Color(0xFF2E7D63),
+    wallBtn = Color(0xFF235347),
+    wallBtnOn = Color(0xFFDAF1DE),
+    wallChip = Color(0x14051F20),
+    wallChipEdge = Color(0xB3FFFFFF),
+    wallWinter = Color(0x999AA8A2)
 )
 
 val DarkSegundoAireColors = SegundoAireColors(
@@ -151,8 +205,50 @@ val DarkSegundoAireColors = SegundoAireColors(
     skyMorning = Color(0x73FFC496),
     skyAfternoon = Color(0x73FFF6BE),
     skyNight = Color(0xBF050A24),
-    skyLate = Color(0x9E040C0E)
+    skyLate = Color(0x9E040C0E),
+    hill = Color(0xF2132E35),
+    trunk = Color(0xFF5E7A84),
+    leaf = Color(0xFF86E0CF),
+    petal = Color(0xFFDCE3E0),
+    wood = Color(0xE6132E35),
+    aiCard = Color(0xFF11282D),
+    accent = Color(0xFF86E0CF),
+    tree1 = Color(0xE62D4A53),
+    tree2 = Color(0x993E8C7A),
+    tree3 = Color(0x5986E0CF),
+    heroSkyMorning = Color(0x1FFFC896),
+    heroSkyDay = Color(0x14FFF6BE),
+    heroSkyEvening = Color(0x24F4A06E),
+    heroSkyNight = Color(0x000D1F23),
+    wallScrim = Color(0xFF040C0E),
+    wallOn = Color(0xFFDCE3E0),
+    wallMuted = Color(0xFF8C9297),
+    wallTrunk = Color(0xFF5E7A84),
+    wallLeaf = Color(0xFF86E0CF),
+    wallBtn = Color(0xFF708792),
+    wallBtnOn = Color(0xFF0D1F23),
+    wallChip = Color(0x24B0B4B8),
+    wallChipEdge = Color(0x2EB0B4B8),
+    wallWinter = Color(0x993A4A50)
 )
+
+/**
+ * Modo enfoque (§3.4): siempre oscuro, igual en claro y en oscuro. El fondo es el
+ * `secondaryDeep` claro (`#0B2B26`); el anillo, la punta y el botón repiten los tonos
+ * oscuros de la app para que la pantalla sea la misma en los dos temas.
+ */
+object FocusColors {
+    val Background = Color(0xFF0B2B26)
+    val On = Color(0xFFDAF1DE)
+    val Muted = Color(0xB3DAF1DE)
+    val Quote = Color(0xD9DAF1DE)
+    val Track = Color(0x1FDAF1DE)
+    val Progress = Color(0xFF708792)
+    val Tip = Color(0xFF86E0CF)
+    val Button = Color(0xFF2D4A53)
+    val TreeLight = Color(0xFF8EB69B)
+    val TreeDeep = Color(0xFF2E7D63)
+}
 
 /**
  * Colores de la marca Google para su logotipo en el botón de proveedor. No cambian con el

@@ -3,6 +3,9 @@ package com.segundoaire.domain.usecase
 import com.segundoaire.domain.model.BlockSession
 import com.segundoaire.domain.model.DemoData
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent.BORED
+import com.segundoaire.domain.model.InterceptionIntent.REPLY_MESSAGE
+import com.segundoaire.domain.model.InterceptionIntent.SEARCH
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.domain.model.InterceptionResult.CONTINUO
 import com.segundoaire.domain.model.InterceptionResult.VOLVIO
@@ -16,7 +19,8 @@ import javax.inject.Inject
 
 /**
  * Siete días de ejemplo que terminan hoy, en la zona del reloj: bloques (alguno
- * detenido antes de tiempo) e intercepciones con su resultado. Es determinista,
+ * detenido antes de tiempo) e intercepciones con su resultado y, en algunas, para qué
+ * entraba el usuario. El uso de cada app vigilada sale de [demoUsageMillis]. Es determinista,
  * así la demo se ve igual cada vez, y nada queda en el futuro: de hoy solo aparece
  * lo que ya pasó a esta hora.
  */
@@ -49,7 +53,8 @@ class GenerarDatosDemoUseCase @Inject constructor(
             plan.interceptions.forEach { (time, result) ->
                 val at = millisAt(time)
                 if (at <= now) {
-                    events += InterceptionEvent(events.size + 1L, DEMO_PACKAGE, at, result)
+                    val intent = DEMO_INTENTS[events.size % DEMO_INTENTS.size]
+                    events += InterceptionEvent(events.size + 1L, DEMO_PACKAGE, at, result, intent)
                 }
             }
         }
@@ -68,16 +73,26 @@ class GenerarDatosDemoUseCase @Inject constructor(
         val interceptions: List<Pair<LocalTime, InterceptionResult>>
     )
 
-    private companion object {
-        const val MILLIS_PER_MINUTE = 60_000L
+    companion object {
+        private const val MILLIS_PER_MINUTE = 60_000L
+
+        // Minutos de hoy de las apps vigiladas en el modo demo, por su posición en la lista
+        private val DEMO_USAGE_MINUTES = intArrayOf(48, 31, 22, 9, 14, 6)
+
+        // El aburrimiento domina, como suele pasar: así el coach tiene algo que decir
+        private val DEMO_INTENTS = listOf(BORED, REPLY_MESSAGE, null, BORED, SEARCH, BORED)
+
+        /** Uso de ejemplo de hoy para la app vigilada en la posición [index]. */
+        fun demoUsageMillis(index: Int): Long =
+            DEMO_USAGE_MINUTES[index.mod(DEMO_USAGE_MINUTES.size)] * MILLIS_PER_MINUTE
 
         // Paquete ficticio: no corresponde a ninguna app real
-        const val DEMO_PACKAGE = "com.segundoaire.demo"
+        private const val DEMO_PACKAGE = "com.segundoaire.demo"
 
-        fun at(hour: Int, minute: Int): LocalTime = LocalTime.of(hour, minute)
+        private fun at(hour: Int, minute: Int): LocalTime = LocalTime.of(hour, minute)
 
         // Del día más antiguo a hoy. Todos los días tienen al menos un bloque completado
-        val WEEK = listOf(
+        private val WEEK = listOf(
             DemoDay(
                 blocks = listOf(DemoBlock(at(9, 30), 25, MINDFUL), DemoBlock(at(18, 0), 15, STRICT)),
                 interceptions = listOf(at(10, 15) to VOLVIO, at(13, 40) to CONTINUO, at(16, 20) to VOLVIO, at(21, 5) to VOLVIO)

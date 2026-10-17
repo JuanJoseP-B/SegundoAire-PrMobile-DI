@@ -1,6 +1,7 @@
 package com.segundoaire.presentation.onboarding.tree
 
 import com.segundoaire.presentation.designsystem.theme.Motion
+import com.segundoaire.presentation.tree.TreeGeometry
 import kotlin.math.max
 import kotlin.math.min
 

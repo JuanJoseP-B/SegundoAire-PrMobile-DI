@@ -1,6 +1,7 @@
 package com.segundoaire.testing
 
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +23,10 @@ class FakeInterceptionEventRepository(
 
     override suspend fun setResult(id: Long, result: InterceptionResult) {
         events.value = events.value.map { if (it.id == id) it.copy(result = result) else it }
+    }
+
+    override suspend fun setIntent(id: Long, intent: InterceptionIntent) {
+        events.value = events.value.map { if (it.id == id) it.copy(intent = intent) else it }
     }
 
     override fun observeSince(fromMillis: Long): Flow<List<InterceptionEvent>> =

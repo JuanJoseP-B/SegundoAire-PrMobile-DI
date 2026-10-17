@@ -4,13 +4,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -20,51 +17,12 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.unit.dp
 import com.segundoaire.presentation.designsystem.theme.SegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
-
-/** Trazos del árbol ya convertidos a [Path] y medidos, para dibujarlos hasta una fracción. */
-internal class TreePaths {
-    private fun parse(d: String): Path = PathParser().parsePathString(d).toPath()
-
-    val segments: List<Path> = TreeGeometry.Segments.map { parse(it.d) }
-    val roots: List<Path> = TreeGeometry.Roots.map { parse(it.d) }
-    val leaf: Path = parse(TreeGeometry.LeafPath)
-    val nameLeaf: Path = parse(TreeGeometry.NameLeafPath)
-    val hillCurve: Path = parse(TreeGeometry.HillCurve)
-
-    private val segmentLengths: FloatArray
-    private val rootLengths: FloatArray
-    private val measure = PathMeasure()
-    private val scratch = Path()
-
-    init {
-        segmentLengths = FloatArray(segments.size) { lengthOf(segments[it]) }
-        rootLengths = FloatArray(roots.size) { lengthOf(roots[it]) }
-    }
-
-    private fun lengthOf(path: Path): Float {
-        measure.setPath(path, false)
-        return measure.length
-    }
-
-    /** Parte de [path] desde su inicio hasta la fracción [fraction]; el [Path] devuelto se reutiliza. */
-    fun partial(path: Path, length: Float, fraction: Float): Path {
-        measure.setPath(path, false)
-        scratch.rewind()
-        measure.getSegment(0f, length * fraction.coerceIn(0f, 1f), scratch, true)
-        return scratch
-    }
-
-    fun segment(index: Int, fraction: Float): Path = partial(segments[index], segmentLengths[index], fraction)
-
-    fun root(index: Int, fraction: Float): Path = partial(roots[index], rootLengths[index], fraction)
-}
-
-@Composable
-internal fun rememberTreePaths(): TreePaths = remember { TreePaths() }
+import com.segundoaire.presentation.tree.TreeGeometry
+import com.segundoaire.presentation.tree.TreePaths
+import com.segundoaire.presentation.tree.rememberTreePaths
 
 private const val Epsilon = 0.002f
 private const val FlowerScale = 1.3f

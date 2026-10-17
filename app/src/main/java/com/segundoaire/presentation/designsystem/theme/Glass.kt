@@ -45,6 +45,9 @@ private const val NoBlurOpacityBoost = 0.20f
 /** blur-intense: el de `Level3` y el `blurBehindRadius` de la ventana del GlassWall. */
 val GlassBlurIntense: Dp = 32.dp
 
+/** Desenfoque de la app interceptada detrás del GlassWall (ventana, Android 12+). */
+val GlassBlurWall: Dp = 14.dp
+
 private fun glassStyle(fill: Color, blur: Dp, vararg shadows: GlassShadow) = GlassStyle(
     fill = fill,
     fillNoBlur = fill.copy(alpha = fill.alpha + NoBlurOpacityBoost),

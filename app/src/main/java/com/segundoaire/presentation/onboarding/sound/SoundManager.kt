@@ -5,24 +5,30 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
+import com.segundoaire.domain.repository.UserPreferencesRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Sonidos de ambiente del onboarding, sintetizados con [SoundSynth] y reproducidos con
- * `AudioTrack` como sonificación: respetan el volumen del sistema y el modo silencio del
- * teléfono. Son bajos a propósito; no son notificaciones.
+ * Sonidos de la app, sintetizados con [SoundSynth] y reproducidos con `AudioTrack` como
+ * sonificación: respetan el volumen del sistema y el modo silencio del teléfono. Son
+ * bajos a propósito; no son notificaciones.
+ *
+ * [enabled] sigue al ajuste "Sonidos y vibración" del Perfil; el onboarding tiene su propio
+ * interruptor, que lo cambia solo mientras dura el flujo.
  */
 @Singleton
 class SoundManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    preferences: UserPreferencesRepository
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val cache = ConcurrentHashMap<Sfx, ShortArray>()
@@ -30,6 +36,15 @@ class SoundManager @Inject constructor(
     /** Interruptor de la UI; encendido por defecto. */
     @Volatile
     var enabled: Boolean = true
+
+    init {
+        scope.launch {
+            preferences.isSoundEnabled
+                // Si DataStore falla, el sonido sigue como estaba
+                .catch { }
+                .collect { enabled = it }
+        }
+    }
 
     fun play(sfx: Sfx) {
         if (!enabled || !isRingerNormal()) return

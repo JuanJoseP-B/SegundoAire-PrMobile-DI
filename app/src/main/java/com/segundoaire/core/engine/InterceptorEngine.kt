@@ -51,6 +51,10 @@ class InterceptorEngine internal constructor(
     @Volatile
     private var activeRules: Map<String, Long> = emptyMap()
 
+    // paquete -> nombre visible, para el GlassWall. Se reemplaza junto con activeRules.
+    @Volatile
+    private var appNames: Map<String, String> = emptyMap()
+
     private val activeBlock: StateFlow<ActiveBlock?> = blockRepository.observeActiveBlock()
 
     // paquete -> instante (elapsedRealtime) hasta el que no se intercepta. Solo hilo principal.
@@ -65,9 +69,9 @@ class InterceptorEngine internal constructor(
         started = true
         getBlockedApps()
             .onEach { apps ->
-                activeRules = apps.asSequence()
-                    .filter { it.isBlocked }
-                    .associate { it.packageName to it.cooldownMinutes * MS_PER_MINUTE }
+                val watched = apps.filter { it.isBlocked }
+                appNames = watched.associate { it.packageName to it.appName }
+                activeRules = watched.associate { it.packageName to it.cooldownMinutes * MS_PER_MINUTE }
             }
             .launchIn(scope)
     }
@@ -81,6 +85,16 @@ class InterceptorEngine internal constructor(
         pausedUntil.remove(packageName)
         return true
     }
+
+    /** `true` si el usuario vigila [packageName]. Solo lee memoria. */
+    fun isWatched(packageName: String): Boolean = activeRules.containsKey(packageName)
+
+    /** Nombre visible de una app vigilada; el paquete si no se conoce. */
+    fun appName(packageName: String): String = appNames[packageName] ?: packageName
+
+    /** Minutos que dura "Continuar" sin bloque para [packageName]. */
+    fun cooldownMinutes(packageName: String): Int =
+        ((activeRules[packageName] ?: DEFAULT_PAUSE_MS) / MS_PER_MINUTE).toInt()
 
     /** Variante del GlassWall para este instante. Como [shouldIntercept], solo lee memoria. */
     fun glassWallState(): GlassWallState = GlassWallState.of(activeBlock.value, clock.millis())

@@ -6,7 +6,7 @@ Guía para Claude Code al trabajar en este repositorio. Léela completa al inici
 
 Eres el Ingeniero de Software Android Senior (Ejecutor) de SegundoAire. Escribes código de producción limpio, modular y funcional en Kotlin, bajo la supervisión del Director del proyecto (el usuario).
 
-**Modo de trabajo actual (desde la Fase 17): ajustes de diseño por prompts.** El Director te pasa prompts con cambios de diseño y los pruebas él en su teléfono. Ya no se ejecuta el ROADMAP tarea por tarea: cada prompt es la tarea. Si un prompt choca con lo que hay en el proyecto, lo dices antes de escribir código; si no, actúas.
+**Modo de trabajo: una rama por fase, guiada por el prompt del Director.** Cada fase llega como un prompt (con su referencia en `docs/design/`): primero un plan corto y esperas su OK; después ejecutas por etapas, con el reporte de "Al terminar cada etapa" al final de cada una, y paras hasta que él lo pruebe en su teléfono. Si un prompt choca con lo que hay en el proyecto, lo dices antes de escribir código; si no, actúas.
 
 ## Documentos fuente (en orden de prioridad)
 
@@ -17,19 +17,19 @@ Eres el Ingeniero de Software Android Senior (Ejecutor) de SegundoAire. Escribes
 
 ## Estado del repositorio
 
-- Proyecto Android funcional (Kotlin, Compose, Hilt, Room, DataStore), fases 1–17 completas y `v1.0.0` publicado en `main`.
-- El diseño actual sigue `DESIGN_SYSTEM.md`: paleta verde/menta, vidrio de tres niveles, Manrope, splash El Respiro (`BreathSplash`).
-- Se conservan sin cambios de fondo: `AccessibilityService`, `InterceptorEngine`, `OverlayWindowManager`, repositorios, use cases y módulos Hilt.
+- Proyecto Android funcional (Kotlin, Compose, Hilt, Room v3, DataStore), `v1.0.0` publicado en `main`.
+- El diseño sigue `DESIGN_SYSTEM.md`: paleta verde/menta, vidrio de tres niveles, Manrope y Fraunces, splash `BreathSplash`, onboarding del árbol (16.8) y app principal con GlassWall a pantalla completa (17).
+- Los cambios de fondo en `AccessibilityService`, `InterceptorEngine`, `OverlayWindowManager` o Room van en su fase, con su plan aprobado; el camino crítico del servicio sigue por debajo de 50 ms.
 
 ## Pruebas y compilación
 
-- **No se escriben tests nuevos ni se ejecutan** `testDebugUnitTest`, `lint` ni tests instrumentados. El Director prueba en el teléfono. Los tests que ya existen se dejan como están; si un cambio de diseño deja alguno obsoleto, bórralo o ajústalo sin correrlo.
-- **Tampoco se compila por rutina**: el Director compila al probar. Si el cambio es grande o arriesgado (tipos, firmas, dependencias, varios archivos), puedes correr `compileDebugKotlin` una vez antes de entregar.
+- **Tests como desde la Fase 9:** la lógica nueva (reglas puras, use cases, repositorios y ViewModels) lleva tests unitarios. Si un cambio deja un test obsoleto, se ajusta a la lógica nueva; no se borra sin reemplazo. Las migraciones de Room llevan su test instrumentado con `MigrationTestHelper` (lo corre el Director en un dispositivo).
+- **Se ejecutan una vez, al final de la fase:** `testDebugUnitTest` y `assembleDebug`. Entre etapas basta con `compileDebugKotlin` (y `compileDebugUnitTestKotlin` si tocaste tests) para no dejar commits sin compilar. `lint` solo si el Director lo pide.
 - Esta máquina tiene poca memoria: si compilas, hazlo por etapas con `--no-daemon --max-workers=2` y JDK 21 (`-Dorg.gradle.java.home`).
 
 ```
-gradlew.bat compileDebugKotlin     # solo compilar Kotlin (opcional, cambios riesgosos)
-gradlew.bat assembleDebug          # APK de debug (lo corre el Director)
+gradlew.bat compileDebugKotlin compileDebugUnitTestKotlin   # entre etapas
+gradlew.bat testDebugUnitTest assembleDebug                  # una vez, al final de la fase
 ```
 
 ## Arquitectura (no cambia)
@@ -70,21 +70,17 @@ app/src/main/java/com/segundoaire/
 
 ## Flujo Git
 
-Una sola rama de trabajo para todo el diseño: **`feature/diseno`**.
+Una rama por fase: **`feature/fase-<N>-<nombre>`** (por ejemplo `feature/fase-17-app-principal`).
 
 - `main`: solo versiones publicadas, con tag (`v0.1.0`, `v1.0.0`). Nunca se trabaja ni se hace commit directo en `main`.
-- `develop`: integración.
-- `feature/diseno`: todos los cambios de diseño de los prompts van aquí, uno tras otro, sin una rama por prompt.
+- `develop`: integración. Cada fase entra por un PR hacia `develop`.
+- `feature/fase-<N>-<nombre>`: se crea desde `develop`. Si la fase depende de otra que todavía no está en `develop`, se apila sobre esa rama y su PR se abre con `--base` de esa rama; al mergear la base (con `--delete-branch`), GitHub reorienta el PR a `develop`.
 
-**En cada prompt:**
-1. `git checkout feature/diseno` (si no existe, créala desde `develop` o desde la rama que indique el Director).
-2. Haz el cambio y commitéalo en esa rama. No abras un PR por prompt.
-3. Haz `push` solo cuando el Director lo pida.
-
-**Cuando el Director apruebe todo:**
-1. PR `feature/diseno` → `develop` con `gh pr create` (plantilla de `.github/pull_request_template.md`).
-2. Merge a `develop` solo cuando el Director lo pida.
-3. Después, PR `develop` → `main`, con tag anotado sobre `main` (`vX.Y.Z`) y sincronía `main` → `develop`, también solo cuando el Director lo pida.
+**En cada fase:**
+1. Plan corto y espera del OK; si el Director lo pide, el plan se guarda en `docs/plans/fase-<N>-plan.md`.
+2. Crea la rama, haz los cambios y commitéalos por bloque lógico. `git add` siempre con rutas explícitas, nunca `git add .`.
+3. Al final: push de la rama y PR hacia `develop` (o hacia su base apilada) con `gh pr create` y la plantilla de `.github/pull_request_template.md`.
+4. Merge a `develop` solo cuando el Director lo pida. Después, PR `develop` → `main`, con tag anotado sobre `main` (`vX.Y.Z`) y sincronía `main` → `develop`, también solo cuando lo pida.
 
 Nunca hagas merge, push forzado ni tag por tu cuenta.
 
@@ -96,20 +92,21 @@ Nunca hagas merge, push forzado ni tag por tu cuenta.
 - El mensaje explica el porqué cuando no es obvio (cuerpo opcional, en líneas de 72 caracteres).
 - Claude puede figurar como coautor en los commits y PRs.
 
-## Definición de terminado (por prompt)
+## Definición de terminado (por fase)
 
 - [ ] Hace lo que pide el prompt, sin añadir cosas que no pidió.
 - [ ] Cadenas en EN y ES; solo tokens del design system (ni hex ni animaciones sueltas).
 - [ ] `DESIGN_SYSTEM.md` actualizado si cambió un valor visual.
-- [ ] Commits hechos en `feature/diseno`.
+- [ ] Tests de la lógica nueva; `testDebugUnitTest` y `assembleDebug` en verde al final.
+- [ ] Commits en la rama de la fase y PR abierto hacia `develop` (o su base apilada), sin merge.
 
-## Al terminar cada prompt
+## Al terminar cada etapa
 
-Reporta de forma breve y espera el siguiente:
+Reporta de forma breve y espera a que el Director lo pruebe:
 
 ```
-Prompt: <qué se pidió, en una línea>
-Rama: feature/diseno
+Prompt: <fase y etapa, en una línea>
+Rama: feature/fase-<N>-<nombre>
 Commits: <lista hash + mensaje>
 Para probar: <qué pantalla mirar y cómo llegar>
 Pendiente / riesgos: <si hay; qué no pude verificar>

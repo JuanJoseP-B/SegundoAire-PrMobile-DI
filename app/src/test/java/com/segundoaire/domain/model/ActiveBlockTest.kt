@@ -40,4 +40,20 @@ class ActiveBlockTest {
         assertTrue(block.isActiveAt(block.endsAt - 1))
         assertFalse(block.isActiveAt(block.endsAt))
     }
+
+    @Test
+    fun `el avance va de cero al iniciar a uno al terminar`() {
+        assertEquals(0f, block.progress(start), 0.0001f)
+        assertEquals(0.5f, block.progress(start + 150_000), 0.0001f)
+        assertEquals(1f, block.progress(block.endsAt), 0.0001f)
+        assertEquals(1f, block.progress(block.endsAt + 60_000), 0.0001f)
+    }
+
+    @Test
+    fun `los segundos restantes se redondean hacia arriba`() {
+        assertEquals(300, block.remainingSeconds(start))
+        assertEquals(300, block.remainingSeconds(start + 1))
+        assertEquals(1, block.remainingSeconds(block.endsAt - 1))
+        assertEquals(0, block.remainingSeconds(block.endsAt))
+    }
 }

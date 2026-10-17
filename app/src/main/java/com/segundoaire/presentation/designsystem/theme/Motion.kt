@@ -40,6 +40,7 @@ object Motion {
     const val BreathInhaleMillis = 4000
     const val BreathExhaleMillis = 4000
     const val HoldMillis = 1500
+    const val HoldReleaseMillis = 300
     const val ReducedFadeMillis = 150
 
     // La hoja del GlassWall entra creciendo desde esta escala
@@ -73,6 +74,9 @@ object Motion {
     )
 
     fun <T> hold(): FiniteAnimationSpec<T> = tween(durationMillis = HoldMillis, easing = LinearEasing)
+
+    /** Al soltar antes de tiempo, el relleno del hold se vacía en 300 ms, también lineal. */
+    fun <T> holdRelease(): FiniteAnimationSpec<T> = tween(durationMillis = HoldReleaseMillis, easing = LinearEasing)
 
     fun <T> reducedFade(): FiniteAnimationSpec<T> = tween(durationMillis = ReducedFadeMillis)
 
@@ -199,6 +203,73 @@ object Motion {
         animation = tween(durationMillis = SpinMillis, easing = LinearEasing),
         repeatMode = RepeatMode.Restart
     )
+
+    // ---- App principal (DESIGN_SYSTEM.md §8.2) ----
+
+    private val NavIndicatorEasing = CubicBezierEasing(0.3f, 1.2f, 0.5f, 1f)
+
+    const val NavIndicatorMillis = 520
+    const val PageMillis = 520
+    const val PageFadeMillis = 320
+    const val ThinkMillis = 2400
+
+    /** Lo que el coach "piensa" antes de revelar el mensaje. */
+    const val CoachThinkingMillis = 1400L
+
+    /** Medio ciclo de los puntos del coach (1 s ida y vuelta) y su desfase. */
+    const val CoachDotMillis = 500
+    const val CoachDotStaggerMillis = 150
+
+    /** Medio ciclo del skeleton (1,4 s ida y vuelta). */
+    const val SkeletonMillis = 700
+
+    /** Respiración de la semilla del coach y de la punta del anillo (4 s por mitad). */
+    const val SeedBreathMillis = 4000
+
+    /** Toast: entra en el 12 % de 2,6 s, se queda y sale en el último 20 %. */
+    const val ToastMillis = 2600L
+    const val ToastInMillis = 312
+    const val ToastOutMillis = 520
+
+    /** Modo enfoque: sube 40 dp en 600 ms mientras se funde en 500 ms. */
+    const val FocusRiseMillis = 600
+    const val FocusFadeMillis = 500
+
+    /** Indicador de la barra inferior: se desliza con un leve sobreimpulso. */
+    fun <T> navIndicator(): FiniteAnimationSpec<T> =
+        tween(durationMillis = NavIndicatorMillis, easing = NavIndicatorEasing)
+
+    /** Desplazamiento de la pestaña que entra (24 dp en la dirección del tab). */
+    fun <T> page(): FiniteAnimationSpec<T> = tween(durationMillis = PageMillis, easing = RiseEasing)
+
+    /** Fundido de la pestaña que entra y la que sale. */
+    fun <T> pageFade(): FiniteAnimationSpec<T> = tween(durationMillis = PageFadeMillis, easing = EaseEasing)
+
+    // GlassWall (DESIGN_SYSTEM.md §14): curvas de cada tramo; el tiempo corre lineal con gust()
+    const val WallLeafFallMillis = 1600
+    const val WallLeafRiseMillis = 1000
+    const val WallBreathMillis = 8000
+    const val WallScrimMillis = 600
+    const val WallContentMillis = 500
+    const val WallContentDelayMillis = 320
+    const val WallLeaveMillis = 450
+    const val WallAskMillis = 600
+    const val WallCanopyMillis = 800
+
+    /** La hoja que cae al centro del GlassWall. */
+    val WallFallEasing = CubicBezierEasing(0.3f, 0.1f, 0.3f, 1f)
+
+    /** La hoja que sube y se va al volver al bloque. */
+    val WallRiseEasing = CubicBezierEasing(0.5f, 0f, 0.2f, 1f)
+
+    /** Cada mitad de la respiración y los fundidos de Inhala / Exhala ("ease-in-out"). */
+    val WallBreathEasing = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
+
+    /** Brillo cónico del borde del coach mientras piensa: una vuelta cada 2,4 s. */
+    fun think(): InfiniteRepeatableSpec<Float> = infiniteRepeatable(
+        animation = tween(durationMillis = ThinkMillis, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart
+    )
 }
 
 /**
@@ -234,6 +305,8 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     fun breath(): InfiniteRepeatableSpec<Float> = Motion.breath()
 
     fun <T> hold(): FiniteAnimationSpec<T> = Motion.hold()
+
+    fun <T> holdRelease(): FiniteAnimationSpec<T> = Motion.holdRelease()
 
     // Onboarding del árbol: con reducir movimiento todo es un fundido de 150 ms. Los bucles
     // (sway, drift, ripple, spin) no tienen versión reducida: quien los usa no los arranca
@@ -280,6 +353,14 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     fun <T> dot(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.dot()
 
     fun <T> breathHalf(): FiniteAnimationSpec<T> = Motion.breathHalf()
+
+    // App principal: los bucles (think y los de drift) no se arrancan con [reduced]
+
+    fun <T> navIndicator(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.navIndicator()
+
+    fun <T> page(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.page()
+
+    fun <T> pageFade(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.pageFade()
 
     override fun equals(other: Any?): Boolean = other is SegundoAireMotion && other.reduced == reduced
 

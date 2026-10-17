@@ -54,6 +54,13 @@ class Haptics(private val view: View, private val vibrator: Vibrator?) {
         )
     }
 
+    /** Al iniciar un bloque: el patrón 20 / 30 / 40 ms (vibra, pausa, vibra). */
+    fun startBlock() {
+        vibrator?.takeIf { it.hasVibrator() }?.vibrate(
+            VibrationEffect.createWaveform(StartBlockPattern, NoRepeat)
+        )
+    }
+
     private fun pulse(millis: Long) {
         vibrator?.takeIf { it.hasVibrator() }?.vibrate(
             VibrationEffect.createOneShot(millis, VibrationEffect.DEFAULT_AMPLITUDE)
@@ -67,6 +74,9 @@ class Haptics(private val view: View, private val vibrator: Vibrator?) {
 
         // Espera inicial, vibra 30, pausa 40, vibra 60
         val CommitPattern = longArrayOf(0, 30, 40, 60)
+
+        // Espera inicial, vibra 20, pausa 30, vibra 40
+        val StartBlockPattern = longArrayOf(0, 20, 30, 40)
     }
 }
 
