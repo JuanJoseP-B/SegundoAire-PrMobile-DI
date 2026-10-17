@@ -227,14 +227,31 @@ La pantalla de splash presenta una animación de respiración que revela la marc
 |---|---|---|---|
 | `Motion.splashBreath` | spring | `dampingRatio = 0.8f, stiffness = 200f` | Oscilación inicial del blob (2 ciclos) |
 | `Motion.splashDeep` | tween | `durationMillis = 1000, easing = EaseOutCubic` | Expansión radial (bocanada profunda) |
-| `Motion.splashRelease` | tween | `durationMillis = 500, easing = Linear` | Cubrimiento de pantalla |
+| `Motion.splashRelease` | tween | `durationMillis = 500, easing = FastOutSlowInEasing` * | Cubrimiento de pantalla |
 | `Motion.splashText` | tween | `durationMillis = 300, easing = Linear` | Aparición del texto (fundido) |
-| `Motion.splashHold` | lineal | `tween(1000, easing = LinearEasing)` | Pausa final (opcional) |
+| `Motion.splashHold` | lineal | `tween(1000, easing = LinearEasing)` | Pausa final con el texto visible (solo en la versión completa) |
 | `Motion.splashExit` | tween | `durationMillis = 200, easing = Linear` | Crossfade hacia la pantalla principal |
+| `Motion.splashPhase` | lineal | `tween(6000, easing = LinearEasing)`, infinito | Fase interna del borde del blob (ver nota técnica) |
+
+\* La tabla original decía `Linear`; se implementó con `FastOutSlowInEasing` por indicación del Director, para que el cubrimiento arranque y termine suave.
+
+### Versiones y duración
+
+La duración sale de sumar los tokens (`SplashTimeline`, con test), no de cronometrar el teléfono.
+
+| Versión | Cuándo | Pasos | Duración |
+|---|---|---|---|
+| Completa | Onboarding sin completar (primera ejecución o tras "Reiniciar app") | 2 respiraciones (4 tramos de 1000 ms) + bocanada 1000 + tensión 150 + liberación 500 + texto 300 + pausa 1000 + salida 200 | **7.15 s** (6.15 s sin la pausa opcional) |
+| Abreviada | Onboarding ya completado | liberación 500 + texto 300 + salida 200 | **1.0 s** |
+| Reducir movimiento | `ANIMATOR_DURATION_SCALE = 0` | cubrimiento 150 + texto 150 + pausa 750 + salida 150 | **1.2 s** |
+
+Cada tramo de respiración es un spring `splashBreath` (1.0 ⇄ 1.2) seguido de una pausa que lo completa a 1000 ms. La pausa de tensión de 150 ms entre la bocanada y la liberación no está en la coreografía original.
+
+Un toque en cualquier momento salta directo a la salida (200 ms, 150 ms con reducir movimiento). El overlay se lleva los toques mientras dura y expone `app_name` como descripción de accesibilidad.
 
 ### Variante de reducir movimiento
 
-Si el sistema tiene `ANIMATOR_DURATION_SCALE = 0`, la animación se reduce a **1.2 s**: una serie de fundidos rápidos (blob entra, se expande, cubre, texto y crossfade).
+Si el sistema tiene `ANIMATOR_DURATION_SCALE = 0`, la animación se reduce a **1.2 s**: no hay blob. El color `primary` cubre la pantalla con un fundido de 150 ms, aparece el texto, hay una pausa de 750 ms y todo se funde.
 
 ### Nota técnica
 

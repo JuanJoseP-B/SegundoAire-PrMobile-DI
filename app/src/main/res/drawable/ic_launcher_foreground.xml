@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Capa de primer plano: la forma de respiración (BreathingCircle). Un halo en
+    glow que se disuelve hacia fuera y un núcleo en primary, a la mitad del
+    diámetro. Cabe en la zona segura de 66 dp del lienzo de 108 dp.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:pathData="M24,54a30,30 0,1 0,60 0a30,30 0,1 0,-60 0z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="54"
+                android:centerY="54"
+                android:gradientRadius="30"
+                android:type="radial">
+                <item
+                    android:color="@color/launcher_glow"
+                    android:offset="0" />
+                <item
+                    android:color="@color/launcher_glow"
+                    android:offset="0.55" />
+                <item
+                    android:color="@color/launcher_glow_clear"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="@color/launcher_core"
+        android:pathData="M39,54a15,15 0,1 0,30 0a15,15 0,1 0,-30 0z" />
+</vector>

@@ -40,15 +40,15 @@ Aceptación: `develop` existe en el remoto; los cinco documentos están en el re
 
 Objetivo: el tema nuevo existe en código y la app actual ya lo usa (sin rediseñar pantallas todavía).
 
-- [ ] **F9-T1** Agregar la fuente Manrope (variable) en `res/font`.
-- [ ] **F9-T2** `Color.kt`: tokens semánticos claro/oscuro, con los ajustes de contraste y `glow`.
-- [ ] **F9-T3** `Type.kt`: escala tipográfica completa (`displayTimer`, `displayImpact`… `labelSm`) con `tabular-nums` donde aplique.
-- [ ] **F9-T4** `Glass.kt`: niveles 1/2/3 (relleno, blur, sombra, borde de gradiente) + respaldo para Android 11 o anterior.
-- [ ] **F9-T5** `Spacing.kt` y `Shape.kt`: rejilla de 4/8 dp y radios.
-- [ ] **F9-T6** `Motion.kt`: los nueve tokens + `rememberReducedMotion()`.
-- [ ] **F9-T7** `SegundoAireTheme` con `CompositionLocal`s para glass, motion y spacing; eliminar la paleta legado.
-- [ ] **F9-T8** Agregar dependencia Haze y `Modifier.glass(level)`.
-- [ ] **F9-T9** Tests unitarios de contraste de los pares de color críticos.
+- [x] **F9-T1** Agregar la fuente Manrope (variable) en `res/font`.
+- [x] **F9-T2** `Color.kt`: tokens semánticos claro/oscuro, con los ajustes de contraste y `glow`.
+- [x] **F9-T3** `Type.kt`: escala tipográfica completa (`displayTimer`, `displayImpact`… `labelSm`) con `tabular-nums` donde aplique.
+- [x] **F9-T4** `Glass.kt`: niveles 1/2/3 (relleno, blur, sombra, borde de gradiente) + respaldo para Android 11 o anterior.
+- [x] **F9-T5** `Spacing.kt` y `Shape.kt`: rejilla de 4/8 dp y radios.
+- [x] **F9-T6** `Motion.kt`: los nueve tokens + `rememberReducedMotion()`.
+- [x] **F9-T7** `SegundoAireTheme` con `CompositionLocal`s para glass, motion y spacing; eliminar la paleta legado.
+- [x] **F9-T8** Agregar dependencia Haze y `Modifier.glass(level)`.
+- [x] **F9-T9** Tests unitarios de contraste de los pares de color críticos.
 
 Aceptación: la app compila y se ve con la paleta nueva; cero hex fuera de `Color.kt`.
 
@@ -131,9 +131,9 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F15-T1** Room v2: entidad InterceptionEvent (paquete, fecha, resultado) + migración 1→2 + exportSchema
 - [x] **F15-T2** Registrar cada intercepción desde el overlay
 - [x] **F15-T3** Use cases: minutos recuperados, aperturas evitadas, racha
-- [ ] **F15-T4** Pantalla Progreso: dato de impacto con AnimatedCounter, gráfico semanal en Canvas, racha
-- [ ] **F15-T5** Modo demo: generador de 7 días de datos de ejemplo (activable desde Ajustes)
-- [ ] **F15-T6** Tests de los cálculos + cadenas EN/ES
+- [x] **F15-T4** Pantalla Progreso: dato de impacto con AnimatedCounter, gráfico semanal en Canvas, racha
+- [x] **F15-T5** Modo demo: generador de 7 días de datos de ejemplo (activable desde Ajustes)
+- [x] **F15-T6** Tests de los cálculos + cadenas EN/ES
 
 ## Fase 16 · Perfil y Ajustes
 
@@ -161,20 +161,20 @@ Aceptación: cero hex fuera de `Color.kt`, todas las pantallas con previews, tes
 
 Objetivo: implementar la pantalla de splash con coreografía de respiración y revelar la marca.
 
-- [ ] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
-- [ ] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
-- [ ] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
-- [ ] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
-- [ ] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
-- [ ] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
-- [ ] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
+- [x] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
+- [x] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
+- [x] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
+- [x] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
+- [x] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
+- [x] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
+- [x] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
 
 Aceptación: splash anima 6 s (o 1.2 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
 
 ## Fase 17 · Pulido y release
 
-- [ ] **F17-T1** Ícono adaptativo (SplashScreen API)
-- [ ] **F17-T2** Revisión visual completa en claro y oscuro: espaciados, contraste, textos cortados
-- [ ] **F17-T3** R8 y build de release
-- [ ] **F17-T4** README con capturas y versionName 1.0.0
+- [x] **F17-T1** Ícono adaptativo y splash (SplashScreen API)
+- [x] **F17-T2** Revisión visual completa en claro y oscuro: espaciados, contraste, textos cortados
+- [x] **F17-T3** R8 y build de release
+- [x] **F17-T4** README con capturas y versionName 1.0.0
 - [ ] **F17-T5** Merge a main y develop, tag v1.0.0

@@ -62,4 +62,10 @@
     <string name="catalog_section_glass_wall" translatable="false">GlassWall</string>
     <string name="catalog_glass_wall_no_block">No block</string>
     <string name="catalog_sample_name" translatable="false">Ana</string>
+    <string name="catalog_section_splash" translatable="false">Splash</string>
+    <string name="catalog_splash_replay">Replay animation</string>
+    <string name="catalog_splash_full">Full</string>
+    <string name="catalog_splash_short">Short</string>
+    <string name="catalog_splash_reduced_note">With the reduce-motion switch on, the reduced version plays (about 1.2 s, no blob).</string>
+    <string name="catalog_splash_done">Finished</string>
 </resources>

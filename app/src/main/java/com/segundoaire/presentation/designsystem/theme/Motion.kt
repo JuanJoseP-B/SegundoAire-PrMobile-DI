@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
@@ -74,6 +75,49 @@ object Motion {
     fun <T> hold(): FiniteAnimationSpec<T> = tween(durationMillis = HoldMillis, easing = LinearEasing)
 
     fun <T> reducedFade(): FiniteAnimationSpec<T> = tween(durationMillis = ReducedFadeMillis)
+
+    // Splash El Respiro, DESIGN_SYSTEM.md §9. Las duraciones son constantes para que
+    // la línea de tiempo (SplashTimeline) pueda sumarlas sin animar nada.
+    const val SplashBreathCount = 2
+
+    // Cada inhalar o exhalar dura esto: el spring se asienta y el resto es pausa
+    const val SplashBreathLegMillis = 1000
+    const val SplashBreathScale = 1.2f
+    const val SplashDeepScale = 1.4f
+    const val SplashDeepMillis = 1000
+
+    // Pausa de tensión entre la bocanada y la liberación
+    const val SplashTensionMillis = 150
+    const val SplashReleaseMillis = 500
+    const val SplashTextMillis = 300
+    const val SplashHoldMillis = 1000
+    const val SplashExitMillis = 200
+
+    // Reducir movimiento: cubrimiento + texto + pausa + salida suman 1.2 s
+    const val SplashReducedHoldMillis = 750
+
+    // Un ciclo de la fase del borde del blob; sus frecuencias son enteras, así que cierra sin salto
+    const val SplashPhaseMillis = 6000
+
+    fun <T> splashBreath(): FiniteAnimationSpec<T> = spring(dampingRatio = 0.8f, stiffness = 200f)
+
+    fun <T> splashDeep(): FiniteAnimationSpec<T> =
+        tween(durationMillis = SplashDeepMillis, easing = EaseOutCubic)
+
+    fun <T> splashRelease(): FiniteAnimationSpec<T> =
+        tween(durationMillis = SplashReleaseMillis, easing = FastOutSlowInEasing)
+
+    fun <T> splashText(): FiniteAnimationSpec<T> =
+        tween(durationMillis = SplashTextMillis, easing = LinearEasing)
+
+    fun <T> splashExit(): FiniteAnimationSpec<T> =
+        tween(durationMillis = SplashExitMillis, easing = LinearEasing)
+
+    /** Única excepción lineal documentada: la fase del borde mantiene la respiración continua. */
+    fun splashPhase(): InfiniteRepeatableSpec<Float> = infiniteRepeatable(
+        animation = tween(durationMillis = SplashPhaseMillis, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart
+    )
 }
 
 /**
@@ -109,6 +153,24 @@ class SegundoAireMotion(val reduced: Boolean = false) {
     fun breath(): InfiniteRepeatableSpec<Float> = Motion.breath()
 
     fun <T> hold(): FiniteAnimationSpec<T> = Motion.hold()
+
+    // El blob no existe con reducir movimiento: solo quedan el cubrimiento, el texto y la salida,
+    // todos como fundido de 150 ms. Las tres curvas del blob se dejan en fundido por si se piden.
+    val splashTextMillis: Int get() = if (reduced) Motion.ReducedFadeMillis else Motion.SplashTextMillis
+    val splashHoldMillis: Int get() = if (reduced) Motion.SplashReducedHoldMillis else Motion.SplashHoldMillis
+    val splashExitMillis: Int get() = if (reduced) Motion.ReducedFadeMillis else Motion.SplashExitMillis
+
+    fun <T> splashBreath(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.splashBreath()
+
+    fun <T> splashDeep(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.splashDeep()
+
+    fun <T> splashRelease(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.splashRelease()
+
+    fun <T> splashText(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.splashText()
+
+    fun <T> splashExit(): FiniteAnimationSpec<T> = if (reduced) Motion.reducedFade() else Motion.splashExit()
+
+    fun splashPhase(): InfiniteRepeatableSpec<Float> = Motion.splashPhase()
 
     override fun equals(other: Any?): Boolean = other is SegundoAireMotion && other.reduced == reduced
 
