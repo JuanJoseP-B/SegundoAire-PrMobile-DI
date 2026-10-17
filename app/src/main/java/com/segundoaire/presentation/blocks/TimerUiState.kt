@@ -5,8 +5,8 @@ import com.segundoaire.domain.model.ActiveBlock
 import com.segundoaire.domain.model.RigorLevel
 
 /**
- * Una app de la lista de Bloques. [minutesToday] es la estimación de uso de hoy;
- * `null` mientras no haya medición.
+ * Una app de la lista de Bloques. [minutesToday] es la estimación de uso de hoy
+ * (eventos del servicio de accesibilidad); `null` si todavía no se midió nada.
  */
 @Immutable
 data class WatchedApp(

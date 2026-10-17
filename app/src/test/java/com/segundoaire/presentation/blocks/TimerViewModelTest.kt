@@ -6,7 +6,9 @@ import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import com.segundoaire.domain.usecase.GetUserProfileUseCase
+import com.segundoaire.domain.usecase.ObserveAppUsageTodayUseCase
 import com.segundoaire.domain.usecase.ToggleAppBlockStatusUseCase
+import com.segundoaire.testing.FakeAppUsageRepository
 import com.segundoaire.testing.FakeBlockRepository
 import com.segundoaire.testing.FakeBlockedAppRepository
 import com.segundoaire.testing.FakeUserProfileRepository
@@ -52,11 +54,13 @@ class TimerViewModelTest {
     fun tearDown() = Dispatchers.resetMain()
 
     private val profile = FakeUserProfileRepository()
+    private val usage = FakeAppUsageRepository()
 
     private fun viewModel() = TimerViewModel(
         GetBlockedAppsUseCase(blockedApps),
         GetUserProfileUseCase(profile),
         ToggleAppBlockStatusUseCase(blockedApps),
+        ObserveAppUsageTodayUseCase(usage, clock),
         blocks,
         clock
     )
@@ -412,5 +416,14 @@ class TimerViewModelTest {
 
         assertTrue(viewModel.uiState.value.apps.first { it.packageName == "com.example.news" }.isBlocked)
         assertEquals(3, viewModel.uiState.value.watchedAppsCount)
+    }
+
+    @Test
+    fun `cada app trae sus minutos estimados de hoy`() = runTest(dispatcher) {
+        usage.usage.value = mapOf("com.example.video" to 48 * 60_000L + 30_000L)
+        val apps = observed(viewModel()).uiState.value.apps
+
+        assertEquals(48, apps.first { it.packageName == "com.example.video" }.minutesToday)
+        assertNull(apps.first { it.packageName == "com.example.news" }.minutesToday)
     }
 }

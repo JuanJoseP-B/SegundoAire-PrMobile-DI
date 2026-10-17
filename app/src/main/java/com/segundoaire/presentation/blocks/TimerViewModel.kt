@@ -7,6 +7,7 @@ import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.repository.BlockRepository
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
 import com.segundoaire.domain.usecase.GetUserProfileUseCase
+import com.segundoaire.domain.usecase.ObserveAppUsageTodayUseCase
 import com.segundoaire.domain.usecase.ToggleAppBlockStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,6 +44,7 @@ class TimerViewModel @Inject constructor(
     getBlockedApps: GetBlockedAppsUseCase,
     getUserProfile: GetUserProfileUseCase,
     private val toggleAppBlockStatus: ToggleAppBlockStatusUseCase,
+    observeAppUsageToday: ObserveAppUsageTodayUseCase,
     private val blockRepository: BlockRepository,
     private val clock: Clock
 ) : ViewModel() {
@@ -81,10 +83,15 @@ class TimerViewModel @Inject constructor(
 
     private val suggestedRigor = getUserProfile().map { it.suggestedRigor }.distinctUntilChanged()
 
+    // Las apps con sus minutos estimados de hoy
+    private val apps = combine(getBlockedApps(), observeAppUsageToday()) { apps, usage ->
+        apps.map { WatchedApp(it.packageName, it.appName, it.isBlocked, usage[it.packageName]) }
+    }
+
     val uiState: StateFlow<TimerUiState> = combine(
         selection,
         running,
-        getBlockedApps(),
+        apps,
         completedMinutes,
         suggestedRigor
     ) { selection, running, apps, completedMinutes, suggested ->
@@ -99,7 +106,7 @@ class TimerViewModel @Inject constructor(
                 completed != null -> 0L
                 else -> selection.minutes * ActiveBlock.MILLIS_PER_MINUTE
             },
-            apps = apps.map { WatchedApp(it.packageName, it.appName, it.isBlocked) },
+            apps = apps,
             completedMinutes = completed
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialState())
