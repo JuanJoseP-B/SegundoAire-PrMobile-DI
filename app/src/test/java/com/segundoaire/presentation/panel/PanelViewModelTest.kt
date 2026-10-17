@@ -170,16 +170,23 @@ class PanelViewModelTest {
     // --- Bloque en curso ---
 
     @Test
-    fun `muestra el bloque en curso y no uno vencido`() = runTest(dispatcher) {
+    fun `muestra el bloque en curso hasta que termina`() = runTest(dispatcher) {
         blocks.start(15, RigorLevel.MINDFUL)
         val viewModel = observed(viewModel())
         assertEquals(15, viewModel.uiState.value.activeBlock?.durationMinutes)
 
-        // Nadie retiró el bloque vencido: al volver a la app ya no se muestra
         clock.instant = clock.instant.plusSeconds(16 * 60)
-        viewModel.onResume()
+        blocks.complete()
 
         assertNull(viewModel.uiState.value.activeBlock)
+    }
+
+    @Test
+    fun `un bloque ya vencido al abrir no se muestra`() = runTest(dispatcher) {
+        blocks.start(15, RigorLevel.MINDFUL)
+        clock.instant = clock.instant.plusSeconds(16 * 60)
+
+        assertNull(observed(viewModel()).uiState.value.activeBlock)
     }
 
     // --- Coach ---

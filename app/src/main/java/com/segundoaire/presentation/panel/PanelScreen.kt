@@ -215,30 +215,32 @@ private fun ActiveBlockBar(
 ) {
     val motion = SegundoAireTheme.motion
     val risePx = with(LocalDensity.current) { BlockBarRise.roundToPx() }
-    // Mientras sale, el último bloque conocido sigue dibujado
-    var shown by remember { mutableStateOf(block) }
-    if (block != null) shown = block
-    AnimatedVisibility(
-        visible = block != null,
-        modifier = modifier,
-        enter = fadeIn(motion.rise()) + slideInVertically(motion.rise()) { if (motion.reduced) 0 else risePx },
-        exit = fadeOut(motion.fade(200))
-    ) {
-        shown?.let { ActiveBlockContent(it, nowMillis, onClick) }
-    }
-}
-
-@Composable
-private fun ActiveBlockContent(block: ActiveBlock, nowMillis: () -> Long, onClick: () -> Unit) {
-    val colors = SegundoAireTheme.colors
-    val spacing = SegundoAireTheme.spacing
-    val typography = SegundoAireTheme.typography
     val now by produceState(nowMillis(), block) {
-        while (true) {
+        while (block != null) {
             value = nowMillis()
             delay(ClockTickMillis)
         }
     }
+    // Un bloque que vence se va aunque nadie lo haya retirado todavía
+    val live = block?.takeIf { it.isActiveAt(now) }
+    // Mientras sale, el último bloque conocido sigue dibujado
+    var shown by remember { mutableStateOf(live) }
+    if (live != null) shown = live
+    AnimatedVisibility(
+        visible = live != null,
+        modifier = modifier,
+        enter = fadeIn(motion.rise()) + slideInVertically(motion.rise()) { if (motion.reduced) 0 else risePx },
+        exit = fadeOut(motion.fade(200))
+    ) {
+        shown?.let { ActiveBlockContent(it, now, onClick) }
+    }
+}
+
+@Composable
+private fun ActiveBlockContent(block: ActiveBlock, now: Long, onClick: () -> Unit) {
+    val colors = SegundoAireTheme.colors
+    val spacing = SegundoAireTheme.spacing
+    val typography = SegundoAireTheme.typography
     val progress = block.progress(now)
     val remaining = BlockRules.clockText(block.remainingSeconds(now))
 
