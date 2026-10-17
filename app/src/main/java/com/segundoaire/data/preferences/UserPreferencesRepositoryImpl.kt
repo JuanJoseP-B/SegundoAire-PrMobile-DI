@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.repository.UserPreferencesRepository
@@ -23,6 +24,22 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun completeOnboarding() {
         dataStore.edit { prefs -> prefs[IS_ONBOARDING_COMPLETED] = true }
+    }
+
+    override val plantedAtMillis: Flow<Long?> = dataStore.data
+        .map { prefs -> prefs[PLANTED_AT] }
+        .distinctUntilChanged()
+
+    override suspend fun markPlanted(atMillis: Long) {
+        dataStore.edit { prefs -> if (prefs[PLANTED_AT] == null) prefs[PLANTED_AT] = atMillis }
+    }
+
+    override val isSoundEnabled: Flow<Boolean> = dataStore.data
+        .map { prefs -> prefs[SOUND_ENABLED] ?: true }
+        .distinctUntilChanged()
+
+    override suspend fun setSoundEnabled(enabled: Boolean) {
+        dataStore.edit { prefs -> prefs[SOUND_ENABLED] = enabled }
     }
 
     override val isDemoMode: Flow<Boolean> = dataStore.data
@@ -46,5 +63,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         val IS_ONBOARDING_COMPLETED = booleanPreferencesKey("is_onboarding_completed")
         val IS_DEMO_MODE = booleanPreferencesKey("is_demo_mode")
         val THEME_MODE = stringPreferencesKey("theme_mode")
+        val PLANTED_AT = longPreferencesKey("tree_planted_at")
+        val SOUND_ENABLED = booleanPreferencesKey("sound_enabled")
     }
 }

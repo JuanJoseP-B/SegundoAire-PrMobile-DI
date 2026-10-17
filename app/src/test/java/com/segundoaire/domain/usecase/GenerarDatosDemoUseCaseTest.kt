@@ -82,7 +82,8 @@ class GenerarDatosDemoUseCaseTest {
         val events = FakeInterceptionEventRepository(data.events)
 
         assertEquals(295, MinutosRecuperadosUseCase(sessions, clock)().first())
-        assertEquals(19, AperturasEvitadasUseCase(events, clock)().first())
+        // Aperturas evitadas cuenta todas las intercepciones, como el Panel
+        assertEquals(25, AperturasEvitadasUseCase(events, clock)().first())
         assertEquals(7, RachaUseCase(sessions, clock)().first())
         assertTrue(MinutosPorDiaUseCase(sessions, clock)().first().all { it.minutes > 0 })
     }

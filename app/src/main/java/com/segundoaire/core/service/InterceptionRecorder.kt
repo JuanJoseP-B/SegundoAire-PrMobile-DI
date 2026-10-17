@@ -2,6 +2,7 @@ package com.segundoaire.core.service
 
 import android.util.Log
 import com.segundoaire.di.ApplicationScope
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.domain.repository.InterceptionEventRepository
 import kotlinx.coroutines.CancellationException
@@ -46,6 +47,15 @@ class InterceptionRecorder @Inject constructor(
         scope.launch {
             val eventId = id.await() ?: return@launch
             write { repository.setResult(eventId, result) }
+        }
+    }
+
+    /** El usuario dijo para qué entraba (chips de Mindful): queda en la intercepción abierta. */
+    fun onIntent(intent: InterceptionIntent) {
+        val id = pending ?: return
+        scope.launch {
+            val eventId = id.await() ?: return@launch
+            write { repository.setIntent(eventId, intent) }
         }
     }
 

@@ -5,19 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.segundoaire.presentation.designsystem.theme.SegundoAireMotion
 import com.segundoaire.presentation.navigation.flowGraph
-import com.segundoaire.presentation.navigation.navigateFrom
 
 const val SetupGraphRoute = "setup"
 
-private const val PermissionsDestination = "setup/permissions"
 private const val AppsDestination = "setup/apps"
 
 /**
- * Grafo anidado del setup: permisos → apps. [onCompleted] se llama una vez que
- * la selección quedó guardada y el setup marcado como completo.
- *
- * "Continuar" y "Hacerlo después" avanzan igual a las apps: lo que cambia es
- * si el Panel muestra después el banner de permisos pendientes.
+ * Grafo anidado del setup: la selección de apps. Los permisos ya se piden en el onboarding
+ * (paso 11); si quedaron pendientes, el Panel muestra el banner de permisos. [onCompleted] se
+ * llama una vez que la selección quedó guardada y el setup marcado como completo.
  */
 fun NavGraphBuilder.setupGraph(
     navController: NavHostController,
@@ -28,15 +24,11 @@ fun NavGraphBuilder.setupGraph(
 ) {
     flowGraph(
         route = SetupGraphRoute,
-        startDestination = PermissionsDestination,
+        startDestination = AppsDestination,
         motion = motion,
         stepOffsetPx = stepOffsetPx,
         forward = forward
     ) {
-        composable(PermissionsDestination) {
-            val goToApps = { navController.navigateFrom(PermissionsDestination, AppsDestination) }
-            PermissionsRoute(onContinue = goToApps, onSkip = goToApps)
-        }
         composable(AppsDestination) {
             AppSelectionRoute(onCompleted = onCompleted)
         }

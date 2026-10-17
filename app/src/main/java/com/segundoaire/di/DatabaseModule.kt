@@ -6,6 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.segundoaire.data.local.AppDatabase
 import com.segundoaire.data.local.MIGRATION_1_2
+import com.segundoaire.data.local.MIGRATION_2_3
+import com.segundoaire.data.local.dao.AppUsageDao
 import com.segundoaire.data.local.dao.BlockSessionDao
 import com.segundoaire.data.local.dao.BlockedAppDao
 import com.segundoaire.data.local.dao.InterceptionEventDao
@@ -24,7 +26,7 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .addCallback(SeedCallback)
             .build()
 
@@ -36,6 +38,9 @@ object DatabaseModule {
 
     @Provides
     fun provideBlockSessionDao(db: AppDatabase): BlockSessionDao = db.blockSessionDao()
+
+    @Provides
+    fun provideAppUsageDao(db: AppDatabase): AppUsageDao = db.appUsageDao()
 
     /** Reglas iniciales (las mismas que antes eran una lista estática en el motor). */
     private object SeedCallback : RoomDatabase.Callback() {

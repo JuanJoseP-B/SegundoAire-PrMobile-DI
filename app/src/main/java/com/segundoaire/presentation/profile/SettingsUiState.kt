@@ -2,6 +2,7 @@ package com.segundoaire.presentation.profile
 
 import androidx.compose.runtime.Immutable
 import com.segundoaire.domain.model.AppLanguage
+import com.segundoaire.domain.model.AuthMode
 import com.segundoaire.domain.model.ThemeMode
 
 /** Estado de los ajustes de la app que se aplican al momento. */
@@ -14,5 +15,8 @@ data class SettingsUiState(
     val isResetting: Boolean = false,
     /** El reinicio terminó: la pantalla navega a la bienvenida. */
     val isResetCompleted: Boolean = false,
-    val resetFailed: Boolean = false
+    val resetFailed: Boolean = false,
+    /** La cuenta, en solo lectura: es simulada. */
+    val authMode: AuthMode? = null,
+    val email: String = ""
 )

@@ -5,6 +5,18 @@ import com.segundoaire.domain.model.ActiveBlock
 import com.segundoaire.domain.model.RigorLevel
 
 /**
+ * Una app de la lista de Bloques. [minutesToday] es la estimación de uso de hoy
+ * (eventos del servicio de accesibilidad); `null` si todavía no se midió nada.
+ */
+@Immutable
+data class WatchedApp(
+    val packageName: String,
+    val name: String,
+    val isBlocked: Boolean,
+    val minutesToday: Int? = null
+)
+
+/**
  * Estado único de Bloques. Con un bloque en curso, [selectedMinutes] y [rigor]
  * son los del bloque y [remainingMillis] lo que le falta según el reloj.
  *
@@ -17,9 +29,11 @@ data class TimerUiState(
     val rigor: RigorLevel = RigorLevel.MINDFUL,
     val isRunning: Boolean = false,
     val remainingMillis: Long = selectedMinutes * ActiveBlock.MILLIS_PER_MINUTE,
-    val watchedAppsCount: Int = 0,
+    val apps: List<WatchedApp> = emptyList(),
     val completedMinutes: Int? = null
 ) {
+    val watchedAppsCount: Int get() = apps.count { it.isBlocked }
+
     val totalMillis: Long get() = selectedMinutes * ActiveBlock.MILLIS_PER_MINUTE
 
     /** Segundos que muestra el anillo: redondea hacia arriba para no enseñar 00:00 con el bloque vivo. */

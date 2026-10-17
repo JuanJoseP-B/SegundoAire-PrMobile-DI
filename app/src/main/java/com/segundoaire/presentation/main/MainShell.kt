@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -18,19 +19,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.segundoaire.R
+import com.segundoaire.presentation.blocks.FocusLayer
 import com.segundoaire.presentation.blocks.TimerRoute
 import com.segundoaire.presentation.designsystem.theme.GlassBackdrop
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
@@ -40,46 +45,88 @@ import com.segundoaire.presentation.profile.ProfileRoute
 import com.segundoaire.presentation.progress.ProgressRoute
 
 /**
- * Contenedor principal: las cuatro pestañas y la barra inferior flotante.
- * [onEditApps] abre la selección de apps desde el Panel y [onOpenTutorial] el
- * tutorial desde Ajustes. [onResetCompleted] vuelve a la bienvenida tras reiniciar
- * la app. [onOpenComponentCatalog]
- * solo se pasa en debug (pulsación larga en el saludo del Panel).
+ * Contenedor principal: las cuatro pestañas, la barra inferior flotante, el modo
+ * enfoque y los avisos breves. [onEditApps] abre la selección de apps desde Bloques y
+ * [onOpenAccount] la subpantalla Cuenta del Perfil. [openPanelRequest] llega del GlassWall
+ * ("Volver a mi bloque") y pone el Panel a la vista. [onOpenComponentCatalog] solo se
+ * pasa en debug (pulsación larga en el saludo del Panel).
  */
 @Composable
 fun MainShell(
     onEditApps: () -> Unit,
-    onOpenTutorial: () -> Unit,
-    onResetCompleted: () -> Unit,
+    onOpenAccount: () -> Unit,
     modifier: Modifier = Modifier,
-    onOpenComponentCatalog: (() -> Unit)? = null
+    openPanelRequest: Long? = null,
+    onOpenPanelHandled: () -> Unit = {},
+    onOpenComponentCatalog: (() -> Unit)? = null,
+    viewModel: MainShellViewModel = hiltViewModel()
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(MainTab.PANEL) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
+    val toast by viewModel.toast.collectAsStateWithLifecycle()
+    val focusOpen by viewModel.isFocusOpen.collectAsStateWithLifecycle()
+    val endedText = stringResource(R.string.focus_end_toast)
+
+    // Vuelve del GlassWall: el Panel a la vista para que brote la hoja nueva
+    LaunchedEffect(openPanelRequest) {
+        if (openPanelRequest == null) return@LaunchedEffect
+        viewModel.closeFocus()
+        viewModel.selectTab(MainTab.PANEL)
+        onOpenPanelHandled()
+    }
 
     MainShellContent(
         selectedTab = selectedTab,
-        onTabSelected = { selectedTab = it },
-        modifier = modifier
+        onTabSelected = viewModel::selectTab,
+        modifier = modifier,
+        overlay = { barPadding ->
+            FocusLayer(
+                open = focusOpen,
+                onOpen = viewModel::openFocus,
+                onClose = viewModel::closeFocus,
+                onBackToPanel = {
+                    viewModel.closeFocus()
+                    viewModel.selectTab(MainTab.PANEL)
+                },
+                onEnded = { viewModel.showToast(endedText) }
+            )
+            ShellToast(
+                message = toast,
+                onDone = viewModel::onToastDone,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(barPadding)
+                    .padding(bottom = SegundoAireTheme.spacing.space4)
+            )
+        }
     ) { tab, contentPadding ->
         when (tab) {
             MainTab.PANEL -> PanelRoute(
-                onEditApps = onEditApps,
+                onOpenTab = viewModel::selectTab,
+                onOpenActiveBlock = viewModel::openFocus,
+                onToast = viewModel::showToast,
                 contentPadding = contentPadding,
                 onTitleLongClick = onOpenComponentCatalog
             )
-            MainTab.BLOCKS -> TimerRoute(contentPadding = contentPadding)
+            MainTab.BLOCKS -> TimerRoute(
+                onOpenFocus = viewModel::openFocus,
+                onEditApps = onEditApps,
+                contentPadding = contentPadding
+            )
             MainTab.PROGRESS -> ProgressRoute(contentPadding = contentPadding)
             MainTab.PROFILE -> ProfileRoute(
-                contentPadding = contentPadding,
-                onOpenTutorial = onOpenTutorial,
-                onResetCompleted = onResetCompleted
+                onOpenAccount = onOpenAccount,
+                onToast = viewModel::showToast,
+                contentPadding = contentPadding
             )
         }
     }
 }
 
 /**
- * Estructura del shell sin dependencias de datos: [content] pinta la pestaña.
+ * Estructura del shell sin dependencias de datos: [content] pinta la pestaña y
+ * [overlay] lo que flota encima (el aviso breve), con el alto de la barra como padding.
+ * Al cambiar de pestaña, la que entra se desplaza 24 dp en la dirección del tab
+ * (`Motion.page`) mientras ambas se funden (`Motion.pageFade`).
  * El contenido es la fuente del desenfoque (`hazeSource`) de la barra, que va
  * encima y por eso pasa por detrás de ella. [content] recibe como padding el
  * alto de la barra para que su último elemento pueda quedar libre.
@@ -89,6 +136,7 @@ internal fun MainShellContent(
     selectedTab: MainTab,
     onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
+    overlay: @Composable BoxScope.(barPadding: PaddingValues) -> Unit = {},
     content: @Composable (MainTab, PaddingValues) -> Unit
 ) {
     val colors = SegundoAireTheme.colors
@@ -119,14 +167,14 @@ internal fun MainShellContent(
                     transitionSpec = {
                         // El tab de índice mayor entra por la derecha; en RTL, por la izquierda
                         val toward = if ((targetState.ordinal > initialState.ordinal) != rtl) 1 else -1
-                        val enterFade = fadeIn(motion.nav())
-                        val exitFade = fadeOut(motion.nav())
+                        val enterFade = fadeIn(motion.pageFade())
+                        val exitFade = fadeOut(motion.pageFade())
                         // Con reducir movimiento el desplazamiento es 0 y queda solo el fundido
                         if (slideOffsetPx == 0) {
                             enterFade togetherWith exitFade
                         } else {
-                            (slideInHorizontally(motion.nav()) { toward * slideOffsetPx } + enterFade) togetherWith
-                                (slideOutHorizontally(motion.nav()) { -toward * slideOffsetPx } + exitFade)
+                            (slideInHorizontally(motion.page()) { toward * slideOffsetPx } + enterFade) togetherWith
+                                (slideOutHorizontally(motion.page()) { -toward * slideOffsetPx } + exitFade)
                         }
                     },
                     label = "mainTabs"
@@ -143,6 +191,7 @@ internal fun MainShellContent(
                     .onSizeChanged { barHeightPx = it.height }
                     .navigationBarsPadding()
             )
+            overlay(barPadding)
         }
     }
 }

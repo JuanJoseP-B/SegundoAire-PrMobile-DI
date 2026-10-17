@@ -2,6 +2,8 @@
 
 Plan de trabajo por fases y tareas. Cada fase es una rama `feature/fase-N-slug` que sale de `develop` y vuelve por PR. Cada tarea produce uno o más commits lógicos. Marca `[x]` al terminar.
 
+> **Desde la Fase 17 el trabajo es por prompts del Director sobre la rama `feature/diseno`** (ver `CLAUDE.md`). Este documento queda como histórico: ya no se marca por cada cambio.
+
 **Estado inicial (12 oct 2026):** fases 1–7 completas, 12 commits en el historial. Meta: 100 commits o más al llegar a `v1.0.0`.
 
 | Fase | Rama | Commits est. |
@@ -15,8 +17,10 @@ Plan de trabajo por fases y tareas. Cada fase es una rama `feature/fase-N-slug` 
 | 14 · Bloques y GlassWall | `feature/fase-14-bloques-glasswall` | 10 |
 | 15 · Progreso | `feature/fase-15-progreso` | 6 |
 | 16 · Perfil y Ajustes | `feature/fase-16-perfil` | 7 |
+| 16.5 · Corrección de color | `feature/fase-16-5-color` | 5 |
+| 16.6 · Splash El Respiro | `feature/fase-16-6-splash-respiro` | 7 |
 | 17 · Pulido y release | `release/v1.0.0` | 5 |
-| **Total** | | **~87** (+12 existentes) |
+| **Total** | | **~99** (+12 existentes) |
 
 ---
 
@@ -142,6 +146,32 @@ Objetivo: el flujo previo al login completo y navegable; los datos se guardan en
 - [x] **F16-T5** Reiniciar app: diálogo de confirmación, borra DataStore y Room, y navega a la bienvenida limpiando el back stack. Los permisos del sistema se conservan.
 - [x] **F16-T6** Interruptor de modo demo
 - [x] **F16-T7** Tests (reinicio y preferencias) + cadenas EN/ES
+
+## Fase 16.5 · Corrección de color
+
+Objetivo: validar la nueva paleta en modo claro y asegurar que todos los componentes usan tokens.
+
+- [x] **F16.5-T1** `Color.kt`: agregar los tokens nuevos (background, onBackgroundMuted, surfaceGlass, glass1–3, mint).
+- [x] **F16.5-T2** `GlassCard` y componentes glass: corregir rellenos con los nuevos tokens (glass1–3 blanco al 38/58/74 %).
+- [x] **F16.5-T3** Barrer pantallas: eliminar hex sueltos, usar solo `SegundoAireTheme.colors.*`.
+- [x] **F16.5-T4** Tests de contraste WCAG AA: pares de color críticos con `colorContrast()` (uso interno, no publicado).
+- [x] **F16.5-T5** Previews: todas las pantallas en claro y oscuro; verificar legibilidad.
+
+Aceptación: cero hex fuera de `Color.kt`, todas las pantallas con previews, tests de contraste pasan.
+
+## Fase 16.6 · Splash El Respiro
+
+Objetivo: implementar la pantalla de splash con coreografía de respiración y revelar la marca.
+
+- [x] **F16.6-T1** `SplashScreen` API estático: clase `SegundoAireSplash` con el flujo de navegación.
+- [x] **F16.6-T2** Blob orgánico: composable con `Canvas` y `Path` suavizada (Catmull-Rom), animación base.
+- [x] **F16.6-T3** Coreografía completa: respiración (Motion.splashBreath × 2), bocanada (splashDeep), liberación (splashRelease).
+- [x] **F16.6-T4** Revelación de marca y crossfade: texto (Motion.splashText) + fundido hacia `MainRoute` (splashExit).
+- [x] **F16.6-T5** Integración con navegación: conectar `SplashScreen` en el grafo raíz, saltable con un toque.
+- [x] **F16.6-T6** Reducir movimiento: variante de 1.2 s con fundidos rápidos; saltar con un toque.
+- [x] **F16.6-T7** Catálogo y tests: preview en claro/oscuro, tests de timing y salto, cadenas EN/ES.
+
+Aceptación: splash anima 16 s (o 1.5 s con reducir movimiento), saltable, marca visible, integrado con la navegación raíz.
 
 ## Fase 17 · Pulido y release
 

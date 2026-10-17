@@ -132,6 +132,10 @@ private class FakeInterceptionEventDao : InterceptionEventDao {
         rows.value = rows.value.map { if (it.id == id) it.copy(result = result) else it }
     }
 
+    override suspend fun setIntent(id: Long, intent: String) {
+        rows.value = rows.value.map { if (it.id == id) it.copy(intent = intent) else it }
+    }
+
     override fun observeSince(fromMillis: Long): Flow<List<InterceptionEventEntity>> =
         rows.map { list -> list.filter { it.timestampMillis >= fromMillis }.sortedBy { it.timestampMillis } }
 }

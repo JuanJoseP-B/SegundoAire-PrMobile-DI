@@ -1,24 +1,31 @@
 package com.segundoaire.presentation.onboarding
 
-/** Pasos del onboarding, en el orden de SEGUNDOAIRE_SPEC.md §4.1. Cada uno es un destino del grafo. */
-enum class OnboardingStep(val route: String) {
-    WELCOME("onboarding/welcome"),
-    NAME("onboarding/name"),
-    GOALS("onboarding/goals"),
-    USAGE("onboarding/usage"),
-    MOMENTS("onboarding/moments"),
-    REVEAL("onboarding/reveal"),
-    BREATHING("onboarding/breathing"),
-    PLAN("onboarding/plan"),
-    COMMITMENT("onboarding/commitment");
+/**
+ * Los 14 pasos del flujo "Lo que crece cuando pausas", en el orden del prototipo. Las tres
+ * primeras son la bienvenida (semilla, brote y copa); los pasos 3 a 11 llevan "Paso N de 9".
+ */
+internal object OnboardingStep {
+    const val Seed = 0
+    const val Sprout = 1
+    const val Canopy = 2
+    const val Name = 3
+    const val Goals = 4
+    const val Usage = 5
+    const val Moment = 6
+    const val Reveal = 7
+    const val Breath = 8
+    const val Plan = 9
+    const val Commit = 10
+    const val Permissions = 11
+    const val Login = 12
+    const val Done = 13
 
-    /** Posición en el progreso segmentado. La bienvenida es 0: va antes de las preguntas. */
-    val progress: Int get() = ordinal
+    const val Last = Done
+    const val WelcomeLast = Canopy
 
-    val next: OnboardingStep? get() = entries.getOrNull(ordinal + 1)
+    /** Pasos numerados "Paso N de 9": del nombre a los permisos. */
+    const val QuestionCount = 9
 
-    companion object {
-        /** Segmentos del progreso: todos los pasos menos la bienvenida. */
-        val PROGRESS_STEPS: Int = entries.size - 1
-    }
+    /** Número del paso en "Paso N de 9" (1 en el nombre, 9 en los permisos). */
+    fun number(step: Int): Int = (step - 2).coerceIn(1, QuestionCount)
 }

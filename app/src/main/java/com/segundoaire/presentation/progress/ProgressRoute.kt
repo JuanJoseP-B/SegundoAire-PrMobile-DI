@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.segundoaire.presentation.feedback.rememberFeedback
 
 /**
  * Progreso con su ViewModel. Al volver a la app (`ON_RESUME`) la semana avanza
@@ -20,11 +21,16 @@ fun ProgressRoute(
     viewModel: ProgressViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val feedback = rememberFeedback()
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.onResume() }
 
     ProgressScreen(
         state = state,
+        onDaySelected = {
+            feedback.select()
+            viewModel.onDaySelected(it)
+        },
         modifier = modifier,
         contentPadding = contentPadding
     )

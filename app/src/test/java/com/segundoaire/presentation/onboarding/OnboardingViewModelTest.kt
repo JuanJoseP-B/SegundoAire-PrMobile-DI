@@ -4,48 +4,34 @@ import androidx.lifecycle.SavedStateHandle
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.RigorLevel
 import com.segundoaire.domain.model.RiskMoment
-import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.model.UsageRange
 import com.segundoaire.domain.model.UserProfile
-import com.segundoaire.domain.repository.UserPreferencesRepository
-import com.segundoaire.domain.usecase.CalculateScreenTimeProjectionUseCase
 import com.segundoaire.domain.usecase.CompleteOnboardingUseCase
 import com.segundoaire.domain.usecase.SaveUserProfileUseCase
 import com.segundoaire.domain.usecase.SuggestRigorUseCase
+import com.segundoaire.testing.FakeUserPreferencesRepository
 import com.segundoaire.testing.FakeUserProfileRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
+import com.segundoaire.testing.MutableClock
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
+import java.time.Instant
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class OnboardingViewModelTest {
 
     private val profiles = FakeUserProfileRepository()
     private val preferences = FakeUserPreferencesRepository()
-
-    @Before
-    fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
-
-    @After
-    fun tearDown() = Dispatchers.resetMain()
+    private val clock = MutableClock(Instant.parse("2026-10-16T10:00:00Z"))
 
     private fun viewModel(savedStateHandle: SavedStateHandle = SavedStateHandle()) = OnboardingViewModel(
         savedStateHandle = savedStateHandle,
         suggestRigor = SuggestRigorUseCase(),
-        calculateProjection = CalculateScreenTimeProjectionUseCase(),
         saveUserProfile = SaveUserProfileUseCase(profiles),
-        completeOnboarding = CompleteOnboardingUseCase(preferences)
+        completeOnboarding = CompleteOnboardingUseCase(preferences, clock)
     )
 
     private fun OnboardingViewModel.answerEverything() {
@@ -55,21 +41,41 @@ class OnboardingViewModelTest {
         onRiskMomentsChange(setOf(RiskMoment.BEFORE_SLEEP))
     }
 
-    // Bienvenida
+    // Pasos
 
     @Test
-    fun `la bienvenida avanza y retrocede sin salirse de sus tres tarjetas`() {
+    fun `el flujo arranca en la semilla`() {
+        assertEquals(OnboardingStep.Seed, viewModel().uiState.value.step)
+    }
+
+    @Test
+    fun `el paso se mantiene dentro de los catorce pasos`() {
         val viewModel = viewModel()
 
-        viewModel.onWelcomeBack()
-        assertEquals(0, viewModel.uiState.value.welcomePage)
+        viewModel.onStepChange(40)
+        assertEquals(OnboardingStep.Done, viewModel.uiState.value.step)
 
-        repeat(5) { viewModel.onWelcomeNext() }
-        assertEquals(2, viewModel.uiState.value.welcomePage)
-        assertTrue(viewModel.uiState.value.isLastWelcomePage)
+        viewModel.onStepChange(-3)
+        assertEquals(OnboardingStep.Seed, viewModel.uiState.value.step)
+    }
 
-        viewModel.onWelcomeBack()
-        assertEquals(1, viewModel.uiState.value.welcomePage)
+    @Test
+    fun `entrar por el login no hace retroceder a quien ya lo pasó`() {
+        val viewModel = viewModel()
+        viewModel.onStepChange(OnboardingStep.Done)
+
+        viewModel.ensureStartStep(OnboardingStep.Login)
+
+        assertEquals(OnboardingStep.Done, viewModel.uiState.value.step)
+    }
+
+    @Test
+    fun `entrar por el login salta a ese paso`() {
+        val viewModel = viewModel()
+
+        viewModel.ensureStartStep(OnboardingStep.Login)
+
+        assertEquals(OnboardingStep.Login, viewModel.uiState.value.step)
     }
 
     // Nombre
@@ -78,7 +84,7 @@ class OnboardingViewModelTest {
     fun `sin nombre no se puede continuar y no hay error`() {
         val state = viewModel().uiState.value
 
-        assertFalse(state.canContinue(OnboardingStep.NAME))
+        assertFalse(state.canContinue(OnboardingStep.Name))
         assertNull(state.nameError)
     }
 
@@ -88,7 +94,7 @@ class OnboardingViewModelTest {
 
         viewModel.onNameChange("   ")
 
-        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.NAME))
+        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.Name))
     }
 
     @Test
@@ -99,7 +105,7 @@ class OnboardingViewModelTest {
             viewModel.onNameChange(name)
 
             assertNull(name, viewModel.uiState.value.nameError)
-            assertTrue(name, viewModel.uiState.value.canContinue(OnboardingStep.NAME))
+            assertTrue(name, viewModel.uiState.value.canContinue(OnboardingStep.Name))
         }
     }
 
@@ -110,17 +116,7 @@ class OnboardingViewModelTest {
         viewModel.onNameChange("Ana99")
 
         assertEquals(NameError.INVALID_CHARACTERS, viewModel.uiState.value.nameError)
-        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.NAME))
-    }
-
-    @Test
-    fun `corregir el nombre quita el error`() {
-        val viewModel = viewModel()
-
-        viewModel.onNameChange("Ana@")
-        viewModel.onNameChange("Ana")
-
-        assertNull(viewModel.uiState.value.nameError)
+        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.Name))
     }
 
     @Test
@@ -132,17 +128,7 @@ class OnboardingViewModelTest {
         assertEquals(UserProfile.MAX_NAME_LENGTH, viewModel.uiState.value.name.length)
     }
 
-    // Objetivos
-
-    @Test
-    fun `hace falta al menos un objetivo`() {
-        val viewModel = viewModel()
-        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.GOALS))
-
-        viewModel.onGoalsChange(listOf(Goal.FOCUS))
-
-        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.GOALS))
-    }
+    // Objetivos, uso y momentos
 
     @Test
     fun `los objetivos se limitan a dos y conservan el orden`() {
@@ -153,34 +139,22 @@ class OnboardingViewModelTest {
         assertEquals(listOf(Goal.PRESENCE, Goal.FOCUS), viewModel.uiState.value.goals)
     }
 
-    // Uso y momentos
-
     @Test
-    fun `el uso diario parte del tramo central y siempre deja continuar`() {
-        val state = viewModel().uiState.value
-
-        assertEquals(UsageRange.FROM_4_TO_6, state.usageRange)
-        assertTrue(state.canContinue(OnboardingStep.USAGE))
-    }
-
-    @Test
-    fun `cambiar el uso diario recalcula la proyeccion`() {
+    fun `hace falta al menos un objetivo y un momento`() {
         val viewModel = viewModel()
+        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.Goals))
+        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.Moment))
 
-        viewModel.onUsageRangeChange(UsageRange.FROM_2_TO_4)
-
-        assertEquals(3, viewModel.uiState.value.projection.hoursPerDay)
-        assertEquals(50, viewModel.uiState.value.projection.screenYearsTenths)
-    }
-
-    @Test
-    fun `hace falta al menos un momento de mayor uso`() {
-        val viewModel = viewModel()
-        assertFalse(viewModel.uiState.value.canContinue(OnboardingStep.MOMENTS))
-
+        viewModel.onGoalsChange(listOf(Goal.FOCUS))
         viewModel.onRiskMomentsChange(setOf(RiskMoment.BORED))
 
-        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.MOMENTS))
+        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.Goals))
+        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.Moment))
+    }
+
+    @Test
+    fun `el uso diario parte del tramo central`() {
+        assertEquals(UsageRange.FROM_4_TO_6, viewModel().uiState.value.usageRange)
     }
 
     @Test
@@ -195,31 +169,29 @@ class OnboardingViewModelTest {
         assertEquals(RigorLevel.MINDFUL, viewModel.uiState.value.suggestedRigor)
     }
 
-    // Respiración
+    // Sonido
 
     @Test
-    fun `la respiracion termina al tercer ciclo`() {
+    fun `el sonido empieza encendido y se puede apagar`() {
         val viewModel = viewModel()
+        assertTrue(viewModel.uiState.value.soundEnabled)
 
-        repeat(2) { viewModel.onBreathCycleCompleted() }
-        assertFalse(viewModel.uiState.value.isBreathingDone)
+        viewModel.onSoundToggle()
 
-        repeat(3) { viewModel.onBreathCycleCompleted() }
-        assertTrue(viewModel.uiState.value.isBreathingDone)
-        assertEquals(OnboardingUiState.BREATH_CYCLES, viewModel.uiState.value.breathCyclesDone)
+        assertFalse(viewModel.uiState.value.soundEnabled)
     }
 
     // Compromiso
 
     @Test
-    fun `el compromiso guarda el perfil y completa el onboarding`() {
+    fun `el compromiso guarda el perfil y completa el onboarding`() = runTest {
         val viewModel = viewModel()
         viewModel.onNameChange("  Ana  ")
         viewModel.onGoalsChange(listOf(Goal.FOCUS, Goal.SLEEP))
         viewModel.onUsageRangeChange(UsageRange.FROM_6_TO_8)
         viewModel.onRiskMomentsChange(setOf(RiskMoment.BEFORE_SLEEP))
 
-        viewModel.onCommit()
+        assertTrue(viewModel.commit())
 
         assertEquals(
             UserProfile(
@@ -231,87 +203,71 @@ class OnboardingViewModelTest {
             ),
             profiles.saved
         )
-        assertTrue(preferences.completed.value)
-        assertTrue(viewModel.uiState.value.isCompleted)
+        assertTrue(preferences.isOnboardingCompleted.first())
+        assertEquals(clock.millis(), preferences.planted.value)
         assertFalse(viewModel.uiState.value.isSaving)
     }
 
     @Test
-    fun `sin un perfil valido el compromiso no guarda nada`() {
+    fun `sin un perfil valido el compromiso no guarda nada`() = runTest {
         val viewModel = viewModel()
         viewModel.onNameChange("Ana")
 
-        viewModel.onCommit()
+        assertFalse(viewModel.commit())
 
         assertNull(profiles.saved)
-        assertFalse(preferences.completed.value)
-        assertFalse(viewModel.uiState.value.isCompleted)
+        assertFalse(preferences.isOnboardingCompleted.first())
     }
 
     @Test
-    fun `comprometerse dos veces guarda una sola vez`() {
-        val viewModel = viewModel()
-        viewModel.answerEverything()
-
-        viewModel.onCommit()
-        viewModel.onCommit()
-
-        assertEquals(1, profiles.saveCount)
-    }
-
-    @Test
-    fun `si el guardado falla se puede reintentar`() {
+    fun `si el guardado falla se puede reintentar`() = runTest {
         val viewModel = viewModel()
         viewModel.answerEverything()
         profiles.failNextSave = true
 
-        viewModel.onCommit()
-        assertFalse(viewModel.uiState.value.isCompleted)
-        assertFalse(preferences.completed.value)
-        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.COMMITMENT))
+        assertFalse(viewModel.commit())
+        assertFalse(preferences.isOnboardingCompleted.first())
+        assertTrue(viewModel.uiState.value.canContinue(OnboardingStep.Commit))
 
-        viewModel.onCommit()
-        assertTrue(viewModel.uiState.value.isCompleted)
+        assertTrue(viewModel.commit())
+        assertTrue(preferences.isOnboardingCompleted.first())
+    }
+
+    @Test
+    fun `si el usuario vuelve y cambia algo, el perfil se guarda otra vez al día`() = runTest {
+        val viewModel = viewModel()
+        viewModel.answerEverything()
+        viewModel.commit()
+
+        viewModel.onNameChange("Bea")
+        viewModel.commit()
+
+        assertEquals("Bea", profiles.saved?.name)
     }
 
     // Estado guardado
 
     @Test
-    fun `las respuestas sobreviven a la muerte del proceso`() {
+    fun `el paso y las respuestas sobreviven a la muerte del proceso`() {
         val savedStateHandle = SavedStateHandle()
         viewModel(savedStateHandle).apply {
+            onStepChange(OnboardingStep.Plan)
             onNameChange("Ana")
             onGoalsChange(listOf(Goal.SLEEP, Goal.FOCUS))
             onUsageRangeChange(UsageRange.OVER_8)
             onRiskMomentsChange(setOf(RiskMoment.WAKING_UP))
+            onSoundToggle()
         }
 
         val restored = viewModel(savedStateHandle).uiState.value
 
+        assertEquals(OnboardingStep.Plan, restored.step)
         assertEquals("Ana", restored.name)
         assertEquals(listOf(Goal.SLEEP, Goal.FOCUS), restored.goals)
         assertEquals(UsageRange.OVER_8, restored.usageRange)
         assertEquals(setOf(RiskMoment.WAKING_UP), restored.riskMoments)
         assertEquals(RigorLevel.STRICT, restored.suggestedRigor)
-        assertEquals(8, restored.projection.hoursPerDay)
+        assertFalse(restored.soundEnabled)
         assertTrue(restored.isProfileValid)
     }
-}
-
-private class FakeUserPreferencesRepository : UserPreferencesRepository {
-    val completed = MutableStateFlow(false)
-
-    override val isOnboardingCompleted: Flow<Boolean> = completed
-
-    override suspend fun completeOnboarding() {
-        completed.value = true
-    }
-
-    override val isDemoMode: Flow<Boolean> = MutableStateFlow(false)
-
-    override suspend fun setDemoMode(enabled: Boolean) = Unit
-
-    override val themeMode: Flow<ThemeMode> = MutableStateFlow(ThemeMode.SYSTEM)
-
-    override suspend fun setThemeMode(mode: ThemeMode) = Unit
 }

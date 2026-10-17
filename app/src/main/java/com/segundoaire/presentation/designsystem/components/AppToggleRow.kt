@@ -34,8 +34,10 @@ import com.segundoaire.presentation.designsystem.theme.glass
 
 private val ToggleWidth = 52.dp
 private val ToggleHeight = 32.dp
-private val ToggleThumbSize = 24.dp
-private val ToggleBorderWidth = 1.5.dp
+// El pulgar crece de 16 a 24 dp al encenderse, como en la referencia de la app principal
+private val ToggleThumbOff = 16.dp
+private val ToggleThumbOn = 24.dp
+private val ToggleBorderWidth = 2.dp
 private val AppIconSize = 48.dp
 
 /**
@@ -98,7 +100,9 @@ fun AppToggleRow(
 
 /**
  * Indicador del toggle, sin semántica propia: el control es quien lo contiene.
- * El pulgar se desliza con `Motion.toggle`; con reducir movimiento no se
+ * Apagado: pista `outlineVariant` con borde muted y pulgar de 16 dp; encendido:
+ * pista `primary` y pulgar `onPrimary` de 24 dp. El pulgar se desliza y crece con
+ * `Motion.toggle`; con reducir movimiento no se
  * desplaza y solo se funden los colores.
  */
 @Composable
@@ -120,14 +124,16 @@ internal fun Toggle(
         modifier
             .size(ToggleWidth, ToggleHeight)
             .drawBehind {
-                // El resorte rebota: los colores se acotan, la posición no
+                // El resorte rebota: los colores se acotan, la posición y el tamaño no
                 val colorFraction = fraction.coerceIn(0f, 1f)
                 val position = if (reduced) (if (checked) 1f else 0f) else fraction
                 val radius = CornerRadius(size.height / 2)
+                val trackOff = if (enabled) colors.outlineVariant else colors.disabledContainer
                 val trackOn = if (enabled) colors.primary else colors.disabledContainer
-                val thumbOff = if (enabled) colors.outline else colors.disabledContent
+                val thumbOff = if (enabled) colors.onBackgroundMuted else colors.disabledContent
                 val thumbOn = if (enabled) colors.onPrimary else colors.disabledContent
 
+                drawRoundRect(color = trackOff.copy(alpha = trackOff.alpha * (1f - colorFraction)), cornerRadius = radius)
                 drawRoundRect(color = trackOn.copy(alpha = trackOn.alpha * colorFraction), cornerRadius = radius)
                 val border = ToggleBorderWidth.toPx()
                 drawRoundRect(
@@ -138,7 +144,9 @@ internal fun Toggle(
                     style = Stroke(border)
                 )
 
-                val thumbRadius = ToggleThumbSize.toPx() / 2
+                val offRadius = ToggleThumbOff.toPx() / 2
+                val onRadius = ToggleThumbOn.toPx() / 2
+                val thumbRadius = (offRadius + (onRadius - offRadius) * position).coerceAtLeast(0f)
                 val edge = size.height / 2
                 drawCircle(
                     color = lerp(thumbOff, thumbOn, colorFraction),

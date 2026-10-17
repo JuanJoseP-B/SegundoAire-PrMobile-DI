@@ -3,9 +3,15 @@ package com.segundoaire.presentation.blocks
 import com.segundoaire.domain.model.ActiveBlock
 import com.segundoaire.domain.model.BlockedApp
 import com.segundoaire.domain.model.RigorLevel
+import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.usecase.GetBlockedAppsUseCase
+import com.segundoaire.domain.usecase.GetUserProfileUseCase
+import com.segundoaire.domain.usecase.ObserveAppUsageTodayUseCase
+import com.segundoaire.domain.usecase.ToggleAppBlockStatusUseCase
+import com.segundoaire.testing.FakeAppUsageRepository
 import com.segundoaire.testing.FakeBlockRepository
 import com.segundoaire.testing.FakeBlockedAppRepository
+import com.segundoaire.testing.FakeUserProfileRepository
 import com.segundoaire.testing.MutableClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,7 +53,17 @@ class TimerViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
-    private fun viewModel() = TimerViewModel(GetBlockedAppsUseCase(blockedApps), blocks, clock)
+    private val profile = FakeUserProfileRepository()
+    private val usage = FakeAppUsageRepository()
+
+    private fun viewModel() = TimerViewModel(
+        GetBlockedAppsUseCase(blockedApps),
+        GetUserProfileUseCase(profile),
+        ToggleAppBlockStatusUseCase(blockedApps),
+        ObserveAppUsageTodayUseCase(usage, clock),
+        blocks,
+        clock
+    )
 
     // uiState usa WhileSubscribed: el colector hace de pantalla visible
     private fun TestScope.show(viewModel: TimerViewModel): Job =
@@ -366,5 +382,48 @@ class TimerViewModelTest {
         viewModel.onEnd()
 
         assertEquals(0, blocks.stopCount)
+    }
+
+    // --- Rigor sugerido y apps ---
+
+    @Test
+    fun `el rigor arranca en el sugerido del perfil`() = runTest(dispatcher) {
+        profile.saveProfile(UserProfile(suggestedRigor = RigorLevel.STRICT))
+        val viewModel = observed(viewModel())
+
+        assertEquals(RigorLevel.STRICT, viewModel.uiState.value.rigor)
+
+        viewModel.onStart()
+        assertEquals(RigorLevel.STRICT, blocks.observeActiveBlock().value?.rigor)
+    }
+
+    @Test
+    fun `elegir un rigor manda sobre el sugerido`() = runTest(dispatcher) {
+        profile.saveProfile(UserProfile(suggestedRigor = RigorLevel.STRICT))
+        val viewModel = observed(viewModel())
+
+        viewModel.onRigorSelected(RigorLevel.MINDFUL)
+
+        assertEquals(RigorLevel.MINDFUL, viewModel.uiState.value.rigor)
+    }
+
+    @Test
+    fun `lista las apps con su estado y el toggle las guarda`() = runTest(dispatcher) {
+        val viewModel = observed(viewModel())
+        assertEquals(listOf("Videos", "Social", "Noticias"), viewModel.uiState.value.apps.map { it.name })
+
+        viewModel.onToggleApp("com.example.news", true)
+
+        assertTrue(viewModel.uiState.value.apps.first { it.packageName == "com.example.news" }.isBlocked)
+        assertEquals(3, viewModel.uiState.value.watchedAppsCount)
+    }
+
+    @Test
+    fun `cada app trae sus minutos estimados de hoy`() = runTest(dispatcher) {
+        usage.usage.value = mapOf("com.example.video" to 48 * 60_000L + 30_000L)
+        val apps = observed(viewModel()).uiState.value.apps
+
+        assertEquals(48, apps.first { it.packageName == "com.example.video" }.minutesToday)
+        assertNull(apps.first { it.packageName == "com.example.news" }.minutesToday)
     }
 }

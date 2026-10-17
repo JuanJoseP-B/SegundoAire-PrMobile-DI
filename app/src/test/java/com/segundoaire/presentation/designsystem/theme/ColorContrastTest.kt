@@ -41,6 +41,37 @@ class ColorContrastTest {
         assertBorder(dark.outline, dark.background)
 
     @Test
+    fun `claro - primary sobre background cumple texto`() =
+        assertText(light.primary, light.background)
+
+    @Test
+    fun `claro - onPrimary sobre primary cumple texto`() =
+        assertText(light.onPrimary, light.primary)
+
+    @Test
+    fun `claro - onBackgroundMuted sobre surfaceGlass cumple texto`() =
+        assertText(light.onBackgroundMuted, light.surfaceGlass)
+
+    @Test
+    fun `texto sobre cada nivel de vidrio cumple en ambos temas`() {
+        listOf(light, dark).forEach { colors ->
+            listOf(colors.glass1, colors.glass2, colors.glass3).forEach { glass ->
+                val surface = glass.compositeOver(colors.background)
+                assertText(colors.onBackground, surface)
+                assertText(colors.onBackgroundMuted, surface)
+            }
+        }
+    }
+
+    @Test
+    fun `el vidrio sube de opacidad con el nivel en ambos temas`() {
+        listOf(light, dark).forEach { colors ->
+            assertTrue(colors.glass1.alpha < colors.glass2.alpha)
+            assertTrue(colors.glass2.alpha < colors.glass3.alpha)
+        }
+    }
+
+    @Test
     fun `texto principal y secundario cumplen sobre background en ambos temas`() {
         listOf(light, dark).forEach { colors ->
             assertText(colors.onBackground, colors.background)

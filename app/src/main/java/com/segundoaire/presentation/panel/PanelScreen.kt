@@ -1,406 +1,354 @@
 package com.segundoaire.presentation.panel
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segundoaire.R
-import com.segundoaire.domain.model.BlockedApp
+import com.segundoaire.domain.model.ActiveBlock
+import com.segundoaire.domain.model.CoachAction
+import com.segundoaire.domain.model.CoachMessage
+import com.segundoaire.domain.model.CoachTopic
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.GreetingPeriod
-import com.segundoaire.presentation.designsystem.components.AnimatedCounter
-import com.segundoaire.presentation.designsystem.components.AppIcon
-import com.segundoaire.presentation.designsystem.components.AppToggleRow
-import com.segundoaire.presentation.designsystem.components.EmptyState
+import com.segundoaire.domain.model.RigorLevel
+import com.segundoaire.domain.model.TodayStats
+import com.segundoaire.domain.model.TreeState
+import com.segundoaire.presentation.blocks.BlockRules
+import com.segundoaire.presentation.designsystem.components.ActionChip
 import com.segundoaire.presentation.designsystem.components.GlassCard
 import com.segundoaire.presentation.designsystem.components.PermissionBanner
-import com.segundoaire.presentation.designsystem.components.RevealText
-import com.segundoaire.presentation.designsystem.components.Skeleton
-import com.segundoaire.presentation.designsystem.components.TextButton
-import com.segundoaire.presentation.designsystem.components.staggerIn
 import com.segundoaire.presentation.designsystem.icons.SegundoAireIcons
 import com.segundoaire.presentation.designsystem.theme.GlassLevel
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
-import com.segundoaire.presentation.onboarding.OnboardingEyebrow
-import com.segundoaire.presentation.onboarding.labelRes
+import kotlinx.coroutines.delay
 
-private val SkeletonRowHeight = 72.dp
-private const val SkeletonRows = 3
+private val BlockRingSize = 36.dp
+private const val BlockRingRadius = 14f
+private const val BlockRingStroke = 4f
+private const val ClockTickMillis = 250L
+private val BlockBarRise = 10.dp
 
 /**
- * Panel: saludo con el objetivo, dato de impacto, mensaje de la IA simulada y
- * la lista de apps vigiladas. Sin estado propio: [PanelRoute] lo conecta.
- *
- * La lista anima su entrada solo la primera vez que cada app aparece en la
- * sesión (`animatedPackages`); después solo se anima el alta, la baja y el
- * reordenamiento de filas con `animateItem`.
+ * Panel de la app principal: saludo según la hora con el nombre en Fraunces, el héroe con
+ * el árbol, el bloque en curso (si lo hay), el coach y sus preguntas. Sin estado propio:
+ * [PanelRoute] lo conecta. [nowMillis] marca el reloj del bloque en curso.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PanelScreen(
     state: PanelUiState,
-    onToggleApp: (packageName: String, isBlocked: Boolean) -> Unit,
-    onEditApps: () -> Unit,
     onFixPermission: () -> Unit,
-    onNewMessage: () -> Unit,
-    onAppsAnimated: (List<String>) -> Unit,
-    loadIcon: suspend (packageName: String) -> ImageBitmap?,
+    onLeavesShown: (Int) -> Unit,
+    onActiveBlockClick: () -> Unit,
+    onCoachNext: () -> Unit,
+    onCoachAsk: (CoachTopic) -> Unit,
+    onCoachAction: (CoachAction) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
-    onTitleLongClick: (() -> Unit)? = null
+    onTitleLongClick: (() -> Unit)? = null,
+    nowMillis: () -> Long = System::currentTimeMillis
 ) {
     val spacing = SegundoAireTheme.spacing
-    val motion = SegundoAireTheme.motion
     val direction = LocalLayoutDirection.current
 
-    // Las apps que aún no se animaron; se marcan al componerlas por primera vez
-    val pending = remember(state.apps, state.animatedPackages) {
-        state.apps.map { it.packageName }.filter { it !in state.animatedPackages }
-    }
-    LaunchedEffect(pending) {
-        if (pending.isNotEmpty()) onAppsAnimated(pending)
-    }
-
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            start = spacing.space5 + contentPadding.calculateStartPadding(direction),
-            top = spacing.space6 + contentPadding.calculateTopPadding(),
-            end = spacing.space5 + contentPadding.calculateEndPadding(direction),
-            bottom = spacing.space6 + contentPadding.calculateBottomPadding()
-        ),
-        verticalArrangement = Arrangement.spacedBy(spacing.space4)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                start = contentPadding.calculateStartPadding(direction),
+                end = contentPadding.calculateEndPadding(direction),
+                top = contentPadding.calculateTopPadding(),
+                bottom = contentPadding.calculateBottomPadding() + spacing.space6
+            )
     ) {
-        item(key = "header") {
-            PanelHeader(state = state, onLongClick = onTitleLongClick)
-        }
+        PanelHeader(
+            greeting = state.greeting,
+            name = state.name.trim(),
+            onLongClick = onTitleLongClick,
+            modifier = Modifier.padding(start = spacing.space5, end = spacing.space5, top = spacing.space4)
+        )
         state.missingPermission?.let { missing ->
-            item(key = "permission") {
-                PermissionBanner(
-                    title = stringResource(R.string.banner_title),
-                    message = stringResource(
-                        when (missing) {
-                            MissingPermission.ACCESSIBILITY -> R.string.banner_accessibility_disabled
-                            MissingPermission.OVERLAY -> R.string.banner_overlay_disabled
-                        }
-                    ),
-                    actionLabel = stringResource(R.string.banner_action),
-                    onAction = onFixPermission,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            PermissionBanner(
+                title = stringResource(R.string.banner_title),
+                message = stringResource(
+                    when (missing) {
+                        MissingPermission.ACCESSIBILITY -> R.string.banner_accessibility_disabled
+                        MissingPermission.OVERLAY -> R.string.banner_overlay_disabled
+                    }
+                ),
+                actionLabel = stringResource(R.string.banner_action),
+                onAction = onFixPermission,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = spacing.space4, end = spacing.space4, top = spacing.space4)
+            )
         }
-        item(key = "impact") {
-            ImpactCard(watchedApps = state.watchedAppsCount, modifier = Modifier.fillMaxWidth())
-        }
-        if (state.message != null || state.isThinking) {
-            item(key = "message") {
-                MessageCard(
-                    message = state.message,
-                    isThinking = state.isThinking,
-                    onNewMessage = onNewMessage,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
-        item(key = "apps-header") {
-            AppsHeader(showEdit = state.hasApps, onEditApps = onEditApps)
-        }
-        when {
-            state.isLoading -> items(SkeletonRows, key = { "skeleton-$it" }) {
-                Skeleton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(SkeletonRowHeight),
-                    shape = SegundoAireTheme.shapes.radiusMd
-                )
-            }
-            !state.hasApps -> item(key = "empty") {
-                EmptyState(
-                    title = stringResource(R.string.panel_empty_title),
-                    message = stringResource(R.string.panel_empty_message),
-                    modifier = Modifier.fillMaxWidth(),
-                    icon = SegundoAireIcons.Device,
-                    actionLabel = stringResource(R.string.panel_empty_action),
-                    onAction = onEditApps
-                )
-            }
-            else -> items(state.apps, key = { it.packageName }) { app ->
-                // Se decide una sola vez: cambiarlo a mitad cortaría la animación de entrada
-                val staggerIndex = remember { pending.indexOf(app.packageName) }
-                AppToggleRow(
-                    name = app.appName,
-                    checked = app.isBlocked,
-                    onCheckedChange = { onToggleApp(app.packageName, it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .animateItem(
-                            fadeInSpec = motion.nav(),
-                            placementSpec = motion.nav(),
-                            fadeOutSpec = motion.nav()
-                        )
-                        .staggerIn(animate = staggerIndex >= 0, index = staggerIndex),
-                    supportingText = stringResource(
-                        if (app.isBlocked) R.string.panel_app_watching else R.string.panel_app_off
-                    )
-                ) {
-                    AppIcon(packageName = app.packageName, loadIcon = loadIcon)
-                }
-            }
-        }
+        PanelHero(
+            tree = state.tree,
+            stats = state.stats,
+            hour = state.hour,
+            onLeavesShown = onLeavesShown,
+            modifier = Modifier.padding(top = spacing.space1)
+        )
+        ActiveBlockBar(
+            block = state.activeBlock,
+            nowMillis = nowMillis,
+            onClick = onActiveBlockClick,
+            modifier = Modifier.padding(start = spacing.space4, end = spacing.space4, top = spacing.space4)
+        )
+        CoachCard(
+            state = state.coach,
+            onNext = onCoachNext,
+            onAction = onCoachAction,
+            modifier = Modifier.padding(start = spacing.space4, end = spacing.space4, top = spacing.space5)
+        )
+        AskCoach(
+            onAsk = onCoachAsk,
+            modifier = Modifier.padding(start = spacing.space4, end = spacing.space4, top = spacing.space3 + 2.dp)
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PanelHeader(
-    state: PanelUiState,
+    greeting: GreetingPeriod,
+    name: String,
     onLongClick: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     val colors = SegundoAireTheme.colors
-    val spacing = SegundoAireTheme.spacing
     val typography = SegundoAireTheme.typography
+    val hello = stringResource(
+        when (greeting) {
+            GreetingPeriod.MORNING -> R.string.panel_greeting_morning_anonymous
+            GreetingPeriod.AFTERNOON -> R.string.panel_greeting_afternoon_anonymous
+            GreetingPeriod.EVENING -> R.string.panel_greeting_evening_anonymous
+        }
+    )
 
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .semantics(mergeDescendants = true) { heading() }
             .then(
+                // Solo en debug: abre el catálogo de componentes
                 if (onLongClick != null) {
-                    Modifier.combinedClickable(
-                        interactionSource = null,
-                        indication = null,
-                        onLongClick = onLongClick,
-                        onClick = {}
-                    )
+                    Modifier.combinedClickable(interactionSource = null, indication = null, onLongClick = onLongClick, onClick = {})
                 } else {
                     Modifier
                 }
-            ),
-        verticalArrangement = Arrangement.spacedBy(spacing.space1)
+            )
     ) {
         Text(
-            text = greetingText(state.greeting, state.name.trim()),
-            style = typography.headlineMd,
-            color = colors.onBackground,
-            modifier = Modifier.semantics { heading() }
+            text = if (name.isEmpty()) hello else stringResource(R.string.panel_greeting_named, hello),
+            style = typography.bodyMd,
+            color = colors.onBackgroundMuted
         )
-        state.mainGoal?.let { goal ->
+        if (name.isNotEmpty()) {
             Text(
-                text = stringResource(R.string.panel_goal_eyebrow).toUpperCase(Locale.current),
-                style = typography.labelSmCaps,
-                color = colors.onBackgroundMuted,
-                modifier = Modifier.padding(top = spacing.space2)
-            )
-            Text(
-                text = stringResource(goal.labelRes),
-                style = typography.bodyLg,
-                color = colors.onBackgroundMuted
+                text = name,
+                style = typography.serif(size = 30, lineHeight = 36, tracking = typography.serifTitle.letterSpacing),
+                color = colors.onBackground
             )
         }
-    }
-}
-
-@Composable
-private fun greetingText(period: GreetingPeriod, name: String): String =
-    if (name.isEmpty()) {
-        stringResource(
-            when (period) {
-                GreetingPeriod.MORNING -> R.string.panel_greeting_morning_anonymous
-                GreetingPeriod.AFTERNOON -> R.string.panel_greeting_afternoon_anonymous
-                GreetingPeriod.EVENING -> R.string.panel_greeting_evening_anonymous
-            }
-        )
-    } else {
-        stringResource(
-            when (period) {
-                GreetingPeriod.MORNING -> R.string.panel_greeting_morning
-                GreetingPeriod.AFTERNOON -> R.string.panel_greeting_afternoon
-                GreetingPeriod.EVENING -> R.string.panel_greeting_evening
-            },
-            name
-        )
-    }
-
-/** Dato de impacto del día. Hoy cuenta las apps vigiladas; la Fase 15 pondrá aquí los minutos. */
-@Composable
-private fun ImpactCard(watchedApps: Int, modifier: Modifier = Modifier) {
-    val colors = SegundoAireTheme.colors
-    GlassCard(modifier = modifier, level = GlassLevel.Level2) {
-        OnboardingEyebrow(stringResource(R.string.panel_impact_eyebrow))
-        AnimatedCounter(
-            value = watchedApps,
-            style = SegundoAireTheme.typography.displayImpact,
-            color = colors.onBackground
-        )
-        Text(
-            text = pluralStringResource(R.plurals.panel_impact_watched, watchedApps),
-            style = SegundoAireTheme.typography.bodyMd,
-            color = colors.onBackground
-        )
     }
 }
 
 /**
- * Tarjeta de la IA simulada. Mientras piensa, el borde se enciende con `glow`
- * (`Motion.calm`); el mensaje nuevo se revela carácter a carácter.
+ * Barra del bloque en curso: vidrio, anillo de 36 dp con el avance y "Quedan m:ss".
+ * Entra con fundido y una subida de 10 dp; al tocarla abre el bloque.
  */
 @Composable
-private fun MessageCard(
-    message: String?,
-    isThinking: Boolean,
-    onNewMessage: () -> Unit,
+private fun ActiveBlockBar(
+    block: ActiveBlock?,
+    nowMillis: () -> Long,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val colors = SegundoAireTheme.colors
-    val spacing = SegundoAireTheme.spacing
-    val glowAlpha by animateFloatAsState(
-        targetValue = if (isThinking) 1f else 0f,
-        animationSpec = SegundoAireTheme.motion.calm(),
-        label = "messageGlow"
-    )
-
-    GlassCard(
-        modifier = modifier.border(
-            width = 2.dp,
-            color = colors.glow.copy(alpha = colors.glow.alpha * glowAlpha.coerceIn(0f, 1f)),
-            shape = SegundoAireTheme.shapes.radiusLg
-        ),
-        level = GlassLevel.Level2
-    ) {
-        OnboardingEyebrow(stringResource(R.string.panel_message_eyebrow))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing.space2)
-        ) {
-            if (message != null) {
-                RevealText(text = message, color = colors.onBackground)
-            } else {
-                Text(
-                    text = stringResource(R.string.panel_message_thinking),
-                    style = SegundoAireTheme.typography.bodyLg,
-                    color = colors.onBackground
-                )
-            }
+    val motion = SegundoAireTheme.motion
+    val risePx = with(LocalDensity.current) { BlockBarRise.roundToPx() }
+    val now by produceState(nowMillis(), block) {
+        while (block != null) {
+            value = nowMillis()
+            delay(ClockTickMillis)
         }
-        TextButton(
-            text = stringResource(R.string.panel_message_another),
-            onClick = onNewMessage,
-            modifier = Modifier.align(Alignment.End),
-            enabled = !isThinking
-        )
+    }
+    // Un bloque que vence se va aunque nadie lo haya retirado todavía
+    val live = block?.takeIf { it.isActiveAt(now) }
+    // Mientras sale, el último bloque conocido sigue dibujado
+    var shown by remember { mutableStateOf(live) }
+    if (live != null) shown = live
+    AnimatedVisibility(
+        visible = live != null,
+        modifier = modifier,
+        enter = fadeIn(motion.rise()) + slideInVertically(motion.rise()) { if (motion.reduced) 0 else risePx },
+        exit = fadeOut(motion.fade(200))
+    ) {
+        shown?.let { ActiveBlockContent(it, now, onClick) }
     }
 }
 
 @Composable
-private fun AppsHeader(showEdit: Boolean, onEditApps: () -> Unit, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+private fun ActiveBlockContent(block: ActiveBlock, now: Long, onClick: () -> Unit) {
+    val colors = SegundoAireTheme.colors
+    val spacing = SegundoAireTheme.spacing
+    val typography = SegundoAireTheme.typography
+    val progress = block.progress(now)
+    val remaining = BlockRules.clockText(block.remainingSeconds(now))
+
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        level = GlassLevel.Level2,
+        onClick = onClick,
+        contentPadding = PaddingValues(horizontal = spacing.space4, vertical = spacing.space3)
     ) {
-        Text(
-            text = stringResource(R.string.panel_apps_title),
-            style = SegundoAireTheme.typography.titleLg,
-            color = SegundoAireTheme.colors.onBackground,
-            modifier = Modifier
-                .weight(1f)
-                .semantics { heading() }
-        )
-        if (showEdit) {
-            TextButton(text = stringResource(R.string.panel_apps_edit), onClick = onEditApps)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Canvas(Modifier.size(BlockRingSize)) {
+                // Coordenadas del SVG de 36 × 36 de la referencia
+                scale(density, Offset.Zero) {
+                    val topLeft = Offset(18f - BlockRingRadius, 18f - BlockRingRadius)
+                    val ring = Size(BlockRingRadius * 2, BlockRingRadius * 2)
+                    drawArc(colors.outlineVariant, 0f, 360f, false, topLeft, ring, style = Stroke(BlockRingStroke))
+                    drawArc(colors.primary, -90f, 360f * progress, false, topLeft, ring, style = Stroke(BlockRingStroke, cap = StrokeCap.Round))
+                }
+            }
+            Spacer(Modifier.width(spacing.space3))
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.panel_block_title), style = typography.labelLg, color = colors.onBackground)
+                Text(
+                    text = stringResource(R.string.panel_block_remaining, remaining),
+                    style = typography.bodyMd.copy(fontFeatureSettings = "tnum"),
+                    color = colors.onBackgroundMuted
+                )
+            }
+            Icon(SegundoAireIcons.ChevronRight, contentDescription = null, tint = colors.onBackground, modifier = Modifier.size(20.dp))
         }
     }
 }
 
-private val PreviewApps = listOf(
-    BlockedApp("com.example.video", "Videos"),
-    BlockedApp("com.example.social", "Social"),
-    BlockedApp("com.example.news", "Noticias", isBlocked = false)
-)
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun AskCoach(onAsk: (CoachTopic) -> Unit, modifier: Modifier = Modifier) {
+    val colors = SegundoAireTheme.colors
+    val spacing = SegundoAireTheme.spacing
+    Column(modifier) {
+        Text(
+            text = stringResource(R.string.coach_ask_eyebrow).toUpperCase(Locale.current),
+            style = SegundoAireTheme.typography.labelSmCaps.copy(fontWeight = FontWeight.W600),
+            color = colors.onBackgroundMuted,
+            modifier = Modifier.padding(start = spacing.space1)
+        )
+        Spacer(Modifier.height(spacing.space1))
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.space2)) {
+            AskTopics.forEach { (topic, label) ->
+                ActionChip(text = stringResource(label), onClick = { onAsk(topic) })
+            }
+        }
+    }
+}
 
-private val PreviewState = PanelUiState(
-    isLoading = false,
-    greeting = GreetingPeriod.MORNING,
-    name = "Ana",
-    mainGoal = Goal.SLEEP,
-    apps = PreviewApps,
-    animatedPackages = PreviewApps.map { it.packageName }.toSet(),
-    message = "Respira. Tú decides en qué pones tu atención hoy."
+private val AskTopics = listOf(
+    CoachTopic.WEEK to R.string.coach_ask_week,
+    CoachTopic.IDEA to R.string.coach_ask_idea,
+    CoachTopic.HARDEST_TIME to R.string.coach_ask_hardest
 )
 
 @Composable
 private fun PanelScreenSample(state: PanelUiState) {
     PanelScreen(
         state = state,
-        onToggleApp = { _, _ -> },
-        onEditApps = {},
         onFixPermission = {},
-        onNewMessage = {},
-        onAppsAnimated = {},
-        loadIcon = { null },
-        modifier = Modifier.background(SegundoAireTheme.colors.background)
+        onLeavesShown = {},
+        onActiveBlockClick = {},
+        onCoachNext = {},
+        onCoachAsk = {},
+        onCoachAction = {},
+        modifier = Modifier.background(SegundoAireTheme.colors.background),
+        nowMillis = { PreviewNow }
     )
 }
 
-@Preview(name = "Panel · claro", heightDp = 800)
+private const val PreviewNow = 1_000_000L
+
+private val PreviewState = PanelUiState(
+    greeting = GreetingPeriod.AFTERNOON,
+    hour = 15,
+    name = "Juan",
+    stats = TodayStats(recoveredMinutes = 47, pausesRespected = 3, openingsAvoided = 12),
+    tree = TreeState(goals = listOf(Goal.FREE_TIME, Goal.SLEEP), weekLeaves = 2, seenLeaves = 2),
+    activeBlock = ActiveBlock(
+        startedAt = PreviewNow - 3 * ActiveBlock.MILLIS_PER_MINUTE,
+        endsAt = PreviewNow + 12 * ActiveBlock.MILLIS_PER_MINUTE,
+        rigor = RigorLevel.MINDFUL,
+        durationMinutes = 15
+    ),
+    coach = CoachUiState(message = CoachMessage.PausesToday(today = 3, yesterday = 1), isThinking = false, revision = 1)
+)
+
+@Preview(name = "Panel · claro", showSystemUi = true)
 @Composable
 private fun PanelScreenLightPreview() {
     SegundoAireTheme(darkTheme = false) { PanelScreenSample(PreviewState) }
 }
 
-@Preview(name = "Panel · oscuro", heightDp = 800)
+@Preview(name = "Panel · oscuro", showSystemUi = true)
 @Composable
 private fun PanelScreenDarkPreview() {
-    SegundoAireTheme(darkTheme = true) {
-        PanelScreenSample(
-            PreviewState.copy(isAccessibilityEnabled = false, isThinking = true)
-        )
-    }
+    SegundoAireTheme(darkTheme = true) { PanelScreenSample(PreviewState) }
 }
 
-@Preview(name = "Panel sin apps · claro", heightDp = 800)
+@Preview(name = "Panel · noche, sin bloque · oscuro", showSystemUi = true)
 @Composable
-private fun PanelScreenEmptyLightPreview() {
-    SegundoAireTheme(darkTheme = false) {
-        PanelScreenSample(PreviewState.copy(apps = emptyList(), mainGoal = null, name = ""))
-    }
-}
-
-@Preview(name = "Panel sin apps · oscuro", heightDp = 800)
-@Composable
-private fun PanelScreenEmptyDarkPreview() {
+private fun PanelScreenNightDarkPreview() {
     SegundoAireTheme(darkTheme = true) {
-        PanelScreenSample(PreviewState.copy(apps = emptyList(), message = null, isThinking = true))
+        PanelScreenSample(PreviewState.copy(hour = 22, greeting = GreetingPeriod.EVENING, activeBlock = null, coach = CoachUiState()))
     }
 }

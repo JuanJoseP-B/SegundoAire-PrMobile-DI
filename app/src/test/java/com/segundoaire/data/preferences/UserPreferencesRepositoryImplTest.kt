@@ -11,13 +11,13 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 
 class UserPreferencesRepositoryImplTest {
 
@@ -99,5 +99,27 @@ class UserPreferencesRepositoryImplTest {
         repository.setDemoMode(true)
 
         assertEquals(ThemeMode.LIGHT, repository.themeMode.first())
+    }
+
+    @Test
+    fun `sin onboarding no hay fecha de plantado`() = scope.runTest {
+        assertEquals(null, repository.plantedAtMillis.first())
+    }
+
+    @Test
+    fun `la fecha de plantado se guarda una sola vez`() = scope.runTest {
+        repository.markPlanted(1_000L)
+        repository.markPlanted(2_000L)
+
+        assertEquals(1_000L, repository.plantedAtMillis.first())
+    }
+
+    @Test
+    fun `los sonidos arrancan encendidos y se pueden apagar`() = scope.runTest {
+        assertTrue(repository.isSoundEnabled.first())
+
+        repository.setSoundEnabled(false)
+
+        assertFalse(repository.isSoundEnabled.first())
     }
 }

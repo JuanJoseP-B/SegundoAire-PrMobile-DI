@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.segundoaire.domain.model.AppLanguage
 import com.segundoaire.domain.model.ThemeMode
 import com.segundoaire.domain.usecase.GetAppLanguageUseCase
+import com.segundoaire.domain.usecase.GetUserProfileUseCase
 import com.segundoaire.domain.usecase.ObserveDemoModeUseCase
 import com.segundoaire.domain.usecase.ObserveThemeModeUseCase
 import com.segundoaire.domain.usecase.ResetAppUseCase
@@ -35,7 +36,8 @@ class SettingsViewModel @Inject constructor(
     private val setThemeMode: SetThemeModeUseCase,
     observeDemoMode: ObserveDemoModeUseCase,
     private val setDemoMode: SetDemoModeUseCase,
-    private val resetApp: ResetAppUseCase
+    private val resetApp: ResetAppUseCase,
+    getUserProfile: GetUserProfileUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState(language = getAppLanguage()))
@@ -47,6 +49,11 @@ class SettingsViewModel @Inject constructor(
                 // Si DataStore falla, el selector queda en Sistema, que es el tema que se aplica
                 .catch { emit(ThemeMode.SYSTEM) }
                 .collect { mode -> _uiState.update { it.copy(themeMode = mode) } }
+        }
+        viewModelScope.launch {
+            getUserProfile()
+                .catch { }
+                .collect { profile -> _uiState.update { it.copy(authMode = profile.authMode, email = profile.email) } }
         }
         viewModelScope.launch {
             observeDemoMode()

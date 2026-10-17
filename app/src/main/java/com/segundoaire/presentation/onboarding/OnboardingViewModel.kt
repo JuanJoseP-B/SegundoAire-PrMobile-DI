@@ -2,12 +2,10 @@ package com.segundoaire.presentation.onboarding
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.segundoaire.domain.model.Goal
 import com.segundoaire.domain.model.RiskMoment
 import com.segundoaire.domain.model.UsageRange
 import com.segundoaire.domain.model.UserProfile
-import com.segundoaire.domain.usecase.CalculateScreenTimeProjectionUseCase
 import com.segundoaire.domain.usecase.CompleteOnboardingUseCase
 import com.segundoaire.domain.usecase.SaveUserProfileUseCase
 import com.segundoaire.domain.usecase.SuggestRigorUseCase
@@ -16,20 +14,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
 /**
- * ViewModel compartido por todos los pasos del onboarding (vive en el grafo
- * anidado). Las respuestas se copian al [SavedStateHandle] para que, si el
- * sistema mata el proceso a mitad del flujo, el paso restaurado no aparezca vacío.
+ * ViewModel del flujo completo. Guarda el paso y las respuestas en el [SavedStateHandle]
+ * para que, si el sistema mata el proceso a mitad del flujo, el paso restaurado no aparezca
+ * vacío. El perfil se escribe en DataStore al completar el compromiso ([commit]).
  */
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val suggestRigor: SuggestRigorUseCase,
-    private val calculateProjection: CalculateScreenTimeProjectionUseCase,
     private val saveUserProfile: SaveUserProfileUseCase,
     private val completeOnboarding: CompleteOnboardingUseCase
 ) : ViewModel() {
@@ -37,14 +33,15 @@ class OnboardingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(restoreState())
     val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
 
-    fun onWelcomeNext() {
-        _uiState.update {
-            it.copy(welcomePage = (it.welcomePage + 1).coerceAtMost(OnboardingUiState.WELCOME_PAGES - 1))
-        }
+    fun onStepChange(step: Int) {
+        val next = step.coerceIn(OnboardingStep.Seed, OnboardingStep.Last)
+        _uiState.update { it.copy(step = next) }
+        savedStateHandle[KEY_STEP] = next
     }
 
-    fun onWelcomeBack() {
-        _uiState.update { it.copy(welcomePage = (it.welcomePage - 1).coerceAtLeast(0)) }
+    /** Entra por un paso más avanzado (la cuenta pendiente) sin retroceder si ya se pasó de él. */
+    internal fun ensureStartStep(step: Int) {
+        if (_uiState.value.step < step) onStepChange(step)
     }
 
     fun onNameChange(value: String) {
@@ -70,37 +67,38 @@ class OnboardingViewModel @Inject constructor(
         updateAnswers { it.copy(riskMoments = riskMoments) }
     }
 
-    fun onBreathCycleCompleted() {
-        _uiState.update {
-            it.copy(breathCyclesDone = (it.breathCyclesDone + 1).coerceAtMost(OnboardingUiState.BREATH_CYCLES))
-        }
+    fun onSoundToggle() {
+        _uiState.update { it.copy(soundEnabled = !it.soundEnabled) }
+        savedStateHandle[KEY_SOUND] = _uiState.value.soundEnabled
     }
 
-    /** Guarda el perfil y cierra el onboarding. La pantalla navega al ver `isCompleted`. */
-    fun onCommit() {
+    /**
+     * Guarda el perfil y marca el onboarding como completo. Devuelve `false` si falta una
+     * respuesta o DataStore no pudo escribir: el compromiso vuelve a quedar disponible.
+     * Guarda siempre: si el usuario volvió y cambió algo, el perfil debe quedar al día.
+     */
+    suspend fun commit(): Boolean {
         val state = _uiState.value
-        if (state.isSaving || state.isCompleted || !state.isProfileValid) return
+        if (state.isSaving || !state.isProfileValid) return false
 
         _uiState.update { it.copy(isSaving = true) }
-        viewModelScope.launch {
-            val saved = try {
-                saveUserProfile(
-                    UserProfile(
-                        name = state.displayName,
-                        goals = state.goals,
-                        usageRange = state.usageRange,
-                        riskMoments = state.riskMoments,
-                        suggestedRigor = state.suggestedRigor
-                    )
+        val saved = try {
+            saveUserProfile(
+                UserProfile(
+                    name = state.displayName,
+                    goals = state.goals,
+                    usageRange = state.usageRange,
+                    riskMoments = state.riskMoments,
+                    suggestedRigor = state.suggestedRigor
                 )
-                completeOnboarding()
-                true
-            } catch (_: IOException) {
-                // DataStore no pudo escribir: el botón vuelve a quedar disponible para reintentar
-                false
-            }
-            _uiState.update { it.copy(isSaving = false, isCompleted = saved) }
+            )
+            completeOnboarding()
+            true
+        } catch (_: IOException) {
+            false
         }
+        _uiState.update { it.copy(isSaving = false) }
+        return saved
     }
 
     // Toda respuesta nueva recalcula lo que depende de ella y se copia al estado guardado
@@ -114,8 +112,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private fun withDerived(state: OnboardingUiState): OnboardingUiState = state.copy(
-        suggestedRigor = suggestRigor(state.usageRange, state.goals, state.riskMoments),
-        projection = calculateProjection(state.usageRange)
+        suggestedRigor = suggestRigor(state.usageRange, state.goals, state.riskMoments)
     )
 
     private fun restoreState(): OnboardingUiState {
@@ -125,6 +122,8 @@ class OnboardingViewModel @Inject constructor(
             ?: OnboardingUiState.DEFAULT_USAGE_RANGE
         return withDerived(
             OnboardingUiState(
+                step = (savedStateHandle.get<Int>(KEY_STEP) ?: OnboardingStep.Seed)
+                    .coerceIn(OnboardingStep.Seed, OnboardingStep.Last),
                 name = name,
                 nameError = if (UserProfile.isValidName(name)) null else NameError.INVALID_CHARACTERS,
                 goals = savedStateHandle.get<ArrayList<String>>(KEY_GOALS).orEmpty()
@@ -132,15 +131,17 @@ class OnboardingViewModel @Inject constructor(
                 usageRange = usageRange,
                 riskMoments = savedStateHandle.get<ArrayList<String>>(KEY_RISK_MOMENTS).orEmpty()
                     .mapNotNullTo(linkedSetOf()) { saved -> RiskMoment.entries.firstOrNull { it.name == saved } },
-                projection = calculateProjection(usageRange)
+                soundEnabled = savedStateHandle.get<Boolean>(KEY_SOUND) ?: true
             )
         )
     }
 
     private companion object {
+        const val KEY_STEP = "onboarding_step"
         const val KEY_NAME = "onboarding_name"
         const val KEY_GOALS = "onboarding_goals"
         const val KEY_USAGE_RANGE = "onboarding_usage_range"
         const val KEY_RISK_MOMENTS = "onboarding_risk_moments"
+        const val KEY_SOUND = "onboarding_sound"
     }
 }

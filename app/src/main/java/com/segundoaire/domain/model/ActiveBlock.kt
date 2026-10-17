@@ -18,8 +18,16 @@ data class ActiveBlock(
 
     fun isActiveAt(now: Long): Boolean = now < endsAt
 
+    /** Avance de 0 a 1 en [now]. */
+    fun progress(now: Long): Float =
+        if (totalMillis <= 0L) 1f else 1f - remainingMillis(now).toFloat() / totalMillis
+
+    /** Segundos que se muestran: hacia arriba, para no enseñar 0:00 con el bloque vivo. */
+    fun remainingSeconds(now: Long): Int = ((remainingMillis(now) + MILLIS_PER_SECOND - 1) / MILLIS_PER_SECOND).toInt()
+
     companion object {
         const val MILLIS_PER_MINUTE = 60_000L
+        const val MILLIS_PER_SECOND = 1_000L
         const val DEFAULT_DURATION_MINUTES = 15
         val DURATION_OPTIONS_MINUTES = listOf(5, 10, 15, 30)
 

@@ -1,6 +1,7 @@
 package com.segundoaire.core.service
 
 import com.segundoaire.domain.model.InterceptionEvent
+import com.segundoaire.domain.model.InterceptionIntent
 import com.segundoaire.domain.model.InterceptionResult
 import com.segundoaire.testing.FakeInterceptionEventRepository
 import com.segundoaire.testing.MutableClock
@@ -71,5 +72,21 @@ class InterceptionRecorderTest {
             ),
             events
         )
+    }
+
+    @Test
+    fun `la intencion elegida queda en la intercepcion abierta`() = scope.runTest {
+        recorder.onShown("com.instagram.android")
+
+        recorder.onIntent(InterceptionIntent.BORED)
+
+        assertEquals(InterceptionIntent.BORED, events.single().intent)
+    }
+
+    @Test
+    fun `sin intercepcion abierta la intencion no se guarda`() = scope.runTest {
+        recorder.onIntent(InterceptionIntent.SEARCH)
+
+        assertEquals(emptyList<InterceptionEvent>(), events)
     }
 }

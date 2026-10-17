@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathBuilder
+import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
@@ -149,53 +150,49 @@ object SegundoAireIcons {
         }
     }
 
-    // Pestañas de la barra inferior
+    // Pestañas de la barra inferior (trazos de la referencia de la app principal)
     val Panel: ImageVector by lazy {
-        icon("Panel") {
-            stroked { roundRect(left = 4f, top = 4f, right = 10f, bottom = 10f, radius = 2f) }
-            stroked { roundRect(left = 14f, top = 4f, right = 20f, bottom = 10f, radius = 2f) }
-            stroked { roundRect(left = 4f, top = 14f, right = 10f, bottom = 20f, radius = 2f) }
-            stroked { roundRect(left = 14f, top = 14f, right = 20f, bottom = 20f, radius = 2f) }
-        }
+        icon("Panel") { strokedPath("M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7") }
     }
 
     val Blocks: ImageVector by lazy {
-        icon("Blocks") {
-            stroked { circle(centerX = 12f, centerY = 12f, radius = 9f) }
-            stroked {
-                moveTo(12f, 7f)
-                lineTo(12f, 12f)
-                lineTo(15.5f, 14f)
-            }
-        }
+        icon("Blocks") { strokedPath("M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z") }
     }
 
     val Progress: ImageVector by lazy {
         icon("Progress") {
-            stroked {
-                moveTo(6f, 19f)
-                lineTo(6f, 13f)
-            }
-            stroked {
-                moveTo(12f, 19f)
-                lineTo(12f, 6f)
-            }
-            stroked {
-                moveTo(18f, 19f)
-                lineTo(18f, 10f)
-            }
+            strokedPath(
+                "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" +
+                    "M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+            )
         }
     }
 
     val Profile: ImageVector by lazy {
-        icon("Profile") {
-            stroked { circle(centerX = 12f, centerY = 8f, radius = 3.5f) }
-            stroked {
-                moveTo(5f, 20f)
-                curveTo(5f, 16.5f, 8f, 14.5f, 12f, 14.5f)
-                curveTo(16f, 14.5f, 19f, 16.5f, 19f, 20f)
-            }
-        }
+        icon("Profile") { strokedPath("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c1.5-4 4.5-6 8-6s6.5 2 8 6") }
+    }
+
+    // Filas que abren otra pantalla; se refleja en idiomas de derecha a izquierda
+    val ChevronRight: ImageVector by lazy {
+        icon("ChevronRight", autoMirror = true) { strokedPath("M9 6l6 6-6 6") }
+    }
+
+    /** Minimizar el modo enfoque. */
+    val ChevronDown: ImageVector by lazy {
+        icon("ChevronDown") { strokedPath("M6 9l6 6 6-6") }
+    }
+
+    /** Otra sugerencia del coach. */
+    val Refresh: ImageVector by lazy {
+        icon("Refresh") { strokedPath("M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5") }
+    }
+
+    val Share: ImageVector by lazy {
+        icon("Share") { strokedPath("M12 15V3M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5") }
+    }
+
+    val Lock: ImageVector by lazy {
+        icon("Lock") { strokedPath("M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 11V8a4 4 0 0 1 8 0v3") }
     }
 }
 
@@ -273,5 +270,16 @@ private fun ImageVector.Builder.filled(pathBuilder: PathBuilder.() -> Unit) {
         strokeLineCap = StrokeCap.Round,
         strokeLineJoin = StrokeJoin.Round,
         pathBuilder = pathBuilder
+    )
+}
+
+// Un trazo descrito como en el SVG del prototipo
+private fun ImageVector.Builder.strokedPath(d: String) {
+    addPath(
+        pathData = addPathNodes(d),
+        stroke = Ink,
+        strokeLineWidth = StrokeWidth,
+        strokeLineCap = StrokeCap.Round,
+        strokeLineJoin = StrokeJoin.Round
     )
 }
