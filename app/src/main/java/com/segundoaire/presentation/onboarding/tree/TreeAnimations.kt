@@ -10,9 +10,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import com.segundoaire.presentation.designsystem.theme.Motion
-import com.segundoaire.presentation.tree.TreeGeometry
 import com.segundoaire.presentation.designsystem.theme.SegundoAireMotion
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.tree.TreeGeometry
 
 /** Lo que el árbol necesita saber del onboarding para decidir qué crece. */
 @Immutable

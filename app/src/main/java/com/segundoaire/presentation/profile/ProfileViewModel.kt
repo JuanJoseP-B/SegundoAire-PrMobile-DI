@@ -3,8 +3,8 @@ package com.segundoaire.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.segundoaire.domain.model.Goal
-import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.model.RigorLevel
+import com.segundoaire.domain.model.UserProfile
 import com.segundoaire.domain.repository.TreeRepository
 import com.segundoaire.domain.repository.UserPreferencesRepository
 import com.segundoaire.domain.usecase.CheckAccessibilityEnabledUseCase
