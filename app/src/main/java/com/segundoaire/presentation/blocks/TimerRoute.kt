@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.presentation.designsystem.theme.Motion
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.feedback.rememberFeedback
 
 /**
  * Bloques con su ViewModel. `collectAsStateWithLifecycle` deja de observar con
@@ -32,17 +33,28 @@ fun TimerRoute(
     viewModel: TimerViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val feedback = rememberFeedback()
 
     TimerScreen(
         state = state,
-        onDurationSelected = viewModel::onDurationSelected,
-        onRigorSelected = viewModel::onRigorSelected,
+        onDurationSelected = {
+            feedback.select()
+            viewModel.onDurationSelected(it)
+        },
+        onRigorSelected = {
+            feedback.select()
+            viewModel.onRigorSelected(it)
+        },
         onStart = {
+            feedback.startBlock()
             viewModel.onStart()
             onOpenFocus()
         },
         onOpenFocus = onOpenFocus,
-        onToggleApp = viewModel::onToggleApp,
+        onToggleApp = { pkg, blocked ->
+            feedback.select()
+            viewModel.onToggleApp(pkg, blocked)
+        },
         onEditApps = onEditApps,
         modifier = modifier,
         contentPadding = contentPadding
@@ -69,13 +81,17 @@ fun FocusLayer(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val motion = SegundoAireTheme.motion
+    val feedback = rememberFeedback()
     val completed = state.completedMinutes != null
     val visible = open && (state.isRunning || completed)
     val risePx = with(LocalDensity.current) { FocusRise.roundToPx() }
 
     // Un bloque que termina con la app abierta se celebra en el modo enfoque
     LaunchedEffect(state.completedMinutes) {
-        if (state.completedMinutes != null) onOpen()
+        if (state.completedMinutes != null) {
+            feedback.bloom()
+            onOpen()
+        }
     }
     val backToPanel = {
         viewModel.onCompletedSeen()

@@ -33,6 +33,7 @@ import com.segundoaire.presentation.designsystem.components.PrimaryButton
 import com.segundoaire.presentation.designsystem.components.Rigor
 import com.segundoaire.presentation.designsystem.components.RigorSelector
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.feedback.rememberFeedback
 import com.segundoaire.presentation.panel.MissingPermission
 import com.segundoaire.presentation.setup.openAccessibilitySettings
 import com.segundoaire.presentation.setup.openOverlaySettings
@@ -60,6 +61,7 @@ fun ProfileRoute(
     val shareText = stringResource(R.string.profile_share_text)
     val shareFailed = stringResource(R.string.profile_share_failed)
     val toast by rememberUpdatedState(onToast)
+    val feedback = rememberFeedback()
     var editing by rememberSaveable { mutableStateOf(false) }
     var planOpen by rememberSaveable { mutableStateOf(false) }
 
@@ -77,7 +79,10 @@ fun ProfileRoute(
             editing = true
         },
         onOpenPlan = { planOpen = true },
-        onSoundChange = viewModel::onSoundChange,
+        onSoundChange = {
+            feedback.select()
+            viewModel.onSoundChange(it)
+        },
         onOpenPermissions = {
             when (state.missingPermission) {
                 MissingPermission.OVERLAY -> context.openOverlaySettings()

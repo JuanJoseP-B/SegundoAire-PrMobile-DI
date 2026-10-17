@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.segundoaire.R
+import com.segundoaire.presentation.feedback.rememberFeedback
 import com.segundoaire.presentation.main.MainTab
 import com.segundoaire.presentation.setup.openAccessibilitySettings
 import com.segundoaire.presentation.setup.openOverlaySettings
@@ -41,6 +42,7 @@ fun PanelRoute(
     val openTab by rememberUpdatedState(onOpenTab)
     val openBlock by rememberUpdatedState(onOpenActiveBlock)
     val toast by rememberUpdatedState(onToast)
+    val feedback = rememberFeedback()
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.onResume() }
 
@@ -67,9 +69,18 @@ fun PanelRoute(
         },
         onLeavesShown = viewModel::onLeavesShown,
         onActiveBlockClick = viewModel::onActiveBlockClick,
-        onCoachNext = viewModel::onCoachNext,
-        onCoachAsk = viewModel::onCoachAsk,
-        onCoachAction = viewModel::onCoachAction,
+        onCoachNext = {
+            feedback.select()
+            viewModel.onCoachNext()
+        },
+        onCoachAsk = {
+            feedback.select()
+            viewModel.onCoachAsk(it)
+        },
+        onCoachAction = {
+            feedback.select()
+            viewModel.onCoachAction(it)
+        },
         modifier = modifier,
         contentPadding = contentPadding,
         onTitleLongClick = onTitleLongClick

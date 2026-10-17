@@ -50,6 +50,7 @@ import com.segundoaire.domain.model.TreeState
 import com.segundoaire.presentation.designsystem.theme.Motion
 import com.segundoaire.presentation.designsystem.theme.SegundoAireColors
 import com.segundoaire.presentation.designsystem.theme.SegundoAireTheme
+import com.segundoaire.presentation.feedback.rememberFeedback
 import com.segundoaire.presentation.onboarding.toPickIndexes
 import com.segundoaire.presentation.tree.TreeGeometry
 import com.segundoaire.presentation.tree.drawGrownTree
@@ -123,9 +124,12 @@ internal fun PanelHero(
     // Una escala por hueco de hoja: las ya vistas quedan en 1, las nuevas brotan
     val leafScales = remember { List(TreeState.MAX_LEAVES) { Animatable(0f) } }
     val notifyShown by rememberUpdatedState(onLeavesShown)
+    val feedback = rememberFeedback()
     LaunchedEffect(tree.leafCount, tree.shownLeaves) {
         leafScales.forEachIndexed { i, scale -> if (i < tree.shownLeaves) scale.snapTo(1f) else if (i >= tree.leafCount) scale.snapTo(0f) }
         if (tree.newLeaves == 0) return@LaunchedEffect
+        // La hoja nueva brota con el arpegio y la háptica de confirmación
+        feedback.bloom()
         coroutineScope {
             (tree.shownLeaves until tree.leafCount).forEachIndexed { order, i ->
                 launch {
