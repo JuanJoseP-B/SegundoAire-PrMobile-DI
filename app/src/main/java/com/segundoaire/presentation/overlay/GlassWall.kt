@@ -172,7 +172,7 @@ fun GlassWall(
     val reduced = motion.reduced
     val feedback = rememberFeedback()
     val scope = rememberCoroutineScope()
-    val backdrop = remember { Animatable(0f) }
+    val backdrop = remember { Animatable(1f) }
     val shown = remember { Animatable(0f) }
     val fall = remember { Animatable(0f) }
     val breath = remember { Animatable(0f) }
@@ -192,7 +192,9 @@ fun GlassWall(
                 fall.snapTo(0f)
                 breath.snapTo(0f)
                 rise.snapTo(0f)
-                launch { backdrop.animateTo(1f, motion.fade(Motion.WallScrimMillis)) { notifyBackdrop(value) } }
+                // Fondo opaco desde el primer frame: la app bloqueada nunca se ve detrás
+                backdrop.snapTo(1f)
+                notifyBackdrop(1f)
                 launch { shown.animateTo(1f, motion.fade(Motion.WallContentMillis, Motion.WallContentDelayMillis)) }
                 if (!reduced) launch { fall.animateTo(1f, motion.gust(Motion.WallLeafFallMillis)) } else fall.snapTo(1f)
                 launch {

@@ -124,7 +124,7 @@ Salen del objeto `T` de `docs/design/app-dashboard/app-dashboard-referencia.html
 | `heroSkyDay` | `0x73FFF6BE` | `0x14FFF6BE` | 11:00–16:59 |
 | `heroSkyEvening` | `0x6BF4A06E` | `0x24F4A06E` | 17:00–19:59 |
 | `heroSkyNight` | `0x380D1F23` | `0x000D1F23` | 20:00–5:59 (con luciérnagas) |
-| `wallScrim` | `0xC7DAF1DE` | `0xB8040C0E` | Velo del GlassWall a pantalla completa |
+| `wallScrim` | `0xFFFFFFFF` | `0xFF040C0E` | Fondo opaco del GlassWall a pantalla completa (la app bloqueada no se ve) |
 | `wallOn` · `wallMuted` | `0xFF051F20` · `0xFF2C5649` | `0xFFDCE3E0` · `0xFF8C9297` | Texto del GlassWall |
 | `wallTrunk` · `wallLeaf` | `0xFF235347` · `0xFF2E7D63` | `0xFF5E7A84` · `0xFF86E0CF` | Tronco, hoja y tallo de "Continuar" |
 | `wallBtn` · `wallBtnOn` | `0xFF235347` · `0xFFDAF1DE` | `0xFF708792` · `0xFF0D1F23` | "Volver a mi bloque" y chip de intención elegido |
@@ -460,7 +460,7 @@ Pantalla completa sobre la app interceptada (ventana `TYPE_APPLICATION_OVERLAY`)
 
 | Momento | Qué pasa |
 |---|---|
-| 0 ms | Sube `wallScrim` y el blur de 14 dp de la ventana (Android 12+; en 10–11 solo el velo), `Motion.fade(600)`. A los 320 ms entra el contenido con fundido de 500 ms y escala de 0.92 a 1. Una hoja `wallLeaf` cae al centro en 1,6 s (de (−60, −260) y −40° a su lugar y 20°, curva `WallFallEasing` por tramo). |
+| 0 ms | `wallScrim` aparece opaco desde el primer frame, sin fundido. A los 320 ms entra el contenido con fundido de 500 ms y escala de 0.92 a 1. Una hoja `wallLeaf` cae al centro en 1,6 s (de (−60, −260) y −40° a su lugar y 20°, curva `WallFallEasing` por tramo). |
 | 1,7 s | Respiración de 8 s: la copa (siete círculos `tree1..3`) escala de 0.62 a 1 y vuelve, con "Inhala / Exhala" en Fraunces cursiva 26 y el sonido de calma. Sin botones. |
 | 9,7 s | Sube el bloque de contexto (`Motion.rise(600)`, 16 dp) y la copa queda en 0.8: "Llevas {min} min en esta app hoy. ¿Es lo que querías?" (estimación) y "Tu árbol lleva {n} hojas esta semana". Mindful y sin bloque: "¿Para qué entras?" con tres chips que se guardan para el coach, "Volver" y "Continuar en 10…" con un tallo que se dibuja en 10 s y una hoja que brota al habilitarse. Strict: copa `wallWinter`, chip con candado "Se abre a las {hora}" y sin continuar. |
 | Volver | La hoja sube y se va en 1 s (`WallRiseEasing`) con la gota y `Confirm`; se abre el Panel, donde brota la hoja nueva con el arpegio. Si la actividad no se puede abrir, se va al inicio. |
