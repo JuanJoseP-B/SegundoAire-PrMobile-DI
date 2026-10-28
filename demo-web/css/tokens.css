@@ -1,0 +1,320 @@
+/*
+ * Design tokens for the SegundoAire interface demo.
+ * Mirrors DESIGN_SYSTEM.md, Color.kt and Motion.kt of the Android app.
+ * This is the ONLY file allowed to contain color literals (hex or rgba).
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Typography ---- */
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+
+  /* ---- Spacing (Spacing.kt) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---- Radii (Shape.kt) ---- */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 999px;
+
+  /* ---- Color: light (default) ---- */
+  --background: #EAF4EC;
+  --on-background: #051F20;
+  --on-background-muted: #3D5A50;
+  --surface-glass: #F4FAF6;
+  --glass-1: rgba(255, 255, 255, 0.38);
+  --glass-2: rgba(255, 255, 255, 0.58);
+  --glass-3: rgba(255, 255, 255, 0.74);
+  --glass-edge-hi: rgba(255, 255, 255, 0.70);
+  --glass-edge-lo: rgba(255, 255, 255, 0.08);
+  --mint: #8EB69B;
+  --primary: #235347;
+  --primary-hover: #2A5E51;
+  --primary-pressed: #1B443A;
+  --on-primary: #DAF1DE;
+  --secondary: #163832;
+  --secondary-deep: #0B2B26;
+  --on-secondary: #DAF1DE;
+  --outline: #4A7A63;
+  --outline-variant: rgba(5, 31, 32, 0.12);
+  --glow: #2E7D63;
+  --on-glow: #DAF1DE;
+  --focus-ring: #235347;
+  --state-layer: rgba(5, 31, 32, 0.08);
+  --disabled-content: rgba(5, 31, 32, 0.38);
+  --disabled-container: rgba(5, 31, 32, 0.10);
+  --scrim: rgba(5, 31, 32, 0.32);
+  --accent: #235347;
+
+  /* Onboarding tree */
+  --gold: #C9B26B;
+  --blossom: #DAF1DE;
+  --firefly: #E6F5B0;
+  --firefly-glow: rgba(230, 245, 176, 0.70);
+  --sky-morning: rgba(255, 196, 150, 0.45);
+  --sky-afternoon: rgba(255, 246, 190, 0.45);
+  --sky-night: rgba(14, 22, 64, 0.75);
+  --sky-late: rgba(13, 31, 35, 0.62);
+  --hill: rgba(142, 182, 155, 0.50);
+  --hill-edge: rgba(35, 83, 71, 0.25);
+  --leaf: #2E7D63;
+  --tree-1: rgba(35, 83, 71, 0.50);
+  --tree-2: rgba(46, 125, 99, 0.55);
+  --tree-3: rgba(142, 182, 155, 0.85);
+  --sun-1: rgba(255, 255, 255, 0.55);
+  --sun-2: rgba(255, 255, 255, 0.45);
+  --tile: rgba(35, 83, 71, 0.12);
+
+  /* Glass shadows (Glass.kt) */
+  --shadow-glass-1: 0 1px 2px rgba(5, 31, 32, 0.06);
+  --shadow-glass-2: 0 2px 6px rgba(5, 31, 32, 0.06), 0 8px 24px rgba(5, 31, 32, 0.08);
+
+  /* Splash blob blend: Multiply on light, Screen on dark */
+  --blob-blend: multiply;
+
+  /* ---- Demo chrome (outside the phone) ---- */
+  --page-bg: #E3EFE6;
+  --page-bg-2: #CFE4D5;
+  --chrome-surface: rgba(255, 255, 255, 0.62);
+  --chrome-edge: rgba(5, 31, 32, 0.14);
+
+  /* ---- Device frame ---- */
+  --device-frame: #1A1D1E;
+  --device-frame-edge: #3A4042;
+  --device-island: #050606;
+  --device-button: #2A2E30;
+  --device-shadow: 0 30px 60px rgba(5, 31, 32, 0.28), 0 8px 18px rgba(5, 31, 32, 0.18);
+
+  /* ---- Motion (Motion.kt): easings ---- */
+  --motion-scale: 1;
+  --motion-min: 0ms;
+  --layer-shift: 1;
+  --curtain-hidden-opacity: 1;
+
+  --motion-press-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-calm-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-grow-easing: cubic-bezier(0.45, 0, 0.2, 1);
+  --motion-bloom-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --motion-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --motion-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --motion-ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --motion-settle-easing: cubic-bezier(0.3, 1.06, 0.5, 1);
+  --motion-rise-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-curtain-easing: cubic-bezier(0.7, 0, 0.2, 1);
+  --motion-count-easing: cubic-bezier(0.33, 1, 0.68, 1);
+  --motion-gust-easing: cubic-bezier(0.3, 0.1, 0.4, 1);
+  --motion-shake-easing: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  --motion-dot-easing: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --motion-ripple-easing: cubic-bezier(0.2, 0.6, 0.3, 1);
+  --motion-linear: linear;
+
+  /* ---- Motion: durations (collapse to a 150 ms fade when reduced) ---- */
+  --motion-press-duration: max(var(--motion-min), calc(180ms * var(--motion-scale)));
+  --motion-calm-duration: max(var(--motion-min), calc(500ms * var(--motion-scale)));
+  --motion-grow-duration: max(var(--motion-min), calc(900ms * var(--motion-scale)));
+  --motion-grow-exit-duration: max(var(--motion-min), calc(350ms * var(--motion-scale)));
+  --motion-ring-duration: max(var(--motion-min), calc(1800ms * var(--motion-scale)));
+  --motion-bloom-duration: max(var(--motion-min), calc(760ms * var(--motion-scale)));
+  --motion-bloom-leaf-duration: max(var(--motion-min), calc(640ms * var(--motion-scale)));
+  --motion-bloom-name-duration: max(var(--motion-min), calc(520ms * var(--motion-scale)));
+  --motion-bloom-flower-duration: max(var(--motion-min), calc(700ms * var(--motion-scale)));
+  --motion-bloom-seed-duration: max(var(--motion-min), calc(600ms * var(--motion-scale)));
+  --motion-bloom-option-duration: max(var(--motion-min), calc(520ms * var(--motion-scale)));
+  --motion-bloom-pop-duration: max(var(--motion-min), calc(420ms * var(--motion-scale)));
+  --motion-bloom-exit-duration: max(var(--motion-min), calc(280ms * var(--motion-scale)));
+  --motion-settle-duration: max(var(--motion-min), calc(1000ms * var(--motion-scale)));
+  --motion-layer-duration: max(var(--motion-min), calc(620ms * var(--motion-scale)));
+  --motion-layer-fade-duration: max(var(--motion-min), calc(380ms * var(--motion-scale)));
+  --motion-layer-fade-delay: calc(180ms * var(--motion-scale));
+  --motion-rise-duration: max(var(--motion-min), calc(520ms * var(--motion-scale)));
+  --motion-fade-duration: max(var(--motion-min), calc(300ms * var(--motion-scale)));
+  --motion-fade-med-duration: max(var(--motion-min), calc(500ms * var(--motion-scale)));
+  --motion-fade-slow-duration: max(var(--motion-min), calc(900ms * var(--motion-scale)));
+  --motion-curtain-duration: max(var(--motion-min), calc(900ms * var(--motion-scale)));
+  --motion-dot-duration: max(var(--motion-min), calc(400ms * var(--motion-scale)));
+  --motion-fade-wilt-duration: max(var(--motion-min), calc(700ms * var(--motion-scale)));
+  --motion-stagger: calc(60ms * var(--motion-scale));
+  --motion-stagger-base: calc(80ms * var(--motion-scale));
+  --motion-late-caption-delay: calc(1900ms * var(--motion-scale));
+  --motion-late-formula-delay: calc(2100ms * var(--motion-scale));
+  --motion-late-good-delay: calc(2600ms * var(--motion-scale));
+  --motion-plan-row-delay: calc(200ms * var(--motion-scale));
+  --motion-stagger-row: calc(90ms * var(--motion-scale));
+  --motion-count-duration: max(var(--motion-min), calc(1800ms * var(--motion-scale)));
+  --motion-count-good-duration: max(var(--motion-min), calc(1200ms * var(--motion-scale)));
+  --motion-count-good-delay: calc(2700ms * var(--motion-scale));
+  --motion-shake-duration: 380ms;
+  --motion-hold-duration: 1500ms;
+  --motion-hold-release-duration: 300ms;
+  --motion-commit-duration: 1600ms;
+  --motion-gust-duration: 2800ms;
+
+  /* Looping motion (disabled when reduced) */
+  --motion-sway-duration: 7000ms;
+  --motion-drift-duration: 22000ms;
+  --motion-drift-slow-duration: 28000ms;
+  --motion-firefly-duration: 4000ms;
+  --motion-ripple-duration: 4000ms;
+  --motion-spin-duration: 900ms;
+  --motion-breath-half-duration: 4000ms;
+  --motion-breath-cycles: 3;
+
+  /* Splash "El Respiro" (BreathSplashSpec): the only screen with its own curves */
+  --motion-splash-presence-duration: 1200ms;
+  --motion-splash-presence-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-splash-breath-duration: 2000ms;
+  --motion-splash-breath-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-splash-deep-duration: 4000ms;
+  --motion-splash-deep-easing: cubic-bezier(0.45, 0, 0.35, 1);
+  --motion-splash-deep-hold: 800ms;
+  --motion-splash-release-duration: 1600ms;
+  --motion-splash-release-easing: cubic-bezier(0.55, 0, 0.2, 1);
+  --motion-splash-solid-delay: 1200ms;
+  --motion-splash-solid-duration: 400ms;
+  --motion-splash-reveal-duration: 900ms;
+  --motion-splash-reveal-hold: 2500ms;
+  --motion-splash-exit-duration: 800ms;
+  --motion-splash-exit-tail: 200ms;
+  --motion-splash-out-easing: cubic-bezier(0, 0, 0.2, 1);
+  --motion-splash-layer-a-period: 7000ms;
+  --motion-splash-layer-b-period: 5500ms;
+  --motion-splash-rotation-duration: 12000ms;
+}
+
+/* ---- Color: dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --background: #0D1F23;
+    --on-background: #B0B4B8;
+    --on-background-muted: #8C9297;
+    --surface-glass: #132E35;
+    --glass-1: rgba(19, 46, 53, 0.45);
+    --glass-2: rgba(19, 46, 53, 0.65);
+    --glass-3: rgba(19, 46, 53, 0.82);
+    --glass-edge-hi: rgba(176, 180, 184, 0.28);
+    --glass-edge-lo: rgba(176, 180, 184, 0.04);
+    --mint: #86E0CF;
+    --primary: #708792;
+    --primary-hover: #7A909B;
+    --primary-pressed: #8699A3;
+    --on-primary: #0D1F23;
+    --secondary: #2D4A53;
+    --secondary-deep: #091619;
+    --on-secondary: #B0B4B8;
+    --outline: #5E7A84;
+    --outline-variant: rgba(176, 180, 184, 0.12);
+    --glow: #86E0CF;
+    --on-glow: #0D1F23;
+    --focus-ring: #86E0CF;
+    --state-layer: rgba(176, 180, 184, 0.10);
+    --disabled-content: rgba(176, 180, 184, 0.38);
+    --disabled-container: rgba(176, 180, 184, 0.10);
+    --scrim: rgba(4, 12, 14, 0.60);
+    --accent: #86E0CF;
+    --gold: #B09B5F;
+    --blossom: #D0E8D6;
+    --sky-morning: rgba(255, 196, 150, 0.45);
+    --sky-afternoon: rgba(255, 246, 190, 0.45);
+    --sky-night: rgba(5, 10, 36, 0.75);
+    --sky-late: rgba(4, 12, 14, 0.62);
+    --hill: rgba(19, 46, 53, 0.95);
+    --hill-edge: rgba(134, 224, 207, 0.22);
+    --leaf: #86E0CF;
+    --tree-1: rgba(45, 74, 83, 0.90);
+    --tree-2: rgba(62, 140, 122, 0.60);
+    --tree-3: rgba(134, 224, 207, 0.35);
+    --sun-1: rgba(134, 224, 207, 0.10);
+    --sun-2: rgba(134, 224, 207, 0.07);
+    --tile: rgba(134, 224, 207, 0.14);
+    --shadow-glass-1: 0 1px 2px rgba(0, 0, 0, 0.20);
+    --shadow-glass-2: 0 2px 6px rgba(0, 0, 0, 0.22), 0 8px 24px rgba(0, 0, 0, 0.28);
+    --blob-blend: screen;
+    --page-bg: #0A1417;
+    --page-bg-2: #0F2227;
+    --chrome-surface: rgba(19, 46, 53, 0.70);
+    --chrome-edge: rgba(176, 180, 184, 0.18);
+    --device-frame-edge: #4B5254;
+    --device-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0D1F23;
+  --on-background: #B0B4B8;
+  --on-background-muted: #8C9297;
+  --surface-glass: #132E35;
+  --glass-1: rgba(19, 46, 53, 0.45);
+  --glass-2: rgba(19, 46, 53, 0.65);
+  --glass-3: rgba(19, 46, 53, 0.82);
+  --glass-edge-hi: rgba(176, 180, 184, 0.28);
+  --glass-edge-lo: rgba(176, 180, 184, 0.04);
+  --mint: #86E0CF;
+  --primary: #708792;
+  --primary-hover: #7A909B;
+  --primary-pressed: #8699A3;
+  --on-primary: #0D1F23;
+  --secondary: #2D4A53;
+  --secondary-deep: #091619;
+  --on-secondary: #B0B4B8;
+  --outline: #5E7A84;
+  --outline-variant: rgba(176, 180, 184, 0.12);
+  --glow: #86E0CF;
+  --on-glow: #0D1F23;
+  --focus-ring: #86E0CF;
+  --state-layer: rgba(176, 180, 184, 0.10);
+  --disabled-content: rgba(176, 180, 184, 0.38);
+  --disabled-container: rgba(176, 180, 184, 0.10);
+  --scrim: rgba(4, 12, 14, 0.60);
+  --accent: #86E0CF;
+  --gold: #B09B5F;
+  --blossom: #D0E8D6;
+  --sky-morning: rgba(255, 196, 150, 0.45);
+  --sky-afternoon: rgba(255, 246, 190, 0.45);
+  --sky-night: rgba(5, 10, 36, 0.75);
+  --sky-late: rgba(4, 12, 14, 0.62);
+  --hill: rgba(19, 46, 53, 0.95);
+  --hill-edge: rgba(134, 224, 207, 0.22);
+  --leaf: #86E0CF;
+  --tree-1: rgba(45, 74, 83, 0.90);
+  --tree-2: rgba(62, 140, 122, 0.60);
+  --tree-3: rgba(134, 224, 207, 0.35);
+  --sun-1: rgba(134, 224, 207, 0.10);
+  --sun-2: rgba(134, 224, 207, 0.07);
+  --tile: rgba(134, 224, 207, 0.14);
+  --shadow-glass-1: 0 1px 2px rgba(0, 0, 0, 0.20);
+  --shadow-glass-2: 0 2px 6px rgba(0, 0, 0, 0.22), 0 8px 24px rgba(0, 0, 0, 0.28);
+  --blob-blend: screen;
+  --page-bg: #0A1417;
+  --page-bg-2: #0F2227;
+  --chrome-surface: rgba(19, 46, 53, 0.70);
+  --chrome-edge: rgba(176, 180, 184, 0.18);
+  --device-frame-edge: #4B5254;
+  --device-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- Reduced motion: every transition becomes a 150 ms fade, no displacement ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+    --motion-min: 150ms;
+    --layer-shift: 0;
+    --curtain-hidden-opacity: 0;
+  }
+}
