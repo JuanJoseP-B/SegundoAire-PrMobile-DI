@@ -111,7 +111,7 @@
 
     function update(st) {
       var step = st.step;
-      var isEnd = step >= 11;
+      var isEnd = step >= 12;
       var scr = step < 3 ? 0 : step - 2;
       var inB = step < 3;
       var stage = Math.min(step, 4);
@@ -179,6 +179,7 @@
       if (step === 8) tO = 0.1;
       if (step === 9) tO = 0.2;
       if (step === 10) { tY = -210; tS = 1.15; tO = 0.5; }
+      if (step === 11) tO = 0.25;
       if (isEnd) tO = 0;
 
       var tree = q.tree[0];

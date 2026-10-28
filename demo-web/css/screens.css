@@ -575,36 +575,10 @@
 .ob-hold-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--glow); }
 .ob-hold-label { position: relative; }
 
-/* Curtain ("Continuará") */
-.ob-curtain {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  overflow: hidden;
-  background: var(--secondary-deep);
-  color: var(--on-secondary);
-  opacity: var(--curtain-hidden-opacity);
-  transform: translateY(calc(-100% * var(--layer-shift)));
-  pointer-events: none;
-  transition: transform var(--motion-curtain-duration) var(--motion-curtain-easing),
-    opacity var(--motion-fade-duration) var(--motion-ease);
-}
-.ob-curtain.is-covered { opacity: 1; transform: none; pointer-events: auto; }
-.ob-curtain-brand { position: absolute; left: 24px; top: 84px; }
+/* Curtain pieces shared by the account scenes (login.js) and the closing screen (setup.js) */
 .ob-wordmark { font-family: var(--font-serif); font-size: 30px; font-weight: 500; letter-spacing: -0.01em; }
 .ob-tagline { margin-top: 4px; font-size: 14px; opacity: 0.78; }
-.ob-done {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  top: 270px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(calc(12px * var(--layer-shift)));
-  transition: opacity var(--motion-calm-duration) var(--motion-ease), transform var(--motion-calm-duration) var(--motion-ease);
-}
-.ob-curtain.is-covered .ob-done { opacity: 1; transform: none; transition-delay: calc(700ms * var(--motion-scale)); }
-.ob-curtain-tree { display: block; margin: 0 auto 20px; }
+.ob-curtain-tree { display: block; }
 .ct-trunk { fill: none; stroke: var(--mint); stroke-opacity: 0.6; stroke-width: 5; stroke-linecap: round; }
 .ct-a { fill: var(--mint); fill-opacity: 0.32; }
 .ct-b { fill: var(--leaf); fill-opacity: 0.45; }

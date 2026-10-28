@@ -14,7 +14,11 @@
     sunrise: 'M3 18h18M6 14a6 6 0 0 1 12 0M12 4v3M4.5 8.5l2 2M19.5 8.5l-2 2',
     sun: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5',
     stars: 'M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5zM18 15l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z',
-    sunSmall: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2'
+    sunSmall: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2',
+    chart: 'M4 19V9M10 19V5M16 19v-7M22 19H2',
+    window: 'M4 6h16v12H4zM8 10h8v4H8z',
+    bell: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0',
+    check: 'M5 12l5 5 9-10'
   };
 
   SA.onbData = {
@@ -52,6 +56,13 @@
       { label: 'Tarde', hours: '12 – 18 h', icon: ICON.sun, plan: 'Tarde · 14:00 – 15:00' },
       { label: 'Noche', hours: '18 – 24 h', icon: ICON.moon, plan: 'Noche · 21:00 – 22:00' },
       { label: 'Madrugada', hours: '0 – 6 h', icon: ICON.stars, plan: 'Madrugada · 00:00 – 01:00' }
+    ],
+
+    /** Step 9 of 9: the two required permissions and the optional one (visual only). */
+    perms: [
+      { title: 'Accesibilidad', desc: 'Para saber qué app se abre. Requerido.', icon: ICON.chart, required: true },
+      { title: 'Mostrar sobre otras apps', desc: 'Para mostrar la pausa a tiempo. Requerido.', icon: ICON.window, required: true },
+      { title: 'Notificaciones', desc: 'Para avisarte del bloque. Opcional.', icon: ICON.bell, required: false }
     ],
 
     /** Four rows of the plan card, built from the answers so far. */
@@ -114,6 +125,6 @@
     { id: 'breath', label: 'Paso 6 de 9 · Respiración', hint: 'Tres respiraciones con la copa del árbol.' },
     { id: 'plan', label: 'Paso 7 de 9 · Plan', hint: 'Un plan armado con las respuestas.' },
     { id: 'commit', label: 'Paso 8 de 9 · Compromiso', hint: 'Mantén presionado el botón: crecen las raíces.' },
-    { id: 'end', label: 'Continuará', hint: 'Fin de esta parte del recorrido.' }
+    { id: 'perms', label: 'Paso 9 de 9 · Permisos', hint: 'Activar un permiso solo cambia su aspecto: la demo no pide nada de verdad.' }
   ]);
 })(window.SA = window.SA || {});

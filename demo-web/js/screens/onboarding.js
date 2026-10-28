@@ -1,14 +1,15 @@
 /*
- * Onboarding "Lo que crece cuando pausas": welcome (3 cards) + 8 numbered steps, then a
- * "Continuará" curtain. One scene, one tree: each screen id maps to a step number and the
- * scene re-renders from a single state object (UDF, like the app).
+ * Onboarding "Lo que crece cuando pausas": welcome (3 cards) + 9 numbered steps, the last one
+ * being the permissions. One scene, one tree: each screen id maps to a step number and the
+ * scene re-renders from a single state object (UDF, like the app). The account curtain and
+ * everything after it live in login.js and setup.js.
  */
 (function (SA) {
   'use strict';
 
   var D = SA.onbData;
-  var STEPS = ['welcome-1', 'welcome-2', 'welcome-3', 'name', 'goals', 'usage', 'moment', 'reveal', 'breath', 'plan', 'commit', 'end'];
-  var LAST_NUMBERED = 10;
+  var STEPS = ['welcome-1', 'welcome-2', 'welcome-3', 'name', 'goals', 'usage', 'moment', 'reveal', 'breath', 'plan', 'commit', 'perms'];
+  var LAST_NUMBERED = 11;
   var QUESTION_COUNT = 9;
   var BREATH_SKIP_MS = 24000;
   var HOLD_RELEASE_MS = 300;
@@ -27,7 +28,8 @@
   function fresh() {
     return {
       step: 0, name: '', picks: [], use: D.usage.initial, moment: -1,
-      hold: 0, committed: false, gust: 0, petals: false
+      hold: 0, committed: false, gust: 0, petals: false,
+      perms: D.perms.map(function () { return false; })
     };
   }
 
@@ -130,6 +132,17 @@
       '<span class="ob-hold-fill" data-el="holdFill" aria-hidden="true"></span><span class="ob-hold-label" data-el="holdLabel">Mantén para comprometerte</span></button>';
   }
 
+  function permsContent() {
+    return '<div class="ob-perms" data-el="perms">' + D.perms.map(function (p, i) {
+      return '<div class="glass glass-2 ob-perm" role="group" aria-label="' + esc(p.title) + '" data-perm-row="' + i + '" data-on="false">' +
+        '<span class="ob-perm-tile"><span class="ob-perm-ico ob-perm-ico--todo">' + icon(p.icon, 20) + '</span>' +
+        '<span class="ob-perm-ico ob-perm-ico--ok">' + icon(D.ICON.check, 20) + '</span></span>' +
+        '<span class="ob-perm-text"><span class="ob-perm-title">' + esc(p.title) + '</span><span class="ob-perm-desc">' + esc(p.desc) + '</span></span>' +
+        '<button type="button" class="ob-perm-act" data-perm="' + i + '" aria-label="Activar ' + esc(p.title) + '"><span>Activar</span></button>' +
+        '<span class="ob-perm-ok">Listo</span></div>';
+    }).join('') + '</div>' + button('Continuar', 'data-el="permsNext" data-next disabled');
+  }
+
   var LAYER_DEFS = [
     { i: 0, text: welcomeText(), content: button('Siguiente', 'data-el="welcomeNext" data-next') },
     {
@@ -174,6 +187,11 @@
       i: 8,
       text: stepChip(8) + title('Echa <em>raíces</em>'),
       content: commitContent()
+    },
+    {
+      i: 9,
+      text: stepChip(9) + title('Un último <em>paso</em>') + '<p class="ob-sub">SegundoAire necesita esto para poder darte la pausa.</p>',
+      content: permsContent()
     }
   ];
 
@@ -189,18 +207,7 @@
       '<path class="ob-vine-track" d="M64 20 C100 12 130 28 160 20 S220 12 250 20 S310 28 326 20"></path>' +
       '<path class="ob-vine-fill" data-el="vine" d="M64 20 C100 12 130 28 160 20 S220 12 250 20 S310 28 326 20" pathLength="1"></path></svg>' +
       '<button type="button" class="ob-back" data-el="back" aria-label="Atrás">' + icon('M15 18l-6-6 6-6', 24) + '</button>' +
-      layerHtml + '</div>' +
-      '<div class="ob-curtain" data-el="curtain" inert><div class="ob-curtain-brand"><div class="ob-wordmark">SegundoAire</div>' +
-      '<div class="ob-tagline">Tu árbol ya echó raíces.</div></div>' +
-      '<div class="ob-done">' +
-      '<svg class="ob-curtain-tree" aria-hidden="true" width="150" height="150" viewBox="0 0 190 190">' +
-      '<path class="ct-trunk" d="M95 190 C93 160 97 130 95 100"></path>' +
-      '<circle class="ct-a" cx="95" cy="70" r="44"></circle><circle class="ct-b" cx="58" cy="92" r="32"></circle>' +
-      '<circle class="ct-c" cx="132" cy="92" r="32"></circle><circle class="ct-b" cx="76" cy="52" r="28"></circle>' +
-      '<circle class="ct-c" cx="118" cy="50" r="28"></circle><circle class="ct-dot" cx="70" cy="66" r="6"></circle><circle class="ct-dot" cx="124" cy="78" r="6"></circle></svg>' +
-      '<h2 class="ob-done-title">Continuará</h2>' +
-      '<p class="ob-done-body">El recorrido sigue con tu cuenta, los permisos y el panel principal.</p>' +
-      '<button type="button" class="ob-ghost" data-el="restart">Reiniciar recorrido</button></div></div></div>';
+      layerHtml + '</div></div>';
   }
 
   // ---------- rendering ----------
@@ -222,7 +229,6 @@
     var scr = step < 3 ? 0 : step - 2;
     var inB = step < 3;
     var nm = (st.name || '').trim();
-    var isEnd = step >= 11;
 
     renderLayers(scr);
     tree.update(st);
@@ -283,10 +289,17 @@
     q.holdFill.style.width = (st.hold * 100).toFixed(1) + '%';
     q.holdLabel.textContent = st.committed ? 'Comprometido' : 'Mantén para comprometerte';
 
-    // Curtain
-    q.curtain.classList.toggle('is-covered', isEnd);
-    q.curtain.inert = !isEnd;
-    api.setTone(isEnd ? 'light' : 'dark');
+    // Permissions (visual only): the two required ones unlock "Continuar"
+    root.querySelectorAll('.ob-perm').forEach(function (el, i) {
+      el.dataset.on = st.perms[i] ? 'true' : 'false';
+    });
+    q.permsNext.disabled = !D.perms.every(function (p, i) { return !p.required || st.perms[i]; });
+
+    // Shared with the account scenes ("Todo listo, {name}.")
+    SA.session = SA.session || {};
+    SA.session.name = nameShown();
+
+    api.setTone('dark');
   }
 
   // ---------- step behaviors ----------
@@ -361,7 +374,7 @@
     st.petals = true;
     st.gust += 1;
     render();
-    timers.commit = setTimeout(function () { api.go('end'); }, SA.motion.ms('--motion-commit-duration'));
+    timers.commit = setTimeout(function () { api.go('perms'); }, SA.motion.ms('--motion-commit-duration'));
   }
 
   function holdLoop() {
@@ -408,16 +421,23 @@
     render();
   }
 
+  function grantPerm(i) {
+    if (st.perms[i]) return;
+    st.perms[i] = true;
+    render();
+    restartAnim(root.querySelectorAll('.ob-perm-tile')[i], 'is-pop');
+  }
+
   function bind() {
     root.addEventListener('click', function (e) {
       var t = e.target.closest('button');
       if (!t || !root.contains(t)) return;
       if (t.hasAttribute('data-next')) { api.next(); return; }
       if (t === q.back) { api.prev(); return; }
-      if (t === q.restart) { api.restart(); return; }
       if (t.dataset.goal !== undefined) { toggleGoal(+t.dataset.goal, t); return; }
       if (t.dataset.use !== undefined) { st.use = +t.dataset.use; render(); return; }
-      if (t.dataset.moment !== undefined) { st.moment = +t.dataset.moment; render(); }
+      if (t.dataset.moment !== undefined) { st.moment = +t.dataset.moment; render(); return; }
+      if (t.dataset.perm !== undefined) { grantPerm(+t.dataset.perm); }
     });
 
     q.nameInput.addEventListener('input', function () {
