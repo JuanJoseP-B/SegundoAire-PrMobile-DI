@@ -387,7 +387,7 @@
   transition-delay: var(--motion-done-delay);
 }
 
-/* ---------- Setup scene: app selection and the provisional ending ---------- */
+/* ---------- Setup scene: app selection ---------- */
 
 .su-apps { position: absolute; inset: 0; }
 .su-apps.is-entering { animation: ob-enter var(--motion-rise-duration) var(--motion-rise-easing) backwards; }
@@ -451,34 +451,6 @@
 .su-empty { margin: auto; padding: 24px; text-align: center; }
 .su-empty-title { margin: 0; font-size: 16px; line-height: 24px; font-weight: 600; }
 .su-empty-msg { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--on-background-muted); }
-
-.su-end {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  overflow: hidden;
-  background: var(--secondary-deep);
-  color: var(--on-secondary);
-  opacity: var(--curtain-hidden-opacity);
-  pointer-events: none;
-  transform: translateY(calc(-100% * var(--layer-shift)));
-  transition: transform var(--motion-curtain-duration) var(--motion-curtain-easing),
-    opacity var(--motion-fade-duration) var(--motion-ease);
-}
-.su[data-end="true"] .su-end { opacity: 1; pointer-events: auto; transform: none; }
-.su-end-brand { position: absolute; left: 24px; top: 72px; }
-.su-end-body {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  top: 250px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(calc(12px * var(--layer-shift)));
-  transition: opacity var(--motion-calm-duration) var(--motion-ease), transform var(--motion-calm-duration) var(--motion-ease);
-}
-.su-end-tree { margin: 0 auto 20px; }
-.su[data-end="true"] .su-end-body { opacity: 1; transform: none; transition-delay: var(--motion-done-delay); }
 
 /* ---------- Keyframes and reduced motion ---------- */
 
